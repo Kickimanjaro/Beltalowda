@@ -20,6 +20,13 @@ local BeltalowdaGroup = BeltalowdaUtil.group
 
 local LGB = LibGroupBroadcast
 
+-- Check if LibGroupBroadcast is available
+if not LGB then
+	-- Log error to chat
+	d("Beltalowda: LibGroupBroadcast not found! Networking features will be disabled.")
+	d("Beltalowda: Please ensure LibGroupBroadcast is installed and loaded.")
+end
+
 BeltalowdaNetworking.callbackName = Beltalowda.addonName .. "UtilNetworking"
 
 BeltalowdaNetworking.config = {}
@@ -131,39 +138,75 @@ BeltalowdaNetworking.constants.urgentMode.CRITICAL = 2
 
 function BeltalowdaNetworking.Initialize()
 	Beltalowda.profile.AddProfileChangeListener(BeltalowdaNetworking.callbackName, BeltalowdaNetworking.OnProfileChanged)
-	BeltalowdaNetworking.LGB = LGB:RegisterHandler("Beltalowda", "BeltalowdaHandler")
-	BeltalowdaNetworking.LGB:SetDisplayName("Beltalowda")
-	BeltalowdaNetworking.LGB:SetDescription("Beltalowda - PvP AddOn -> https://www.esoui.com/downloads/info2475-Beltalowda.html \r\nPlease use the AddOn configuration (/beltalowda menu) to further configure the AddOn.")
-	BeltalowdaNetworking.protocols = {}
-	BeltalowdaNetworking.protocols.legacy = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.LEGACY, "BeltalowdaLegacyProtocol")
-	BeltalowdaNetworking.protocols.legacy:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.legacy:OnData(BeltalowdaNetworking.LgbLegacyOnData)
-	BeltalowdaNetworking.protocols.legacy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
 	
-	BeltalowdaNetworking.protocols.admin = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.ADMIN, "BeltalowdaAdminProtocol")
-	BeltalowdaNetworking.protocols.admin:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.admin:OnData(BeltalowdaNetworking.LgbAdminOnData)
-	BeltalowdaNetworking.protocols.admin:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
+	-- Check if LGB is available before attempting to use it
+	if not LGB then
+		BeltalowdaNetworking.state.initialized = false
+		return
+	end
 	
-	BeltalowdaNetworking.protocols.version = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.VERSION, "BeltalowdaVersionProtocol")
-	BeltalowdaNetworking.protocols.version:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.version:OnData(BeltalowdaNetworking.LgbVersionOnData)
-	BeltalowdaNetworking.protocols.version:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
+	-- Attempt to register handler with error handling
+	local success, handler = pcall(function()
+		return LGB:RegisterHandler("Beltalowda", "BeltalowdaHandler")
+	end)
 	
-	BeltalowdaNetworking.protocols.heartbeat = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.HEARTBEAT, "BeltalowdaHeartbeatProtocol")
-	BeltalowdaNetworking.protocols.heartbeat:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.heartbeat:OnData(BeltalowdaNetworking.LgbHeartbeatOnData)
-	BeltalowdaNetworking.protocols.heartbeat:Finalize({isRelevantInCombat = true, replaceQueuedMessages = true})
+	if not success then
+		d("Beltalowda: Failed to register LibGroupBroadcast handler: " .. tostring(handler))
+		BeltalowdaNetworking.state.initialized = false
+		return
+	end
 	
-	BeltalowdaNetworking.protocols.synergy = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.SYNERGY, "BeltalowdaSynergyProtocol")
-	BeltalowdaNetworking.protocols.synergy:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.synergy:OnData(BeltalowdaNetworking.LgbSynergyOnData)
-	BeltalowdaNetworking.protocols.synergy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+	BeltalowdaNetworking.LGB = handler
 	
-	BeltalowdaNetworking.protocols.hpDmg = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.HPDMG, "BeltalowdaHpDmgProtocol")
-	BeltalowdaNetworking.protocols.hpDmg:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.hpDmg:OnData(BeltalowdaNetworking.LgbHpDmgOnData)
-	BeltalowdaNetworking.protocols.hpDmg:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+	-- Set handler metadata with error handling
+	local metadataSuccess = pcall(function()
+		BeltalowdaNetworking.LGB:SetDisplayName("Beltalowda")
+		BeltalowdaNetworking.LGB:SetDescription("Beltalowda - PvP Group AddOn\r\nPlease use the AddOn configuration (/beltalowda menu) to further configure the AddOn.")
+	end)
+	
+	if not metadataSuccess then
+		d("Beltalowda: Warning - Failed to set LibGroupBroadcast handler metadata")
+	end
+	
+	-- Attempt to initialize protocols with error handling
+	local protocolSuccess = pcall(function()
+		BeltalowdaNetworking.protocols = {}
+		BeltalowdaNetworking.protocols.legacy = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.LEGACY, "BeltalowdaLegacyProtocol")
+		BeltalowdaNetworking.protocols.legacy:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.legacy:OnData(BeltalowdaNetworking.LgbLegacyOnData)
+		BeltalowdaNetworking.protocols.legacy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+		
+		BeltalowdaNetworking.protocols.admin = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.ADMIN, "BeltalowdaAdminProtocol")
+		BeltalowdaNetworking.protocols.admin:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.admin:OnData(BeltalowdaNetworking.LgbAdminOnData)
+		BeltalowdaNetworking.protocols.admin:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
+		
+		BeltalowdaNetworking.protocols.version = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.VERSION, "BeltalowdaVersionProtocol")
+		BeltalowdaNetworking.protocols.version:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.version:OnData(BeltalowdaNetworking.LgbVersionOnData)
+		BeltalowdaNetworking.protocols.version:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
+		
+		BeltalowdaNetworking.protocols.heartbeat = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.HEARTBEAT, "BeltalowdaHeartbeatProtocol")
+		BeltalowdaNetworking.protocols.heartbeat:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.heartbeat:OnData(BeltalowdaNetworking.LgbHeartbeatOnData)
+		BeltalowdaNetworking.protocols.heartbeat:Finalize({isRelevantInCombat = true, replaceQueuedMessages = true})
+		
+		BeltalowdaNetworking.protocols.synergy = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.SYNERGY, "BeltalowdaSynergyProtocol")
+		BeltalowdaNetworking.protocols.synergy:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.synergy:OnData(BeltalowdaNetworking.LgbSynergyOnData)
+		BeltalowdaNetworking.protocols.synergy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+		
+		BeltalowdaNetworking.protocols.hpDmg = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.HPDMG, "BeltalowdaHpDmgProtocol")
+		BeltalowdaNetworking.protocols.hpDmg:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.hpDmg:OnData(BeltalowdaNetworking.LgbHpDmgOnData)
+		BeltalowdaNetworking.protocols.hpDmg:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+	end)
+	
+	if not protocolSuccess then
+		d("Beltalowda: Failed to initialize LibGroupBroadcast protocols")
+		BeltalowdaNetworking.state.initialized = false
+		return
+	end
 	
 	
 	--BeltalowdaNetworking.protocols.legacy:Send()
@@ -181,7 +224,11 @@ function BeltalowdaNetworking.GetDefaults()
 end
 
 function BeltalowdaNetworking.SetEnabled(value)
-	if BeltalowdaNetworking.state.initialized == true and value ~= nil then
+	if not BeltalowdaNetworking.state.initialized then
+		return
+	end
+	
+	if value ~= nil then
 		BeltalowdaNetworking.netVars.enabled = value
 		if value == true then
 			if BeltalowdaNetworking.state.isRunning == true then
@@ -255,6 +302,10 @@ function BeltalowdaNetworking.LgbLegacyOnData(unitTag, data)
 end
 
 function BeltalowdaNetworking.SendMessage(message, priority)
+	if not BeltalowdaNetworking.state.initialized then
+		return
+	end
+	
 	if BeltalowdaNetworking.netVars.enabled == true then
 		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
@@ -305,6 +356,10 @@ function BeltalowdaNetworking.LgbAdminOnData(unitTag, data)
 end
 
 function BeltalowdaNetworking.SendAdminMessage(message, priority)
+	if not BeltalowdaNetworking.state.initialized then
+		return
+	end
+	
 	if BeltalowdaNetworking.netVars.enabled == true then
 		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
@@ -332,6 +387,10 @@ function BeltalowdaNetworking.LgbVersionOnData(unitTag, data)
 end
 
 function BeltalowdaNetworking.SendVersionMessage(message, priority)
+	if not BeltalowdaNetworking.state.initialized then
+		return
+	end
+	
 	if BeltalowdaNetworking.netVars.enabled == true then
 		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
@@ -359,6 +418,10 @@ function BeltalowdaNetworking.LgbHeartbeatOnData(unitTag, data)
 end
 
 function BeltalowdaNetworking.SendHeartbeatMessage(message, priority)
+	if not BeltalowdaNetworking.state.initialized then
+		return
+	end
+	
 	if BeltalowdaNetworking.netVars.enabled == true then
 		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
@@ -386,6 +449,10 @@ function BeltalowdaNetworking.LgbSynergyOnData(unitTag, data)
 end
 
 function BeltalowdaNetworking.SendSynergyMessage(message, priority)
+	if not BeltalowdaNetworking.state.initialized then
+		return
+	end
+	
 	if BeltalowdaNetworking.netVars.enabled == true then
 		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
@@ -413,6 +480,10 @@ function BeltalowdaNetworking.LgbHpDmgOnData(unitTag, data)
 end
 
 function BeltalowdaNetworking.SendHpDmgMessage(message, priority)
+	if not BeltalowdaNetworking.state.initialized then
+		return
+	end
+	
 	if BeltalowdaNetworking.netVars.enabled == true then
 		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
