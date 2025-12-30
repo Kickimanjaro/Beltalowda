@@ -452,7 +452,10 @@ function UltimateDisplay.UpdateGroupUltimates()
 			end
 		end
 		
-		-- Count ready ultimates of this type (simplified - just count all ready)
+		-- TODO: Count ready ultimates of this specific type
+		-- Currently we don't track which ultimate each player has slotted,
+		-- so for now we just count all ready ultimates
+		-- Future enhancement: integrate with ESO's GetSlotBoundId() or similar
 		local readyCount = 0
 		for name, data in pairs(groupPlayers) do
 			if data.ultimatePercent and data.ultimatePercent >= 100 then
@@ -471,7 +474,10 @@ function UltimateDisplay.UpdateUltimateOverview()
 		groupPlayers = Beltalowda.util.group.GetAllPlayers()
 	end
 	
-	-- Count ready vs total for key ultimates (simplified)
+	-- TODO: Count ready vs total for specific ultimate types
+	-- Currently we don't track which ultimate each player has slotted,
+	-- so we show generic counts for all ultimates
+	-- Future enhancement: integrate ultimate detection to show type-specific counts
 	local totalPlayers = 0
 	local readyPlayers = 0
 	
@@ -482,7 +488,7 @@ function UltimateDisplay.UpdateUltimateOverview()
 		end
 	end
 	
-	-- Update labels (simplified - showing same counts for all)
+	-- Update labels (showing same counts for all types until we can detect specific ultimates)
 	local labels = UltimateDisplay.controls.ultimateOverview.labels
 	if labels.destruction then
 		labels.destruction:SetText(string.format("%d/%d Destro:", readyPlayers, totalPlayers))
