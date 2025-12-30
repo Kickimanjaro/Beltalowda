@@ -87,9 +87,13 @@ function BeltalowdaNetworking.BroadcastUltimate(ultimatePercent)
 		return
 	end
 	
-	-- Send the message
+	-- Send the message using the proper chat API
 	local message = string.format("%s:%d", BeltalowdaNetworking.config.messagePrefix, ultimatePercent)
-	StartChatInput("", CHAT_CHANNEL_PARTY, message)
+	
+	-- Use SendChatMessage for programmatic message sending
+	if SendChatMessage then
+		SendChatMessage(message, CHAT_CHANNEL_PARTY)
+	end
 	
 	BeltalowdaNetworking.lastBroadcastTime = currentTime
 	BeltalowdaNetworking.lastBroadcastPercent = ultimatePercent

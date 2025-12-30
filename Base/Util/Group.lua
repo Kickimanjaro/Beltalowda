@@ -13,7 +13,7 @@ local BeltalowdaGroup = BeltalowdaUtil.group
 -- Group state
 BeltalowdaGroup.state = BeltalowdaGroup.state or {}
 BeltalowdaGroup.state.players = {}
-BeltalowdaGroup.state.updateInterval = 1000 -- Update every 1000ms
+BeltalowdaGroup.state.updateInterval = 500 -- Update every 500ms for responsive tracking
 
 -- Last update time
 local lastUpdateTime = 0
