@@ -15,8 +15,10 @@
 
 local strings = {
     SI_BELTALOWDA_NAME = "Beltalowda",
-    SI_BELTALOWDA_LOADED = "Beltalowda v1.0.0 loaded successfully",
+    SI_BELTALOWDA_LOADED = "Beltalowda v0.1.0 loaded successfully",
     SI_BELTALOWDA_PLAYER_ACTIVATED = "Beltalowda: Player activated",
+    SI_BELTALOWDA_ULTIMATE_TRACKING = "Beltalowda Ultimate Tracking",
+    SI_BELTALOWDA_SLASH_HELP = "/bultimate - Display group ultimate status\n/bultimateinfo - List all tracked ultimate abilities",
 }
 
 for stringId, stringValue in pairs(strings) do
