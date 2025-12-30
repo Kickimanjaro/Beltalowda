@@ -68,6 +68,17 @@ This addon follows ESOUI.com standards and is compatible with the Minion app dis
 - `UI/` - User interface components
 - `Art/` - Art assets and textures
 
+## Credits
+
+**Created by:** @Kickimanjaro
+
+**Original Ultimate Tracking System ported from:**
+- **RdK Group Tool** by @s0rdrak (PC / EU)
+  - Comprehensive ultimate tracking logic
+  - Resource overview GUI architecture
+  - Context menu-based ultimate selection system
+  - Customizable tracked ultimates storage and persistence
+
 ## Version History
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.

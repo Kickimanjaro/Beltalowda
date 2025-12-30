@@ -1,12 +1,15 @@
 --[[
     Beltalowda - Group PvP Addon for Elder Scrolls Online
     Author: @Kickimanjaro
-    Version: 0.1.0
+    Version: 0.1.1
+    
+    Credits:
+    - Ultimate tracking system ported from RdK Group Tool by @s0rdrak (PC / EU)
 ]]--
 
 Beltalowda = Beltalowda or {}
 Beltalowda.name = "Beltalowda"
-Beltalowda.version = "0.1.0"
+Beltalowda.version = "0.1.1"
 
 -- Saved variables
 Beltalowda.savedVariables = {}

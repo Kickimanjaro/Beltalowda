@@ -14,7 +14,7 @@ BeltalowdaMenu.panelData = {
 	name = "|c4592FFBeltalowda|r",
 	displayName = "|c4592FFBeltalowda Configuration|r",
 	author = "|cFF8174@Kickimanjaro|r",
-	version = "|cFF81740.1.0|r",
+	version = "|cFF81740.1.1|r",
 	registerForRefresh = true,
 	registerForDefaults = false
 }

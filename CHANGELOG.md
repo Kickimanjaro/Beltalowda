@@ -5,6 +5,18 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.1.1] - 2025-12-30
+
+### Added
+- **Customizable Ultimate Selection** - Players can now click on ultimate icons to select which ultimates to track
+  - Click personal ultimate icon to choose custom ultimate for display
+  - Click any group ultimate slot to customize what's tracked in that position
+  - Context menus list all 41 available ultimates from game skill lines
+  - Selections persist across addon reloads via saved variables
+
+### Changed
+- Ultimate tracking from placeholder system to fully functional customization
+
 ## [0.1.0] - 2025-12-30
 
 ### Added
