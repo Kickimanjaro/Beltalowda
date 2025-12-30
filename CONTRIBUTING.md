@@ -44,7 +44,7 @@ This addon follows the standards set by ESOUI.com and is designed for easy integ
 ## ESO API Compatibility
 
 Current supported API versions:
-- **101047** - Current live version (as of August 2025)
+- **101047** - Current live version
 - **101048** - Development/PTS version
 
 The APIVersion in the manifest should be updated when new ESO updates are released. Check ESOUI.com or the official forums for the latest API versions.
