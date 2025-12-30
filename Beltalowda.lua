@@ -32,6 +32,13 @@ function Beltalowda:Initialize()
         self.util.group.Initialize()
     end
     
+    -- Initialize networking
+    if self.util and self.util.networking then
+        self.util.networking.Initialize()
+        -- Enable broadcasting by default
+        self.util.networking.EnableBroadcasting()
+    end
+    
     -- Register for events
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_ACTIVATED, function()
         self:OnPlayerActivated()
@@ -90,6 +97,24 @@ SLASH_COMMANDS["/bultimateinfo"] = function(args)
         end
     else
         d("|cFF0000Ultimates not initialized|r")
+    end
+end
+
+SLASH_COMMANDS["/bbroadcast"] = function(args)
+    -- Toggle ultimate broadcasting
+    if args == "on" then
+        if Beltalowda.util and Beltalowda.util.networking then
+            Beltalowda.util.networking.EnableBroadcasting()
+        end
+    elseif args == "off" then
+        if Beltalowda.util and Beltalowda.util.networking then
+            Beltalowda.util.networking.DisableBroadcasting()
+        end
+    else
+        d("|c00FF00Beltalowda Broadcasting|r")
+        d("Usage: /bbroadcast <on|off>")
+        d("  on  - Enable ultimate broadcasting to group")
+        d("  off - Disable ultimate broadcasting")
     end
 end
 

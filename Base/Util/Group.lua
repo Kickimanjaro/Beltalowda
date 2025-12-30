@@ -160,3 +160,14 @@ function BeltalowdaGroup.GetReadyUltimatesCount()
 	end
 	return count
 end
+
+function BeltalowdaGroup.OnNetworkUltimateUpdate(characterName, ultimatePercent)
+	-- Update ultimate percentage from network message
+	if not BeltalowdaGroup.state.players[characterName] then
+		BeltalowdaGroup.state.players[characterName] = {}
+	end
+	
+	BeltalowdaGroup.state.players[characterName].ultimatePercent = ultimatePercent
+	BeltalowdaGroup.state.players[characterName].lastUpdate = GetGameTimeMilliseconds()
+	BeltalowdaGroup.state.players[characterName].fromNetwork = true
+end
