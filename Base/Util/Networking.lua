@@ -168,36 +168,45 @@ function BeltalowdaNetworking.Initialize()
 		d("Beltalowda: Warning - Failed to set LibGroupBroadcast handler metadata")
 	end
 	
-	BeltalowdaNetworking.protocols = {}
-	BeltalowdaNetworking.protocols.legacy = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.LEGACY, "BeltalowdaLegacyProtocol")
-	BeltalowdaNetworking.protocols.legacy:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.legacy:OnData(BeltalowdaNetworking.LgbLegacyOnData)
-	BeltalowdaNetworking.protocols.legacy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+	-- Attempt to initialize protocols with error handling
+	local protocolSuccess = pcall(function()
+		BeltalowdaNetworking.protocols = {}
+		BeltalowdaNetworking.protocols.legacy = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.LEGACY, "BeltalowdaLegacyProtocol")
+		BeltalowdaNetworking.protocols.legacy:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.legacy:OnData(BeltalowdaNetworking.LgbLegacyOnData)
+		BeltalowdaNetworking.protocols.legacy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+		
+		BeltalowdaNetworking.protocols.admin = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.ADMIN, "BeltalowdaAdminProtocol")
+		BeltalowdaNetworking.protocols.admin:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.admin:OnData(BeltalowdaNetworking.LgbAdminOnData)
+		BeltalowdaNetworking.protocols.admin:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
+		
+		BeltalowdaNetworking.protocols.version = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.VERSION, "BeltalowdaVersionProtocol")
+		BeltalowdaNetworking.protocols.version:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.version:OnData(BeltalowdaNetworking.LgbVersionOnData)
+		BeltalowdaNetworking.protocols.version:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
+		
+		BeltalowdaNetworking.protocols.heartbeat = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.HEARTBEAT, "BeltalowdaHeartbeatProtocol")
+		BeltalowdaNetworking.protocols.heartbeat:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.heartbeat:OnData(BeltalowdaNetworking.LgbHeartbeatOnData)
+		BeltalowdaNetworking.protocols.heartbeat:Finalize({isRelevantInCombat = true, replaceQueuedMessages = true})
+		
+		BeltalowdaNetworking.protocols.synergy = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.SYNERGY, "BeltalowdaSynergyProtocol")
+		BeltalowdaNetworking.protocols.synergy:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.synergy:OnData(BeltalowdaNetworking.LgbSynergyOnData)
+		BeltalowdaNetworking.protocols.synergy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+		
+		BeltalowdaNetworking.protocols.hpDmg = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.HPDMG, "BeltalowdaHpDmgProtocol")
+		BeltalowdaNetworking.protocols.hpDmg:AddField(LGB.CreateNumericField("numeric"))
+		BeltalowdaNetworking.protocols.hpDmg:OnData(BeltalowdaNetworking.LgbHpDmgOnData)
+		BeltalowdaNetworking.protocols.hpDmg:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+	end)
 	
-	BeltalowdaNetworking.protocols.admin = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.ADMIN, "BeltalowdaAdminProtocol")
-	BeltalowdaNetworking.protocols.admin:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.admin:OnData(BeltalowdaNetworking.LgbAdminOnData)
-	BeltalowdaNetworking.protocols.admin:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
-	
-	BeltalowdaNetworking.protocols.version = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.VERSION, "BeltalowdaVersionProtocol")
-	BeltalowdaNetworking.protocols.version:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.version:OnData(BeltalowdaNetworking.LgbVersionOnData)
-	BeltalowdaNetworking.protocols.version:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
-	
-	BeltalowdaNetworking.protocols.heartbeat = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.HEARTBEAT, "BeltalowdaHeartbeatProtocol")
-	BeltalowdaNetworking.protocols.heartbeat:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.heartbeat:OnData(BeltalowdaNetworking.LgbHeartbeatOnData)
-	BeltalowdaNetworking.protocols.heartbeat:Finalize({isRelevantInCombat = true, replaceQueuedMessages = true})
-	
-	BeltalowdaNetworking.protocols.synergy = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.SYNERGY, "BeltalowdaSynergyProtocol")
-	BeltalowdaNetworking.protocols.synergy:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.synergy:OnData(BeltalowdaNetworking.LgbSynergyOnData)
-	BeltalowdaNetworking.protocols.synergy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
-	
-	BeltalowdaNetworking.protocols.hpDmg = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.HPDMG, "BeltalowdaHpDmgProtocol")
-	BeltalowdaNetworking.protocols.hpDmg:AddField(LGB.CreateNumericField("numeric"))
-	BeltalowdaNetworking.protocols.hpDmg:OnData(BeltalowdaNetworking.LgbHpDmgOnData)
-	BeltalowdaNetworking.protocols.hpDmg:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+	if not protocolSuccess then
+		d("Beltalowda: Failed to initialize LibGroupBroadcast protocols")
+		BeltalowdaNetworking.state.initialized = false
+		return
+	end
 	
 	
 	--BeltalowdaNetworking.protocols.legacy:Send()
@@ -219,7 +228,7 @@ function BeltalowdaNetworking.SetEnabled(value)
 		return
 	end
 	
-	if BeltalowdaNetworking.state.initialized == true and value ~= nil then
+	if value ~= nil then
 		BeltalowdaNetworking.netVars.enabled = value
 		if value == true then
 			if BeltalowdaNetworking.state.isRunning == true then
