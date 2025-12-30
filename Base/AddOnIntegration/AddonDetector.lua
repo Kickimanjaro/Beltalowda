@@ -25,6 +25,14 @@ BeltalowdaDetector.constants.ADDON_TYPE_COMPASS = "compass"
 BeltalowdaDetector.constants.ADDON_TYPE_BOMB_TIMER = "bomb_timer"
 BeltalowdaDetector.constants.ADDON_TYPE_BEAM = "beam"
 
+-- User-friendly display names for addon types
+BeltalowdaDetector.constants.ADDON_TYPE_NAMES = {
+	["crown"] = "Crown/Leader Markers",
+	["compass"] = "Compass Features",
+	["bomb_timer"] = "Bomb/Detonation Timers",
+	["beam"] = "3D Beams"
+}
+
 -- Integration modes
 BeltalowdaDetector.constants.MODE_PREFER_EXTERNAL = 1 -- Use external addon if available
 BeltalowdaDetector.constants.MODE_PREFER_INTERNAL = 2 -- Use built-in version even if external exists
@@ -258,7 +266,8 @@ function BeltalowdaDetector.NotifyDetectedAddons()
 		if #detected > 0 then
 			hasDetected = true
 			local names = table.concat(BeltalowdaDetector.GetDetectedAddonNames(addonType), ", ")
-			table.insert(messages, string.format("%s: %s", addonType, names))
+			local typeName = BeltalowdaDetector.constants.ADDON_TYPE_NAMES[addonType] or addonType
+			table.insert(messages, string.format("%s: %s", typeName, names))
 		end
 	end
 	

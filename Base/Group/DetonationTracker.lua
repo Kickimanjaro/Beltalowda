@@ -299,14 +299,18 @@ function BeltalowdaDt.SetEnabled(value)
 end
 
 function BeltalowdaDt.SetControlVisibility()
+	-- First check if detector allows this feature to be enabled
+	if not BeltalowdaDt.ShouldEnableDetonationTracker() then
+		BeltalowdaDt.controls.TLW:SetHidden(true)
+		return
+	end
+	
+	-- Detector allows feature, now apply normal visibility logic
 	local enabled = BeltalowdaDt.dtVars.enabled
 	local pvpOnly = BeltalowdaDt.dtVars.pvpOnly
 	local setHidden = true
 	
-	-- Check if we should enable based on detector settings
-	if not BeltalowdaDt.ShouldEnableDetonationTracker() then
-		setHidden = true
-	elseif enabled ~= nil and pvpOnly ~= nil then
+	if enabled ~= nil and pvpOnly ~= nil then
 		if enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 			setHidden = false
 		end

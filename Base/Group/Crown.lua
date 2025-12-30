@@ -46,22 +46,23 @@ function BeltalowdaCrown.Initialize()
 	Beltalowda.profile.AddProfileChangeListener(BeltalowdaCrown.callbackName, BeltalowdaCrown.OnProfileChanged)
 	
 	-- Check if we should enable crown features based on detector settings
+	-- Note: Detector is initialized early, but detector vars (user preferences) 
+	-- may not be loaded yet. We check detector availability and notify user of 
+	-- detected addons, but actual integration mode is applied in OnPlayerActivated
+	-- where detector vars are guaranteed to be available.
 	local detector = Beltalowda.addOnIntegration.detector
 	if detector and detector.state and detector.state.initialized then
 		local addonType = detector.constants.ADDON_TYPE_CROWN
 		local detected = detector.GetDetectedAddons(addonType)
 		
 		if #detected > 0 then
-			-- External crown addon detected
+			-- External crown addon detected - notify user
 			local names = detector.GetDetectedAddonNames(addonType)
 			BeltalowdaChat.SendChatMessage(
 				string.format("Crown addon detected: %s", table.concat(names, ", ")),
 				BeltalowdaCrown.constants.PREFIX,
 				BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING
 			)
-			
-			-- Check user preference from detector settings
-			-- Note: detector vars might not be initialized yet, so we'll check in OnProfileChanged
 		end
 	else
 		-- Fallback to old detection method if detector not available yet

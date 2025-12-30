@@ -14,7 +14,9 @@ function BeltalowdaAOI.Initialize()
 	--Not running Miats PvP Alerts AddOn Integration anymore as it did not really
 	--fix the bug causing frame drops. Therefore, this module isn't active in any way anymore.
 	--BeltalowdaAOI.mpa.Initialize()
-	BeltalowdaAOI.detector.Initialize()
+	if Beltalowda.addOnIntegration.detector then
+		Beltalowda.addOnIntegration.detector.Initialize()
+	end
 end
 
 function BeltalowdaAOI.SlashCmd(param)
@@ -32,13 +34,17 @@ function BeltalowdaAOI.GetMenu()
 		}
 	}
 	--BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaAOI.mpa.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaAOI.detector.GetMenu())
+	if Beltalowda.addOnIntegration.detector then
+		BeltalowdaMenu.AddMenuEntries(menu, Beltalowda.addOnIntegration.detector.GetMenu())
+	end
 	return menu
 end
 
 function BeltalowdaAOI.GetDefaults()
 	local defaults = {}
 	--defaults.mpa = BeltalowdaAOI.mpa.GetDefaults()
-	defaults.detector = BeltalowdaAOI.detector.GetDefaults()
+	if Beltalowda.addOnIntegration.detector then
+		defaults.detector = Beltalowda.addOnIntegration.detector.GetDefaults()
+	end
 	return defaults
 end
