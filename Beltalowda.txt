@@ -1,6 +1,6 @@
 ## Title: Beltalowda
 ## Author: @Kickimanjaro
-## Version: 1.0.0
+## Version: 0.1.0
 ## APIVersion: 101047 101048
 ## Description: Group PvP addon for Elder Scrolls Online
 ## SavedVariables: BeltalowdaSavedVariables

@@ -1,12 +1,12 @@
 --[[
     Beltalowda - Group PvP Addon for Elder Scrolls Online
     Author: @Kickimanjaro
-    Version: 1.0.0
+    Version: 0.1.0
 ]]--
 
 Beltalowda = Beltalowda or {}
 Beltalowda.name = "Beltalowda"
-Beltalowda.version = "1.0.0"
+Beltalowda.version = "0.1.0"
 
 -- Saved variables
 Beltalowda.savedVariables = {}
@@ -126,7 +126,17 @@ end
 SLASH_COMMANDS["/bultui"] = function(args)
     -- Toggle ultimate display UI
     if Beltalowda.UI and Beltalowda.UI.UltimateDisplay then
-        Beltalowda.UI.UltimateDisplay.ToggleDisplay()
+        if args == "blocks" then
+            Beltalowda.UI.UltimateDisplay.TogglePlayerBlocks()
+        elseif args == "client" then
+            Beltalowda.UI.UltimateDisplay.ToggleClientUltimate()
+        elseif args == "group" then
+            Beltalowda.UI.UltimateDisplay.ToggleGroupUltimates()
+        elseif args == "overview" then
+            Beltalowda.UI.UltimateDisplay.ToggleUltimateOverview()
+        else
+            Beltalowda.UI.UltimateDisplay.ToggleDisplay()
+        end
     else
         d("|cFF0000Ultimate Display not initialized|r")
     end

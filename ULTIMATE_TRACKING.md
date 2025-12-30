@@ -1,12 +1,44 @@
 # Beltalowda Ultimate Tracking
 
-This document describes the ultimate tracking feature ported from the RDK addon.
+This document describes the comprehensive ultimate tracking feature ported from the RDK addon.
 
 ## Features
 
 - **Ultimate Tracking**: Monitors ultimate ability status for player and group members
 - **Network Broadcasting**: Shares ultimate percentages with group members via party chat
 - **41 Tracked Ultimates**: All class, weapon, guild, and world ultimates are recognized
+- **Multiple Display Windows**: RdK-style UI with client ultimate, group ultimates, overview, and player blocks
+
+## Display Windows
+
+### 1. Client Ultimate
+Shows your own ultimate ability icon. The icon changes color based on readiness:
+- White: Building ultimate
+- Green: Ultimate ready (100%)
+
+Toggle with: `/bultui client`
+
+### 2. Group Ultimates
+A row of 12 ultimate ability icons you can configure to track. Each shows a count of ready ultimates.
+- Displays up to 12 selectable ultimate types
+- Shows count of group members with that ultimate ready
+- Click icons to select which ultimates to track (coming soon)
+
+Toggle with: `/bultui group`
+
+### 3. Ultimate Overview
+Compact window showing counts for key ultimates (Destruction, Storm, Negate, Nova).
+- Format: "X/Y Type:" where X = ready, Y = total
+
+Toggle with: `/bultui overview`
+
+### 4. Player Blocks
+Main window showing all group members with ultimate bars.
+- Color-coded bars: Green (ready), Yellow (almost), Blue (building)
+- Real-time updates every 100ms
+- Auto-resizes based on group size
+
+Toggle with: `/bultui blocks`
 
 ## Testing In-Game
 
@@ -24,7 +56,7 @@ This document describes the ultimate tracking feature ported from the RDK addon.
 
 Once in-game, you can use these commands to test ultimate tracking:
 
-- **`/bultimate`** - Display your ultimate and all group members' ultimate percentages
+- **`/bultimate`** - Display your ultimate and all group members' ultimate percentages (text)
   - Shows your current ultimate percentage and power
   - Lists all group members with their ultimate percentages
   - Indicates when ultimates are ready with [READY] marker
@@ -33,11 +65,15 @@ Once in-game, you can use these commands to test ultimate tracking:
   - Lists the first 10 tracked ultimate abilities
   - Shows ultimate name and cost for each
 
-- **`/bultui`** - Toggle the Ultimate Display UI window
-  - Shows a visual window with all group members' ultimate bars
-  - Updates in real-time every 100ms
-  - Color-coded: Green (ready), Yellow (80%+), Blue (building)
-  - Movable window - drag to reposition
+- **`/bultui`** - Toggle all Ultimate Display windows on/off
+  
+- **`/bultui blocks`** - Toggle Player Blocks window (main group ultimate bars)
+  
+- **`/bultui client`** - Toggle Client Ultimate window (your ultimate icon)
+  
+- **`/bultui group`** - Toggle Group Ultimates window (row of 12 trackable ultimates)
+  
+- **`/bultui overview`** - Toggle Ultimate Overview window (compact counts)
 
 - **`/bbroadcast <on|off>`** - Toggle ultimate broadcasting
   - `on` - Enable broadcasting your ultimate to group members (enabled by default)
