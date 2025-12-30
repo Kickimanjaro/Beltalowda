@@ -155,8 +155,9 @@ Current implementation choices and their rationale:
 
 - **Party chat networking**: Uses ESO's party chat channel instead of LibGroupBroadcast
   - Pro: No external dependencies, works on all platforms
-  - Con: Limited to party-size groups (24 members)
-  - Future: Could integrate LibGroupBroadcast for raid groups if needed
+  - Con: Uses chat infrastructure (though messages are filtered from display)
+  - Note: Works for standard group sizes (12 players in Cyrodiil/trials)
+  - Future: Could integrate LibGroupBroadcast for additional features if needed
   
 - **Generic ultimate counts**: Shows total ready count, not type-specific counts
   - RdK tracked which specific ultimate each player had slotted through ability bar detection
@@ -164,6 +165,9 @@ Current implementation choices and their rationale:
   
 - **Broadcasting enabled by default**: All group members with the addon will share ultimate data
   - Can be toggled off with `/bbroadcast off` debug command if needed
+  
+- **No addon settings menu**: Configuration currently via slash commands only
+  - Future: Could add LibAddonMenu integration for GUI settings panel
 
 ## Future Enhancements
 
@@ -177,8 +181,11 @@ Planned improvements:
   - Client Ultimate: Choose which ultimate icon to display for yourself
   - Group Ultimates: Configure the 12 tracked ultimate slots
   
+- **Addon settings menu**: Add LibAddonMenu integration for GUI settings panel
+  - Would provide in-game settings UI instead of slash commands
+  - Allow easier configuration of window visibility, broadcasting, etc.
+  
 - **LibGroupBroadcast integration**: Optional use for enhanced networking
-  - Would support larger raid groups beyond party size
   - More efficient for complex data sharing
   - Maintains party chat as lightweight default option
 - Add configuration options for broadcast frequency and threshold
