@@ -1,13 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Bindings>
-    <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
-        <Category name="Beltalowda">
-            <!-- Add custom keybindings here -->
-            <!-- Example:
-            <Action name="BELTALOWDA_EXAMPLE_ACTION">
-                <Down>Beltalowda:OnExampleAction()</Down>
+	
+	<!--<Layer name="|cFF8174Beltalowda">-->
+	<Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
+		<Category name="|c4592FFBeltalowda: Auto Invite">
+			<Action name="BELTALOWDA_TOGGLE_AI">
+                <Down>Beltalowda.group.ai.OnKeyBinding()</Down>
             </Action>
-            -->
+		</Category>
+		<Category name="|c4592FFBeltalowda: Resource Overview">
+            <Action name="BELTALOWDA_RESOURCEOVERVIEW_BOOM">
+                <Down>Beltalowda.group.ro.OnBoomKeyBinding()</Down>
+            </Action>
         </Category>
-    </Layer>
+		<Category name="|c4592FFBeltalowda: Yet another Compass">
+            <Action name="BELTALOWDA_YETANOTHERCOMPASS_OPEN">
+                <Down>Beltalowda.compass.yacs.OnKeyBinding()</Down>
+            </Action>
+        </Category>
+		<Category name="|c4592FFBeltalowda: Synergy Prevention">
+            <Action name="BELTALOWDA_SP_TOGGLE">
+                <Down>Beltalowda.toolbox.sp.OnKeyBinding()</Down>
+            </Action>
+        </Category>
+		<Category name="|c4592FFBeltalowda: Admin">
+            <Action name="BELTALOWDA_ADMIN_OPEN">
+                <Down>Beltalowda.admin.OnKeyBinding()</Down>
+            </Action>
+        </Category>
+		<Category name="|c4592FFBeltalowda: Configuration Ex / Im">
+            <Action name="BELTALOWDA_CONFIG_OPEN">
+                <Down>Beltalowda.cfg.OnKeyBinding()</Down>
+            </Action>
+        </Category>
+		<Category name="|c4592FFBeltalowda: Healing Damage Meter">
+            <Action name="BELTALOWDA_HDM_RESET_METER">
+                <Down>Beltalowda.group.hdm.OnKeyBinding()</Down>
+            </Action>
+        </Category>
+	</Layer>
+	<Layer name="|c4592FFBeltalowda: Death">
+		<Category name="">
+			<Action name="BELTALOWDA_DEATH_CAMP">
+				<Down>Beltalowda.toolbox.respawner.KeybindingPlaceholder()</Down>
+			</Action>
+			<Action name="BELTALOWDA_DEATH_KEEP">
+				<Down>Beltalowda.toolbox.respawner.KeybindingPlaceholder()</Down>
+			</Action>
+		</Category>
+	</Layer>
+	<Layer name="SI_KEYBINDINGS_LAYER_SIEGE">
+		<Category name="">
+			<Action name="BELTALOWDA_TOGGLE_SIEGE_CAMERA">
+				<Down>Beltalowda.toolbox.siege.ToggleCamera()</Down>
+			</Action>
+		</Category>
+	</Layer>
+	<Layer name="Death">
+		<Category>
+			<Action name="BELTALOWDA_DEATH_RESPAWN_CAMP" hideAction="true" inheritsBindFrom="BELTALOWDA_DEATH_CAMP" rebindable="false">
+                <Down>Beltalowda.toolbox.respawner.RespawnAtCamp()</Down>
+            </Action>
+			<Action name="BELTALOWDA_DEATH_RESPAWN_KEEP" hideAction="true" inheritsBindFrom="BELTALOWDA_DEATH_KEEP" rebindable="false">
+                <Down>Beltalowda.toolbox.respawner.RespawnAtKeep()</Down>
+            </Action>
+		</Category>
+	</Layer>
 </Bindings>

@@ -1,0 +1,51 @@
+-- Beltalowda Recharger
+-- By @s0rdrak (PC / EU)
+
+Beltalowda.toolbox.recharger = Beltalowda.toolbox.recharger or {}
+local BeltalowdaRecharger = Beltalowda.toolbox.recharger
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+
+
+BeltalowdaRecharger.constants = BeltalowdaRecharger.constants or {}
+
+BeltalowdaRecharger.callbackName = Beltalowda.addonName .. "Recharger"
+
+BeltalowdaRecharger.config = {}
+
+BeltalowdaRecharger.state = {}
+BeltalowdaRecharger.state.initialized = false
+
+function BeltalowdaRecharger.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaRecharger.callbackName, BeltalowdaRecharger.OnProfileChanged)
+	
+	BeltalowdaRecharger.state.initialized = true
+	BeltalowdaRecharger.SetEnabled(BeltalowdaRecharger.rcVars.enabled)
+end
+
+function BeltalowdaRecharger.GetDefaults()
+	local defaults = {}
+	defaults.enabled = true
+	return defaults
+end
+
+function BeltalowdaRecharger.SetEnabled(value)
+	if BeltalowdaRecharger.state.initialized == true and value ~= nil then
+		BeltalowdaRecharger.rcVars.enabled = value
+		if value == true then
+
+		else
+
+		end
+	end
+end
+
+--callbacks
+function BeltalowdaRecharger.OnProfileChanged(currentProfile)
+	if currentProfile ~= nil then
+		BeltalowdaRecharger.rcVars = currentProfile.toolbox.recharger
+		BeltalowdaRecharger.SetEnabled(BeltalowdaRecharger.rcVars.enabled)
+	end
+end
+
+--menu interactions

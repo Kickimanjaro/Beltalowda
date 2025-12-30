@@ -1,6 +1,5 @@
 -- Beltalowda Util Ultimates
--- Ported from RdK Group Tool by @s0rdrak (PC / EU)
--- Adapted for Beltalowda by @Kickimanjaro
+-- By @s0rdrak (PC / EU)
 
 Beltalowda = Beltalowda or {}
 Beltalowda.util = Beltalowda.util or {}
@@ -12,50 +11,9 @@ local BeltalowdaUltimates = BeltalowdaUtil.ultimates
 
 BeltalowdaUltimates.constants = BeltalowdaUltimates.constants or {}
 
--- Define ultimate constant names
-BeltalowdaUltimates.constants.NEGATE = "Sorcerer - Negate"
-BeltalowdaUltimates.constants.NEGATE_OFFENSIVE = "Sorcerer - Negate Offensive"
-BeltalowdaUltimates.constants.NEGATE_COUNTER = "Sorcerer - Negate Counter"
-BeltalowdaUltimates.constants.ATRONACH = "Sorcerer - Atronach"
-BeltalowdaUltimates.constants.OVERLOAD = "Sorcerer - Overload"
-BeltalowdaUltimates.constants.SWEEP = "Templar - Sweep"
-BeltalowdaUltimates.constants.NOVA = "Templar - Nova"
-BeltalowdaUltimates.constants.T_HEAL = "Templar - Healing Ultimate"
-BeltalowdaUltimates.constants.STANDARD = "Dragonknight - Standard"
-BeltalowdaUltimates.constants.LEAP = "Dragonknight - Dragon Leap"
-BeltalowdaUltimates.constants.MAGMA = "Dragonknight - Magma Armor"
-BeltalowdaUltimates.constants.STROKE = "Nightblade - Death Stroke"
-BeltalowdaUltimates.constants.DARKNESS = "Nightblade - Consuming Darkness"
-BeltalowdaUltimates.constants.SOUL = "Nightblade - Soul Shred"
-BeltalowdaUltimates.constants.SOUL_SIPHON = "Nightblade - Soul Siphon"
-BeltalowdaUltimates.constants.SOUL_TETHER = "Nightblade - Soul Tether"
-BeltalowdaUltimates.constants.STORM = "Warden - Storm"
-BeltalowdaUltimates.constants.NORTHERN_STORM = "Warden - Northern Storm"
-BeltalowdaUltimates.constants.PERMAFROST = "Warden - Permafrost"
-BeltalowdaUltimates.constants.W_HEAL = "Warden - Healing Ultimate"
-BeltalowdaUltimates.constants.GUARDIAN = "Warden - Guardian"
-BeltalowdaUltimates.constants.COLOSSUS = "Necromancer - Colossus"
-BeltalowdaUltimates.constants.GOLIATH = "Necromancer - Goliath"
-BeltalowdaUltimates.constants.REANIMATE = "Necromancer - Reanimate"
-BeltalowdaUltimates.constants.UNBLINKING_EYE = "Arcanist - Unblinking Eye"
-BeltalowdaUltimates.constants.GIBBERING_SHIELD = "Arcanist - Gibbering Shield"
-BeltalowdaUltimates.constants.VITALIZING_GLYPHIC = "Arcanist - Vitalizing Glyphic"
-BeltalowdaUltimates.constants.DESTRUCTION = "Weapon - Destruction Staff"
-BeltalowdaUltimates.constants.RESTORATION = "Weapon - Restoration Staff"
-BeltalowdaUltimates.constants.TWO_HANDED = "Weapon - Two Handed"
-BeltalowdaUltimates.constants.SHIELD = "Weapon - One Handed and Shield"
-BeltalowdaUltimates.constants.DUAL_WIELD = "Weapon - Dual Wield"
-BeltalowdaUltimates.constants.BOW = "Weapon - Bow"
-BeltalowdaUltimates.constants.SOUL_MAGIC = "World - Soul Strike"
-BeltalowdaUltimates.constants.WEREWOLF = "World (Werewolf) - Werewolf"
-BeltalowdaUltimates.constants.VAMPIRE = "World (Vampire) - Bat Swarm"
-BeltalowdaUltimates.constants.MAGES = "Guild (Mages) - Meteor"
-BeltalowdaUltimates.constants.FIGHTERS = "Guild (Fighters) - Dawnbreaker"
-BeltalowdaUltimates.constants.PSIJIC = "Guild (Psijic) - Undo"
-BeltalowdaUltimates.constants.ALLIANCE_SUPPORT = "Alliance War (Support) - Barrier"
-BeltalowdaUltimates.constants.ALLIANCE_ASSAULT = "Alliance War (Assault) - War Horn"
-
 function BeltalowdaUltimates.InitializeUltimates()
+	--Not much room left here for compatibility reasons... Yet some people did their own thing and all of it is now a mess. congrats
+	--GetSkillAbilityId(number SkillType skillType, number skillLineIndex, number skillIndex, boolean showUpgrade) 
 	BeltalowdaUltimates.ultimates = {}
 	BeltalowdaUltimates.ultimates[1] = {}
 	BeltalowdaUltimates.ultimates[1].name = BeltalowdaUltimates.constants.NEGATE
@@ -65,7 +23,7 @@ function BeltalowdaUltimates.InitializeUltimates()
 	BeltalowdaUltimates.ultimates[2] = {}
 	BeltalowdaUltimates.ultimates[2].name = BeltalowdaUltimates.constants.NEGATE_OFFENSIVE
 	BeltalowdaUltimates.ultimates[2].abilityId = 28341
-	BeltalowdaUltimates.ultimates[2].id = 32
+	BeltalowdaUltimates.ultimates[2].id = 32 --29
 	BeltalowdaUltimates.ultimates[2].iconColor = {}
 	BeltalowdaUltimates.ultimates[2].iconColor.r = 0.6
 	BeltalowdaUltimates.ultimates[2].iconColor.g = 0.2
@@ -74,7 +32,7 @@ function BeltalowdaUltimates.InitializeUltimates()
 	BeltalowdaUltimates.ultimates[3] = {}
 	BeltalowdaUltimates.ultimates[3].name = BeltalowdaUltimates.constants.NEGATE_COUNTER
 	BeltalowdaUltimates.ultimates[3].abilityId = 28341
-	BeltalowdaUltimates.ultimates[3].id = 33
+	BeltalowdaUltimates.ultimates[3].id = 33 --30
 	BeltalowdaUltimates.ultimates[3].iconColor = {}
 	BeltalowdaUltimates.ultimates[3].iconColor.r = 0.2
 	BeltalowdaUltimates.ultimates[3].iconColor.g = 0.2
@@ -107,7 +65,7 @@ function BeltalowdaUltimates.InitializeUltimates()
 
 	BeltalowdaUltimates.ultimates[9] = {}
 	BeltalowdaUltimates.ultimates[9].name = BeltalowdaUltimates.constants.STANDARD
-	BeltalowdaUltimates.ultimates[9].abilityId = 32958
+	BeltalowdaUltimates.ultimates[9].abilityId = 32958 --28988
 	BeltalowdaUltimates.ultimates[9].id = 7
 
 	BeltalowdaUltimates.ultimates[10] = {}
@@ -173,17 +131,17 @@ function BeltalowdaUltimates.InitializeUltimates()
 	BeltalowdaUltimates.ultimates[22] = {}
 	BeltalowdaUltimates.ultimates[22].name = BeltalowdaUltimates.constants.COLOSSUS
 	BeltalowdaUltimates.ultimates[22].abilityId = 122174
-	BeltalowdaUltimates.ultimates[22].id = 29
+	BeltalowdaUltimates.ultimates[22].id = 29 --32
 	
 	BeltalowdaUltimates.ultimates[23] = {}
 	BeltalowdaUltimates.ultimates[23].name = BeltalowdaUltimates.constants.GOLIATH
 	BeltalowdaUltimates.ultimates[23].abilityId = 115001
-	BeltalowdaUltimates.ultimates[23].id = 28
+	BeltalowdaUltimates.ultimates[23].id = 28 --33
 	
 	BeltalowdaUltimates.ultimates[24] = {}
 	BeltalowdaUltimates.ultimates[24].name = BeltalowdaUltimates.constants.REANIMATE
 	BeltalowdaUltimates.ultimates[24].abilityId = 115410
-	BeltalowdaUltimates.ultimates[24].id = 30
+	BeltalowdaUltimates.ultimates[24].id = 30 --34
 		
 	BeltalowdaUltimates.ultimates[25] = {}
 	BeltalowdaUltimates.ultimates[25].name = BeltalowdaUltimates.constants.UNBLINKING_EYE
@@ -258,7 +216,7 @@ function BeltalowdaUltimates.InitializeUltimates()
 	BeltalowdaUltimates.ultimates[39] = {}
 	BeltalowdaUltimates.ultimates[39].name = BeltalowdaUltimates.constants.PSIJIC
 	BeltalowdaUltimates.ultimates[39].abilityId = 103478
-	BeltalowdaUltimates.ultimates[39].id = 34
+	BeltalowdaUltimates.ultimates[39].id = 34 --28
 
 	BeltalowdaUltimates.ultimates[40] = {}
 	BeltalowdaUltimates.ultimates[40].name = BeltalowdaUltimates.constants.ALLIANCE_SUPPORT
@@ -269,6 +227,8 @@ function BeltalowdaUltimates.InitializeUltimates()
 	BeltalowdaUltimates.ultimates[41].name = BeltalowdaUltimates.constants.ALLIANCE_ASSAULT
 	BeltalowdaUltimates.ultimates[41].abilityId = 38563
 	BeltalowdaUltimates.ultimates[41].id = 27
+
+
 end
 
 function BeltalowdaUltimates.Initialize()
@@ -299,18 +259,4 @@ function BeltalowdaUltimates.GetUltimateIndexFromUltimateId(id)
 		
 	end
 	return selectedIndex
-end
-function BeltalowdaUltimates.ShowUltimateControlOptions(control)
-	if control ~= nil then
-		ClearMenu()
-		local ultimates = BeltalowdaUltimates.ultimates
-		for i = 1, #ultimates do
-			AddCustomMenuItem(ultimates[i].name, function() 
-				if control.clickFunction ~= nil and type(control.clickFunction) == "function" then
-					control.clickFunction(control, i)
-				end
-			end)
-		end
-		ShowMenu(control)
-	end
 end
