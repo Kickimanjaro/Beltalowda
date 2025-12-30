@@ -76,10 +76,9 @@ end
 SLASH_COMMANDS["/bultimate"] = function(args)
     -- Debug command: Display ultimate tracking status in chat
     local playerName = GetUnitName("player")
-    local playerPower = GetUnitPower("player", POWERTYPE_ULTIMATE)
-    local playerPowerMax = GetUnitPowerMax("player", POWERTYPE_ULTIMATE)
+    local playerPower, playerPowerMax = GetUnitPower("player", POWERTYPE_ULTIMATE)
     local playerPercent = 0
-    if playerPowerMax > 0 then
+    if playerPowerMax and playerPowerMax > 0 then
         playerPercent = math.floor((playerPower / playerPowerMax) * 100)
     end
     

@@ -120,10 +120,9 @@ function BeltalowdaGroup.UpdateGroupMembers()
 				end
 				
 				-- Update ultimate values
-				local power = GetUnitPower(unitTag, POWERTYPE_ULTIMATE)
-				local powerMax = GetUnitPowerMax(unitTag, POWERTYPE_ULTIMATE)
+				local power, powerMax = GetUnitPower(unitTag, POWERTYPE_ULTIMATE)
 				
-				if powerMax > 0 then
+				if powerMax and powerMax > 0 then
 					BeltalowdaGroup.state.players[characterName].ultimatePercent = math.floor((power / powerMax) * 100)
 					BeltalowdaGroup.state.players[characterName].ultimatePower = power
 					BeltalowdaGroup.state.players[characterName].ultimateMax = powerMax

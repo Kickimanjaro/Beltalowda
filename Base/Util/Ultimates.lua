@@ -300,3 +300,17 @@ function BeltalowdaUltimates.GetUltimateIndexFromUltimateId(id)
 	end
 	return selectedIndex
 end
+function BeltalowdaUltimates.ShowUltimateControlOptions(control)
+	if control ~= nil then
+		ClearMenu()
+		local ultimates = BeltalowdaUltimates.ultimates
+		for i = 1, #ultimates do
+			AddCustomMenuItem(ultimates[i].name, function() 
+				if control.clickFunction ~= nil and type(control.clickFunction) == "function" then
+					control.clickFunction(control, i)
+				end
+			end)
+		end
+		ShowMenu(control)
+	end
+end

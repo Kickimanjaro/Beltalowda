@@ -399,10 +399,9 @@ end
 
 function UltimateDisplay.UpdateClientUltimate()
 	-- Update player's own ultimate icon
-	local playerPower = GetUnitPower("player", POWERTYPE_ULTIMATE)
-	local playerPowerMax = GetUnitPowerMax("player", POWERTYPE_ULTIMATE)
+	local playerPower, playerPowerMax = GetUnitPower("player", POWERTYPE_ULTIMATE)
 	local playerPercent = 0
-	if playerPowerMax > 0 then
+	if playerPowerMax and playerPowerMax > 0 then
 		playerPercent = math.floor((playerPower / playerPowerMax) * 100)
 	end
 	
@@ -438,16 +437,7 @@ function UltimateDisplay.UpdateGroupUltimates()
 	
 	-- Count ready ultimates for each tracked type
 	for i, selector in ipairs(UltimateDisplay.controls.groupUltimates.selectors) do
-		local ultId = UltimateDisplay.trackedUltimates[i] or 1
-		local ultIndex = ultId
-		
-		-- Find the ultimate by ID
-		for j = 1, #ultimates do
-			if ultimates[j].id == ultId then
-				ultIndex = j
-				break
-			end
-		end
+		local ultIndex = UltimateDisplay.trackedUltimates[i] or 1
 		
 		if ultIndex > 0 and ultIndex <= #ultimates then
 			local ult = ultimates[ultIndex]
@@ -510,14 +500,39 @@ end
 
 function UltimateDisplay.ShowClientUltimateMenu()
 	-- Context menu to select which ultimate icon to display
-	-- This would allow players to choose which ultimate ability they want to track for themselves
-	d("Client ultimate selection menu not yet implemented")
+	-- This allows players to choose which ultimate ability they want to track for themselves
+	if UltimateDisplay.controls.clientUltimate and UltimateDisplay.controls.clientUltimate.button then
+		local button = UltimateDisplay.controls.clientUltimate.button
+		button.clickFunction = function(control, ultimateIndex)
+			-- Update the saved variable and trigger an update
+			UltimateDisplay.savedVars.playerUltimateId = ultimateIndex
+			UltimateDisplay.UpdateClientUltimate()
+			d("Beltalowda: Selected " .. Beltalowda.util.ultimates.ultimates[ultimateIndex].name .. " for personal ultimate")
+		end
+		-- Show the context menu
+		if Beltalowda.util and Beltalowda.util.ultimates then
+			Beltalowda.util.ultimates.ShowUltimateControlOptions(button)
+		end
+	end
 end
 
 function UltimateDisplay.ShowGroupUltimateMenu(index)
 	-- Context menu to select which ultimate to track at this position
-	-- This would allow customization of the 12 tracked ultimate slots
-	d("Group ultimate selection menu not yet implemented - position " .. index)
+	-- This allows customization of the 12 tracked ultimate slots
+	if UltimateDisplay.controls.groupUltimates and UltimateDisplay.controls.groupUltimates.selectors and UltimateDisplay.controls.groupUltimates.selectors[index] then
+		local selector = UltimateDisplay.controls.groupUltimates.selectors[index]
+		selector.button.clickFunction = function(control, ultimateIndex)
+			-- Update the tracked ultimate at this position
+			UltimateDisplay.trackedUltimates[index] = ultimateIndex
+			UltimateDisplay.savedVars.trackedUltimates[index] = ultimateIndex
+			UltimateDisplay.UpdateGroupUltimates()
+			d("Beltalowda: Position " .. index .. " now tracking " .. Beltalowda.util.ultimates.ultimates[ultimateIndex].name)
+		end
+		-- Show the context menu
+		if Beltalowda.util and Beltalowda.util.ultimates then
+			Beltalowda.util.ultimates.ShowUltimateControlOptions(selector.button)
+		end
+	end
 end
 
 function UltimateDisplay.StartUpdateTimer()
