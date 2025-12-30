@@ -667,6 +667,15 @@ BeltalowdaMenu.constants.CRBG_TPHEAL_COLOR_LABEL_COOLDOWN = "Label Cooldown"
 
 --AddOn Integration
 BeltalowdaMenu.constants.ADDON_INTEGRATION_HEADER = "|cFF8174AddOn Integration Settings|r"
+--Addon Detector
+BeltalowdaMenu.constants.ADDON_DETECTOR_HEADER = "|c4592FFAddon Detection & Integration|r"
+BeltalowdaMenu.constants.ADDON_DETECTOR_DESC = "Configure how Beltalowda integrates with external addons. When external addons are detected, you can choose to use them or use Beltalowda's built-in features."
+BeltalowdaMenu.constants.ADDON_DETECTOR_NOTIFY = "Notify on Detection"
+BeltalowdaMenu.constants.ADDON_DETECTOR_CROWN_MODE = "Crown Feature Mode"
+BeltalowdaMenu.constants.ADDON_DETECTOR_COMPASS_MODE = "Compass Feature Mode"
+BeltalowdaMenu.constants.ADDON_DETECTOR_BOMB_TIMER_MODE = "Bomb Timer Mode"
+BeltalowdaMenu.constants.ADDON_DETECTOR_BEAM_MODE = "Beam Feature Mode"
+BeltalowdaMenu.constants.ADDON_DETECTOR_RESCAN = "Rescan for Addons"
 --Miats Pvp Alerts
 BeltalowdaMenu.constants.MPAI_HEADER = "|c4592FFMiat Pvp Alerts|r"
 BeltalowdaMenu.constants.MPAI_ENABLED = "Clear After Login (Enabled)"

@@ -81,6 +81,7 @@ Base/Toolbox/AvAMessages.lua
 Base/ClassRole/ClassRole.lua
 Base/ClassRole/BG/TemplarHealer.lua
 Base/AddOnIntegration/AddOnIntegration.lua
+Base/AddOnIntegration/AddonDetector.lua
 Base/AddOnIntegration/MiatPvpAlerts.lua
 Base/Admin/Admin.lua
 
