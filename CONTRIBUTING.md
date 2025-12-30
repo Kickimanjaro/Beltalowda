@@ -108,4 +108,4 @@ The Minion app automatically detects and installs addons from ESOUI.com. No spec
 
 ## License
 
-All rights reserved.
+See [LICENSE](LICENSE) file for details. All rights reserved.

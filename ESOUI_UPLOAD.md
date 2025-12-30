@@ -62,8 +62,7 @@ Additional features planned for future releases:
 
 ## Support
 
-For bug reports and feature requests, please visit the GitHub repository:
-https://github.com/Kickimanjaro/Beltalowda
+For bug reports and feature requests, please use the Issues section on GitHub.
 
 ## Changelog
 
