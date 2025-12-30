@@ -54,13 +54,11 @@ function UltimateDisplay.Initialize()
 		UltimateDisplay.controls.playerBlocks[i] = UltimateDisplay.CreatePlayerBlock(window, i)
 	end
 	
-	-- Register for updates
-	EVENT_MANAGER:RegisterForUpdate("BeltalowdaUltimateDisplay", UltimateDisplay.config.updateInterval, function()
-		UltimateDisplay.Update()
-	end)
-	
 	-- Hide by default until we're in a group
 	window:SetHidden(true)
+	
+	-- Start the update timer
+	UltimateDisplay.StartUpdateTimer()
 	
 	d("Beltalowda: Ultimate Display UI initialized")
 end
@@ -114,10 +112,6 @@ function UltimateDisplay.CreatePlayerBlock(parent, index)
 end
 
 function UltimateDisplay.Update()
-	if not UltimateDisplay.enabled then
-		return
-	end
-	
 	-- Check if in a group
 	if not IsUnitGrouped("player") then
 		UltimateDisplay.controls.window:SetHidden(true)
@@ -191,9 +185,22 @@ function UltimateDisplay.UpdatePlayerBlock(block, name, data)
 	end
 end
 
+function UltimateDisplay.StartUpdateTimer()
+	EVENT_MANAGER:RegisterForUpdate("BeltalowdaUltimateDisplay", UltimateDisplay.config.updateInterval, function()
+		UltimateDisplay.Update()
+	end)
+end
+
+function UltimateDisplay.StopUpdateTimer()
+	EVENT_MANAGER:UnregisterForUpdate("BeltalowdaUltimateDisplay")
+end
+
 function UltimateDisplay.SetEnabled(enabled)
 	UltimateDisplay.enabled = enabled
-	if not enabled then
+	if enabled then
+		UltimateDisplay.StartUpdateTimer()
+	else
+		UltimateDisplay.StopUpdateTimer()
 		UltimateDisplay.controls.window:SetHidden(true)
 	end
 end
@@ -202,9 +209,11 @@ function UltimateDisplay.ToggleDisplay()
 	UltimateDisplay.enabled = not UltimateDisplay.enabled
 	if UltimateDisplay.enabled then
 		d("Beltalowda: Ultimate display enabled")
+		UltimateDisplay.StartUpdateTimer()
 		UltimateDisplay.Update()
 	else
 		d("Beltalowda: Ultimate display disabled")
+		UltimateDisplay.StopUpdateTimer()
 		UltimateDisplay.controls.window:SetHidden(true)
 	end
 end
