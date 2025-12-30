@@ -14,8 +14,7 @@ UltimateDisplay.config = {}
 UltimateDisplay.config.updateInterval = 100 -- Update UI every 100ms
 UltimateDisplay.config.playerBlockWidth = 200
 UltimateDisplay.config.playerBlockHeight = 40
-UltimateDisplay.config.ultimateBarHeight = 30
-UltimateDisplay.config.resourceBarHeight = 5
+UltimateDisplay.config.maxGroupSize = 24 -- Maximum number of group members to display
 
 -- State
 UltimateDisplay.controls = {}
@@ -51,7 +50,7 @@ function UltimateDisplay.Initialize()
 	
 	-- Create player blocks container
 	UltimateDisplay.controls.playerBlocks = {}
-	for i = 1, 24 do
+	for i = 1, UltimateDisplay.config.maxGroupSize do
 		UltimateDisplay.controls.playerBlocks[i] = UltimateDisplay.CreatePlayerBlock(window, i)
 	end
 	
@@ -86,26 +85,10 @@ function UltimateDisplay.CreatePlayerBlock(parent, index)
 	-- Ultimate progress bar
 	local ultimateBar = wm:CreateControl(nil, block, CT_STATUSBAR)
 	ultimateBar:SetAnchor(TOPLEFT, block, TOPLEFT, 0, 0)
-	ultimateBar:SetDimensions(UltimateDisplay.config.playerBlockWidth, UltimateDisplay.config.ultimateBarHeight)
+	ultimateBar:SetDimensions(UltimateDisplay.config.playerBlockWidth, UltimateDisplay.config.playerBlockHeight)
 	ultimateBar:SetMinMax(0, 100)
 	ultimateBar:SetValue(0)
 	block.ultimateBar = ultimateBar
-	
-	-- Magicka bar
-	local magickaBar = wm:CreateControl(nil, block, CT_STATUSBAR)
-	magickaBar:SetAnchor(TOPLEFT, block, TOPLEFT, 0, UltimateDisplay.config.ultimateBarHeight)
-	magickaBar:SetDimensions(UltimateDisplay.config.playerBlockWidth, UltimateDisplay.config.resourceBarHeight)
-	magickaBar:SetMinMax(0, 100)
-	magickaBar:SetValue(100)
-	block.magickaBar = magickaBar
-	
-	-- Stamina bar
-	local staminaBar = wm:CreateControl(nil, block, CT_STATUSBAR)
-	staminaBar:SetAnchor(TOPLEFT, block, TOPLEFT, 0, UltimateDisplay.config.ultimateBarHeight + UltimateDisplay.config.resourceBarHeight)
-	staminaBar:SetDimensions(UltimateDisplay.config.playerBlockWidth, UltimateDisplay.config.resourceBarHeight)
-	staminaBar:SetMinMax(0, 100)
-	staminaBar:SetValue(100)
-	block.staminaBar = staminaBar
 	
 	-- Player name label
 	local nameLabel = wm:CreateControl(nil, block, CT_LABEL)
@@ -113,7 +96,7 @@ function UltimateDisplay.CreatePlayerBlock(parent, index)
 	nameLabel:SetFont("ZoFontGame")
 	nameLabel:SetText("")
 	nameLabel:SetColor(1, 1, 1, 1)
-	nameLabel:SetDimensionConstraints(0, 0, UltimateDisplay.config.playerBlockWidth - 60, UltimateDisplay.config.ultimateBarHeight)
+	nameLabel:SetDimensionConstraints(0, 0, UltimateDisplay.config.playerBlockWidth - 60, UltimateDisplay.config.playerBlockHeight)
 	nameLabel:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
 	nameLabel:SetVerticalAlignment(TEXT_ALIGN_CENTER)
 	block.nameLabel = nameLabel
@@ -160,7 +143,7 @@ function UltimateDisplay.Update()
 	-- Update player blocks
 	local blockIndex = 1
 	for _, playerInfo in ipairs(sortedPlayers) do
-		if blockIndex <= 24 then
+		if blockIndex <= UltimateDisplay.config.maxGroupSize then
 			local block = UltimateDisplay.controls.playerBlocks[blockIndex]
 			UltimateDisplay.UpdatePlayerBlock(block, playerInfo.name, playerInfo.data)
 			block:SetHidden(false)
@@ -169,12 +152,12 @@ function UltimateDisplay.Update()
 	end
 	
 	-- Hide unused blocks
-	for i = blockIndex, 24 do
+	for i = blockIndex, UltimateDisplay.config.maxGroupSize do
 		UltimateDisplay.controls.playerBlocks[i]:SetHidden(true)
 	end
 	
 	-- Adjust window height based on number of players
-	local visibleBlocks = math.min(blockIndex - 1, 24)
+	local visibleBlocks = math.min(blockIndex - 1, UltimateDisplay.config.maxGroupSize)
 	local windowHeight = 30 + visibleBlocks * (UltimateDisplay.config.playerBlockHeight + 2)
 	UltimateDisplay.controls.window:SetHeight(math.max(windowHeight, 50))
 end
@@ -206,13 +189,6 @@ function UltimateDisplay.UpdatePlayerBlock(block, name, data)
 		block.ultimateBar:SetColor(0.36, 0.54, 0.84)
 		block.percentLabel:SetColor(1, 1, 1)
 	end
-	
-	-- Update resource bars (if available)
-	-- For now, just set them to 100% since we don't track these yet
-	block.magickaBar:SetValue(100)
-	block.magickaBar:SetColor(0, 0.07, 0.95)
-	block.staminaBar:SetValue(100)
-	block.staminaBar:SetColor(0.09, 0.57, 0.20)
 end
 
 function UltimateDisplay.SetEnabled(enabled)
