@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Bindings>
+    <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
+        <Category name="Beltalowda">
+            <!-- Add custom keybindings here -->
+            <!-- Example:
+            <Action name="BELTALOWDA_EXAMPLE_ACTION">
+                <Down>Beltalowda:OnExampleAction()</Down>
+            </Action>
+            -->
+        </Category>
+    </Layer>
+</Bindings>
