@@ -5,6 +5,43 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.2.1] - 2025-12-30
+
+### Fixed
+- **UI Visibility and Positioning** - Fixed critical visibility bugs across multiple modules
+  - Rapids Overview, Synergy Prevention now stay visible in cursor mode (persistent trackers)
+  - Debuff Overview (Proxy/Shalks/Detonation timers) properly hides/shows based on PvP settings
+  - Potion Overview visibility corrected for PvP-only toggle
+  - All tracking windows now visible when position is unlocked (for repositioning with mouse)
+  - PvP-only toggle now properly reveals elements when toggled OFF in non-PvP zones
+- **Visibility Logic Standardization** - Established consistent patterns for UI visibility across modules:
+  - Always show if `positionLocked == false` (enables cursor-mode repositioning)
+  - Properly evaluate PvP restrictions even when toggled off
+  - Combat-contextual displays (Debuff/Potion Overview) hide in menus when locked
+
+## [0.2.0] - 2025-12-30
+
+### Added
+- **"New Hotness" Feature Section** - Dedicated menu area for actively developed/featured content
+  - New Hotness header with prominent orange color formatting
+  - Organized location for cutting-edge addon features
+  - Placeholder submenus for future positioning assistance features
+
+### Changed
+- **Settings Menu Reorganization** - Major restructuring for improved feature discovery
+  - Moved Ultimate Tracker (both Unified View and Swimlanes View) from Group to New Hotness
+  - Moved Synergy Overview from Toolbox to New Hotness
+  - Moved Synergy Prevention from Toolbox to New Hotness
+  - Moved Rapid Overview from Group to New Hotness (end position)
+  - Added descriptive text to Ultimate Tracker submenus explaining view differences
+  - Added descriptive text to Synergy Overview explaining real-time tracking functionality
+  - Added descriptive text to Synergy Prevention explaining role-based synergy blocking
+  - Added roadmap documentation to Positioning Assistance placeholder (Follow the Crown, Compass, Speeder)
+
+### Removed
+- Feedback and donation buttons from settings menu (UI cleanup)
+- Synergy Tracking placeholder submenu (redundant after consolidating features)
+
 ## [0.1.1] - 2025-12-30
 
 ### Added

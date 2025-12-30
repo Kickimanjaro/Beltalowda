@@ -670,11 +670,14 @@ function BeltalowdaSO.SetPositionLocked(value)
 	BeltalowdaSO.controls.TLW:SetMovable(not value)
 	BeltalowdaSO.controls.TLW:SetMouseEnabled(not value)
 	if value == true then
+		BeltalowdaSO.SetTlwLocation()
 		BeltalowdaSO.controls.TLW.fullTableControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
 		BeltalowdaSO.controls.TLW.fullTableControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 		BeltalowdaSO.controls.TLW.reducedTableControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
 		BeltalowdaSO.controls.TLW.reducedTableControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	else
+		BeltalowdaSO.controls.TLW:ClearAnchors()
+		BeltalowdaSO.controls.TLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, BeltalowdaSO.controls.TLW:GetLeft(), BeltalowdaSO.controls.TLW:GetTop())
 		BeltalowdaSO.controls.TLW.fullTableControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
 		BeltalowdaSO.controls.TLW.fullTableControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 		BeltalowdaSO.controls.TLW.reducedTableControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
@@ -688,15 +691,7 @@ function BeltalowdaSO.SetControlVisibility()
 	if enabled ~= nil and enabled == true and (BeltalowdaSO.soVars.pvpOnly == false or (BeltalowdaSO.soVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 		setHidden = false
 	end
-	if setHidden == false then
-		if BeltalowdaSO.state.foreground == false then
-			BeltalowdaSO.controls.TLW:SetHidden(BeltalowdaSO.state.activeLayerIndex > 2)
-		else
-			BeltalowdaSO.controls.TLW:SetHidden(false)
-		end
-	else
-		BeltalowdaSO.controls.TLW:SetHidden(setHidden)
-	end
+	BeltalowdaSO.controls.TLW:SetHidden(setHidden)
 	if BeltalowdaSO.soVars.tableMode == BeltalowdaSO.constants.MODES.TABLE_FULL then
 		BeltalowdaSO.controls.TLW.fullTableControl:SetHidden(false)
 		BeltalowdaSO.controls.TLW.reducedTableControl:SetHidden(true)
@@ -1311,18 +1306,23 @@ function BeltalowdaSO.GetMenu()
 			name = BeltalowdaMenu.constants.SO_HEADER,
 			controls = {
 				[1] = {
+					type = "description",
+					text = "Tracks and displays available synergies from your group members in real-time. Shows which synergies are currently active and ready to be triggered (like Orbs, Shards, Blood Altar, etc.). Helps you quickly identify synergy opportunities during combat, especially useful for players in synergy-focused roles who need to maintain high resource generation or healing through synergy activation.",
+					width = "full",
+				},
+				[2] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.SO_ENABLED,
 					getFunc = BeltalowdaSO.GetSoEnabled,
 					setFunc = BeltalowdaSO.SetSoEnabled
 				},
-				[2] = {
+				[3] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.SO_WINDOW_ENABLED,
 					getFunc = BeltalowdaSO.GetSoWindowEnabled,
 					setFunc = BeltalowdaSO.SetSoWindowEnabled
 				},
-				[3] = {
+				[4] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.SO_PVP_ONLY,
 					getFunc = BeltalowdaSO.GetSoPvpOnly,

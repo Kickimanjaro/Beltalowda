@@ -69,7 +69,7 @@ BeltalowdaOverview.networkingCallbackName = Beltalowda.addonName .. "ResourceOve
 BeltalowdaOverview.messageCallbackName = Beltalowda.addonName .. "ResourceOverviewMessageUpdate"
 
 BeltalowdaOverview.config = {}
-BeltalowdaOverview.config.networkUpdateInterval = 2000
+BeltalowdaOverview.config.networkUpdateInterval = 500
 BeltalowdaOverview.config.messageUpdateInterval = 1000 -- 100
 BeltalowdaOverview.config.uiUpdateInterval = 100
 BeltalowdaOverview.config.groupsUiUpdateInterval = 100
@@ -2718,13 +2718,18 @@ function BeltalowdaOverview.GetMenu()
 			name = BeltalowdaMenu.constants.RO_HEADER_ULTIMATES,
 			controls = {
 				[1] = {
+					type = "description",
+					text = "Displays all group members' ultimate abilities in a single, combined view. Shows each player's ultimate percentage, readiness status, and resource levels (stamina/magicka). Perfect for raid leaders who want a quick overview of the entire group's ultimate availability at a glance. The compact display makes it easy to coordinate ultimate usage during combat.",
+					width = "full",
+				},
+				[2] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_ENABLED,
 					getFunc = BeltalowdaOverview.GetRoEnabled,
 					setFunc = BeltalowdaOverview.SetRoEnabled,
 					warning = BeltalowdaMenu.constants.RO_SHARED_SETTING
 				},
-				[2] = {
+				[3] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_POSITION_FIXED,
 					getFunc = BeltalowdaOverview.GetRoPositionLocked,
@@ -3054,13 +3059,18 @@ function BeltalowdaOverview.GetMenu()
 			name = BeltalowdaMenu.constants.RO_HEADER_GROUPS,
 			controls = {
 				[1] = {
+					type = "description",
+					text = "Organizes ultimate abilities into separate lanes by type (Destruction Staff, Storm, Negate, Nova, etc.). Each lane shows how many group members have that specific ultimate ready. Ideal for coordinating specific ultimate types during trials or organized PvP - you can instantly see how many Negates or Novas your group has available without scanning through individual players.",
+					width = "full",
+				},
+				[2] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_ENABLED,
 					getFunc = BeltalowdaOverview.GetRoEnabled,
 					setFunc = BeltalowdaOverview.SetRoEnabled,
 					warning = BeltalowdaMenu.constants.RO_SHARED_SETTING
 				},
-				[2] = {
+				[3] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_POSITION_FIXED,
 					getFunc = BeltalowdaOverview.GetRoPositionLocked,

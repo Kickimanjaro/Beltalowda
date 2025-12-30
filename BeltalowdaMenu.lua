@@ -119,34 +119,43 @@ function BeltalowdaMenu.CreateOptionsData()
 			func = BeltalowdaMenu.UnsetPositionFixed,
 			width = "full"
 		},
-		[4] = {
-			type = "divider",
-			width = "full"
+	}
+	BeltalowdaMenu.AddMenuEntries(menu, tempMenu)
+	--new hotness
+	tempMenu = {
+		[1] = {
+			type = "header",
+			name = BeltalowdaMenu.constants.NEW_HOTNESS_HEADER,
+			width = "full",
+		}
+	}
+	BeltalowdaMenu.AddMenuEntries(menu, tempMenu)
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ro.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaToolbox.so.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaToolbox.sp.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.rt.GetMenu())
+	--placeholder submenus for future features
+	tempMenu = {
+		[1] = {
+			type = "submenu",
+			name = BeltalowdaMenu.constants.OFFENSIVE_TIMERS_HEADER,
+			controls = {
+				[1] = {
+					type = "description",
+					text = "Coming soon...",
+				}
+			}
 		},
-		[5] = {
-			type = "button",
-			name = BeltalowdaMenu.constants.FEEDBACK,
-			func = BeltalowdaMenu.Feedback,
-			width = "full"
-		},
-		[6] = {
-			type = "button",
-			name = BeltalowdaMenu.constants.DONATE,
-			func = BeltalowdaMenu.DonateFreeAmount,
-			width = "full"
-		},
-		[7] = {
-			type = "button",
-			name = BeltalowdaMenu.constants.DONATE_5K,
-			func = BeltalowdaMenu.Donate5k,
-			width = "full"
-		},
-		[8] = {
-			type = "button",
-			name = BeltalowdaMenu.constants.DONATE_50K,
-			func = BeltalowdaMenu.Donate50k,
-			width = "full"
-		},
+		[2] = {
+			type = "submenu",
+			name = BeltalowdaMenu.constants.POSITIONING_ASSISTANCE_HEADER,
+			controls = {
+				[1] = {
+					type = "description",
+					text = "Coming soon...\n\nPlanned features:\n\n• Follow the Crown - Options to highlight the group leader to make following them easier (different icons, beams, or other visual indicators)\n\n• Compass - Additional compass UI element with options to add arrows pointing to crown or other group members\n\n• Speeder - Display group Expedition (Major and Minor) buff cooldown status on group members, with options to highlight the speeder role similarly to crown highlighting",
+				}
+			}
+		}
 	}
 	BeltalowdaMenu.AddMenuEntries(menu, tempMenu)
 	--group

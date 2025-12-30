@@ -267,22 +267,18 @@ end
 function BeltalowdaRt.SetControlVisibility()
 	local enabled = BeltalowdaRt.rtVars.enabled
 	local pvpOnly = BeltalowdaRt.rtVars.pvponly
+	local positionLocked = BeltalowdaRt.rtVars.positionLocked
 	local setHidden = true
-	if enabled ~= nil and pvpOnly ~= nil then
-
+	
+	-- Always show if position is unlocked (moving elements)
+	if positionLocked == false then
+		setHidden = false
+	elseif enabled ~= nil and pvpOnly ~= nil then
 		if enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 			setHidden = false
 		end
 	end
-	if setHidden == false then
-		if BeltalowdaRt.state.foreground == false then
-			BeltalowdaRt.controls.TLW:SetHidden(BeltalowdaRt.state.activeLayerIndex > 2)
-		else
-			BeltalowdaRt.controls.TLW:SetHidden(false)
-		end
-	else
-		BeltalowdaRt.controls.TLW:SetHidden(setHidden)
-	end
+	BeltalowdaRt.controls.TLW:SetHidden(setHidden)
 end
 
 --callbacks

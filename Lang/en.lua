@@ -74,6 +74,12 @@ BeltalowdaMenu.constants.DONATE_50K = "Donate 50'000 gold"
 BeltalowdaMenu.constants.DONATE_SERVER_ERROR = "Thank you for trying to donate something. Unfortunately, we are playing on different servers."
 BeltalowdaMenu.constants.DONATE_MAIL_SUBJECT = "Beltalowda Donation"
 
+--New Hotness
+BeltalowdaMenu.constants.NEW_HOTNESS_HEADER = "|cFF8174New Hotness|r"
+BeltalowdaMenu.constants.SYNERGY_TRACKING_HEADER = "|c4592FFSynergy Tracking|r"
+BeltalowdaMenu.constants.OFFENSIVE_TIMERS_HEADER = "|c4592FFOffensive Timers|r"
+BeltalowdaMenu.constants.POSITIONING_ASSISTANCE_HEADER = "|c4592FFPositioning Assistance|r"
+
 --Group
 BeltalowdaMenu.constants.GROUP_HEADER = "|cFF8174Group Settings|r"
 
@@ -187,8 +193,8 @@ BeltalowdaMenu.constants.RT_COLOR_LABEL_OUT_OF_RANGE = "Color Name AFK"
 BeltalowdaMenu.constants.RT_COLOR_RAPID_ON = "Color Rapid Active"
 BeltalowdaMenu.constants.RT_COLOR_RAPID_OFF = "Color Rapid Inactive"
 
---Resource Overview
-BeltalowdaMenu.constants.RO_HEADER_ULTIMATES = "|c4592FFResource Overview (Combined)|r"
+--Ultimate Tracker
+BeltalowdaMenu.constants.RO_HEADER_ULTIMATES = "|c4592FFUltimate Tracker - Unified View|r"
 BeltalowdaMenu.constants.RO_ENABLED = "Enabled"
 BeltalowdaMenu.constants.RO_PVP_ONLY = "PvP Only"
 BeltalowdaMenu.constants.RO_POSITION_FIXED = "Position Fixed"
@@ -227,7 +233,7 @@ BeltalowdaMenu.constants.RO_ULTIMATE_DISPLAY_MODE = "Display Mode"
 BeltalowdaMenu.constants.RO_MAX_DISTANCE = "Max Distance"
 BeltalowdaMenu.constants.RO_SOUND_ENABLED = "Sound Enabled"
 BeltalowdaMenu.constants.RO_SELECTED_SOUND = "Selected Sound"
-BeltalowdaMenu.constants.RO_HEADER_GROUPS = "|c4592FFResource Overview (Split)|r"
+BeltalowdaMenu.constants.RO_HEADER_GROUPS = "|c4592FFUltimate Tracker - Swimlanes View|r"
 BeltalowdaMenu.constants.RO_GROUPS_ENABLED = "Groups Enabled"
 BeltalowdaMenu.constants.RO_GROUPS_MODE = "Mode"
 BeltalowdaMenu.constants.RO_GROUPS_1_NAME = "Group 1 Name"

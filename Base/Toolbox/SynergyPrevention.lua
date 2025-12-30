@@ -303,20 +303,17 @@ end
 
 function BeltalowdaSP.SetControlVisibility()
 	local enabled = BeltalowdaSP.spVars.windowEnabled
+	local pvpOnly = BeltalowdaSP.spVars.pvpOnly
+	local positionLocked = BeltalowdaSP.spVars.positionLocked
 	local setHidden = true
-	if enabled ~= nil and enabled == true and (BeltalowdaSP.spVars.pvpOnly == false or (BeltalowdaSP.spVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
+	
+	-- Always show if position is unlocked (moving elements)
+	if positionLocked == false then
+		setHidden = false
+	elseif enabled ~= nil and enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 		setHidden = false
 	end
-	if setHidden == false then
-		if BeltalowdaSP.state.foreground == false then
-			BeltalowdaSP.controls.TLW:SetHidden(BeltalowdaSP.state.activeLayerIndex > 2)
-		else
-			BeltalowdaSP.controls.TLW:SetHidden(false)
-		end
-	else
-		BeltalowdaSP.controls.TLW:SetHidden(setHidden)
-	end
-	--d(setHidden)
+	BeltalowdaSP.controls.TLW:SetHidden(setHidden)
 end
 
 
@@ -563,12 +560,17 @@ function BeltalowdaSP.GetMenu()
 			name = BeltalowdaMenu.constants.SP_HEADER,
 			controls = {
 				[1] = {
+					type = "description",
+					text = "Prevents you from accidentally activating specific synergies that should be reserved for other group members. Essential for organized group play where certain roles are designated to activate specific synergies (e.g., DPS taking Orbs and Shards while healers avoid them). Configure which synergies to block so you don't interfere with your group's synergy strategy.",
+					width = "full",
+				},
+				[2] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.SP_ENABLED,
 					getFunc = BeltalowdaSP.GetSpEnabled,
 					setFunc = BeltalowdaSP.SetSpEnabled
 				},
-				[2] = {
+				[3] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.SP_WINDOW_ENABLED,
 					getFunc = BeltalowdaSP.GetSpWindowEnabled,

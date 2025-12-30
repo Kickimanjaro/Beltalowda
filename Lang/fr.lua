@@ -74,6 +74,12 @@ BeltalowdaMenu.constants.DONATE_50K = "Donner 50000 gold"
 BeltalowdaMenu.constants.DONATE_SERVER_ERROR = "Merci d'essayer de me transmettre un don. Malheureusement, nous ne jouons pas sur le même serveur, ce qui rend la chose impossible."
 BeltalowdaMenu.constants.DONATE_MAIL_SUBJECT = "Beltalowda - Don"
 
+--New Hotness
+BeltalowdaMenu.constants.NEW_HOTNESS_HEADER = "|cFF8174New Hotness|r"
+BeltalowdaMenu.constants.SYNERGY_TRACKING_HEADER = "|c4592FFSynergy Tracking|r"
+BeltalowdaMenu.constants.OFFENSIVE_TIMERS_HEADER = "|c4592FFOffensive Timers|r"
+BeltalowdaMenu.constants.POSITIONING_ASSISTANCE_HEADER = "|c4592FFPositioning Assistance|r"
+
 --Group
 BeltalowdaMenu.constants.GROUP_HEADER = "|cFF8174Réglages de groupe|r"
 
@@ -187,8 +193,8 @@ BeltalowdaMenu.constants.RT_COLOR_LABEL_OUT_OF_RANGE = "Couleur du nom absent"
 BeltalowdaMenu.constants.RT_COLOR_RAPID_ON = "Couleur manoeuvre rapide activée"
 BeltalowdaMenu.constants.RT_COLOR_RAPID_OFF = "Couleur manoeuvre rapide inactive"
 
---Resource Overview
-BeltalowdaMenu.constants.RO_HEADER_ULTIMATES = "|c4592FFAperçu des ressources (Combinées)|r" 
+--Ultimate Tracker
+BeltalowdaMenu.constants.RO_HEADER_ULTIMATES = "|c4592FFUltimate Tracker - Vue Unifiée|r" 
 BeltalowdaMenu.constants.RO_ENABLED = "Activé"
 BeltalowdaMenu.constants.RO_PVP_ONLY = "Uniquement en PvP"
 BeltalowdaMenu.constants.RO_POSITION_FIXED = "Position fixe"
@@ -227,7 +233,7 @@ BeltalowdaMenu.constants.RO_ULTIMATE_DISPLAY_MODE = "Mode d'affichage"
 BeltalowdaMenu.constants.RO_MAX_DISTANCE = "Distance maximale"
 BeltalowdaMenu.constants.RO_SOUND_ENABLED = "Son activé"
 BeltalowdaMenu.constants.RO_SELECTED_SOUND = "Sélection du son"
-BeltalowdaMenu.constants.RO_HEADER_GROUPS = "|c4592FFAperçu des ressources (Séparées)|r"
+BeltalowdaMenu.constants.RO_HEADER_GROUPS = "|c4592FFUltimate Tracker - Vue Swimlanes|r"
 BeltalowdaMenu.constants.RO_GROUPS_ENABLED = "Groupes activés" 
 BeltalowdaMenu.constants.RO_GROUPS_MODE = "Mode" 
 BeltalowdaMenu.constants.RO_GROUPS_1_NAME = "Groupe 1 Nom"

@@ -53,8 +53,6 @@ function BeltalowdaTB.GetMenu()
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaTB.respawner.GetMenu())
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaTB.camp.GetMenu())
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaTB.ra.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaTB.sp.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaTB.so.GetMenu())
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaTB.caj.GetMenu())
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaTB.am.GetMenu())
 	return menu
