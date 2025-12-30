@@ -58,9 +58,12 @@ function Beltalowda:OnPlayerActivated()
     d(GetString(SI_BELTALOWDA_PLAYER_ACTIVATED))
 end
 
--- Slash command to display ultimate tracking status
+-- Debug/Development Commands
+-- These commands provide text-based output for debugging and development purposes
+-- The main UI is accessed through the GUI windows (toggle with /bultui)
+
 SLASH_COMMANDS["/bultimate"] = function(args)
-    -- Get local player ultimate
+    -- Debug command: Display ultimate tracking status in chat
     local playerName = GetUnitName("player")
     local playerPower = GetUnitPower("player", POWERTYPE_ULTIMATE)
     local playerPowerMax = GetUnitPowerMax("player", POWERTYPE_ULTIMATE)
@@ -69,7 +72,7 @@ SLASH_COMMANDS["/bultimate"] = function(args)
         playerPercent = math.floor((playerPower / playerPowerMax) * 100)
     end
     
-    d(string.format("|c00FF00Beltalowda Ultimate Tracking|r"))
+    d(string.format("|c00FF00Beltalowda Ultimate Tracking (Debug)|r"))
     d(string.format("Your Ultimate: %d%% (%d/%d)", playerPercent, playerPower, playerPowerMax))
     
     -- Display group members if in a group
@@ -89,7 +92,7 @@ SLASH_COMMANDS["/bultimate"] = function(args)
 end
 
 SLASH_COMMANDS["/bultimateinfo"] = function(args)
-    -- Display information about tracked ultimates
+    -- Debug command: Display information about tracked ultimates
     local ultimates = Beltalowda.util.ultimates.ultimates
     if ultimates then
         d(string.format("|c00FF00Beltalowda - Tracked Ultimates (%d total)|r", #ultimates))
@@ -106,7 +109,7 @@ SLASH_COMMANDS["/bultimateinfo"] = function(args)
 end
 
 SLASH_COMMANDS["/bbroadcast"] = function(args)
-    -- Toggle ultimate broadcasting
+    -- Debug command: Toggle ultimate broadcasting
     if args == "on" then
         if Beltalowda.util and Beltalowda.util.networking then
             Beltalowda.util.networking.EnableBroadcasting()
@@ -116,7 +119,7 @@ SLASH_COMMANDS["/bbroadcast"] = function(args)
             Beltalowda.util.networking.DisableBroadcasting()
         end
     else
-        d("|c00FF00Beltalowda Broadcasting|r")
+        d("|c00FF00Beltalowda Broadcasting (Debug)|r")
         d("Usage: /bbroadcast <on|off>")
         d("  on  - Enable ultimate broadcasting to group")
         d("  off - Disable ultimate broadcasting")

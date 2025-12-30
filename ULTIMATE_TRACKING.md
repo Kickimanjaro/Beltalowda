@@ -54,16 +54,9 @@ Toggle with: `/bultui blocks`
 
 ### Slash Commands
 
-Once in-game, you can use these commands to test ultimate tracking:
+The primary interface is the GUI windows. The following slash commands are available:
 
-- **`/bultimate`** - Display your ultimate and all group members' ultimate percentages (text)
-  - Shows your current ultimate percentage and power
-  - Lists all group members with their ultimate percentages
-  - Indicates when ultimates are ready with [READY] marker
-
-- **`/bultimateinfo`** - View information about tracked ultimates
-  - Lists the first 10 tracked ultimate abilities
-  - Shows ultimate name and cost for each
+**GUI Control Commands:**
 
 - **`/bultui`** - Toggle all Ultimate Display windows on/off
   
@@ -75,7 +68,20 @@ Once in-game, you can use these commands to test ultimate tracking:
   
 - **`/bultui overview`** - Toggle Ultimate Overview window (compact counts)
 
-- **`/bbroadcast <on|off>`** - Toggle ultimate broadcasting
+**Debug/Development Commands:**
+
+These commands provide text-based output in chat for debugging and development purposes:
+
+- **`/bultimate`** - Display ultimate tracking status in chat (debug)
+  - Shows your current ultimate percentage and power
+  - Lists all group members with their ultimate percentages
+  - Indicates when ultimates are ready with [READY] marker
+
+- **`/bultimateinfo`** - View information about tracked ultimates (debug)
+  - Lists the first 10 tracked ultimate abilities
+  - Shows ultimate name and cost for each
+
+- **`/bbroadcast <on|off>`** - Toggle ultimate broadcasting (debug)
   - `on` - Enable broadcasting your ultimate to group members (enabled by default)
   - `off` - Disable broadcasting
 

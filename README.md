@@ -11,12 +11,12 @@ Beltalowda is a group PvP addon for Elder Scrolls Online designed to enhance gro
 - Real-time tracking of ultimate abilities for all group members
 - Network broadcasting of ultimate percentages via party chat
 - 41 tracked ultimates covering all classes, weapons, guilds, and world skill lines
-- In-game testing commands for verification
 - **Comprehensive RdK-style GUI Display** - Multiple windows for different tracking needs:
   - **Client Ultimate**: Your own ultimate icon with color-coding
   - **Group Ultimates**: Row of 12 trackable ultimate icons with counts
   - **Ultimate Overview**: Compact window showing key ultimate counts
   - **Player Blocks**: Main display with color-coded bars for all group members
+- Debug commands available for development and testing
 
 ### GUI Display
 

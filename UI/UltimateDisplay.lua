@@ -1,6 +1,7 @@
 -- Beltalowda Ultimate Display
 -- GUI for displaying group member ultimates (comprehensive RdK-style features)
--- Author: @Kickimanjaro
+-- Ported from RdK Group Tool Resource Overview by @s0rdrak (PC / EU)
+-- Adapted for Beltalowda by @Kickimanjaro
 
 Beltalowda = Beltalowda or {}
 Beltalowda.UI = Beltalowda.UI or {}
