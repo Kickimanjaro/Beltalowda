@@ -546,7 +546,7 @@ BeltalowdaMenu.constants.SP_SYNERGY_RUNEBREAK = "Prevent Runebreak"
 BeltalowdaMenu.constants.SP_SYNERGY_PASSAGE = "Prevent Passage"
 
 --Synergy Overview
-BeltalowdaMenu.constants.SO_HEADER = "|c4592FFSynergy Overview|r"
+BeltalowdaMenu.constants.SO_HEADER = "|c4592FFSynergy Tracking|r"
 BeltalowdaMenu.constants.SO_ENABLED = "Enabled"
 BeltalowdaMenu.constants.SO_WINDOW_ENABLED = "Window Enabled"
 BeltalowdaMenu.constants.SO_PVP_ONLY = "PvP Only"

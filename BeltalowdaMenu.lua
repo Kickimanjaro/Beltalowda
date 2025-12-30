@@ -132,7 +132,6 @@ function BeltalowdaMenu.CreateOptionsData()
 	BeltalowdaMenu.AddMenuEntries(menu, tempMenu)
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ro.GetMenu())
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaToolbox.so.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaToolbox.sp.GetMenu())
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.rt.GetMenu())
 	--placeholder submenus for future features
 	tempMenu = {
