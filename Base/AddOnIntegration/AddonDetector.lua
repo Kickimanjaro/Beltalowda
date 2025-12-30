@@ -291,6 +291,14 @@ function BeltalowdaDetector.GetMenu()
 	local bombTimerText = #bombTimerDetected > 0 and table.concat(bombTimerDetected, ", ") or "None"
 	local beamText = #beamDetected > 0 and table.concat(beamDetected, ", ") or "None"
 	
+	-- Create array of mode choices for dropdowns
+	local modeChoices = {
+		BeltalowdaDetector.constants.MODES[BeltalowdaDetector.constants.MODE_PREFER_EXTERNAL],
+		BeltalowdaDetector.constants.MODES[BeltalowdaDetector.constants.MODE_PREFER_INTERNAL],
+		BeltalowdaDetector.constants.MODES[BeltalowdaDetector.constants.MODE_DISABLE_IF_EXTERNAL],
+		BeltalowdaDetector.constants.MODES[BeltalowdaDetector.constants.MODE_ALWAYS_USE_INTERNAL]
+	}
+	
 	local menu = {
 		[1] = {
 			type = "submenu",
@@ -305,8 +313,14 @@ function BeltalowdaDetector.GetMenu()
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.ADDON_DETECTOR_NOTIFY or "Notify on Detection",
 					tooltip = "Display a message when external addons are detected",
-					getFunc = function() return BeltalowdaDetector.detectorVars.notifyOnDetection end,
-					setFunc = function(value) BeltalowdaDetector.detectorVars.notifyOnDetection = value end,
+					getFunc = function() 
+						return BeltalowdaDetector.detectorVars and BeltalowdaDetector.detectorVars.notifyOnDetection or false
+					end,
+					setFunc = function(value) 
+						if BeltalowdaDetector.detectorVars then
+							BeltalowdaDetector.detectorVars.notifyOnDetection = value
+						end
+					end,
 					width = "full"
 				},
 				[3] = {
@@ -322,13 +336,20 @@ function BeltalowdaDetector.GetMenu()
 					type = "dropdown",
 					name = BeltalowdaMenu.constants.ADDON_DETECTOR_CROWN_MODE or "Crown Feature Mode",
 					tooltip = "Choose how to handle crown features when external crown addons are detected",
-					choices = BeltalowdaDetector.constants.MODES,
-					getFunc = function() return BeltalowdaDetector.constants.MODES[BeltalowdaDetector.detectorVars.crownMode] end,
+					choices = modeChoices,
+					getFunc = function()
+						if BeltalowdaDetector.detectorVars and BeltalowdaDetector.detectorVars.crownMode then
+							return BeltalowdaDetector.constants.MODES[BeltalowdaDetector.detectorVars.crownMode]
+						end
+						return modeChoices[1]
+					end,
 					setFunc = function(value)
-						for mode, text in pairs(BeltalowdaDetector.constants.MODES) do
-							if text == value then
-								BeltalowdaDetector.detectorVars.crownMode = mode
-								break
+						if BeltalowdaDetector.detectorVars then
+							for mode, text in pairs(BeltalowdaDetector.constants.MODES) do
+								if text == value then
+									BeltalowdaDetector.detectorVars.crownMode = mode
+									break
+								end
 							end
 						end
 					end,
@@ -347,13 +368,20 @@ function BeltalowdaDetector.GetMenu()
 					type = "dropdown",
 					name = BeltalowdaMenu.constants.ADDON_DETECTOR_COMPASS_MODE or "Compass Feature Mode",
 					tooltip = "Choose how to handle compass features when external compass addons are detected",
-					choices = BeltalowdaDetector.constants.MODES,
-					getFunc = function() return BeltalowdaDetector.constants.MODES[BeltalowdaDetector.detectorVars.compassMode] end,
+					choices = modeChoices,
+					getFunc = function()
+						if BeltalowdaDetector.detectorVars and BeltalowdaDetector.detectorVars.compassMode then
+							return BeltalowdaDetector.constants.MODES[BeltalowdaDetector.detectorVars.compassMode]
+						end
+						return modeChoices[1]
+					end,
 					setFunc = function(value)
-						for mode, text in pairs(BeltalowdaDetector.constants.MODES) do
-							if text == value then
-								BeltalowdaDetector.detectorVars.compassMode = mode
-								break
+						if BeltalowdaDetector.detectorVars then
+							for mode, text in pairs(BeltalowdaDetector.constants.MODES) do
+								if text == value then
+									BeltalowdaDetector.detectorVars.compassMode = mode
+									break
+								end
 							end
 						end
 					end,
@@ -372,13 +400,20 @@ function BeltalowdaDetector.GetMenu()
 					type = "dropdown",
 					name = BeltalowdaMenu.constants.ADDON_DETECTOR_BOMB_TIMER_MODE or "Bomb Timer Mode",
 					tooltip = "Choose how to handle detonation/bomb timer features when external addons are detected",
-					choices = BeltalowdaDetector.constants.MODES,
-					getFunc = function() return BeltalowdaDetector.constants.MODES[BeltalowdaDetector.detectorVars.bombTimerMode] end,
+					choices = modeChoices,
+					getFunc = function()
+						if BeltalowdaDetector.detectorVars and BeltalowdaDetector.detectorVars.bombTimerMode then
+							return BeltalowdaDetector.constants.MODES[BeltalowdaDetector.detectorVars.bombTimerMode]
+						end
+						return modeChoices[1]
+					end,
 					setFunc = function(value)
-						for mode, text in pairs(BeltalowdaDetector.constants.MODES) do
-							if text == value then
-								BeltalowdaDetector.detectorVars.bombTimerMode = mode
-								break
+						if BeltalowdaDetector.detectorVars then
+							for mode, text in pairs(BeltalowdaDetector.constants.MODES) do
+								if text == value then
+									BeltalowdaDetector.detectorVars.bombTimerMode = mode
+									break
+								end
 							end
 						end
 					end,
@@ -397,13 +432,20 @@ function BeltalowdaDetector.GetMenu()
 					type = "dropdown",
 					name = BeltalowdaMenu.constants.ADDON_DETECTOR_BEAM_MODE or "Beam Feature Mode",
 					tooltip = "Choose how to handle beam features when external beam addons are detected",
-					choices = BeltalowdaDetector.constants.MODES,
-					getFunc = function() return BeltalowdaDetector.constants.MODES[BeltalowdaDetector.detectorVars.beamMode] end,
+					choices = modeChoices,
+					getFunc = function()
+						if BeltalowdaDetector.detectorVars and BeltalowdaDetector.detectorVars.beamMode then
+							return BeltalowdaDetector.constants.MODES[BeltalowdaDetector.detectorVars.beamMode]
+						end
+						return modeChoices[1]
+					end,
 					setFunc = function(value)
-						for mode, text in pairs(BeltalowdaDetector.constants.MODES) do
-							if text == value then
-								BeltalowdaDetector.detectorVars.beamMode = mode
-								break
+						if BeltalowdaDetector.detectorVars then
+							for mode, text in pairs(BeltalowdaDetector.constants.MODES) do
+								if text == value then
+									BeltalowdaDetector.detectorVars.beamMode = mode
+									break
+								end
 							end
 						end
 					end,
