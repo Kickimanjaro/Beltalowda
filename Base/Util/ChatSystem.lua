@@ -13,8 +13,8 @@ local BeltalowdaMenu = Beltalowda.menu
 BeltalowdaChat.callbackName = Beltalowda.addonName .. "ChatSystem"
 
 BeltalowdaChat.constants = {}
-BeltalowdaChat.constants.BELTALOWDA_PREFIX_WITHOUT_MODULE = "|c%s[RdK]: %s"
-BeltalowdaChat.constants.BELTALOWDA_PREFIX_WITH_MODULE = "|c%s[RdK %s]: %s"
+BeltalowdaChat.constants.BELTALOWDA_PREFIX_WITHOUT_MODULE = "|c%s[Beltalowda]: %s"
+BeltalowdaChat.constants.BELTALOWDA_PREFIX_WITH_MODULE = "|c%s[Beltalowda %s]: %s"
 BeltalowdaChat.constants.PREFIX_WITH_MODULE = "|c%s[%s]: %s"
 BeltalowdaChat.constants.messageTypes = {}
 BeltalowdaChat.constants.messageTypes.MESSAGE_NORMAL = 1
