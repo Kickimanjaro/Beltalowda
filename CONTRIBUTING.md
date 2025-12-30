@@ -91,6 +91,16 @@ The addon can be uploaded to ESOUI.com for distribution. The manifest file forma
 
 The Minion app automatically detects and installs addons from ESOUI.com. No special configuration is needed for Minion compatibility.
 
+### Console Support
+
+ESO addons are now supported on PlayStation 5 and Xbox Series X|S as of Update 46 (June 2025). Console players can browse and install addons through the in-game Add-Ons menu (Options > Add-Ons > Browse Add-Ons). 
+
+**Console Distribution:**
+- Console addons must be uploaded to Bethesda.net (mods.bethesda.net) in addition to ESOUI.com
+- Only UI-focused addons are supported on console (no gameplay mechanic changes)
+- Console addons have a 100MB storage limit
+- This addon is designed to be compatible with console requirements
+
 ## Code Style
 
 - Use 4 spaces for indentation
@@ -108,4 +118,4 @@ The Minion app automatically detects and installs addons from ESOUI.com. No spec
 
 ## License
 
-See [LICENSE](LICENSE) file for details. All rights reserved.
+See [LICENSE](LICENSE) file for details. This project uses the MIT License.
