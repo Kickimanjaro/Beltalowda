@@ -59,6 +59,7 @@ Base/Group/PotionOverview.lua
 Base/Group/DetonationTracker.lua
 Base/Group/GroupBeams.lua
 Base/Group/ISeeDeadPeople.lua
+Base/Group/MonsterSetTracker.lua
 Base/Compass/Compass.lua
 Base/Compass/YetAnotherCompass.lua
 Base/Compass/SimpleCompass.lua

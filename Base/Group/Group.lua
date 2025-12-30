@@ -25,6 +25,7 @@ function BeltalowdaGroup.Initialize()
 	BeltalowdaGroup.dt.Initialize()
 	BeltalowdaGroup.gb.Initialize()
 	BeltalowdaGroup.isdp.Initialize()
+	BeltalowdaGroup.mst.Initialize()
 end
 
 function BeltalowdaGroup.SlashCmd(param)
@@ -54,6 +55,7 @@ function BeltalowdaGroup.GetDefaults()
 	defaults.dt = BeltalowdaGroup.dt.GetDefaults()
 	defaults.gb = BeltalowdaGroup.gb.GetDefaults()
 	defaults.isdp = BeltalowdaGroup.isdp.GetDefaults()
+	defaults.mst = BeltalowdaGroup.mst.GetDefaults()
 	return defaults
 end
 
@@ -77,5 +79,6 @@ function BeltalowdaGroup.GetMenu()
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.dt.GetMenu())
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.gb.GetMenu())
 	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.isdp.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.mst.GetMenu())
 	return menu
 end
