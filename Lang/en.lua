@@ -749,7 +749,6 @@ BeltalowdaOverview.config.groupsModes[BeltalowdaOverview.constants.groupsModes.M
 BeltalowdaOverview.config.displayModes = BeltalowdaOverview.config.displayModes or {}
 BeltalowdaOverview.config.displayModes[BeltalowdaOverview.constants.displayModes.CLASSIC] = "Classic"
 
-
 --Healing / Damage Meter
 BeltalowdaHdm.constants = BeltalowdaHdm.constants or {}
 BeltalowdaHdm.constants.TITLE_HEALING = "Healing"
