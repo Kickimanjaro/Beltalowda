@@ -161,7 +161,7 @@ function BeltalowdaNetworking.Initialize()
 	-- Set handler metadata with error handling
 	local metadataSuccess = pcall(function()
 		BeltalowdaNetworking.LGB:SetDisplayName("Beltalowda")
-		BeltalowdaNetworking.LGB:SetDescription("Beltalowda - PvP AddOn\r\nPlease use the AddOn configuration (/beltalowda menu) to further configure the AddOn.")
+		BeltalowdaNetworking.LGB:SetDescription("Beltalowda - PvP Group AddOn\r\nPlease use the AddOn configuration (/beltalowda menu) to further configure the AddOn.")
 	end)
 	
 	if not metadataSuccess then
