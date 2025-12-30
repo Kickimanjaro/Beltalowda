@@ -39,6 +39,11 @@ function Beltalowda:Initialize()
         self.util.networking.EnableBroadcasting()
     end
     
+    -- Initialize UI
+    if self.UI and self.UI.UltimateDisplay then
+        self.UI.UltimateDisplay.Initialize()
+    end
+    
     -- Register for events
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_ACTIVATED, function()
         self:OnPlayerActivated()
@@ -115,6 +120,15 @@ SLASH_COMMANDS["/bbroadcast"] = function(args)
         d("Usage: /bbroadcast <on|off>")
         d("  on  - Enable ultimate broadcasting to group")
         d("  off - Disable ultimate broadcasting")
+    end
+end
+
+SLASH_COMMANDS["/bultui"] = function(args)
+    -- Toggle ultimate display UI
+    if Beltalowda.UI and Beltalowda.UI.UltimateDisplay then
+        Beltalowda.UI.UltimateDisplay.ToggleDisplay()
+    else
+        d("|cFF0000Ultimate Display not initialized|r")
     end
 end
 

@@ -33,6 +33,12 @@ Once in-game, you can use these commands to test ultimate tracking:
   - Lists the first 10 tracked ultimate abilities
   - Shows ultimate name and cost for each
 
+- **`/bultui`** - Toggle the Ultimate Display UI window
+  - Shows a visual window with all group members' ultimate bars
+  - Updates in real-time every 100ms
+  - Color-coded: Green (ready), Yellow (80%+), Blue (building)
+  - Movable window - drag to reposition
+
 - **`/bbroadcast <on|off>`** - Toggle ultimate broadcasting
   - `on` - Enable broadcasting your ultimate to group members (enabled by default)
   - `off` - Disable broadcasting
@@ -43,16 +49,27 @@ To test the group ultimate tracking and networking:
 
 1. Form a group with at least one other player who also has Beltalowda installed
 2. Both players should have broadcasting enabled (default)
-3. Use `/bultimate` to see both players' ultimate percentages
-4. Build your ultimate ability and watch the percentages update
-5. When ultimate reaches 100%, it will show [READY] indicator
+3. Type `/bultui` to open the Ultimate Display UI window
+4. The window will show all group members with ultimate bars
+5. Build your ultimate ability and watch the bars update in real-time
+6. When ultimate reaches 100%, the bar turns green
+7. You can drag the window to reposition it on your screen
+
+Alternative text-based display:
+1. Use `/bultimate` to see both players' ultimate percentages in chat
+2. Build your ultimate ability and run the command again to see updates
 
 ### How It Works
 
 1. **Local Tracking**: The addon monitors the `EVENT_POWER_UPDATE` event to track ultimate power changes
 2. **Network Broadcasting**: When your ultimate changes by 5% or more (or reaches 0% or 100%), it broadcasts via party chat
 3. **Network Receiving**: Messages from other group members are received and parsed to update their ultimate status
-4. **Display**: The `/bultimate` command shows real-time ultimate percentages for all group members
+4. **UI Display**: The Ultimate Display window shows color-coded bars for each group member
+   - **Green bar**: Ultimate ready (100%)
+   - **Yellow bar**: Almost ready (80-99%)
+   - **Blue bar**: Building ultimate (0-79%)
+5. **Real-time Updates**: UI refreshes every 100ms for smooth visual feedback
+6. **Text Display**: The `/bultimate` command shows real-time ultimate percentages in chat
 
 ## Technical Details
 
@@ -61,6 +78,7 @@ To test the group ultimate tracking and networking:
 - `Base/Util/Ultimates.lua` - Ultimate ability definitions (41 ultimates total)
 - `Base/Util/Group.lua` - Group member tracking and ultimate monitoring
 - `Base/Util/Networking.lua` - Lightweight party chat-based networking
+- `UI/UltimateDisplay.lua` - Visual GUI display of group member ultimates
 
 ### Ultimate Data Structure
 
