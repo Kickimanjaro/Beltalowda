@@ -54,7 +54,6 @@ function BeltalowdaCrown.Initialize()
 		if #detected > 0 then
 			-- External crown addon detected
 			local names = detector.GetDetectedAddonNames(addonType)
-			local bodyText = BeltalowdaChat.GetBodyColorHex()
 			BeltalowdaChat.SendChatMessage(
 				string.format("Crown addon detected: %s", table.concat(names, ", ")),
 				BeltalowdaCrown.constants.PREFIX,
@@ -66,7 +65,6 @@ function BeltalowdaCrown.Initialize()
 		end
 	else
 		-- Fallback to old detection method if detector not available yet
-		local bodyText= BeltalowdaChat.GetBodyColorHex()
 		if QAddon ~= nil and QAddon.name == "PapaCrown" then
 			BeltalowdaChat.SendChatMessage(BeltalowdaCrown.constants.PAPA_CROWN_DETECTED, BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
 			return

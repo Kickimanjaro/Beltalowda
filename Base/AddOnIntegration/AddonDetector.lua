@@ -2,6 +2,12 @@
 -- By @Kickimanjaro
 -- Detects and manages integration with external addons
 
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.chatSystem = BeltalowdaUtil.chatSystem or {}
+local BeltalowdaChat = BeltalowdaUtil.chatSystem
+
 Beltalowda.addOnIntegration = Beltalowda.addOnIntegration or {}
 Beltalowda.addOnIntegration.detector = Beltalowda.addOnIntegration.detector or {}
 
@@ -13,6 +19,7 @@ BeltalowdaDetector.callbackName = Beltalowda.addonName .. "AddonDetector"
 
 -- Addon type categories
 BeltalowdaDetector.constants = {}
+BeltalowdaDetector.constants.PREFIX = "AddonDetector"
 BeltalowdaDetector.constants.ADDON_TYPE_CROWN = "crown"
 BeltalowdaDetector.constants.ADDON_TYPE_COMPASS = "compass"
 BeltalowdaDetector.constants.ADDON_TYPE_BOMB_TIMER = "bomb_timer"
@@ -255,11 +262,10 @@ function BeltalowdaDetector.NotifyDetectedAddons()
 		end
 	end
 	
-	if hasDetected and Beltalowda.util and Beltalowda.util.chatSystem then
-		local chat = Beltalowda.util.chatSystem
-		chat.SendChatMessage("External addons detected:", "AddonDetector", chat.constants.messageTypes.MESSAGE_NORMAL)
+	if hasDetected then
+		BeltalowdaChat.SendChatMessage("External addons detected:", BeltalowdaDetector.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_NORMAL)
 		for _, msg in ipairs(messages) do
-			chat.SendChatMessage("  - " .. msg, "AddonDetector", chat.constants.messageTypes.MESSAGE_NORMAL)
+			BeltalowdaChat.SendChatMessage("  - " .. msg, BeltalowdaDetector.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_NORMAL)
 		end
 	end
 end
