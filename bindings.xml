@@ -4,8 +4,8 @@
         <Category name="Beltalowda">
             <!-- Add custom keybindings here -->
             <!-- Example:
-            <Action name="BELTALOWDA_TOGGLE_UI">
-                <Down>BeltalowdaToggleUI()</Down>
+            <Action name="BELTALOWDA_EXAMPLE_ACTION">
+                <Down>Beltalowda:OnExampleAction()</Down>
             </Action>
             -->
         </Category>

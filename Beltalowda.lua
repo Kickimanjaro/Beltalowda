@@ -26,13 +26,13 @@ function Beltalowda:Initialize()
         self:OnPlayerActivated()
     end)
     
-    d(string.format("[%s] v%s loaded", self.name, self.version))
+    d(GetString(SI_BELTALOWDA_LOADED))
 end
 
 -- Called when player is activated
 function Beltalowda:OnPlayerActivated()
     -- Player is now fully loaded and can interact with the world
-    d(string.format("[%s] Player activated", self.name))
+    d(GetString(SI_BELTALOWDA_PLAYER_ACTIVATED))
 end
 
 -- Register for addon loaded event

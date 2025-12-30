@@ -5,11 +5,10 @@
 
 local strings = {
     SI_BELTALOWDA_NAME = "Beltalowda",
-    SI_BELTALOWDA_LOADED = "Beltalowda loaded successfully",
-    SI_BELTALOWDA_PLAYER_ACTIVATED = "Player activated",
+    SI_BELTALOWDA_LOADED = "Beltalowda v1.0.0 loaded successfully",
+    SI_BELTALOWDA_PLAYER_ACTIVATED = "Beltalowda: Player activated",
 }
 
 for stringId, stringValue in pairs(strings) do
     ZO_CreateStringId(stringId, stringValue)
-    SafeAddVersion(stringId, 1)
 end
