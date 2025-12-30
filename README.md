@@ -56,6 +56,13 @@ The Ultimate Display provides multiple RdK-style windows for comprehensive ultim
 
 See [ULTIMATE_TRACKING.md](ULTIMATE_TRACKING.md) for detailed documentation and testing instructions.
 
+### Monster Set Tracking (Wishlist)
+- **Status:** Infrastructure only - feature in development
+- Placeholder system for tracking Monster Helm Item Sets worn by group members
+- Designed to work similarly to Ultimate and Synergy tracking
+- Initial focus on 5 PvP-relevant sets: Earthgore, Symphony of Blades, Ozezan, Bloodspawn, Balorgh
+- See [MONSTER_SET_TRACKING.md](MONSTER_SET_TRACKING.md) for feature details and roadmap
+
 ## Development
 
 This addon follows ESOUI.com standards and is compatible with the Minion app distribution platform.
