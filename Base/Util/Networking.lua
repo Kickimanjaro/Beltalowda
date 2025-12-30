@@ -303,11 +303,6 @@ end
 
 function BeltalowdaNetworking.SendMessage(message, priority)
 	if not BeltalowdaNetworking.state.initialized then
-		-- LGB not available, only handle local message
-		if GetGroupSize() == 0 then
-			message.pingTag = "player"
-			BeltalowdaNetworking.HandleRawMessage(message)
-		end
 		return
 	end
 	
@@ -362,11 +357,6 @@ end
 
 function BeltalowdaNetworking.SendAdminMessage(message, priority)
 	if not BeltalowdaNetworking.state.initialized then
-		-- LGB not available, only handle local message
-		if GetGroupSize() == 0 then
-			message.pingTag = "player"
-			BeltalowdaNetworking.HandleRawMessage(message)
-		end
 		return
 	end
 	
@@ -398,11 +388,6 @@ end
 
 function BeltalowdaNetworking.SendVersionMessage(message, priority)
 	if not BeltalowdaNetworking.state.initialized then
-		-- LGB not available, only handle local message
-		if GetGroupSize() == 0 then
-			message.pingTag = "player"
-			BeltalowdaNetworking.HandleRawMessage(message)
-		end
 		return
 	end
 	
@@ -434,11 +419,6 @@ end
 
 function BeltalowdaNetworking.SendHeartbeatMessage(message, priority)
 	if not BeltalowdaNetworking.state.initialized then
-		-- LGB not available, only handle local message
-		if GetGroupSize() == 0 then
-			message.pingTag = "player"
-			BeltalowdaNetworking.HandleRawMessage(message)
-		end
 		return
 	end
 	
@@ -470,11 +450,6 @@ end
 
 function BeltalowdaNetworking.SendSynergyMessage(message, priority)
 	if not BeltalowdaNetworking.state.initialized then
-		-- LGB not available, only handle local message
-		if GetGroupSize() == 0 then
-			message.pingTag = "player"
-			BeltalowdaNetworking.HandleRawMessage(message)
-		end
 		return
 	end
 	
@@ -506,11 +481,6 @@ end
 
 function BeltalowdaNetworking.SendHpDmgMessage(message, priority)
 	if not BeltalowdaNetworking.state.initialized then
-		-- LGB not available, only handle local message
-		if GetGroupSize() == 0 then
-			message.pingTag = "player"
-			BeltalowdaNetworking.HandleRawMessage(message)
-		end
 		return
 	end
 	
