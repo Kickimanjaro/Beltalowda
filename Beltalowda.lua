@@ -44,6 +44,11 @@ function Beltalowda:Initialize()
         self.UI.UltimateDisplay.Initialize()
     end
     
+    -- Initialize addon menu (settings) - must be after UI initialization
+    if self.menu and self.menu.Initialize then
+        self.menu.Initialize()
+    end
+    
     -- Register for events
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_ACTIVATED, function()
         self:OnPlayerActivated()
@@ -60,8 +65,9 @@ end
 
 -- Debug/Development Commands
 -- These commands provide text-based output for debugging and development purposes
--- The main UI is accessed through the GUI windows (toggle with /bultui)
--- Note: Currently no addon settings menu - all configuration via slash commands
+-- The main UI is accessed through the GUI windows
+-- Configuration: Use Addon Settings menu (ESO Menu > Settings > Addons > Beltalowda)
+-- Or use slash commands: /bultui [blocks|client|group|overview]
 --
 -- Command Naming: ESO addon best practice is to prefix commands with addon name
 -- to avoid conflicts. We use "b" (Beltalowda) prefix: /bultimate, /bultui, /bbroadcast

@@ -4,6 +4,7 @@
 ## APIVersion: 101047 101048
 ## Description: Group PvP addon for Elder Scrolls Online
 ## SavedVariables: BeltalowdaSavedVariables
+## DependsOn: LibAddonMenu-2.0>=34
 
 Lang/en.lua
 Base/Util/Ultimates.lua
@@ -11,3 +12,4 @@ Base/Util/Group.lua
 Base/Util/Networking.lua
 UI/UltimateDisplay.lua
 Beltalowda.lua
+BeltalowdaMenu.lua

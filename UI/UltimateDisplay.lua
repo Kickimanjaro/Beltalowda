@@ -596,3 +596,52 @@ function UltimateDisplay.ToggleUltimateOverview()
 	end
 	d("Beltalowda: Ultimate overview " .. (UltimateDisplay.savedVars.showUltimateOverview and "shown" or "hidden"))
 end
+
+-- Show/Hide functions for settings menu
+function UltimateDisplay.ShowPlayerBlocks()
+	if UltimateDisplay.controls.playerBlocks then
+		UltimateDisplay.controls.playerBlocks.window:SetHidden(false)
+	end
+end
+
+function UltimateDisplay.HidePlayerBlocks()
+	if UltimateDisplay.controls.playerBlocks then
+		UltimateDisplay.controls.playerBlocks.window:SetHidden(true)
+	end
+end
+
+function UltimateDisplay.ShowClientUltimate()
+	if UltimateDisplay.controls.clientUltimate then
+		UltimateDisplay.controls.clientUltimate.window:SetHidden(false)
+	end
+end
+
+function UltimateDisplay.HideClientUltimate()
+	if UltimateDisplay.controls.clientUltimate then
+		UltimateDisplay.controls.clientUltimate.window:SetHidden(true)
+	end
+end
+
+function UltimateDisplay.ShowGroupUltimates()
+	if UltimateDisplay.controls.groupUltimates then
+		UltimateDisplay.controls.groupUltimates.window:SetHidden(false)
+	end
+end
+
+function UltimateDisplay.HideGroupUltimates()
+	if UltimateDisplay.controls.groupUltimates then
+		UltimateDisplay.controls.groupUltimates.window:SetHidden(true)
+	end
+end
+
+function UltimateDisplay.ShowUltimateOverview()
+	if UltimateDisplay.controls.ultimateOverview then
+		UltimateDisplay.controls.ultimateOverview.window:SetHidden(false)
+	end
+end
+
+function UltimateDisplay.HideUltimateOverview()
+	if UltimateDisplay.controls.ultimateOverview then
+		UltimateDisplay.controls.ultimateOverview.window:SetHidden(true)
+	end
+end

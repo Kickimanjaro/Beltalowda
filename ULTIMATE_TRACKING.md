@@ -48,13 +48,24 @@ Toggle with: `/bultui blocks`
    - Windows: `Documents\Elder Scrolls Online\live\AddOns\`
    - Mac: `~/Documents/Elder Scrolls Online/live/AddOns/`
 
-2. Launch Elder Scrolls Online
+2. Ensure you have LibAddonMenu-2.0 installed (required dependency)
+   - If using Minion addon manager, it will automatically download this dependency
+   - If installing manually, download LibAddonMenu-2.0 separately from ESOUI.com
 
-3. In the character select screen, enable the Beltalowda addon
+3. Launch Elder Scrolls Online
+
+4. In the character select screen, enable the Beltalowda addon
 
 ### Slash Commands
 
-The primary interface is the GUI windows. The following slash commands are available:
+**Primary Configuration:**
+Use the in-game Addon Settings menu (ESO Menu > Settings > Addons > Beltalowda) to configure:
+- Which windows to display (Player Blocks, Client Ultimate, Group Ultimates, Ultimate Overview)
+- Ultimate broadcasting enable/disable
+
+**Slash Commands (Alternative):**
+
+The following slash commands provide alternative configuration methods:
 
 **GUI Control Commands:**
 
@@ -164,10 +175,7 @@ Current implementation choices and their rationale:
   - This feature requires additional implementation and is planned for future enhancement
   
 - **Broadcasting enabled by default**: All group members with the addon will share ultimate data
-  - Can be toggled off with `/bbroadcast off` debug command if needed
-  
-- **No addon settings menu**: Configuration currently via slash commands only
-  - Future: Could add LibAddonMenu integration for GUI settings panel
+  - Can be toggled off in addon settings or with `/bbroadcast off` command
 
 ## Future Enhancements
 
@@ -180,10 +188,6 @@ Planned improvements:
 - **Ultimate selection menus**: Allow players to customize tracked ultimates by clicking icons
   - Client Ultimate: Choose which ultimate icon to display for yourself
   - Group Ultimates: Configure the 12 tracked ultimate slots
-  
-- **Addon settings menu**: Add LibAddonMenu integration for GUI settings panel
-  - Would provide in-game settings UI instead of slash commands
-  - Allow easier configuration of window visibility, broadcasting, etc.
   
 - **LibGroupBroadcast integration**: Optional use for enhanced networking
   - More efficient for complex data sharing

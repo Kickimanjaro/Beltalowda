@@ -21,6 +21,10 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
     - **Group Ultimates**: Row of 12 configurable ultimate trackers with counts
     - **Ultimate Overview**: Compact window showing key ultimate counts
     - **Player Blocks**: Main display with color-coded bars for all group members
+  - **Addon Settings Integration**: LibAddonMenu-2.0 GUI settings panel
+    - Configure which windows to display
+    - Toggle ultimate broadcasting
+    - Access via ESO Menu > Settings > Addons > Beltalowda
   - Slash commands: `/bultimate`, `/bultimateinfo`, `/bultui [blocks|client|group|overview]`, `/bbroadcast`
   - Comprehensive documentation in ULTIMATE_TRACKING.md
 - Base utility modules:
@@ -28,3 +32,7 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
   - `Base/Util/Group.lua` - Group member tracking and monitoring
   - `Base/Util/Networking.lua` - Party chat networking protocol
   - `UI/UltimateDisplay.lua` - Comprehensive RdK-style GUI display
+  - `BeltalowdaMenu.lua` - LibAddonMenu settings integration
+
+### Dependencies
+- LibAddonMenu-2.0 (>=34) - Required for addon settings menu
