@@ -1,30 +1,30 @@
--- RdK Group Tool Equipment
+-- Beltalowda Equipment
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.equipment = RdKGToolUtil.equipment or {}
-local RdKGToolEquip = RdKGToolUtil.equipment
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.equipment = BeltalowdaUtil.equipment or {}
+local BeltalowdaEquip = BeltalowdaUtil.equipment
 
 
-RdKGToolEquip.constants = RdKGToolEquip.constants or {}
-RdKGToolEquip.constants.EQUIPMENT_STRING = "|H%d:item:%d:%d:%d:%d:%d:%d:%d:0:0:0:0:0:0:0:%d:%d:0:%d:%d:%d:0|h|h"
-RdKGToolEquip.constants.networking = {}
-RdKGToolEquip.constants.networking.messagePrefix = {}
-RdKGToolEquip.constants.networking.messagePrefix.HEAD = 0
-RdKGToolEquip.constants.networking.messagePrefix.SHOULDERS = 1
-RdKGToolEquip.constants.networking.messagePrefix.CHEST = 2
-RdKGToolEquip.constants.networking.messagePrefix.HANDS = 3
-RdKGToolEquip.constants.networking.messagePrefix.WAIST = 4
-RdKGToolEquip.constants.networking.messagePrefix.LEGS = 5
-RdKGToolEquip.constants.networking.messagePrefix.FEET = 6
-RdKGToolEquip.constants.networking.messagePrefix.NECKLACE = 7
-RdKGToolEquip.constants.networking.messagePrefix.RING_1 = 8
-RdKGToolEquip.constants.networking.messagePrefix.RING_2 = 9
-RdKGToolEquip.constants.networking.messagePrefix.WEAPON_1_1 = 10
-RdKGToolEquip.constants.networking.messagePrefix.WEAPON_1_2 = 11
-RdKGToolEquip.constants.networking.messagePrefix.WEAPON_2_1 = 12
-RdKGToolEquip.constants.networking.messagePrefix.WEAPON_2_2 = 13
+BeltalowdaEquip.constants = BeltalowdaEquip.constants or {}
+BeltalowdaEquip.constants.EQUIPMENT_STRING = "|H%d:item:%d:%d:%d:%d:%d:%d:%d:0:0:0:0:0:0:0:%d:%d:0:%d:%d:%d:0|h|h"
+BeltalowdaEquip.constants.networking = {}
+BeltalowdaEquip.constants.networking.messagePrefix = {}
+BeltalowdaEquip.constants.networking.messagePrefix.HEAD = 0
+BeltalowdaEquip.constants.networking.messagePrefix.SHOULDERS = 1
+BeltalowdaEquip.constants.networking.messagePrefix.CHEST = 2
+BeltalowdaEquip.constants.networking.messagePrefix.HANDS = 3
+BeltalowdaEquip.constants.networking.messagePrefix.WAIST = 4
+BeltalowdaEquip.constants.networking.messagePrefix.LEGS = 5
+BeltalowdaEquip.constants.networking.messagePrefix.FEET = 6
+BeltalowdaEquip.constants.networking.messagePrefix.NECKLACE = 7
+BeltalowdaEquip.constants.networking.messagePrefix.RING_1 = 8
+BeltalowdaEquip.constants.networking.messagePrefix.RING_2 = 9
+BeltalowdaEquip.constants.networking.messagePrefix.WEAPON_1_1 = 10
+BeltalowdaEquip.constants.networking.messagePrefix.WEAPON_1_2 = 11
+BeltalowdaEquip.constants.networking.messagePrefix.WEAPON_2_1 = 12
+BeltalowdaEquip.constants.networking.messagePrefix.WEAPON_2_2 = 13
 
 
 
@@ -101,7 +101,7 @@ issues:
 |H1:item:136262:369:50:0:0:50:0:0:0:0:0:0:0:0:1:75:0:0:0:10000:0|h|h
 |H1:item:136262:369:50:26582:370:50:0:0:0:0:0:0:0:0:1:75:0:0:0:10000:0|h|h
 
-/script d(RdKGTool.util.equipment.CreateItemLink(82155, 364, 50, 26588, 370, 50, 18, 0, 67, 0, 0, 10000))
+/script d(Beltalowda.util.equipment.CreateItemLink(82155, 364, 50, 26588, 370, 50, 18, 0, 67, 0, 0, 10000))
 
 --Networking
 --Armor
@@ -154,7 +154,7 @@ itemHealth: 16384
 
 ]]
          
-function RdKGToolEquip.CreateItemLink(itemId, itemQuality, level, enchantment, enchantmentQuality, enchantmentLevel, transmutation, bound, style, crafted, redBorder, itemHealth, brackets)
+function BeltalowdaEquip.CreateItemLink(itemId, itemQuality, level, enchantment, enchantmentQuality, enchantmentLevel, transmutation, bound, style, crafted, redBorder, itemHealth, brackets)
 	local link = nil
 	brackets = brackets or 1
 	itemId = itemId or 0
@@ -170,14 +170,14 @@ function RdKGToolEquip.CreateItemLink(itemId, itemQuality, level, enchantment, e
 	redBorder = redBorder or 0
 	itemHealth = itemHealth or 10000
 	if itemId ~= 0 then
-		link = string.format(RdKGToolEquip.constants.EQUIPMENT_STRING, brackets, itemId, itemQuality, level, enchantment, enchantmentQuality, enchantmentLevel, transmutation, bound, style, crafted, redBorder, itemHealth)
+		link = string.format(BeltalowdaEquip.constants.EQUIPMENT_STRING, brackets, itemId, itemQuality, level, enchantment, enchantmentQuality, enchantmentLevel, transmutation, bound, style, crafted, redBorder, itemHealth)
 		--d(link)
 	end
 	
 	return link
 end
 
-function RdKGToolEquip.ChangeBrackets(link)
+function BeltalowdaEquip.ChangeBrackets(link)
 	local brackets = link:sub(3,3)
 	if brackets == "1" then
 		brackets = "0"
@@ -187,7 +187,7 @@ function RdKGToolEquip.ChangeBrackets(link)
 	return link:sub(1,2) .. brackets .. link:sub(4)
 end
 
-function RdKGToolEquip.GetItemLinkEntry(link, index)
+function BeltalowdaEquip.GetItemLinkEntry(link, index)
 	local entry = nil
 	if link ~= nil then
 		local values = {zo_strsplit(":", link)}
@@ -196,67 +196,67 @@ function RdKGToolEquip.GetItemLinkEntry(link, index)
 	return entry
 end
 
-function RdKGToolEquip.GetItemLinkEnchantmentId(link)
-	return RdKGToolEquip.GetItemLinkEntry(link, 6)
+function BeltalowdaEquip.GetItemLinkEnchantmentId(link)
+	return BeltalowdaEquip.GetItemLinkEntry(link, 6)
 end
 
-function RdKGToolEquip.GetItemLinkEnchantmentQuality(link)
-	return RdKGToolEquip.GetItemLinkEntry(link, 7)
+function BeltalowdaEquip.GetItemLinkEnchantmentQuality(link)
+	return BeltalowdaEquip.GetItemLinkEntry(link, 7)
 end
 
-function RdKGToolEquip.GetItemLinkEnchantmentLevel(link)
-	return RdKGToolEquip.GetItemLinkEntry(link, 8)
+function BeltalowdaEquip.GetItemLinkEnchantmentLevel(link)
+	return BeltalowdaEquip.GetItemLinkEntry(link, 8)
 end
 
-function RdKGToolEquip.GetItemLinkItemId(link)
-	return RdKGToolEquip.GetItemLinkEntry(link, 3)
+function BeltalowdaEquip.GetItemLinkItemId(link)
+	return BeltalowdaEquip.GetItemLinkEntry(link, 3)
 end
 
-function RdKGToolEquip.GetItemLinkItemQuality(link)
-	return RdKGToolEquip.GetItemLinkEntry(link, 4)
+function BeltalowdaEquip.GetItemLinkItemQuality(link)
+	return BeltalowdaEquip.GetItemLinkEntry(link, 4)
 end
 
-function RdKGToolEquip.GetItemLinkItemLevel(link)
-	return RdKGToolEquip.GetItemLinkEntry(link, 5)
+function BeltalowdaEquip.GetItemLinkItemLevel(link)
+	return BeltalowdaEquip.GetItemLinkEntry(link, 5)
 end
 
-function RdKGToolEquip.GetItemLinkTransmutationId(link)
-	return RdKGToolEquip.GetItemLinkEntry(link, 9)
+function BeltalowdaEquip.GetItemLinkTransmutationId(link)
+	return BeltalowdaEquip.GetItemLinkEntry(link, 9)
 end
 
-function RdKGToolEquip.GetItemLinkStyleId(link)
-	return RdKGToolEquip.GetItemLinkEntry(link, 18)
+function BeltalowdaEquip.GetItemLinkStyleId(link)
+	return BeltalowdaEquip.GetItemLinkEntry(link, 18)
 end
 
-function RdKGToolEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
+function BeltalowdaEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
 	local equipmentName = nil
-	if messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.HEAD then
+	if messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.HEAD then
 		equipmentName = "head"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.SHOULDERS then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.SHOULDERS then
 		equipmentName = "shoulders"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.CHEST then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.CHEST then
 		equipmentName = "chest"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.HANDS then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.HANDS then
 		equipmentName = "hands"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.WAIST then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.WAIST then
 		equipmentName = "waist"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.LEGS then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.LEGS then
 		equipmentName = "legs"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.FEET then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.FEET then
 		equipmentName = "feet"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.NECKLACE then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.NECKLACE then
 		equipmentName = "necklace"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.RING_1 then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.RING_1 then
 		equipmentName = "ring1"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.RING_2 then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.RING_2 then
 		equipmentName = "ring2"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.WEAPON_1_1 then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.WEAPON_1_1 then
 		equipmentName = "weapon11"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.WEAPON_1_2 then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.WEAPON_1_2 then
 		equipmentName = "weapon12"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.WEAPON_2_1 then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.WEAPON_2_1 then
 		equipmentName = "weapon21"
-	elseif messagePrefix == RdKGToolEquip.constants.networking.messagePrefix.WEAPON_2_2 then
+	elseif messagePrefix == BeltalowdaEquip.constants.networking.messagePrefix.WEAPON_2_2 then
 		equipmentName = "weapon22"
 	end
 	return equipmentName

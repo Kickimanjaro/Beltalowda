@@ -1,155 +1,155 @@
--- RdK Group Tool Hp Damage Meter
+-- Beltalowda Hp Damage Meter
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.group = RdKGTool.group or {}
-local RdKGToolGroup = RdKGTool.group
-RdKGToolGroup.hdm = RdKGToolGroup.hdm or {}
-local RdKGToolHdm = RdKGToolGroup.hdm
-RdKGToolGroup.dbo = RdKGToolGroup.dbo or {}
-local RdKGToolDbo = RdKGToolGroup.dbo
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.networking = RdKGToolUtil.networking or {}
-local RdKGToolNetworking = RdKGToolUtil.networking
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolUtilGroup = RdKGToolUtil.group
-RdKGToolUtil.fonts = RdKGToolUtil.fonts or {}
-local RdKGToolFonts = RdKGToolUtil.fonts
-RdKGToolUtil.math = RdKGToolUtil.math or {}
-local RdKGToolMath = RdKGToolUtil.math
-RdKGToolUtil.chatSystem = RdKGToolUtil.chatSystem or {}
-local RdKGToolChat = RdKGToolUtil.chatSystem
+Beltalowda.group = Beltalowda.group or {}
+local BeltalowdaGroup = Beltalowda.group
+BeltalowdaGroup.hdm = BeltalowdaGroup.hdm or {}
+local BeltalowdaHdm = BeltalowdaGroup.hdm
+BeltalowdaGroup.dbo = BeltalowdaGroup.dbo or {}
+local BeltalowdaDbo = BeltalowdaGroup.dbo
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.networking = BeltalowdaUtil.networking or {}
+local BeltalowdaNetworking = BeltalowdaUtil.networking
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaUtilGroup = BeltalowdaUtil.group
+BeltalowdaUtil.fonts = BeltalowdaUtil.fonts or {}
+local BeltalowdaFonts = BeltalowdaUtil.fonts
+BeltalowdaUtil.math = BeltalowdaUtil.math or {}
+local BeltalowdaMath = BeltalowdaUtil.math
+BeltalowdaUtil.chatSystem = BeltalowdaUtil.chatSystem or {}
+local BeltalowdaChat = BeltalowdaUtil.chatSystem
 
 
-RdKGToolHdm.constants = RdKGToolHdm.constants or {}
-RdKGToolHdm.constants.TLW_HPDMG_METER_NAME = "RdKGTool.group.hdm.hdm_TLW"
-RdKGToolHdm.constants.LABEL_VALUE_FORMAT = "%d (%.2f%%)"
-RdKGToolHdm.constants.LABEL_VALUE_FORMAT_2 = "%d (0%.2f%%)"
+BeltalowdaHdm.constants = BeltalowdaHdm.constants or {}
+BeltalowdaHdm.constants.TLW_HPDMG_METER_NAME = "Beltalowda.group.hdm.hdm_TLW"
+BeltalowdaHdm.constants.LABEL_VALUE_FORMAT = "%d (%.2f%%)"
+BeltalowdaHdm.constants.LABEL_VALUE_FORMAT_2 = "%d (0%.2f%%)"
 
-RdKGToolHdm.constants.viewModes = {}
-RdKGToolHdm.constants.VIEWMODE_BOTH = 1
-RdKGToolHdm.constants.VIEWMODE_HEALING = 2
-RdKGToolHdm.constants.VIEWMODE_DAMAGE = 3
-RdKGToolHdm.constants.VIEWMODE_BOTH_ON_TOP = 4
+BeltalowdaHdm.constants.viewModes = {}
+BeltalowdaHdm.constants.VIEWMODE_BOTH = 1
+BeltalowdaHdm.constants.VIEWMODE_HEALING = 2
+BeltalowdaHdm.constants.VIEWMODE_DAMAGE = 3
+BeltalowdaHdm.constants.VIEWMODE_BOTH_ON_TOP = 4
 
-RdKGToolHdm.constants.size = {}
-RdKGToolHdm.constants.size.SMALL = 1
-RdKGToolHdm.constants.size.BIG = 2
+BeltalowdaHdm.constants.size = {}
+BeltalowdaHdm.constants.size.SMALL = 1
+BeltalowdaHdm.constants.size.BIG = 2
 
-RdKGToolHdm.PREFIX = "HDM"
+BeltalowdaHdm.PREFIX = "HDM"
 
-RdKGToolHdm.callbackName = RdKGTool.addonName .. "HpDmgMeter"
-RdKGToolHdm.hpCallbackName = RdKGTool.addonName .. "HpDmgMeterHpSendLoop"
-RdKGToolHdm.dmgCallbackName = RdKGTool.addonName .. "HpDmgMeterDmgSendLoop"
-RdKGToolHdm.uiCallbackName = RdKGTool.addonName .. "HpDmgMeterUILoop"
-RdKGToolHdm.updateCallbackName = RdKGTool.addonName .. "HpDmgMeterMessageUpdateLoop"
+BeltalowdaHdm.callbackName = Beltalowda.addonName .. "HpDmgMeter"
+BeltalowdaHdm.hpCallbackName = Beltalowda.addonName .. "HpDmgMeterHpSendLoop"
+BeltalowdaHdm.dmgCallbackName = Beltalowda.addonName .. "HpDmgMeterDmgSendLoop"
+BeltalowdaHdm.uiCallbackName = Beltalowda.addonName .. "HpDmgMeterUILoop"
+BeltalowdaHdm.updateCallbackName = Beltalowda.addonName .. "HpDmgMeterMessageUpdateLoop"
 
-RdKGToolHdm.controls = {}
+BeltalowdaHdm.controls = {}
 
-RdKGToolHdm.config = {}
-RdKGToolHdm.config.isClampedToScreen = true
-RdKGToolHdm.config.sizes = {}
-RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL] = {}
-RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width = 500
-RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height = 450
-RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].spacing = 30
-RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].fontSize = 15
-RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG] = {}
-RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].width = 750
-RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].height = 720
-RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].spacing = 60
-RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].fontSize = 24
-RdKGToolHdm.config.invalidUpdateInterval = 100 --This value shouldn't be used by Group.lua. Yet in case of a bug or later changes, this value is defined
-RdKGToolHdm.config.buffUpdateInterval = 100
---RdKGToolHdm.config.titleFont = "$(BOLD_FONT)|$(KB_20)soft-shadow-thick"
-RdKGToolHdm.config.titleFont = RdKGToolFonts.CreateFontString(RdKGToolFonts.constants.BOLD_FONT, RdKGToolFonts.constants.INPUT_KB, 20, RdKGToolFonts.constants.WEIGHT_THICK_OUTLINE)
-RdKGToolHdm.config.backgroundEven = 0.4
-RdKGToolHdm.config.backgroundOdd = 0.2
+BeltalowdaHdm.config = {}
+BeltalowdaHdm.config.isClampedToScreen = true
+BeltalowdaHdm.config.sizes = {}
+BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL] = {}
+BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width = 500
+BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height = 450
+BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].spacing = 30
+BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].fontSize = 15
+BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG] = {}
+BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].width = 750
+BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].height = 720
+BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].spacing = 60
+BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].fontSize = 24
+BeltalowdaHdm.config.invalidUpdateInterval = 100 --This value shouldn't be used by Group.lua. Yet in case of a bug or later changes, this value is defined
+BeltalowdaHdm.config.buffUpdateInterval = 100
+--BeltalowdaHdm.config.titleFont = "$(BOLD_FONT)|$(KB_20)soft-shadow-thick"
+BeltalowdaHdm.config.titleFont = BeltalowdaFonts.CreateFontString(BeltalowdaFonts.constants.BOLD_FONT, BeltalowdaFonts.constants.INPUT_KB, 20, BeltalowdaFonts.constants.WEIGHT_THICK_OUTLINE)
+BeltalowdaHdm.config.backgroundEven = 0.4
+BeltalowdaHdm.config.backgroundOdd = 0.2
 
-RdKGToolHdm.state = {}
-RdKGToolHdm.state.initialized = false
-RdKGToolHdm.state.registredConsumers = false
-RdKGToolHdm.state.registredGroupConsumer = false
-RdKGToolHdm.state.foreground = true
-RdKGToolHdm.state.registredActiveConsumers = false
-RdKGToolHdm.state.activeLayerIndex = 1
+BeltalowdaHdm.state = {}
+BeltalowdaHdm.state.initialized = false
+BeltalowdaHdm.state.registredConsumers = false
+BeltalowdaHdm.state.registredGroupConsumer = false
+BeltalowdaHdm.state.foreground = true
+BeltalowdaHdm.state.registredActiveConsumers = false
+BeltalowdaHdm.state.activeLayerIndex = 1
 
-RdKGToolHdm.state.meter = {}
-RdKGToolHdm.state.meter.damage = 0
-RdKGToolHdm.state.meter.healing = 0
-RdKGToolHdm.state.meter.lastDamageMessage = nil
-RdKGToolHdm.state.meter.lastHpMessage = nil
+BeltalowdaHdm.state.meter = {}
+BeltalowdaHdm.state.meter.damage = 0
+BeltalowdaHdm.state.meter.healing = 0
+BeltalowdaHdm.state.meter.lastDamageMessage = nil
+BeltalowdaHdm.state.meter.lastHpMessage = nil
 
-RdKGToolHdm.state.delayedLoopStarting = false
-RdKGToolHdm.state.delayedLoopStarted = false
-RdKGToolHdm.state.hpDmgUpdateInterval = 3000 --5000 previously
-RdKGToolHdm.state.delayInterval = 1000
-RdKGToolHdm.state.delayCount = 0
+BeltalowdaHdm.state.delayedLoopStarting = false
+BeltalowdaHdm.state.delayedLoopStarted = false
+BeltalowdaHdm.state.hpDmgUpdateInterval = 3000 --5000 previously
+BeltalowdaHdm.state.delayInterval = 1000
+BeltalowdaHdm.state.delayCount = 0
 
-RdKGToolHdm.state.uiUpdateInterval = 500
-RdKGToolHdm.state.messageUpdateInterval = 100
+BeltalowdaHdm.state.uiUpdateInterval = 500
+BeltalowdaHdm.state.messageUpdateInterval = 100
 
 local wm = WINDOW_MANAGER
 
-function RdKGToolHdm.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolHdm.callbackName, RdKGToolHdm.OnProfileChanged)
-	ZO_CreateStringId("SI_BINDING_NAME_RDKGTOOL_HDM_RESET_METER", RdKGToolHdm.constants.RESET_COUNTER)
+function BeltalowdaHdm.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaHdm.callbackName, BeltalowdaHdm.OnProfileChanged)
+	ZO_CreateStringId("SI_BINDING_NAME_RDKGTOOL_HDM_RESET_METER", BeltalowdaHdm.constants.RESET_COUNTER)
 	
-	RdKGToolHdm.CreateUI()
+	BeltalowdaHdm.CreateUI()
 	
-	RdKGToolMenu.AddPositionFixedConsumer(RdKGToolHdm.SetHdmPositionLocked)
-	RdKGToolHdm.AdjustAutoClearEnabled()
+	BeltalowdaMenu.AddPositionFixedConsumer(BeltalowdaHdm.SetHdmPositionLocked)
+	BeltalowdaHdm.AdjustAutoClearEnabled()
 	
-	RdKGToolHdm.state.initialized = true
-	RdKGToolHdm.SetEnabled(RdKGToolHdm.hdmVars.enabled)
+	BeltalowdaHdm.state.initialized = true
+	BeltalowdaHdm.SetEnabled(BeltalowdaHdm.hdmVars.enabled)
 end
 
-function RdKGToolHdm.SetTlwLocation()
-	RdKGToolHdm.controls.hdmTLW:ClearAnchors()
-	if RdKGToolHdm.hdmVars.location == nil then
-		RdKGToolHdm.controls.hdmTLW:SetAnchor(CENTER, GuiRoot, CENTER, 250, -150)
+function BeltalowdaHdm.SetTlwLocation()
+	BeltalowdaHdm.controls.hdmTLW:ClearAnchors()
+	if BeltalowdaHdm.hdmVars.location == nil then
+		BeltalowdaHdm.controls.hdmTLW:SetAnchor(CENTER, GuiRoot, CENTER, 250, -150)
 	else
-		RdKGToolHdm.controls.hdmTLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, RdKGToolHdm.hdmVars.location.x, RdKGToolHdm.hdmVars.location.y)
+		BeltalowdaHdm.controls.hdmTLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, BeltalowdaHdm.hdmVars.location.x, BeltalowdaHdm.hdmVars.location.y)
 	end
 end
 
-function RdKGToolHdm.CreateUI()
-	RdKGToolHdm.controls.hdmTLW = wm:CreateTopLevelWindow(RdKGToolHdm.constants.TLW_HPDMG_METER_NAME)
+function BeltalowdaHdm.CreateUI()
+	BeltalowdaHdm.controls.hdmTLW = wm:CreateTopLevelWindow(BeltalowdaHdm.constants.TLW_HPDMG_METER_NAME)
 	
-	RdKGToolHdm.SetTlwLocation()
+	BeltalowdaHdm.SetTlwLocation()
 		
-	RdKGToolHdm.controls.hdmTLW:SetClampedToScreen(RdKGToolHdm.config.isClampedToScreen)
-	RdKGToolHdm.controls.hdmTLW:SetDrawLayer(0)
-	RdKGToolHdm.controls.hdmTLW:SetDrawLevel(0)
-	RdKGToolHdm.controls.hdmTLW:SetHandler("OnMoveStop", RdKGToolHdm.SaveHdmWindowLocation)
-	RdKGToolHdm.controls.hdmTLW:SetDimensions(RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width + RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].spacing, RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height)
+	BeltalowdaHdm.controls.hdmTLW:SetClampedToScreen(BeltalowdaHdm.config.isClampedToScreen)
+	BeltalowdaHdm.controls.hdmTLW:SetDrawLayer(0)
+	BeltalowdaHdm.controls.hdmTLW:SetDrawLevel(0)
+	BeltalowdaHdm.controls.hdmTLW:SetHandler("OnMoveStop", BeltalowdaHdm.SaveHdmWindowLocation)
+	BeltalowdaHdm.controls.hdmTLW:SetDimensions(BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width + BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].spacing, BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height)
 	
-	RdKGToolHdm.controls.hdmTLW.rootControl = wm:CreateControl(nil, RdKGToolHdm.controls.hdmTLW, CT_CONTROL)
-	local rootControl = RdKGToolHdm.controls.hdmTLW.rootControl
+	BeltalowdaHdm.controls.hdmTLW.rootControl = wm:CreateControl(nil, BeltalowdaHdm.controls.hdmTLW, CT_CONTROL)
+	local rootControl = BeltalowdaHdm.controls.hdmTLW.rootControl
 	
-	rootControl:SetDimensions(RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width + RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].spacing, RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height)
-	rootControl:SetAnchor(TOPLEFT, RdKGToolHdm.controls.hdmTLW, TOPLEFT, 0, 0)
+	rootControl:SetDimensions(BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width + BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].spacing, BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height)
+	rootControl:SetAnchor(TOPLEFT, BeltalowdaHdm.controls.hdmTLW, TOPLEFT, 0, 0)
 	
 	rootControl.movableBackdrop = wm:CreateControl(nil, rootControl, CT_BACKDROP)
 	
 	rootControl.movableBackdrop:SetAnchor(TOPLEFT, rootControl, TOPLEFT, 0, 0)
-	rootControl.movableBackdrop:SetDimensions(RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width + RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].spacing, RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height)
+	rootControl.movableBackdrop:SetDimensions(BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width + BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].spacing, BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height)
 	
 	rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
 	rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	
 	
-	rootControl.damageControl = RdKGToolHdm.CreateUserControl(rootControl, RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width / 2, RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height, 0, RdKGToolHdm.constants.TITLE_DAMAGE)
-	rootControl.healingControl = RdKGToolHdm.CreateUserControl(rootControl, RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width / 2, RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height, RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width / 2 + RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].spacing, RdKGToolHdm.constants.TITLE_HEALING)
+	rootControl.damageControl = BeltalowdaHdm.CreateUserControl(rootControl, BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width / 2, BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height, 0, BeltalowdaHdm.constants.TITLE_DAMAGE)
+	rootControl.healingControl = BeltalowdaHdm.CreateUserControl(rootControl, BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width / 2, BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height, BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width / 2 + BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].spacing, BeltalowdaHdm.constants.TITLE_HEALING)
 	
-	RdKGToolHdm.SetPositionLocked(RdKGToolHdm.hdmVars.positionLocked)
-	RdKGToolHdm.AdjustControlSize()
-	RdKGToolHdm.SetControlVisibility()
+	BeltalowdaHdm.SetPositionLocked(BeltalowdaHdm.hdmVars.positionLocked)
+	BeltalowdaHdm.AdjustControlSize()
+	BeltalowdaHdm.SetControlVisibility()
 end
 
-function RdKGToolHdm.CreateUserControl(parent, controlWidth, controlHeight, widthOffset, text)
+function BeltalowdaHdm.CreateUserControl(parent, controlWidth, controlHeight, widthOffset, text)
 	local control = wm:CreateControl(nil, parent, CT_CONTROL)
 	control:SetDimensions(controlWidth, controlHeight)
 	control:SetAnchor(TOPLEFT, parent, TOPLEFT, widthOffset, 0)
@@ -158,12 +158,12 @@ function RdKGToolHdm.CreateUserControl(parent, controlWidth, controlHeight, widt
 	control.title = wm:CreateControl(nil, control, CT_LABEL)
 	control.title:SetDimensions(width, 20)
 	control.title:SetAnchor(TOPLEFT, control, TOPLEFT, 0, 0)
-	control.title:SetFont(RdKGToolHdm.config.titleFont)
+	control.title:SetFont(BeltalowdaHdm.config.titleFont)
 	control.title:SetText(text)
 	control.title:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
 	control.title:SetVerticalAlignment(TEXT_ALIGN_CENTER)
 	
-	local playerFont = RdKGToolFonts.CreateFontString(RdKGToolFonts.constants.MEDIUM_FONT, RdKGToolFonts.constants.INPUT_KB, RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].fontSize, RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
+	local playerFont = BeltalowdaFonts.CreateFontString(BeltalowdaFonts.constants.MEDIUM_FONT, BeltalowdaFonts.constants.INPUT_KB, BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].fontSize, BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
 	control.playerBlocks = {}
 	for i = 1, 24 do
 		control.playerBlocks[i] = {}
@@ -197,7 +197,7 @@ function RdKGToolHdm.CreateUserControl(parent, controlWidth, controlHeight, widt
 	return control
 end
 
-function RdKGToolHdm.GetDefaults()
+function BeltalowdaHdm.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
 	defaults.positionLocked = true
@@ -228,8 +228,8 @@ function RdKGToolHdm.GetDefaults()
 	defaults.backgroundColor.applicant.r = 0.05
 	defaults.backgroundColor.applicant.g = 0.1
 	defaults.backgroundColor.applicant.b = 1.0
-	defaults.viewMode = RdKGToolHdm.constants.VIEWMODE_BOTH
-	defaults.size = RdKGToolHdm.constants.size.SMALL
+	defaults.viewMode = BeltalowdaHdm.constants.VIEWMODE_BOTH
+	defaults.size = BeltalowdaHdm.constants.size.SMALL
 	
 	defaults.autoClear = true
 	defaults.useAlpha = true
@@ -240,114 +240,114 @@ function RdKGToolHdm.GetDefaults()
 end
 
 --[[
-function RdKGToolHdm.SetEnabled(value)
-	if RdKGToolHdm.state.initialized == true and value ~= nil then
-		RdKGToolHdm.hdmVars.enabled = value
+function BeltalowdaHdm.SetEnabled(value)
+	if BeltalowdaHdm.state.initialized == true and value ~= nil then
+		BeltalowdaHdm.hdmVars.enabled = value
 		if value == true then
-			if RdKGToolHdm.state.registredConsumers == false then
-				EVENT_MANAGER:RegisterForEvent(RdKGToolHdm.callbackName, EVENT_ACTION_LAYER_POPPED, RdKGToolHdm.SetForegroundVisibility)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolHdm.callbackName, EVENT_ACTION_LAYER_PUSHED, RdKGToolHdm.SetForegroundVisibility)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolHdm.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolHdm.OnPlayerActivated)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolHdm.callbackName, EVENT_COMBAT_EVENT, RdKGToolHdm.OnCombatEvent)
-				RdKGToolUtilGroup.AddFeature(RdKGToolHdm.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_HP_DMG, RdKGToolHdm.config.invalidUpdateInterval)
-				RdKGToolUtilGroup.AddFeature(RdKGToolHdm.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_BUFFS, RdKGToolHdm.config.buffUpdateInterval)
-				--RdKGToolNetworking.AddRawMessageHandler(RdKGToolHdm.callbackName, RdKGToolHdm.HandleRawNetworkMessage)
-				EVENT_MANAGER:RegisterForUpdate(RdKGToolHdm.hpCallbackName, RdKGToolHdm.state.hpDmgUpdateInterval, RdKGToolHdm.HpUpdateLoop)
-				EVENT_MANAGER:RegisterForUpdate(RdKGToolHdm.uiCallbackName, RdKGToolHdm.state.uiUpdateInterval, RdKGToolHdm.UiLoop)
-				EVENT_MANAGER:RegisterForUpdate(RdKGToolHdm.updateCallbackName, RdKGToolHdm.state.messageUpdateInterval, RdKGToolHdm.MessageUpdateLoop)
+			if BeltalowdaHdm.state.registredConsumers == false then
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaHdm.callbackName, EVENT_ACTION_LAYER_POPPED, BeltalowdaHdm.SetForegroundVisibility)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaHdm.callbackName, EVENT_ACTION_LAYER_PUSHED, BeltalowdaHdm.SetForegroundVisibility)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaHdm.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaHdm.OnPlayerActivated)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaHdm.callbackName, EVENT_COMBAT_EVENT, BeltalowdaHdm.OnCombatEvent)
+				BeltalowdaUtilGroup.AddFeature(BeltalowdaHdm.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_HP_DMG, BeltalowdaHdm.config.invalidUpdateInterval)
+				BeltalowdaUtilGroup.AddFeature(BeltalowdaHdm.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_BUFFS, BeltalowdaHdm.config.buffUpdateInterval)
+				--BeltalowdaNetworking.AddRawMessageHandler(BeltalowdaHdm.callbackName, BeltalowdaHdm.HandleRawNetworkMessage)
+				EVENT_MANAGER:RegisterForUpdate(BeltalowdaHdm.hpCallbackName, BeltalowdaHdm.state.hpDmgUpdateInterval, BeltalowdaHdm.HpUpdateLoop)
+				EVENT_MANAGER:RegisterForUpdate(BeltalowdaHdm.uiCallbackName, BeltalowdaHdm.state.uiUpdateInterval, BeltalowdaHdm.UiLoop)
+				EVENT_MANAGER:RegisterForUpdate(BeltalowdaHdm.updateCallbackName, BeltalowdaHdm.state.messageUpdateInterval, BeltalowdaHdm.MessageUpdateLoop)
 			end
-			if RdKGToolHdm.state.delayedLoopStarted == false and RdKGToolHdm.state.delayedLoopStarting == false then
-				RdKGToolHdm.state.delayedLoopStarting = true
-				EVENT_MANAGER:RegisterForUpdate(RdKGToolHdm.callbackName, RdKGToolHdm.state.delayInterval, RdKGToolHdm.StartDmgLoop)
+			if BeltalowdaHdm.state.delayedLoopStarted == false and BeltalowdaHdm.state.delayedLoopStarting == false then
+				BeltalowdaHdm.state.delayedLoopStarting = true
+				EVENT_MANAGER:RegisterForUpdate(BeltalowdaHdm.callbackName, BeltalowdaHdm.state.delayInterval, BeltalowdaHdm.StartDmgLoop)
 			end
-			RdKGToolHdm.state.registredConsumers = true
+			BeltalowdaHdm.state.registredConsumers = true
 		else
-			if RdKGToolHdm.state.registredConsumers == true then
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolHdm.callbackName, EVENT_ACTION_LAYER_POPPED)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolHdm.callbackName, EVENT_ACTION_LAYER_PUSHED)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolHdm.callbackName, EVENT_PLAYER_ACTIVATED)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolHdm.callbackName, EVENT_COMBAT_EVENT)
-				RdKGToolUtilGroup.RemoveFeature(RdKGToolHdm.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_HP_DMG)
-				RdKGToolUtilGroup.RemoveFeature(RdKGToolHdm.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_BUFFS)
-				--RdKGToolNetworking.RemoveRawMessageHandler(RdKGToolHdm.callbackName)
-				EVENT_MANAGER:UnregisterForUpdate(RdKGToolHdm.hpCallbackName)
-				EVENT_MANAGER:UnregisterForUpdate(RdKGToolHdm.uiCallbackName)
-				EVENT_MANAGER:UnregisterForUpdate(RdKGToolHdm.updateCallbackName)
+			if BeltalowdaHdm.state.registredConsumers == true then
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaHdm.callbackName, EVENT_ACTION_LAYER_POPPED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaHdm.callbackName, EVENT_ACTION_LAYER_PUSHED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaHdm.callbackName, EVENT_PLAYER_ACTIVATED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaHdm.callbackName, EVENT_COMBAT_EVENT)
+				BeltalowdaUtilGroup.RemoveFeature(BeltalowdaHdm.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_HP_DMG)
+				BeltalowdaUtilGroup.RemoveFeature(BeltalowdaHdm.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_BUFFS)
+				--BeltalowdaNetworking.RemoveRawMessageHandler(BeltalowdaHdm.callbackName)
+				EVENT_MANAGER:UnregisterForUpdate(BeltalowdaHdm.hpCallbackName)
+				EVENT_MANAGER:UnregisterForUpdate(BeltalowdaHdm.uiCallbackName)
+				EVENT_MANAGER:UnregisterForUpdate(BeltalowdaHdm.updateCallbackName)
 			end
-			if RdKGToolHdm.state.delayedLoopStarted == true then
-				EVENT_MANAGER:UnregisterForUpdate(RdKGToolHdm.dmgCallbackName)
+			if BeltalowdaHdm.state.delayedLoopStarted == true then
+				EVENT_MANAGER:UnregisterForUpdate(BeltalowdaHdm.dmgCallbackName)
 			end
-			if RdKGToolHdm.state.delayedLoopStarting == true then
-				EVENT_MANAGER:UnregisterForUpdate(RdKGToolHdm.callbackName)
-				RdKGToolHdm.state.delayedLoopStarting = false
+			if BeltalowdaHdm.state.delayedLoopStarting == true then
+				EVENT_MANAGER:UnregisterForUpdate(BeltalowdaHdm.callbackName)
+				BeltalowdaHdm.state.delayedLoopStarting = false
 			end
-			RdKGToolHdm.state.registredConsumers = false
+			BeltalowdaHdm.state.registredConsumers = false
 		end
-		RdKGToolHdm.SetControlVisibility()
+		BeltalowdaHdm.SetControlVisibility()
 	end
 end
 ]]
 
-function RdKGToolHdm.SetEnabled(value)
-	if RdKGToolHdm.state.initialized == true and value ~= nil then
-		RdKGToolHdm.hdmVars.enabled = value
+function BeltalowdaHdm.SetEnabled(value)
+	if BeltalowdaHdm.state.initialized == true and value ~= nil then
+		BeltalowdaHdm.hdmVars.enabled = value
 		if value == true then
-			if RdKGToolHdm.state.registredConsumers == false then
+			if BeltalowdaHdm.state.registredConsumers == false then
 				
-				EVENT_MANAGER:RegisterForEvent(RdKGToolHdm.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolHdm.OnPlayerActivated)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaHdm.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaHdm.OnPlayerActivated)
 				
 			end
-			RdKGToolHdm.state.registredConsumers = true
+			BeltalowdaHdm.state.registredConsumers = true
 		else
-			if RdKGToolHdm.state.registredConsumers == true then
+			if BeltalowdaHdm.state.registredConsumers == true then
 				
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolHdm.callbackName, EVENT_PLAYER_ACTIVATED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaHdm.callbackName, EVENT_PLAYER_ACTIVATED)
 				
 			end
-			RdKGToolHdm.state.registredConsumers = false
+			BeltalowdaHdm.state.registredConsumers = false
 		end
-		RdKGToolHdm.OnPlayerActivated()
+		BeltalowdaHdm.OnPlayerActivated()
 	end
 end
 
-function RdKGToolHdm.SetPositionLocked(value)
-	RdKGToolHdm.hdmVars.positionLocked = value
-	RdKGToolHdm.controls.hdmTLW:SetMovable(not value)
-	RdKGToolHdm.controls.hdmTLW:SetMouseEnabled(not value)
+function BeltalowdaHdm.SetPositionLocked(value)
+	BeltalowdaHdm.hdmVars.positionLocked = value
+	BeltalowdaHdm.controls.hdmTLW:SetMovable(not value)
+	BeltalowdaHdm.controls.hdmTLW:SetMouseEnabled(not value)
 	if value == true then
-		RdKGToolHdm.controls.hdmTLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
-		RdKGToolHdm.controls.hdmTLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+		BeltalowdaHdm.controls.hdmTLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
+		BeltalowdaHdm.controls.hdmTLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	else
-		RdKGToolHdm.controls.hdmTLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
-		RdKGToolHdm.controls.hdmTLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+		BeltalowdaHdm.controls.hdmTLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
+		BeltalowdaHdm.controls.hdmTLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	end
 end
 
-function RdKGToolHdm.SetControlVisibility()
-	local enabled = RdKGToolHdm.hdmVars.enabled
-	local windowEnabled = RdKGToolHdm.hdmVars.windowEnabled
-	local pvpOnly = RdKGToolHdm.hdmVars.pvpOnly
+function BeltalowdaHdm.SetControlVisibility()
+	local enabled = BeltalowdaHdm.hdmVars.enabled
+	local windowEnabled = BeltalowdaHdm.hdmVars.windowEnabled
+	local pvpOnly = BeltalowdaHdm.hdmVars.pvpOnly
 	local setHidden = true
 	if enabled ~= nil and windowEnabled ~= nil and pvpOnly ~= nil then
 
-		if enabled == true and (pvpOnly == false or (pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
+		if enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 			if windowEnabled == true then
 				setHidden = false
 			end
 		end
 	end
 	if setHidden == false then
-		if RdKGToolHdm.state.foreground == false then
-			RdKGToolHdm.controls.hdmTLW:SetHidden(RdKGToolHdm.state.activeLayerIndex > 2)
+		if BeltalowdaHdm.state.foreground == false then
+			BeltalowdaHdm.controls.hdmTLW:SetHidden(BeltalowdaHdm.state.activeLayerIndex > 2)
 		else
-			RdKGToolHdm.controls.hdmTLW:SetHidden(false)
+			BeltalowdaHdm.controls.hdmTLW:SetHidden(false)
 		end
 	else
-		RdKGToolHdm.controls.hdmTLW:SetHidden(setHidden)
+		BeltalowdaHdm.controls.hdmTLW:SetHidden(setHidden)
 	end
 end
 
-function RdKGToolHdm.CopyPlayersIncludingTotals(oldPlayers, stat)
+function BeltalowdaHdm.CopyPlayersIncludingTotals(oldPlayers, stat)
 	local players = {}
 	local total = 0
 	if players ~= nil then
@@ -361,7 +361,7 @@ function RdKGToolHdm.CopyPlayersIncludingTotals(oldPlayers, stat)
 	return players, total
 end
 
-function RdKGToolHdm.ComparePlayers(playerA, playerB, stat)
+function BeltalowdaHdm.ComparePlayers(playerA, playerB, stat)
 	--d(playerA.meter)
 	--d(playerB.meter)
 	--d(stat)
@@ -390,22 +390,22 @@ function RdKGToolHdm.ComparePlayers(playerA, playerB, stat)
 	end
 end
 
-function RdKGToolHdm.ComparePlayersByDamage(playerA, playerB)
-	return RdKGToolHdm.ComparePlayers(playerA, playerB, "damage")
+function BeltalowdaHdm.ComparePlayersByDamage(playerA, playerB)
+	return BeltalowdaHdm.ComparePlayers(playerA, playerB, "damage")
 end
 
-function RdKGToolHdm.ComparePlayersByHealing(playerA, playerB)
-	return RdKGToolHdm.ComparePlayers(playerA, playerB, "healing")
+function BeltalowdaHdm.ComparePlayersByHealing(playerA, playerB)
+	return BeltalowdaHdm.ComparePlayers(playerA, playerB, "healing")
 end
 
-function RdKGToolHdm.AdjustControlSize()
-	RdKGToolHdm.AdjustViewMode()
-	local sizeIncrease = RdKGToolHdm.hdmVars.size - RdKGToolHdm.constants.size.SMALL
-	local width = (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width + (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].width - RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width) * sizeIncrease) / 2
-	--local width = RdKGToolHdm.config.sizes[RdKGToolHdm.hdmVars.size].width / 2
-	local height = math.floor(((RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height + (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].height - RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height) * sizeIncrease) - 30) / 24)
-	local playerFont = RdKGToolFonts.CreateFontString(RdKGToolFonts.constants.MEDIUM_FONT, RdKGToolFonts.constants.INPUT_KB, (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].fontSize + (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].fontSize - RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].fontSize) * sizeIncrease), RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
-	local rootControl = RdKGToolHdm.controls.hdmTLW.rootControl
+function BeltalowdaHdm.AdjustControlSize()
+	BeltalowdaHdm.AdjustViewMode()
+	local sizeIncrease = BeltalowdaHdm.hdmVars.size - BeltalowdaHdm.constants.size.SMALL
+	local width = (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width + (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].width - BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width) * sizeIncrease) / 2
+	--local width = BeltalowdaHdm.config.sizes[BeltalowdaHdm.hdmVars.size].width / 2
+	local height = math.floor(((BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height + (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].height - BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height) * sizeIncrease) - 30) / 24)
+	local playerFont = BeltalowdaFonts.CreateFontString(BeltalowdaFonts.constants.MEDIUM_FONT, BeltalowdaFonts.constants.INPUT_KB, (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].fontSize + (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].fontSize - BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].fontSize) * sizeIncrease), BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
+	local rootControl = BeltalowdaHdm.controls.hdmTLW.rootControl
 	local controls = {rootControl.healingControl, rootControl.damageControl}
 	for j = 1, #controls do
 		local control = controls[j]
@@ -428,23 +428,23 @@ function RdKGToolHdm.AdjustControlSize()
 	end
 end
 
-function RdKGToolHdm.GetCurrentSingleControlHeight(players)
-	local sizeIncrease = RdKGToolHdm.hdmVars.size - RdKGToolHdm.constants.size.SMALL
-	local height = (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height + (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].height - RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height) * sizeIncrease)
+function BeltalowdaHdm.GetCurrentSingleControlHeight(players)
+	local sizeIncrease = BeltalowdaHdm.hdmVars.size - BeltalowdaHdm.constants.size.SMALL
+	local height = (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height + (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].height - BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height) * sizeIncrease)
 	if players ~= nil then
-		height = 30 + math.floor(((RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height + (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].height - RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height) * sizeIncrease) - 30) / 24) * #players
+		height = 30 + math.floor(((BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height + (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].height - BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height) * sizeIncrease) - 30) / 24) * #players
 	end
 	return height
 end
 
-function RdKGToolHdm.AdjustViewMode()
-	local rootControl = RdKGToolHdm.controls.hdmTLW.rootControl
-	local sizeIncrease = RdKGToolHdm.hdmVars.size - RdKGToolHdm.constants.size.SMALL
-	local width = (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width + (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].width - RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].width) * sizeIncrease)
-	local height = (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height + (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].height - RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].height) * sizeIncrease)
-	local spacing = (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].spacing + (RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.BIG].spacing - RdKGToolHdm.config.sizes[RdKGToolHdm.constants.size.SMALL].spacing) * sizeIncrease)
-	if RdKGToolHdm.hdmVars.viewMode == RdKGToolHdm.constants.VIEWMODE_BOTH then
-		RdKGToolHdm.controls.hdmTLW:SetDimensions(width + spacing, height)
+function BeltalowdaHdm.AdjustViewMode()
+	local rootControl = BeltalowdaHdm.controls.hdmTLW.rootControl
+	local sizeIncrease = BeltalowdaHdm.hdmVars.size - BeltalowdaHdm.constants.size.SMALL
+	local width = (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width + (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].width - BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].width) * sizeIncrease)
+	local height = (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height + (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].height - BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].height) * sizeIncrease)
+	local spacing = (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].spacing + (BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.BIG].spacing - BeltalowdaHdm.config.sizes[BeltalowdaHdm.constants.size.SMALL].spacing) * sizeIncrease)
+	if BeltalowdaHdm.hdmVars.viewMode == BeltalowdaHdm.constants.VIEWMODE_BOTH then
+		BeltalowdaHdm.controls.hdmTLW:SetDimensions(width + spacing, height)
 		rootControl:SetDimensions(width, height)
 		rootControl.movableBackdrop:SetDimensions(width + spacing, height)
 		rootControl.damageControl:ClearAnchors()
@@ -453,14 +453,14 @@ function RdKGToolHdm.AdjustViewMode()
 		rootControl.healingControl:ClearAnchors()
 		rootControl.healingControl:SetAnchor(TOPLEFT, rootControl, TOPLEFT, width / 2 + spacing, 0)
 		rootControl.healingControl:SetHidden(false)
-		if RdKGToolHdm.state.registredGroupConsumer == true then
-			RdKGToolUtilGroup.RemoveGroupChangedCallback(RdKGToolHdm.callbackName)
-			RdKGToolHdm.state.registredGroupConsumer = false
+		if BeltalowdaHdm.state.registredGroupConsumer == true then
+			BeltalowdaUtilGroup.RemoveGroupChangedCallback(BeltalowdaHdm.callbackName)
+			BeltalowdaHdm.state.registredGroupConsumer = false
 		end
-	elseif RdKGToolHdm.hdmVars.viewMode == RdKGToolHdm.constants.VIEWMODE_BOTH_ON_TOP then
-		local players = RdKGToolUtilGroup.GetGroupInformation()
-		height = RdKGToolHdm.GetCurrentSingleControlHeight(players)
-		RdKGToolHdm.controls.hdmTLW:SetDimensions(width / 2, height * 2 + spacing)
+	elseif BeltalowdaHdm.hdmVars.viewMode == BeltalowdaHdm.constants.VIEWMODE_BOTH_ON_TOP then
+		local players = BeltalowdaUtilGroup.GetGroupInformation()
+		height = BeltalowdaHdm.GetCurrentSingleControlHeight(players)
+		BeltalowdaHdm.controls.hdmTLW:SetDimensions(width / 2, height * 2 + spacing)
 		rootControl:SetDimensions(width / 2, height * 2 + spacing)
 		rootControl.movableBackdrop:SetDimensions(width / 2, height * 2 + spacing)
 		rootControl.damageControl:ClearAnchors()
@@ -469,12 +469,12 @@ function RdKGToolHdm.AdjustViewMode()
 		rootControl.healingControl:ClearAnchors()
 		rootControl.healingControl:SetAnchor(TOPLEFT, rootControl, TOPLEFT, 0, height + spacing)
 		rootControl.healingControl:SetHidden(false)
-		if RdKGToolHdm.state.registredGroupConsumer == false then
-			RdKGToolUtilGroup.AddGroupChangedCallback(RdKGToolHdm.callbackName, RdKGToolHdm.AdjustViewMode)
-			RdKGToolHdm.state.registredGroupConsumer = true
+		if BeltalowdaHdm.state.registredGroupConsumer == false then
+			BeltalowdaUtilGroup.AddGroupChangedCallback(BeltalowdaHdm.callbackName, BeltalowdaHdm.AdjustViewMode)
+			BeltalowdaHdm.state.registredGroupConsumer = true
 		end
 	else
-		RdKGToolHdm.controls.hdmTLW:SetDimensions(width / 2, height)
+		BeltalowdaHdm.controls.hdmTLW:SetDimensions(width / 2, height)
 		rootControl:SetDimensions(width / 2, height)
 		rootControl.movableBackdrop:SetDimensions(width / 2, height)
 		rootControl.damageControl:SetHidden(true)
@@ -483,38 +483,38 @@ function RdKGToolHdm.AdjustViewMode()
 		rootControl.healingControl:SetHidden(true)
 		rootControl.healingControl:ClearAnchors()
 		rootControl.healingControl:SetAnchor(TOPLEFT, rootControl, TOPLEFT, 0, 0)
-		if RdKGToolHdm.hdmVars.viewMode == RdKGToolHdm.constants.VIEWMODE_HEALING then
+		if BeltalowdaHdm.hdmVars.viewMode == BeltalowdaHdm.constants.VIEWMODE_HEALING then
 			rootControl.healingControl:SetHidden(false)
-		elseif RdKGToolHdm.hdmVars.viewMode == RdKGToolHdm.constants.VIEWMODE_DAMAGE then
+		elseif BeltalowdaHdm.hdmVars.viewMode == BeltalowdaHdm.constants.VIEWMODE_DAMAGE then
 			rootControl.damageControl:SetHidden(false)
 		end
-		if RdKGToolHdm.state.registredGroupConsumer == true then
-			RdKGToolUtilGroup.RemoveGroupChangedCallback(RdKGToolHdm.callbackName)
-			RdKGToolHdm.state.registredGroupConsumer = false
+		if BeltalowdaHdm.state.registredGroupConsumer == true then
+			BeltalowdaUtilGroup.RemoveGroupChangedCallback(BeltalowdaHdm.callbackName)
+			BeltalowdaHdm.state.registredGroupConsumer = false
 		end
 	end
 end
 
-function RdKGToolHdm.GetPlayerDebuffs()
-	return RdKGToolDbo.GetPlayerDebuffs()
+function BeltalowdaHdm.GetPlayerDebuffs()
+	return BeltalowdaDbo.GetPlayerDebuffs()
 end
 
-function RdKGToolHdm.AdjustAutoClearEnabled()
-	RdKGToolUtilGroup.SetHdmAutoClearEnabled(RdKGToolHdm.hdmVars.autoClear)
+function BeltalowdaHdm.AdjustAutoClearEnabled()
+	BeltalowdaUtilGroup.SetHdmAutoClearEnabled(BeltalowdaHdm.hdmVars.autoClear)
 end
 
-function RdKGToolGroup.hdm.SlashCmd(param)
+function BeltalowdaGroup.hdm.SlashCmd(param)
 	--d(param)
 	if #param == 2 then
 		if param[2] == "clear" then
-			RdKGToolHdm.OnKeyBinding()
+			BeltalowdaHdm.OnKeyBinding()
 			return
 		end
 	end
-	RdKGToolChat.SendChatMessage(RdKGTool.config.constants.CMD_TEXT_MENU, RdKGToolHdm.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_NORMAL)
+	BeltalowdaChat.SendChatMessage(Beltalowda.config.constants.CMD_TEXT_MENU, BeltalowdaHdm.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_NORMAL)
 end
 
-function RdKGToolHdm.RegisterSpecificCombatEvent(name, sourceType, targetType, resultType, callback)
+function BeltalowdaHdm.RegisterSpecificCombatEvent(name, sourceType, targetType, resultType, callback)
 	EVENT_MANAGER:RegisterForEvent(name, EVENT_COMBAT_EVENT, callback)
 	--[[
 	if targetType ~= nil then
@@ -532,151 +532,151 @@ function RdKGToolHdm.RegisterSpecificCombatEvent(name, sourceType, targetType, r
 	
 end
 
-function RdKGToolHdm.RegisterCombatEvents()
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "1"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_DAMAGE, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "2"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_CRITICAL_DAMAGE, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "3"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_DOT_TICK, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "4"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_DOT_TICK_CRITICAL, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "5"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_DAMAGE_SHIELDED, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "6"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_BLOCKED_DAMAGE, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "7"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_DAMAGE, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "8"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_CRITICAL_DAMAGE, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "9"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_DOT_TICK, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "10"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_DOT_TICK_CRITICAL, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "11"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_DAMAGE_SHIELDED, RdKGToolHdm.OnCombatEventDamage)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "12"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_BLOCKED_DAMAGE, RdKGToolHdm.OnCombatEventDamage)
+function BeltalowdaHdm.RegisterCombatEvents()
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "1"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_DAMAGE, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "2"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_CRITICAL_DAMAGE, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "3"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_DOT_TICK, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "4"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_DOT_TICK_CRITICAL, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "5"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_DAMAGE_SHIELDED, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "6"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_BLOCKED_DAMAGE, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "7"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_DAMAGE, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "8"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_CRITICAL_DAMAGE, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "9"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_DOT_TICK, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "10"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_DOT_TICK_CRITICAL, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "11"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_DAMAGE_SHIELDED, BeltalowdaHdm.OnCombatEventDamage)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "12"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_BLOCKED_DAMAGE, BeltalowdaHdm.OnCombatEventDamage)
 	
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "13"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_HEAL, RdKGToolHdm.OnCombatEventHealing)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "14"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_CRITICAL_HEAL, RdKGToolHdm.OnCombatEventHealing)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "15"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_HOT_TICK, RdKGToolHdm.OnCombatEventHealing)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "16"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_HOT_TICK_CRITICAL, RdKGToolHdm.OnCombatEventHealing)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "17"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_HEAL_ABSORBED, RdKGToolHdm.OnCombatEventHealing)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "18"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_HEAL, RdKGToolHdm.OnCombatEventHealing)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "19"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_CRITICAL_HEAL, RdKGToolHdm.OnCombatEventHealing)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "20"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_HOT_TICK, RdKGToolHdm.OnCombatEventHealing)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "21"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_HOT_TICK_CRITICAL, RdKGToolHdm.OnCombatEventHealing)
-	RdKGToolHdm.RegisterSpecificCombatEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "22"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_HEAL_ABSORBED, RdKGToolHdm.OnCombatEventHealing)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "13"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_HEAL, BeltalowdaHdm.OnCombatEventHealing)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "14"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_CRITICAL_HEAL, BeltalowdaHdm.OnCombatEventHealing)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "15"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_HOT_TICK, BeltalowdaHdm.OnCombatEventHealing)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "16"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_HOT_TICK_CRITICAL, BeltalowdaHdm.OnCombatEventHealing)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "17"), COMBAT_UNIT_TYPE_PLAYER, nil, ACTION_RESULT_HEAL_ABSORBED, BeltalowdaHdm.OnCombatEventHealing)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "18"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_HEAL, BeltalowdaHdm.OnCombatEventHealing)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "19"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_CRITICAL_HEAL, BeltalowdaHdm.OnCombatEventHealing)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "20"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_HOT_TICK, BeltalowdaHdm.OnCombatEventHealing)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "21"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_HOT_TICK_CRITICAL, BeltalowdaHdm.OnCombatEventHealing)
+	BeltalowdaHdm.RegisterSpecificCombatEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "22"), COMBAT_UNIT_TYPE_PLAYER_PET, nil, ACTION_RESULT_HEAL_ABSORBED, BeltalowdaHdm.OnCombatEventHealing)
 end
 
-function RdKGToolHdm.UnregisterCombatEvents()
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "1"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "2"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "3"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "4"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "5"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "6"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "7"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "8"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "9"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "10"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "11"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "12"), EVENT_COMBAT_EVENT)
+function BeltalowdaHdm.UnregisterCombatEvents()
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "1"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "2"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "3"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "4"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "5"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "6"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "7"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "8"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "9"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "10"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "11"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "12"), EVENT_COMBAT_EVENT)
 	
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "13"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "14"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "15"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "16"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "17"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "18"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "19"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "20"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "21"), EVENT_COMBAT_EVENT)
-	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", RdKGToolHdm.callbackName, "22"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "13"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "14"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "15"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "16"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "17"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "18"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "19"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "20"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "21"), EVENT_COMBAT_EVENT)
+	EVENT_MANAGER:UnregisterForEvent(string.format("%s.%s", BeltalowdaHdm.callbackName, "22"), EVENT_COMBAT_EVENT)
 end
 
 --callbacks
-function RdKGToolHdm.OnProfileChanged(currentProfile)
+function BeltalowdaHdm.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolHdm.hdmVars = currentProfile.group.hdm
-		if RdKGToolHdm.state.initialized == true then
-			RdKGToolHdm.SetControlVisibility()
-			RdKGToolHdm.SetPositionLocked(RdKGToolHdm.hdmVars.positionLocked)
-			RdKGToolHdm.SetTlwLocation()
-			RdKGToolHdm.AdjustControlSize()
-			RdKGToolHdm.AdjustAutoClearEnabled()
+		BeltalowdaHdm.hdmVars = currentProfile.group.hdm
+		if BeltalowdaHdm.state.initialized == true then
+			BeltalowdaHdm.SetControlVisibility()
+			BeltalowdaHdm.SetPositionLocked(BeltalowdaHdm.hdmVars.positionLocked)
+			BeltalowdaHdm.SetTlwLocation()
+			BeltalowdaHdm.AdjustControlSize()
+			BeltalowdaHdm.AdjustAutoClearEnabled()
 		end
-		RdKGToolHdm.SetEnabled(RdKGToolHdm.hdmVars.enabled)
+		BeltalowdaHdm.SetEnabled(BeltalowdaHdm.hdmVars.enabled)
 		
 	end
 end
 
-function RdKGToolHdm.SaveHdmWindowLocation()
-	if RdKGToolHdm.hdmVars.positionLocked == false then
-		RdKGToolHdm.hdmVars.location = RdKGToolHdm.hdmVars.location or {}
-		RdKGToolHdm.hdmVars.location.x = RdKGToolHdm.controls.hdmTLW:GetLeft()
-		RdKGToolHdm.hdmVars.location.y = RdKGToolHdm.controls.hdmTLW:GetTop()
+function BeltalowdaHdm.SaveHdmWindowLocation()
+	if BeltalowdaHdm.hdmVars.positionLocked == false then
+		BeltalowdaHdm.hdmVars.location = BeltalowdaHdm.hdmVars.location or {}
+		BeltalowdaHdm.hdmVars.location.x = BeltalowdaHdm.controls.hdmTLW:GetLeft()
+		BeltalowdaHdm.hdmVars.location.y = BeltalowdaHdm.controls.hdmTLW:GetTop()
 	end
 end
 
-function RdKGToolHdm.OnPlayerActivated(eventCode, initial)
-	if RdKGToolHdm.hdmVars.enabled == true and (RdKGToolHdm.hdmVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true or RdKGToolHdm.hdmVars.pvpOnly == false) then
+function BeltalowdaHdm.OnPlayerActivated(eventCode, initial)
+	if BeltalowdaHdm.hdmVars.enabled == true and (BeltalowdaHdm.hdmVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true or BeltalowdaHdm.hdmVars.pvpOnly == false) then
 		--d("register")
-		if RdKGToolHdm.state.registredActiveConsumers == false then
-			EVENT_MANAGER:RegisterForEvent(RdKGToolHdm.callbackName, EVENT_ACTION_LAYER_POPPED, RdKGToolHdm.SetForegroundVisibility)
-			EVENT_MANAGER:RegisterForEvent(RdKGToolHdm.callbackName, EVENT_ACTION_LAYER_PUSHED, RdKGToolHdm.SetForegroundVisibility)
+		if BeltalowdaHdm.state.registredActiveConsumers == false then
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaHdm.callbackName, EVENT_ACTION_LAYER_POPPED, BeltalowdaHdm.SetForegroundVisibility)
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaHdm.callbackName, EVENT_ACTION_LAYER_PUSHED, BeltalowdaHdm.SetForegroundVisibility)
 			
-			RdKGToolHdm.RegisterCombatEvents()
-			--EVENT_MANAGER:RegisterForEvent(RdKGToolHdm.callbackName, EVENT_COMBAT_EVENT, RdKGToolHdm.OnCombatEvent)
-			RdKGToolUtilGroup.AddFeature(RdKGToolHdm.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_HP_DMG, RdKGToolHdm.config.invalidUpdateInterval)
-			RdKGToolUtilGroup.AddFeature(RdKGToolHdm.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_BUFFS, RdKGToolHdm.config.buffUpdateInterval)
-			--RdKGToolNetworking.AddRawMessageHandler(RdKGToolHdm.callbackName, RdKGToolHdm.HandleRawNetworkMessage)
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolHdm.hpCallbackName, RdKGToolHdm.state.hpDmgUpdateInterval, RdKGToolHdm.HpUpdateLoop)
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolHdm.uiCallbackName, RdKGToolHdm.state.uiUpdateInterval, RdKGToolHdm.UiLoop)
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolHdm.updateCallbackName, RdKGToolHdm.state.messageUpdateInterval, RdKGToolHdm.MessageUpdateLoop)
+			BeltalowdaHdm.RegisterCombatEvents()
+			--EVENT_MANAGER:RegisterForEvent(BeltalowdaHdm.callbackName, EVENT_COMBAT_EVENT, BeltalowdaHdm.OnCombatEvent)
+			BeltalowdaUtilGroup.AddFeature(BeltalowdaHdm.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_HP_DMG, BeltalowdaHdm.config.invalidUpdateInterval)
+			BeltalowdaUtilGroup.AddFeature(BeltalowdaHdm.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_BUFFS, BeltalowdaHdm.config.buffUpdateInterval)
+			--BeltalowdaNetworking.AddRawMessageHandler(BeltalowdaHdm.callbackName, BeltalowdaHdm.HandleRawNetworkMessage)
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaHdm.hpCallbackName, BeltalowdaHdm.state.hpDmgUpdateInterval, BeltalowdaHdm.HpUpdateLoop)
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaHdm.uiCallbackName, BeltalowdaHdm.state.uiUpdateInterval, BeltalowdaHdm.UiLoop)
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaHdm.updateCallbackName, BeltalowdaHdm.state.messageUpdateInterval, BeltalowdaHdm.MessageUpdateLoop)
 			
-			RdKGToolHdm.state.registredActiveConsumers = true
+			BeltalowdaHdm.state.registredActiveConsumers = true
 		end
-		if RdKGToolHdm.state.delayedLoopStarted == false and RdKGToolHdm.state.delayedLoopStarting == false then
-			RdKGToolHdm.state.delayedLoopStarting = true
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolHdm.callbackName, RdKGToolHdm.state.delayInterval, RdKGToolHdm.StartDmgLoop)
+		if BeltalowdaHdm.state.delayedLoopStarted == false and BeltalowdaHdm.state.delayedLoopStarting == false then
+			BeltalowdaHdm.state.delayedLoopStarting = true
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaHdm.callbackName, BeltalowdaHdm.state.delayInterval, BeltalowdaHdm.StartDmgLoop)
 		end
 	else
 		--d("unregister")
-		if RdKGToolHdm.state.registredActiveConsumers == true then
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolHdm.callbackName, EVENT_ACTION_LAYER_POPPED)
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolHdm.callbackName, EVENT_ACTION_LAYER_PUSHED)
+		if BeltalowdaHdm.state.registredActiveConsumers == true then
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaHdm.callbackName, EVENT_ACTION_LAYER_POPPED)
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaHdm.callbackName, EVENT_ACTION_LAYER_PUSHED)
 			
-			RdKGToolHdm.UnregisterCombatEvents()
-			--EVENT_MANAGER:UnregisterForEvent(RdKGToolHdm.callbackName, EVENT_COMBAT_EVENT)
-			RdKGToolUtilGroup.RemoveFeature(RdKGToolHdm.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_HP_DMG)
-			RdKGToolUtilGroup.RemoveFeature(RdKGToolHdm.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_BUFFS)
-			--RdKGToolNetworking.RemoveRawMessageHandler(RdKGToolHdm.callbackName)
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolHdm.hpCallbackName)
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolHdm.uiCallbackName)
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolHdm.updateCallbackName)
+			BeltalowdaHdm.UnregisterCombatEvents()
+			--EVENT_MANAGER:UnregisterForEvent(BeltalowdaHdm.callbackName, EVENT_COMBAT_EVENT)
+			BeltalowdaUtilGroup.RemoveFeature(BeltalowdaHdm.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_HP_DMG)
+			BeltalowdaUtilGroup.RemoveFeature(BeltalowdaHdm.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_BUFFS)
+			--BeltalowdaNetworking.RemoveRawMessageHandler(BeltalowdaHdm.callbackName)
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaHdm.hpCallbackName)
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaHdm.uiCallbackName)
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaHdm.updateCallbackName)
 			
-			RdKGToolHdm.state.registredActiveConsumers = false
+			BeltalowdaHdm.state.registredActiveConsumers = false
 		end
-		if RdKGToolHdm.state.delayedLoopStarting == true then
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolHdm.callbackName)
-			RdKGToolHdm.state.delayedLoopStarting = false
+		if BeltalowdaHdm.state.delayedLoopStarting == true then
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaHdm.callbackName)
+			BeltalowdaHdm.state.delayedLoopStarting = false
 		end
 	end
-	RdKGToolHdm.SetControlVisibility()
+	BeltalowdaHdm.SetControlVisibility()
 end
 
-function RdKGToolHdm.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
+function BeltalowdaHdm.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
 	if eventCode == EVENT_ACTION_LAYER_POPPED then
-		RdKGToolHdm.state.foreground = true
+		BeltalowdaHdm.state.foreground = true
 	elseif eventCode == EVENT_ACTION_LAYER_PUSHED then
-		RdKGToolHdm.state.foreground = false
+		BeltalowdaHdm.state.foreground = false
 	end
 	--hack?
-	RdKGToolHdm.state.activeLayerIndex = activeLayerIndex
+	BeltalowdaHdm.state.activeLayerIndex = activeLayerIndex
 	
-	RdKGToolHdm.SetControlVisibility()
+	BeltalowdaHdm.SetControlVisibility()
 end
 
-function RdKGToolHdm.OnCombatEventHealing(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, bLog, sourceUnitId, targetUnitId, abilityId)
+function BeltalowdaHdm.OnCombatEventHealing(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, bLog, sourceUnitId, targetUnitId, abilityId)
 	--d("----------------")
 	--d("healing")
 	--d(sourceType)
 	--d(targetType)
 	--d(result)
 	if sourceName ~= targetName and hitValue > 0 then
-		local unit = RdKGToolUtilGroup.GetUnitFromRawCharName(targetName)
+		local unit = BeltalowdaUtilGroup.GetUnitFromRawCharName(targetName)
 		if unit ~= nil then
-			RdKGToolHdm.state.meter.healing = RdKGToolHdm.state.meter.healing + hitValue
+			BeltalowdaHdm.state.meter.healing = BeltalowdaHdm.state.meter.healing + hitValue
 			--d("----------------")
 			--d("new: " .. sourceType)
 			--d("new: " .. targetType)
@@ -685,7 +685,7 @@ function RdKGToolHdm.OnCombatEventHealing(eventCode, result, isError, abilityNam
 	end
 end
 
-function RdKGToolHdm.OnCombatEventDamage(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, bLog, sourceUnitId, targetUnitId, abilityId)
+function BeltalowdaHdm.OnCombatEventDamage(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, bLog, sourceUnitId, targetUnitId, abilityId)
 	--d("----------------")
 	--d("damage")
 	--d("new: " .. sourceType)
@@ -697,11 +697,11 @@ function RdKGToolHdm.OnCombatEventDamage(eventCode, result, isError, abilityName
 		--d("new: " .. sourceType)
 		--d("new: " .. targetType)
 		--d("new: " .. result)
-		RdKGToolHdm.state.meter.damage = RdKGToolHdm.state.meter.damage + hitValue
+		BeltalowdaHdm.state.meter.damage = BeltalowdaHdm.state.meter.damage + hitValue
 	end
 end
 
-function RdKGToolHdm.OnCombatEvent(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, bLog, sourceUnitId, targetUnitId, abilityId)
+function BeltalowdaHdm.OnCombatEvent(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, bLog, sourceUnitId, targetUnitId, abilityId)
 	if eventCode == EVENT_COMBAT_EVENT then
 		--d(targetName)
 		if sourceType == COMBAT_UNIT_TYPE_PLAYER or sourceType == COMBAT_UNIT_TYPE_PLAYER_PET then
@@ -715,7 +715,7 @@ function RdKGToolHdm.OnCombatEvent(eventCode, result, isError, abilityName, abil
 			or   result == ACTION_RESULT_DAMAGE_SHIELDED or result == ACTION_RESULT_BLOCKED_DAMAGE
 			) and sourceName ~= targetName and hitValue > 0 then
 				--and targetType == COMBAT_UNIT_TYPE_PLAYER
-				RdKGToolHdm.state.meter.damage = RdKGToolHdm.state.meter.damage + hitValue
+				BeltalowdaHdm.state.meter.damage = BeltalowdaHdm.state.meter.damage + hitValue
 				--d("----------------")
 				--d("old: " .. sourceType)
 				--d("old: " .. targetType)
@@ -728,7 +728,7 @@ function RdKGToolHdm.OnCombatEvent(eventCode, result, isError, abilityName, abil
 			   sourceName ~= targetName and hitValue > 0 then
 			   --d("hv2: " .. hitValue)
 				--d(targetName)
-				local unit = RdKGToolUtilGroup.GetUnitFromRawCharName(targetName)
+				local unit = BeltalowdaUtilGroup.GetUnitFromRawCharName(targetName)
 				--d(unitTag)
 				if unit ~= nil then
 					local current, maximum, effectiveMax = GetUnitPower(unit.unitTag, POWERTYPE_HEALTH)
@@ -746,7 +746,7 @@ function RdKGToolHdm.OnCombatEvent(eventCode, result, isError, abilityName, abil
 					--		dif = hitValue
 					--	end
 						--d(dif)
-						RdKGToolHdm.state.meter.healing = RdKGToolHdm.state.meter.healing + hitValue
+						BeltalowdaHdm.state.meter.healing = BeltalowdaHdm.state.meter.healing + hitValue
 					--end
 					--d("----------------")
 					--d("old: " .. sourceType)
@@ -759,119 +759,119 @@ function RdKGToolHdm.OnCombatEvent(eventCode, result, isError, abilityName, abil
 	end
 end
 
-function RdKGToolHdm.StartDmgLoop()
-	if RdKGToolHdm.state.delayCount == 1 then
-		RdKGToolHdm.state.delayedLoopStarting = false
-		RdKGToolHdm.state.delayedLoopStarted = true
-		EVENT_MANAGER:UnregisterForUpdate(RdKGToolHdm.callbackName)
-		EVENT_MANAGER:RegisterForUpdate(RdKGToolHdm.dmgCallbackName, RdKGToolHdm.state.hpDmgUpdateInterval, RdKGToolHdm.DmgUpdateLoop)
+function BeltalowdaHdm.StartDmgLoop()
+	if BeltalowdaHdm.state.delayCount == 1 then
+		BeltalowdaHdm.state.delayedLoopStarting = false
+		BeltalowdaHdm.state.delayedLoopStarted = true
+		EVENT_MANAGER:UnregisterForUpdate(BeltalowdaHdm.callbackName)
+		EVENT_MANAGER:RegisterForUpdate(BeltalowdaHdm.dmgCallbackName, BeltalowdaHdm.state.hpDmgUpdateInterval, BeltalowdaHdm.DmgUpdateLoop)
 	else
-		RdKGToolHdm.state.delayCount = RdKGToolHdm.state.delayCount + 1
+		BeltalowdaHdm.state.delayCount = BeltalowdaHdm.state.delayCount + 1
 	end
 end
 
-function RdKGToolHdm.MessageUpdateLoop()
-	if RdKGToolHdm.hdmVars.pvpOnly == false or (RdKGToolHdm.hdmVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true) then
-		if RdKGToolHdm.state.meter.lastDamageMessage ~= nil and RdKGToolHdm.state.meter.lastDamageMessage.sent == false then
-			local message = RdKGToolHdm.state.meter.lastDamageMessage
-			local damage = RdKGToolNetworking.DecodeInt24(message.b1, message.b2, message.b3)
+function BeltalowdaHdm.MessageUpdateLoop()
+	if BeltalowdaHdm.hdmVars.pvpOnly == false or (BeltalowdaHdm.hdmVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true) then
+		if BeltalowdaHdm.state.meter.lastDamageMessage ~= nil and BeltalowdaHdm.state.meter.lastDamageMessage.sent == false then
+			local message = BeltalowdaHdm.state.meter.lastDamageMessage
+			local damage = BeltalowdaNetworking.DecodeInt24(message.b1, message.b2, message.b3)
 			
-			local damageValue = RdKGToolHdm.state.meter.damage
-			damage = RdKGToolMath.Int24ToArray(damage)
+			local damageValue = BeltalowdaHdm.state.meter.damage
+			damage = BeltalowdaMath.Int24ToArray(damage)
 			damage[22] = 0
 			damage[23] = 0
 			damage[24] = 0
-			damage = RdKGToolMath.ArrayToInt24(damage)
+			damage = BeltalowdaMath.ArrayToInt24(damage)
 			damageValue = damageValue + damage
 			if damageValue > 2097151 then
 				damageValue = 2097151
 			end
-			damageValue = RdKGToolMath.Int24ToArray(damageValue)
-			local debuffs = RdKGToolHdm.GetPlayerDebuffs()
+			damageValue = BeltalowdaMath.Int24ToArray(damageValue)
+			local debuffs = BeltalowdaHdm.GetPlayerDebuffs()
 			if debuffs > 7 then
 				debuffs = 7
 			end
-			debuffs = RdKGToolMath.DecodeBitArrayHelper(debuffs)
+			debuffs = BeltalowdaMath.DecodeBitArrayHelper(debuffs)
 			damageValue[22] = debuffs[1]
 			damageValue[23] = debuffs[2]
 			damageValue[24] = debuffs[3]
-			damageValue = RdKGToolMath.ArrayToInt24(damageValue)
+			damageValue = BeltalowdaMath.ArrayToInt24(damageValue)
 			
 			
-			RdKGToolHdm.state.meter.damage = 0
+			BeltalowdaHdm.state.meter.damage = 0
 			--Ignore the fact that this value could exceed 24bit => 16'777'215 but this should be hardly the case and therefore for simplicity ignored.
 			--Ignore the fact that it is only 2097151 now
-			message.b1, message.b2, message.b3 = RdKGToolNetworking.EncodeInt24(damageValue)
+			message.b1, message.b2, message.b3 = BeltalowdaNetworking.EncodeInt24(damageValue)
 		end
 		
-		if RdKGToolHdm.state.meter.lastHpMessage ~= nil and RdKGToolHdm.state.meter.lastHpMessage.sent == false then
-			local message = RdKGToolHdm.state.meter.lastHpMessage
-			local healing = RdKGToolNetworking.DecodeInt24(message.b1, message.b2, message.b3)
+		if BeltalowdaHdm.state.meter.lastHpMessage ~= nil and BeltalowdaHdm.state.meter.lastHpMessage.sent == false then
+			local message = BeltalowdaHdm.state.meter.lastHpMessage
+			local healing = BeltalowdaNetworking.DecodeInt24(message.b1, message.b2, message.b3)
 			
-			local healingValue = RdKGToolHdm.state.meter.healing
-			healing = RdKGToolMath.Int24ToArray(healing)
+			local healingValue = BeltalowdaHdm.state.meter.healing
+			healing = BeltalowdaMath.Int24ToArray(healing)
 			healing[22] = 0
 			healing[23] = 0
 			healing[24] = 0
-			healing = RdKGToolMath.ArrayToInt24(healing)
+			healing = BeltalowdaMath.ArrayToInt24(healing)
 			healingValue = healingValue + healing
 			if healingValue > 2097151 then
 				healingValue = 2097151
 			end
-			healingValue = RdKGToolMath.Int24ToArray(healingValue)
-			local debuffs = RdKGToolHdm.GetPlayerDebuffs()
+			healingValue = BeltalowdaMath.Int24ToArray(healingValue)
+			local debuffs = BeltalowdaHdm.GetPlayerDebuffs()
 			if debuffs > 7 then
 				debuffs = 7
 			end
-			debuffs = RdKGToolMath.DecodeBitArrayHelper(debuffs)
+			debuffs = BeltalowdaMath.DecodeBitArrayHelper(debuffs)
 			healingValue[22] = debuffs[1]
 			healingValue[23] = debuffs[2]
 			healingValue[24] = debuffs[3]
-			healingValue = RdKGToolMath.ArrayToInt24(healingValue)
+			healingValue = BeltalowdaMath.ArrayToInt24(healingValue)
 			
-			RdKGToolHdm.state.meter.healing = 0
+			BeltalowdaHdm.state.meter.healing = 0
 			--Ignore the fact that this value could exceed 24bit => 16'777'215 but this should be hardly the case and therefore for simplicity ignored.
-			message.b1, message.b2, message.b3 = RdKGToolNetworking.EncodeInt24(healingValue)
+			message.b1, message.b2, message.b3 = BeltalowdaNetworking.EncodeInt24(healingValue)
 		end
 	end
 end
 
-function RdKGToolHdm.UiLoop()
-	if RdKGToolHdm.hdmVars.pvpOnly == false or (RdKGToolHdm.hdmVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true) then
-		local players = RdKGToolUtilGroup.GetGroupInformation()
-		local damageControl = RdKGToolHdm.controls.hdmTLW.rootControl.damageControl.playerBlocks
-		local healingControl = RdKGToolHdm.controls.hdmTLW.rootControl.healingControl.playerBlocks
+function BeltalowdaHdm.UiLoop()
+	if BeltalowdaHdm.hdmVars.pvpOnly == false or (BeltalowdaHdm.hdmVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true) then
+		local players = BeltalowdaUtilGroup.GetGroupInformation()
+		local damageControl = BeltalowdaHdm.controls.hdmTLW.rootControl.damageControl.playerBlocks
+		local healingControl = BeltalowdaHdm.controls.hdmTLW.rootControl.healingControl.playerBlocks
 		if players ~= nil then
-			local damageList, totalDamage = RdKGToolHdm.CopyPlayersIncludingTotals(players, "damage")
-			local healingList, totalHealing = RdKGToolHdm.CopyPlayersIncludingTotals(players, "healing")
+			local damageList, totalDamage = BeltalowdaHdm.CopyPlayersIncludingTotals(players, "damage")
+			local healingList, totalHealing = BeltalowdaHdm.CopyPlayersIncludingTotals(players, "healing")
 			--d(totalDamage)
 			
-			table.sort(damageList, RdKGToolHdm.ComparePlayersByDamage)
-			table.sort(healingList, RdKGToolHdm.ComparePlayersByHealing)
+			table.sort(damageList, BeltalowdaHdm.ComparePlayersByDamage)
+			table.sort(healingList, BeltalowdaHdm.ComparePlayersByHealing)
 			for i = 1, #damageList do
 				--Dmg
 				
 				if damageList[i].meter ~= nil and damageList[i].meter.damage ~= nil then
 					local isDps, isHealer, isTank = GetGroupMemberRoles(damageList[i].unitTag)
-					local alpha = RdKGToolHdm.config.backgroundEven
-					if RdKGToolHdm.hdmVars.useAlpha == true then
+					local alpha = BeltalowdaHdm.config.backgroundEven
+					if BeltalowdaHdm.hdmVars.useAlpha == true then
 						if i % 2 == 1 then
-							alpha = RdKGToolHdm.config.backgroundOdd
+							alpha = BeltalowdaHdm.config.backgroundOdd
 						end
 					end
 					local color = {r = 0, g = 0, b = 0}
-					if RdKGToolHdm.hdmVars.useColors == true then
+					if BeltalowdaHdm.hdmVars.useColors == true then
 						if isDps == true then
-							color = RdKGToolHdm.hdmVars.backgroundColor.dd
+							color = BeltalowdaHdm.hdmVars.backgroundColor.dd
 						elseif isHealer == true then
-							color = RdKGToolHdm.hdmVars.backgroundColor.healer
+							color = BeltalowdaHdm.hdmVars.backgroundColor.healer
 						elseif isTank == true then
-							color = RdKGToolHdm.hdmVars.backgroundColor.tank
+							color = BeltalowdaHdm.hdmVars.backgroundColor.tank
 						end
 					end
-					if RdKGToolHdm.hdmVars.highlightApplicant == true then
-						if damageList[i].role == RdKGToolUtilGroup.constants.roles.ROLE_APPLICANT then
-							color = RdKGToolHdm.hdmVars.backgroundColor.applicant
+					if BeltalowdaHdm.hdmVars.highlightApplicant == true then
+						if damageList[i].role == BeltalowdaUtilGroup.constants.roles.ROLE_APPLICANT then
+							color = BeltalowdaHdm.hdmVars.backgroundColor.applicant
 						end
 					end
 					damageControl[i].nameBackdrop:SetCenterColor(color.r, color.g, color.b, alpha)
@@ -884,17 +884,17 @@ function RdKGToolHdm.UiLoop()
 					if damageList[i].meter.damage == 0 then
 						damagePercent = 0
 					end
-					local formatString = RdKGToolHdm.constants.LABEL_VALUE_FORMAT
+					local formatString = BeltalowdaHdm.constants.LABEL_VALUE_FORMAT
 					if damagePercent < 10 then
-						formatString = RdKGToolHdm.constants.LABEL_VALUE_FORMAT_2
+						formatString = BeltalowdaHdm.constants.LABEL_VALUE_FORMAT_2
 					end
 					damageControl[i].value:SetText(string.format(formatString, damageList[i].meter.damage, damagePercent))
 					if IsUnitDead(damageList[i].unitTag) == true then
-						damageControl[i].name:SetColor(RdKGToolHdm.hdmVars.deadColor.r, RdKGToolHdm.hdmVars.deadColor.g, RdKGToolHdm.hdmVars.deadColor.b)
-						damageControl[i].value:SetColor(RdKGToolHdm.hdmVars.deadColor.r, RdKGToolHdm.hdmVars.deadColor.g, RdKGToolHdm.hdmVars.deadColor.b)
+						damageControl[i].name:SetColor(BeltalowdaHdm.hdmVars.deadColor.r, BeltalowdaHdm.hdmVars.deadColor.g, BeltalowdaHdm.hdmVars.deadColor.b)
+						damageControl[i].value:SetColor(BeltalowdaHdm.hdmVars.deadColor.r, BeltalowdaHdm.hdmVars.deadColor.g, BeltalowdaHdm.hdmVars.deadColor.b)
 					else
-						damageControl[i].name:SetColor(RdKGToolHdm.hdmVars.aliveColor.r, RdKGToolHdm.hdmVars.aliveColor.g, RdKGToolHdm.hdmVars.aliveColor.b)
-						damageControl[i].value:SetColor(RdKGToolHdm.hdmVars.aliveColor.r, RdKGToolHdm.hdmVars.aliveColor.g, RdKGToolHdm.hdmVars.aliveColor.b)
+						damageControl[i].name:SetColor(BeltalowdaHdm.hdmVars.aliveColor.r, BeltalowdaHdm.hdmVars.aliveColor.g, BeltalowdaHdm.hdmVars.aliveColor.b)
+						damageControl[i].value:SetColor(BeltalowdaHdm.hdmVars.aliveColor.r, BeltalowdaHdm.hdmVars.aliveColor.g, BeltalowdaHdm.hdmVars.aliveColor.b)
 					end
 				else
 					damageControl[i].name:SetText("")
@@ -903,25 +903,25 @@ function RdKGToolHdm.UiLoop()
 				--Hp
 				if healingList[i].meter ~= nil and healingList[i].meter.healing ~= nil then
 					local isDps, isHealer, isTank = GetGroupMemberRoles(healingList[i].unitTag)
-					local alpha = RdKGToolHdm.config.backgroundEven
-					if RdKGToolHdm.hdmVars.useAlpha == true then
+					local alpha = BeltalowdaHdm.config.backgroundEven
+					if BeltalowdaHdm.hdmVars.useAlpha == true then
 						if i % 2 == 1 then
-							alpha = RdKGToolHdm.config.backgroundOdd
+							alpha = BeltalowdaHdm.config.backgroundOdd
 						end
 					end
 					local color = {r = 0, g = 0, b = 0}
-					if RdKGToolHdm.hdmVars.useColors == true then
+					if BeltalowdaHdm.hdmVars.useColors == true then
 						if isDps == true then
-							color = RdKGToolHdm.hdmVars.backgroundColor.dd
+							color = BeltalowdaHdm.hdmVars.backgroundColor.dd
 						elseif isHealer == true then
-							color = RdKGToolHdm.hdmVars.backgroundColor.healer
+							color = BeltalowdaHdm.hdmVars.backgroundColor.healer
 						elseif isTank == true then
-							color = RdKGToolHdm.hdmVars.backgroundColor.tank
+							color = BeltalowdaHdm.hdmVars.backgroundColor.tank
 						end
 					end
-					if RdKGToolHdm.hdmVars.highlightApplicant == true then
-						if healingList[i].role == RdKGToolUtilGroup.constants.roles.ROLE_APPLICANT then
-							color = RdKGToolHdm.hdmVars.backgroundColor.applicant
+					if BeltalowdaHdm.hdmVars.highlightApplicant == true then
+						if healingList[i].role == BeltalowdaUtilGroup.constants.roles.ROLE_APPLICANT then
+							color = BeltalowdaHdm.hdmVars.backgroundColor.applicant
 						end
 					end
 					healingControl[i].nameBackdrop:SetCenterColor(color.r, color.g, color.b, alpha)
@@ -934,17 +934,17 @@ function RdKGToolHdm.UiLoop()
 					if healingList[i].meter.healing == 0 then
 						healingPercent = 0
 					end
-					local formatString = RdKGToolHdm.constants.LABEL_VALUE_FORMAT
+					local formatString = BeltalowdaHdm.constants.LABEL_VALUE_FORMAT
 					if healingPercent < 10 then
-						formatString = RdKGToolHdm.constants.LABEL_VALUE_FORMAT_2
+						formatString = BeltalowdaHdm.constants.LABEL_VALUE_FORMAT_2
 					end
 					healingControl[i].value:SetText(string.format(formatString, healingList[i].meter.healing, healingPercent))
 					if IsUnitDead(healingList[i].unitTag) == true then
-						healingControl[i].name:SetColor(RdKGToolHdm.hdmVars.deadColor.r, RdKGToolHdm.hdmVars.deadColor.g, RdKGToolHdm.hdmVars.deadColor.b)
-						healingControl[i].value:SetColor(RdKGToolHdm.hdmVars.deadColor.r, RdKGToolHdm.hdmVars.deadColor.g, RdKGToolHdm.hdmVars.deadColor.b)
+						healingControl[i].name:SetColor(BeltalowdaHdm.hdmVars.deadColor.r, BeltalowdaHdm.hdmVars.deadColor.g, BeltalowdaHdm.hdmVars.deadColor.b)
+						healingControl[i].value:SetColor(BeltalowdaHdm.hdmVars.deadColor.r, BeltalowdaHdm.hdmVars.deadColor.g, BeltalowdaHdm.hdmVars.deadColor.b)
 					else
-						healingControl[i].name:SetColor(RdKGToolHdm.hdmVars.aliveColor.r, RdKGToolHdm.hdmVars.aliveColor.g, RdKGToolHdm.hdmVars.aliveColor.b)
-						healingControl[i].value:SetColor(RdKGToolHdm.hdmVars.aliveColor.r, RdKGToolHdm.hdmVars.aliveColor.g, RdKGToolHdm.hdmVars.aliveColor.b)
+						healingControl[i].name:SetColor(BeltalowdaHdm.hdmVars.aliveColor.r, BeltalowdaHdm.hdmVars.aliveColor.g, BeltalowdaHdm.hdmVars.aliveColor.b)
+						healingControl[i].value:SetColor(BeltalowdaHdm.hdmVars.aliveColor.r, BeltalowdaHdm.hdmVars.aliveColor.g, BeltalowdaHdm.hdmVars.aliveColor.b)
 					end
 				else
 					healingControl[i].name:SetText("")
@@ -984,195 +984,195 @@ function RdKGToolHdm.UiLoop()
 	end
 end
 
-function RdKGToolHdm.HpUpdateLoop()
-	if RdKGToolHdm.hdmVars.pvpOnly == false or (RdKGToolHdm.hdmVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true) then
+function BeltalowdaHdm.HpUpdateLoop()
+	if BeltalowdaHdm.hdmVars.pvpOnly == false or (BeltalowdaHdm.hdmVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true) then
 		--d("hp loop")
-		if RdKGToolHdm.state.meter.lastHpMessage == nil or RdKGToolHdm.state.meter.lastHpMessage.sent == true then
-			if RdKGToolHdm.state.meter.healing > 0 then
+		if BeltalowdaHdm.state.meter.lastHpMessage == nil or BeltalowdaHdm.state.meter.lastHpMessage.sent == true then
+			if BeltalowdaHdm.state.meter.healing > 0 then
 				local message = {}
-				message.b0 = RdKGToolNetworking.messageTypes.MESSAGE_ID_HP
+				message.b0 = BeltalowdaNetworking.messageTypes.MESSAGE_ID_HP
 				
-				local healValue = RdKGToolHdm.state.meter.healing
+				local healValue = BeltalowdaHdm.state.meter.healing
 				if healValue > 2097151 then
 					healValue = 2097151
 				end
-				healValue = RdKGToolMath.Int24ToArray(healValue)
-				local debuffs = RdKGToolHdm.GetPlayerDebuffs()
+				healValue = BeltalowdaMath.Int24ToArray(healValue)
+				local debuffs = BeltalowdaHdm.GetPlayerDebuffs()
 				if debuffs > 7 then
 					debuffs = 7
 				end
-				debuffs = RdKGToolMath.DecodeBitArrayHelper(debuffs)
+				debuffs = BeltalowdaMath.DecodeBitArrayHelper(debuffs)
 				healValue[22] = debuffs[1]
 				healValue[23] = debuffs[2]
 				healValue[24] = debuffs[3]
-				healValue = RdKGToolMath.ArrayToInt24(healValue)
+				healValue = BeltalowdaMath.ArrayToInt24(healValue)
 				
-				message.b1, message.b2, message.b3 = RdKGToolNetworking.EncodeInt24(healValue)
-				RdKGToolHdm.state.meter.healing = 0
+				message.b1, message.b2, message.b3 = BeltalowdaNetworking.EncodeInt24(healValue)
+				BeltalowdaHdm.state.meter.healing = 0
 				message.sent = false
-				RdKGToolNetworking.SendMessage(message, RdKGToolNetworking.constants.priorities.MEDIUM)
-				RdKGToolHdm.state.meter.lastHpMessage = message
+				BeltalowdaNetworking.SendMessage(message, BeltalowdaNetworking.constants.priorities.MEDIUM)
+				BeltalowdaHdm.state.meter.lastHpMessage = message
 			else
-				RdKGToolHdm.state.meter.lastHpMessage = nil
+				BeltalowdaHdm.state.meter.lastHpMessage = nil
 			end
 		end
 	end
 end
 
-function RdKGToolHdm.DmgUpdateLoop()
-	if RdKGToolHdm.hdmVars.pvpOnly == false or (RdKGToolHdm.hdmVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true) then
+function BeltalowdaHdm.DmgUpdateLoop()
+	if BeltalowdaHdm.hdmVars.pvpOnly == false or (BeltalowdaHdm.hdmVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true) then
 		--d("dmg loop")
-		if RdKGToolHdm.state.meter.lastDamageMessage == nil or RdKGToolHdm.state.meter.lastDamageMessage.sent == true then
-			if RdKGToolHdm.state.meter.damage > 0 then
+		if BeltalowdaHdm.state.meter.lastDamageMessage == nil or BeltalowdaHdm.state.meter.lastDamageMessage.sent == true then
+			if BeltalowdaHdm.state.meter.damage > 0 then
 				local message = {}
-				message.b0 = RdKGToolNetworking.messageTypes.MESSAGE_ID_DMG
+				message.b0 = BeltalowdaNetworking.messageTypes.MESSAGE_ID_DMG
 				
-				local damageValue = RdKGToolHdm.state.meter.damage
+				local damageValue = BeltalowdaHdm.state.meter.damage
 				if damageValue > 2097151 then
 					damageValue = 2097151
 				end
-				damageValue = RdKGToolMath.Int24ToArray(damageValue)
-				local debuffs = RdKGToolHdm.GetPlayerDebuffs()
+				damageValue = BeltalowdaMath.Int24ToArray(damageValue)
+				local debuffs = BeltalowdaHdm.GetPlayerDebuffs()
 				if debuffs > 7 then
 					debuffs = 7
 				end
-				debuffs = RdKGToolMath.DecodeBitArrayHelper(debuffs)
+				debuffs = BeltalowdaMath.DecodeBitArrayHelper(debuffs)
 				damageValue[22] = debuffs[1]
 				damageValue[23] = debuffs[2]
 				damageValue[24] = debuffs[3]
-				damageValue = RdKGToolMath.ArrayToInt24(damageValue)
+				damageValue = BeltalowdaMath.ArrayToInt24(damageValue)
 				
-				message.b1, message.b2, message.b3 = RdKGToolNetworking.EncodeInt24(damageValue)
-				RdKGToolHdm.state.meter.damage = 0
+				message.b1, message.b2, message.b3 = BeltalowdaNetworking.EncodeInt24(damageValue)
+				BeltalowdaHdm.state.meter.damage = 0
 				message.sent = false
-				RdKGToolNetworking.SendMessage(message, RdKGToolNetworking.constants.priorities.MEDIUM)
-				RdKGToolHdm.state.meter.lastDamageMessage = message
+				BeltalowdaNetworking.SendMessage(message, BeltalowdaNetworking.constants.priorities.MEDIUM)
+				BeltalowdaHdm.state.meter.lastDamageMessage = message
 			else
-				RdKGToolHdm.state.meter.lastDamageMessage = nil
+				BeltalowdaHdm.state.meter.lastDamageMessage = nil
 			end
 		end
 	end
 end
 
-function RdKGToolHdm.OnKeyBinding()
-	RdKGToolUtilGroup.ClearDamageHealingMeter()
+function BeltalowdaHdm.OnKeyBinding()
+	BeltalowdaUtilGroup.ClearDamageHealingMeter()
 end
 
 --menu interactions
-function RdKGToolHdm.GetMenu()
+function BeltalowdaHdm.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.HDM_HEADER,
+			name = BeltalowdaMenu.constants.HDM_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.HDM_ENABLED,
-					getFunc = RdKGToolHdm.GetHdmEnabled,
-					setFunc = RdKGToolHdm.SetHdmEnabled
+					name = BeltalowdaMenu.constants.HDM_ENABLED,
+					getFunc = BeltalowdaHdm.GetHdmEnabled,
+					setFunc = BeltalowdaHdm.SetHdmEnabled
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.HDM_POSITION_FIXED,
-					getFunc = RdKGToolHdm.GetHdmPositionLocked,
-					setFunc = RdKGToolHdm.SetHdmPositionLocked
+					name = BeltalowdaMenu.constants.HDM_POSITION_FIXED,
+					getFunc = BeltalowdaHdm.GetHdmPositionLocked,
+					setFunc = BeltalowdaHdm.SetHdmPositionLocked
 				},
 				[3] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.HDM_PVP_ONLY,
-					getFunc = RdKGToolHdm.GetHdmPvpOnly,
-					setFunc = RdKGToolHdm.SetHdmPvpOnly
+					name = BeltalowdaMenu.constants.HDM_PVP_ONLY,
+					getFunc = BeltalowdaHdm.GetHdmPvpOnly,
+					setFunc = BeltalowdaHdm.SetHdmPvpOnly
 				},
 				[4] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.HDM_WINDOW_ENABLED,
-					getFunc = RdKGToolHdm.GetHdmWindowEnabled,
-					setFunc = RdKGToolHdm.SetHdmWindowEnabled
+					name = BeltalowdaMenu.constants.HDM_WINDOW_ENABLED,
+					getFunc = BeltalowdaHdm.GetHdmWindowEnabled,
+					setFunc = BeltalowdaHdm.SetHdmWindowEnabled
 				},
 				[5] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.HDM_USING_ALPHA,
-					getFunc = RdKGToolHdm.GetHdmUsingAlphaEnabled,
-					setFunc = RdKGToolHdm.SetHdmUsingAlphaEnabled
+					name = BeltalowdaMenu.constants.HDM_USING_ALPHA,
+					getFunc = BeltalowdaHdm.GetHdmUsingAlphaEnabled,
+					setFunc = BeltalowdaHdm.SetHdmUsingAlphaEnabled
 				},
 				[6] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.HDM_USING_COLORS,
-					getFunc = RdKGToolHdm.GetHdmUsingColorsEnabled,
-					setFunc = RdKGToolHdm.SetHdmUsingColorsEnabled
+					name = BeltalowdaMenu.constants.HDM_USING_COLORS,
+					getFunc = BeltalowdaHdm.GetHdmUsingColorsEnabled,
+					setFunc = BeltalowdaHdm.SetHdmUsingColorsEnabled
 				},
 				[7] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.HDM_USING_HIGHLIGHT_APPLICANT,
-					getFunc = RdKGToolHdm.GetHdmUsingApplicantHighlightEnabled,
-					setFunc = RdKGToolHdm.SetHdmUsingApplicantHighlightEnabled
+					name = BeltalowdaMenu.constants.HDM_USING_HIGHLIGHT_APPLICANT,
+					getFunc = BeltalowdaHdm.GetHdmUsingApplicantHighlightEnabled,
+					setFunc = BeltalowdaHdm.SetHdmUsingApplicantHighlightEnabled
 				},
 				[8] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.HDM_AUTO_RESET,
-					getFunc = RdKGToolHdm.GetHdmAutoReset,
-					setFunc = RdKGToolHdm.SetHdmAutoReset
+					name = BeltalowdaMenu.constants.HDM_AUTO_RESET,
+					getFunc = BeltalowdaHdm.GetHdmAutoReset,
+					setFunc = BeltalowdaHdm.SetHdmAutoReset
 				},
 				[9] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.HDM_SELECTED_VIEWMODE,
-					choices = RdKGToolHdm.GetHdmAvailableViewModes(),
-					getFunc = RdKGToolHdm.GetHdmSelectedViewMode,
-					setFunc = RdKGToolHdm.SetHdmSelectedViewMode,
+					name = BeltalowdaMenu.constants.HDM_SELECTED_VIEWMODE,
+					choices = BeltalowdaHdm.GetHdmAvailableViewModes(),
+					getFunc = BeltalowdaHdm.GetHdmSelectedViewMode,
+					setFunc = BeltalowdaHdm.SetHdmSelectedViewMode,
 					width = "full"
 				},
 				[10] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.HDM_SIZE,
+					name = BeltalowdaMenu.constants.HDM_SIZE,
 					min = 1.0,
 					max = 2.0,
 					step = 0.01,
-					getFunc = RdKGToolHdm.GetHdmSelectedSize,
-					setFunc = RdKGToolHdm.SetHdmSelectedSize,
+					getFunc = BeltalowdaHdm.GetHdmSelectedSize,
+					setFunc = BeltalowdaHdm.SetHdmSelectedSize,
 					width = "full",
 					decimals = 2,
 					default = 1.0
 				},
 				[11] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.HDM_ALIVE_COLOR,
-					getFunc = RdKGToolHdm.GetHdmAliveColor,
-					setFunc = RdKGToolHdm.SetHdmAliveColor,
+					name = BeltalowdaMenu.constants.HDM_ALIVE_COLOR,
+					getFunc = BeltalowdaHdm.GetHdmAliveColor,
+					setFunc = BeltalowdaHdm.SetHdmAliveColor,
 					width = "full"
 				},
 				[12] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.HDM_DEAD_COLOR,
-					getFunc = RdKGToolHdm.GetHdmDeadColor,
-					setFunc = RdKGToolHdm.SetHdmDeadColor,
+					name = BeltalowdaMenu.constants.HDM_DEAD_COLOR,
+					getFunc = BeltalowdaHdm.GetHdmDeadColor,
+					setFunc = BeltalowdaHdm.SetHdmDeadColor,
 					width = "full"
 				},
 				[13] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.HDM_BACKGROUND_COLOR_HEALER,
-					getFunc = RdKGToolHdm.GetHdmHealerColor,
-					setFunc = RdKGToolHdm.SetHdmHealerColor,
+					name = BeltalowdaMenu.constants.HDM_BACKGROUND_COLOR_HEALER,
+					getFunc = BeltalowdaHdm.GetHdmHealerColor,
+					setFunc = BeltalowdaHdm.SetHdmHealerColor,
 					width = "full"
 				},
 				[14] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.HDM_BACKGROUND_COLOR_DD,
-					getFunc = RdKGToolHdm.GetHdmDDColor,
-					setFunc = RdKGToolHdm.SetHdmDDColor,
+					name = BeltalowdaMenu.constants.HDM_BACKGROUND_COLOR_DD,
+					getFunc = BeltalowdaHdm.GetHdmDDColor,
+					setFunc = BeltalowdaHdm.SetHdmDDColor,
 					width = "full"
 				},
 				[15] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.HDM_BACKGROUND_COLOR_TANK,
-					getFunc = RdKGToolHdm.GetHdmTankColor,
-					setFunc = RdKGToolHdm.SetHdmTankColor,
+					name = BeltalowdaMenu.constants.HDM_BACKGROUND_COLOR_TANK,
+					getFunc = BeltalowdaHdm.GetHdmTankColor,
+					setFunc = BeltalowdaHdm.SetHdmTankColor,
 					width = "full"
 				},
 				[16] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.HDM_BACKGROUND_COLOR_APPLICANT,
-					getFunc = RdKGToolHdm.GetHdmApplicantColor,
-					setFunc = RdKGToolHdm.SetHdmApplicantColor,
+					name = BeltalowdaMenu.constants.HDM_BACKGROUND_COLOR_APPLICANT,
+					getFunc = BeltalowdaHdm.GetHdmApplicantColor,
+					setFunc = BeltalowdaHdm.SetHdmApplicantColor,
 					width = "full"
 				},
 			}
@@ -1181,147 +1181,147 @@ function RdKGToolHdm.GetMenu()
 	return menu
 end
 
-function RdKGToolHdm.GetHdmEnabled()
-	return RdKGToolHdm.hdmVars.enabled
+function BeltalowdaHdm.GetHdmEnabled()
+	return BeltalowdaHdm.hdmVars.enabled
 end
 
-function RdKGToolHdm.SetHdmEnabled(value)
-	RdKGToolHdm.SetEnabled(value)
+function BeltalowdaHdm.SetHdmEnabled(value)
+	BeltalowdaHdm.SetEnabled(value)
 end
 
-function RdKGToolHdm.GetHdmPositionLocked()
-	return RdKGToolHdm.hdmVars.positionLocked
+function BeltalowdaHdm.GetHdmPositionLocked()
+	return BeltalowdaHdm.hdmVars.positionLocked
 end
 
-function RdKGToolHdm.SetHdmPositionLocked(value)
-	RdKGToolHdm.SetPositionLocked(value)
+function BeltalowdaHdm.SetHdmPositionLocked(value)
+	BeltalowdaHdm.SetPositionLocked(value)
 end
 
-function RdKGToolHdm.GetHdmPvpOnly()
-	return RdKGToolHdm.hdmVars.pvpOnly
+function BeltalowdaHdm.GetHdmPvpOnly()
+	return BeltalowdaHdm.hdmVars.pvpOnly
 end
 
-function RdKGToolHdm.SetHdmPvpOnly(value)
-	RdKGToolHdm.hdmVars.pvpOnly = value
-	RdKGToolHdm.SetControlVisibility()
+function BeltalowdaHdm.SetHdmPvpOnly(value)
+	BeltalowdaHdm.hdmVars.pvpOnly = value
+	BeltalowdaHdm.SetControlVisibility()
 end
 
-function RdKGToolHdm.GetHdmWindowEnabled()
-	return RdKGToolHdm.hdmVars.windowEnabled
+function BeltalowdaHdm.GetHdmWindowEnabled()
+	return BeltalowdaHdm.hdmVars.windowEnabled
 end
 
-function RdKGToolHdm.SetHdmWindowEnabled(value)
-	RdKGToolHdm.hdmVars.windowEnabled = value
-	RdKGToolHdm.SetControlVisibility()
+function BeltalowdaHdm.SetHdmWindowEnabled(value)
+	BeltalowdaHdm.hdmVars.windowEnabled = value
+	BeltalowdaHdm.SetControlVisibility()
 end
 
-function RdKGToolHdm.GetHdmUsingAlphaEnabled()
-	return RdKGToolHdm.hdmVars.useAlpha
+function BeltalowdaHdm.GetHdmUsingAlphaEnabled()
+	return BeltalowdaHdm.hdmVars.useAlpha
 end
 
-function RdKGToolHdm.SetHdmUsingAlphaEnabled(value)
-	RdKGToolHdm.hdmVars.useAlpha = value
+function BeltalowdaHdm.SetHdmUsingAlphaEnabled(value)
+	BeltalowdaHdm.hdmVars.useAlpha = value
 end
 
-function RdKGToolHdm.GetHdmUsingColorsEnabled()
-	return RdKGToolHdm.hdmVars.useColors
+function BeltalowdaHdm.GetHdmUsingColorsEnabled()
+	return BeltalowdaHdm.hdmVars.useColors
 end
 
-function RdKGToolHdm.SetHdmUsingColorsEnabled(value)
-	RdKGToolHdm.hdmVars.useColors = value
+function BeltalowdaHdm.SetHdmUsingColorsEnabled(value)
+	BeltalowdaHdm.hdmVars.useColors = value
 end
 
-function RdKGToolHdm.GetHdmUsingApplicantHighlightEnabled()
-	return RdKGToolHdm.hdmVars.highlightApplicant
+function BeltalowdaHdm.GetHdmUsingApplicantHighlightEnabled()
+	return BeltalowdaHdm.hdmVars.highlightApplicant
 end
 
-function RdKGToolHdm.SetHdmUsingApplicantHighlightEnabled(value)
-	RdKGToolHdm.hdmVars.highlightApplicant = value
+function BeltalowdaHdm.SetHdmUsingApplicantHighlightEnabled(value)
+	BeltalowdaHdm.hdmVars.highlightApplicant = value
 end
 
-function RdKGToolHdm.GetHdmAutoReset()
-	return RdKGToolHdm.hdmVars.autoClear
+function BeltalowdaHdm.GetHdmAutoReset()
+	return BeltalowdaHdm.hdmVars.autoClear
 end
 
-function RdKGToolHdm.SetHdmAutoReset(value)
-	RdKGToolHdm.hdmVars.autoClear = value
-	RdKGToolHdm.AdjustAutoClearEnabled()
+function BeltalowdaHdm.SetHdmAutoReset(value)
+	BeltalowdaHdm.hdmVars.autoClear = value
+	BeltalowdaHdm.AdjustAutoClearEnabled()
 end
 
-function RdKGToolHdm.GetHdmAvailableViewModes()
-	return RdKGToolHdm.constants.viewModes
+function BeltalowdaHdm.GetHdmAvailableViewModes()
+	return BeltalowdaHdm.constants.viewModes
 end
 
-function RdKGToolHdm.GetHdmSelectedViewMode()
-	return RdKGToolHdm.constants.viewModes[RdKGToolHdm.hdmVars.viewMode]
+function BeltalowdaHdm.GetHdmSelectedViewMode()
+	return BeltalowdaHdm.constants.viewModes[BeltalowdaHdm.hdmVars.viewMode]
 end
 
-function RdKGToolHdm.SetHdmSelectedViewMode(value)
+function BeltalowdaHdm.SetHdmSelectedViewMode(value)
 	if value ~= nil then
-		for i = 1, #RdKGToolHdm.constants.viewModes do
-			if RdKGToolHdm.constants.viewModes[i] == value then
-				RdKGToolHdm.hdmVars.viewMode = i
+		for i = 1, #BeltalowdaHdm.constants.viewModes do
+			if BeltalowdaHdm.constants.viewModes[i] == value then
+				BeltalowdaHdm.hdmVars.viewMode = i
 			end
 		end
 	end
-	RdKGToolHdm.AdjustViewMode()
+	BeltalowdaHdm.AdjustViewMode()
 end
 
-function RdKGToolHdm.GetHdmSelectedSize()
-	return RdKGToolHdm.hdmVars.size
+function BeltalowdaHdm.GetHdmSelectedSize()
+	return BeltalowdaHdm.hdmVars.size
 end
 
-function RdKGToolHdm.SetHdmSelectedSize(value)
-	if value ~= nil and value >= RdKGToolHdm.constants.size.SMALL and value <= RdKGToolHdm.constants.size.BIG then
-		RdKGToolHdm.hdmVars.size = value
-		RdKGToolHdm.AdjustControlSize()
+function BeltalowdaHdm.SetHdmSelectedSize(value)
+	if value ~= nil and value >= BeltalowdaHdm.constants.size.SMALL and value <= BeltalowdaHdm.constants.size.BIG then
+		BeltalowdaHdm.hdmVars.size = value
+		BeltalowdaHdm.AdjustControlSize()
 	end
 end
 
-function RdKGToolHdm.GetHdmAliveColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolHdm.hdmVars.aliveColor)
+function BeltalowdaHdm.GetHdmAliveColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaHdm.hdmVars.aliveColor)
 end
 
-function RdKGToolHdm.SetHdmAliveColor(r, g, b)
-	RdKGToolHdm.hdmVars.aliveColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaHdm.SetHdmAliveColor(r, g, b)
+	BeltalowdaHdm.hdmVars.aliveColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
 end
 
-function RdKGToolHdm.GetHdmDeadColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolHdm.hdmVars.deadColor)
+function BeltalowdaHdm.GetHdmDeadColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaHdm.hdmVars.deadColor)
 end
 
-function RdKGToolHdm.SetHdmDeadColor(r, g, b)
-	RdKGToolHdm.hdmVars.deadColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaHdm.SetHdmDeadColor(r, g, b)
+	BeltalowdaHdm.hdmVars.deadColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
 end
 
-function RdKGToolHdm.GetHdmHealerColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolHdm.hdmVars.backgroundColor.healer)
+function BeltalowdaHdm.GetHdmHealerColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaHdm.hdmVars.backgroundColor.healer)
 end
 
-function RdKGToolHdm.SetHdmHealerColor(r, g, b)
-	RdKGToolHdm.hdmVars.backgroundColor.healer = RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaHdm.SetHdmHealerColor(r, g, b)
+	BeltalowdaHdm.hdmVars.backgroundColor.healer = BeltalowdaMenu.GetColorFromRGB(r, g, b)
 end
 
-function RdKGToolHdm.GetHdmDDColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolHdm.hdmVars.backgroundColor.dd)
+function BeltalowdaHdm.GetHdmDDColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaHdm.hdmVars.backgroundColor.dd)
 end
 
-function RdKGToolHdm.SetHdmDDColor(r, g, b)
-	RdKGToolHdm.hdmVars.backgroundColor.dd = RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaHdm.SetHdmDDColor(r, g, b)
+	BeltalowdaHdm.hdmVars.backgroundColor.dd = BeltalowdaMenu.GetColorFromRGB(r, g, b)
 end
 
-function RdKGToolHdm.GetHdmTankColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolHdm.hdmVars.backgroundColor.tank)
+function BeltalowdaHdm.GetHdmTankColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaHdm.hdmVars.backgroundColor.tank)
 end
 
-function RdKGToolHdm.SetHdmTankColor(r, g, b)
-	RdKGToolHdm.hdmVars.backgroundColor.tank = RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaHdm.SetHdmTankColor(r, g, b)
+	BeltalowdaHdm.hdmVars.backgroundColor.tank = BeltalowdaMenu.GetColorFromRGB(r, g, b)
 end
 
-function RdKGToolHdm.GetHdmApplicantColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolHdm.hdmVars.backgroundColor.applicant)
+function BeltalowdaHdm.GetHdmApplicantColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaHdm.hdmVars.backgroundColor.applicant)
 end
 
-function RdKGToolHdm.SetHdmApplicantColor(r, g, b)
-	RdKGToolHdm.hdmVars.backgroundColor.applicant = RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaHdm.SetHdmApplicantColor(r, g, b)
+	BeltalowdaHdm.hdmVars.backgroundColor.applicant = BeltalowdaMenu.GetColorFromRGB(r, g, b)
 end

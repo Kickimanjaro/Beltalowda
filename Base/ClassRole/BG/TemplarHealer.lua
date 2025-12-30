@@ -1,197 +1,197 @@
--- RdK Group Tool Class Role
+-- Beltalowda Class Role
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.classRole = RdKGTool.classRole or {}
-local RdKGToolCR = RdKGTool.classRole
-RdKGToolCR.bg = RdKGToolCR.bg or {}
-local RdKGToolBG = RdKGToolCR.bg
-RdKGToolBG.tpHeal = RdKGToolBG.tpHeal or {}
-local RdKGToolTH = RdKGToolBG.tpHeal
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolUtilGroup = RdKGToolUtil.group
-RdKGTool.ui = RdKGTool.ui or {}
-local RdKGToolUI = RdKGTool.ui
-RdKGToolUI.buffs = RdKGToolUI.buffs or {}
-local RdKGToolBuffs = RdKGToolUI.buffs
+Beltalowda = Beltalowda or {}
+Beltalowda.classRole = Beltalowda.classRole or {}
+local BeltalowdaCR = Beltalowda.classRole
+BeltalowdaCR.bg = BeltalowdaCR.bg or {}
+local BeltalowdaBG = BeltalowdaCR.bg
+BeltalowdaBG.tpHeal = BeltalowdaBG.tpHeal or {}
+local BeltalowdaTH = BeltalowdaBG.tpHeal
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaUtilGroup = BeltalowdaUtil.group
+Beltalowda.ui = Beltalowda.ui or {}
+local BeltalowdaUI = Beltalowda.ui
+BeltalowdaUI.buffs = BeltalowdaUI.buffs or {}
+local BeltalowdaBuffs = BeltalowdaUI.buffs
 
 
 
-RdKGToolTH.constants = RdKGToolTH.constants or {}
-RdKGToolTH.constants.TLW = "RdKGTool.classRole.bg.tpHeal.tlw"
-RdKGToolTH.constants.BUFF_TYPES = {}
-RdKGToolTH.constants.BUFF_TYPES.DAMAGE = 1
-RdKGToolTH.constants.BUFF_TYPES.HEALING = 2
-RdKGToolTH.constants.BUFF_TYPES.RECOVERY = 3
-RdKGToolTH.constants.COOLDOWN_TYPES = {}
-RdKGToolTH.constants.COOLDOWN_TYPES.NONE = 1
-RdKGToolTH.constants.COOLDOWN_TYPES.PROC = 2
+BeltalowdaTH.constants = BeltalowdaTH.constants or {}
+BeltalowdaTH.constants.TLW = "Beltalowda.classRole.bg.tpHeal.tlw"
+BeltalowdaTH.constants.BUFF_TYPES = {}
+BeltalowdaTH.constants.BUFF_TYPES.DAMAGE = 1
+BeltalowdaTH.constants.BUFF_TYPES.HEALING = 2
+BeltalowdaTH.constants.BUFF_TYPES.RECOVERY = 3
+BeltalowdaTH.constants.COOLDOWN_TYPES = {}
+BeltalowdaTH.constants.COOLDOWN_TYPES.NONE = 1
+BeltalowdaTH.constants.COOLDOWN_TYPES.PROC = 2
 
-RdKGToolTH.callbackName = RdKGTool.addonName .. "BGTemplarHealer"
+BeltalowdaTH.callbackName = Beltalowda.addonName .. "BGTemplarHealer"
 
-RdKGToolTH.config = {}
-RdKGToolTH.config.updateInterval = 100
-RdKGToolTH.config.isClampedToScreen = false
-RdKGToolTH.config.width = 150
+BeltalowdaTH.config = {}
+BeltalowdaTH.config.updateInterval = 100
+BeltalowdaTH.config.isClampedToScreen = false
+BeltalowdaTH.config.width = 150
 
-RdKGToolTH.config.buffs = {}
-RdKGToolTH.config.buffs[1] = {}
-RdKGToolTH.config.buffs[1].texture = "/esoui/art/icons/ability_buff_major_sorcery.dds"
-RdKGToolTH.config.buffs[1].ids = {}
-RdKGToolTH.config.buffs[1].ids[1] = 92503
-RdKGToolTH.config.buffs[1].name = "majorSorcery"
-RdKGToolTH.config.buffs[1].buffType = RdKGToolTH.constants.BUFF_TYPES.DAMAGE
-RdKGToolTH.config.buffs[1].cdType = RdKGToolTH.constants.COOLDOWN_TYPES.NONE
-RdKGToolTH.config.buffs[2] = {}
-RdKGToolTH.config.buffs[2].texture = "/esoui/art/icons/ability_buff_minor_sorcery.dds"
-RdKGToolTH.config.buffs[2].ids = {}
-RdKGToolTH.config.buffs[2].ids[1] = 62800
-RdKGToolTH.config.buffs[2].name = "minorSorcery"
-RdKGToolTH.config.buffs[2].buffType = RdKGToolTH.constants.BUFF_TYPES.DAMAGE
-RdKGToolTH.config.buffs[2].cdType = RdKGToolTH.constants.COOLDOWN_TYPES.NONE
-RdKGToolTH.config.buffs[3] = {}
-RdKGToolTH.config.buffs[3].texture = "/esoui/art/icons/ability_mage_045.dds" -- courage
-RdKGToolTH.config.buffs[3].ids = {}
-RdKGToolTH.config.buffs[3].ids[1] = 109994
-RdKGToolTH.config.buffs[3].name = "majorCourage"
-RdKGToolTH.config.buffs[3].buffType = RdKGToolTH.constants.BUFF_TYPES.DAMAGE
-RdKGToolTH.config.buffs[3].cdType = RdKGToolTH.constants.COOLDOWN_TYPES.NONE
-RdKGToolTH.config.buffs[4] = {}
-RdKGToolTH.config.buffs[4].texture = "/esoui/art/icons/ava_artifact_006.dds" -- weapon glyph
-RdKGToolTH.config.buffs[4].ids = {}
-RdKGToolTH.config.buffs[4].ids[1] = 21230
-RdKGToolTH.config.buffs[4].name = "weaponGlyph"
-RdKGToolTH.config.buffs[4].buffType = RdKGToolTH.constants.BUFF_TYPES.DAMAGE
-RdKGToolTH.config.buffs[4].cdType = RdKGToolTH.constants.COOLDOWN_TYPES.PROC
-RdKGToolTH.config.buffs[4].cooldown = {}
-RdKGToolTH.config.buffs[4].cooldown.lastProc = 0
-RdKGToolTH.config.buffs[4].cooldown.duration = 10
-RdKGToolTH.config.buffs[5] = {}
-RdKGToolTH.config.buffs[5].texture = "/esoui/art/icons/ability_weapon_028.dds" -- continous attack
-RdKGToolTH.config.buffs[5].ids = {}
-RdKGToolTH.config.buffs[5].ids[1] = 45617
-RdKGToolTH.config.buffs[5].name = "continousAttack"
-RdKGToolTH.config.buffs[5].buffType = RdKGToolTH.constants.BUFF_TYPES.DAMAGE
-RdKGToolTH.config.buffs[5].cdType = RdKGToolTH.constants.COOLDOWN_TYPES.NONE
-RdKGToolTH.config.buffs[6] = {}
-RdKGToolTH.config.buffs[6].texture = "/esoui/art/icons/ability_buff_major_mending.dds"
-RdKGToolTH.config.buffs[6].ids = {}
-RdKGToolTH.config.buffs[6].ids[1] = 77922
-RdKGToolTH.config.buffs[6].name = "majorMending"
-RdKGToolTH.config.buffs[6].buffType = RdKGToolTH.constants.BUFF_TYPES.HEALING
-RdKGToolTH.config.buffs[6].cdType = RdKGToolTH.constants.COOLDOWN_TYPES.NONE
-RdKGToolTH.config.buffs[7] = {}
-RdKGToolTH.config.buffs[7].texture = "/esoui/art/icons/ability_buff_minor_mending.dds"
-RdKGToolTH.config.buffs[7].ids = {}
-RdKGToolTH.config.buffs[7].ids[1] = 77082
-RdKGToolTH.config.buffs[7].ids[2] = 31759
-RdKGToolTH.config.buffs[7].name = "minorMending"
-RdKGToolTH.config.buffs[7].buffType = RdKGToolTH.constants.BUFF_TYPES.HEALING
-RdKGToolTH.config.buffs[7].cdType = RdKGToolTH.constants.COOLDOWN_TYPES.NONE
-RdKGToolTH.config.buffs[8] = {}
-RdKGToolTH.config.buffs[8].texture = "/esoui/art/icons/ability_templar_channeled_focus.dds"
-RdKGToolTH.config.buffs[8].ids = {}
-RdKGToolTH.config.buffs[8].ids[1] = 37009
-RdKGToolTH.config.buffs[8].name = "channeledFocus"
-RdKGToolTH.config.buffs[8].buffType = RdKGToolTH.constants.BUFF_TYPES.RECOVERY
-RdKGToolTH.config.buffs[8].cdType = RdKGToolTH.constants.COOLDOWN_TYPES.NONE
-RdKGToolTH.config.buffs[9] = {}
-RdKGToolTH.config.buffs[9].texture = "/esoui/art/icons/ability_mage_045.dds" -- lich
-RdKGToolTH.config.buffs[9].ids = {}
-RdKGToolTH.config.buffs[9].ids[1] = 57164
-RdKGToolTH.config.buffs[9].name = "lich"
-RdKGToolTH.config.buffs[9].buffType = RdKGToolTH.constants.BUFF_TYPES.RECOVERY
-RdKGToolTH.config.buffs[9].cdType = RdKGToolTH.constants.COOLDOWN_TYPES.PROC
-RdKGToolTH.config.buffs[9].cooldown = {}
-RdKGToolTH.config.buffs[9].cooldown.lastProc = 0
-RdKGToolTH.config.buffs[9].cooldown.duration = 60
-RdKGToolTH.config.buffs[10] = {}
-RdKGToolTH.config.buffs[10].texture = "/esoui/art/icons/ability_buff_major_intellect.dds"
-RdKGToolTH.config.buffs[10].ids = {}
-RdKGToolTH.config.buffs[10].ids[1] = 45224
-RdKGToolTH.config.buffs[10].name = "majorIntellect"
-RdKGToolTH.config.buffs[10].buffType = RdKGToolTH.constants.BUFF_TYPES.RECOVERY
-RdKGToolTH.config.buffs[10].cdType = RdKGToolTH.constants.COOLDOWN_TYPES.NONE
-RdKGToolTH.config.height = #RdKGToolTH.config.buffs * 20
+BeltalowdaTH.config.buffs = {}
+BeltalowdaTH.config.buffs[1] = {}
+BeltalowdaTH.config.buffs[1].texture = "/esoui/art/icons/ability_buff_major_sorcery.dds"
+BeltalowdaTH.config.buffs[1].ids = {}
+BeltalowdaTH.config.buffs[1].ids[1] = 92503
+BeltalowdaTH.config.buffs[1].name = "majorSorcery"
+BeltalowdaTH.config.buffs[1].buffType = BeltalowdaTH.constants.BUFF_TYPES.DAMAGE
+BeltalowdaTH.config.buffs[1].cdType = BeltalowdaTH.constants.COOLDOWN_TYPES.NONE
+BeltalowdaTH.config.buffs[2] = {}
+BeltalowdaTH.config.buffs[2].texture = "/esoui/art/icons/ability_buff_minor_sorcery.dds"
+BeltalowdaTH.config.buffs[2].ids = {}
+BeltalowdaTH.config.buffs[2].ids[1] = 62800
+BeltalowdaTH.config.buffs[2].name = "minorSorcery"
+BeltalowdaTH.config.buffs[2].buffType = BeltalowdaTH.constants.BUFF_TYPES.DAMAGE
+BeltalowdaTH.config.buffs[2].cdType = BeltalowdaTH.constants.COOLDOWN_TYPES.NONE
+BeltalowdaTH.config.buffs[3] = {}
+BeltalowdaTH.config.buffs[3].texture = "/esoui/art/icons/ability_mage_045.dds" -- courage
+BeltalowdaTH.config.buffs[3].ids = {}
+BeltalowdaTH.config.buffs[3].ids[1] = 109994
+BeltalowdaTH.config.buffs[3].name = "majorCourage"
+BeltalowdaTH.config.buffs[3].buffType = BeltalowdaTH.constants.BUFF_TYPES.DAMAGE
+BeltalowdaTH.config.buffs[3].cdType = BeltalowdaTH.constants.COOLDOWN_TYPES.NONE
+BeltalowdaTH.config.buffs[4] = {}
+BeltalowdaTH.config.buffs[4].texture = "/esoui/art/icons/ava_artifact_006.dds" -- weapon glyph
+BeltalowdaTH.config.buffs[4].ids = {}
+BeltalowdaTH.config.buffs[4].ids[1] = 21230
+BeltalowdaTH.config.buffs[4].name = "weaponGlyph"
+BeltalowdaTH.config.buffs[4].buffType = BeltalowdaTH.constants.BUFF_TYPES.DAMAGE
+BeltalowdaTH.config.buffs[4].cdType = BeltalowdaTH.constants.COOLDOWN_TYPES.PROC
+BeltalowdaTH.config.buffs[4].cooldown = {}
+BeltalowdaTH.config.buffs[4].cooldown.lastProc = 0
+BeltalowdaTH.config.buffs[4].cooldown.duration = 10
+BeltalowdaTH.config.buffs[5] = {}
+BeltalowdaTH.config.buffs[5].texture = "/esoui/art/icons/ability_weapon_028.dds" -- continous attack
+BeltalowdaTH.config.buffs[5].ids = {}
+BeltalowdaTH.config.buffs[5].ids[1] = 45617
+BeltalowdaTH.config.buffs[5].name = "continousAttack"
+BeltalowdaTH.config.buffs[5].buffType = BeltalowdaTH.constants.BUFF_TYPES.DAMAGE
+BeltalowdaTH.config.buffs[5].cdType = BeltalowdaTH.constants.COOLDOWN_TYPES.NONE
+BeltalowdaTH.config.buffs[6] = {}
+BeltalowdaTH.config.buffs[6].texture = "/esoui/art/icons/ability_buff_major_mending.dds"
+BeltalowdaTH.config.buffs[6].ids = {}
+BeltalowdaTH.config.buffs[6].ids[1] = 77922
+BeltalowdaTH.config.buffs[6].name = "majorMending"
+BeltalowdaTH.config.buffs[6].buffType = BeltalowdaTH.constants.BUFF_TYPES.HEALING
+BeltalowdaTH.config.buffs[6].cdType = BeltalowdaTH.constants.COOLDOWN_TYPES.NONE
+BeltalowdaTH.config.buffs[7] = {}
+BeltalowdaTH.config.buffs[7].texture = "/esoui/art/icons/ability_buff_minor_mending.dds"
+BeltalowdaTH.config.buffs[7].ids = {}
+BeltalowdaTH.config.buffs[7].ids[1] = 77082
+BeltalowdaTH.config.buffs[7].ids[2] = 31759
+BeltalowdaTH.config.buffs[7].name = "minorMending"
+BeltalowdaTH.config.buffs[7].buffType = BeltalowdaTH.constants.BUFF_TYPES.HEALING
+BeltalowdaTH.config.buffs[7].cdType = BeltalowdaTH.constants.COOLDOWN_TYPES.NONE
+BeltalowdaTH.config.buffs[8] = {}
+BeltalowdaTH.config.buffs[8].texture = "/esoui/art/icons/ability_templar_channeled_focus.dds"
+BeltalowdaTH.config.buffs[8].ids = {}
+BeltalowdaTH.config.buffs[8].ids[1] = 37009
+BeltalowdaTH.config.buffs[8].name = "channeledFocus"
+BeltalowdaTH.config.buffs[8].buffType = BeltalowdaTH.constants.BUFF_TYPES.RECOVERY
+BeltalowdaTH.config.buffs[8].cdType = BeltalowdaTH.constants.COOLDOWN_TYPES.NONE
+BeltalowdaTH.config.buffs[9] = {}
+BeltalowdaTH.config.buffs[9].texture = "/esoui/art/icons/ability_mage_045.dds" -- lich
+BeltalowdaTH.config.buffs[9].ids = {}
+BeltalowdaTH.config.buffs[9].ids[1] = 57164
+BeltalowdaTH.config.buffs[9].name = "lich"
+BeltalowdaTH.config.buffs[9].buffType = BeltalowdaTH.constants.BUFF_TYPES.RECOVERY
+BeltalowdaTH.config.buffs[9].cdType = BeltalowdaTH.constants.COOLDOWN_TYPES.PROC
+BeltalowdaTH.config.buffs[9].cooldown = {}
+BeltalowdaTH.config.buffs[9].cooldown.lastProc = 0
+BeltalowdaTH.config.buffs[9].cooldown.duration = 60
+BeltalowdaTH.config.buffs[10] = {}
+BeltalowdaTH.config.buffs[10].texture = "/esoui/art/icons/ability_buff_major_intellect.dds"
+BeltalowdaTH.config.buffs[10].ids = {}
+BeltalowdaTH.config.buffs[10].ids[1] = 45224
+BeltalowdaTH.config.buffs[10].name = "majorIntellect"
+BeltalowdaTH.config.buffs[10].buffType = BeltalowdaTH.constants.BUFF_TYPES.RECOVERY
+BeltalowdaTH.config.buffs[10].cdType = BeltalowdaTH.constants.COOLDOWN_TYPES.NONE
+BeltalowdaTH.config.height = #BeltalowdaTH.config.buffs * 20
 
-RdKGToolTH.state = {}
-RdKGToolTH.state.initialized = false
-RdKGToolTH.state.foreground = true
-RdKGToolTH.state.registredConsumers = false
-RdKGToolTH.state.registredActiveConsumers = false
-RdKGToolTH.state.activeLayerIndex = 1
+BeltalowdaTH.state = {}
+BeltalowdaTH.state.initialized = false
+BeltalowdaTH.state.foreground = true
+BeltalowdaTH.state.registredConsumers = false
+BeltalowdaTH.state.registredActiveConsumers = false
+BeltalowdaTH.state.activeLayerIndex = 1
 
-RdKGToolTH.controls = {}
+BeltalowdaTH.controls = {}
 
 local wm = WINDOW_MANAGER
 local buffControls = nil
 
-function RdKGToolTH.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolTH.callbackName, RdKGToolTH.OnProfileChanged)
+function BeltalowdaTH.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaTH.callbackName, BeltalowdaTH.OnProfileChanged)
 	
-	RdKGToolTH.CreateUI()
+	BeltalowdaTH.CreateUI()
 	
-	buffControls = RdKGToolTH.controls.TLW.rootControl.buffs
+	buffControls = BeltalowdaTH.controls.TLW.rootControl.buffs
 	
-	RdKGToolMenu.AddPositionFixedConsumer(RdKGToolTH.SetCrBgTpHealPositionLocked)
+	BeltalowdaMenu.AddPositionFixedConsumer(BeltalowdaTH.SetCrBgTpHealPositionLocked)
 	
-	RdKGToolTH.state.initialized = true
-	RdKGToolTH.AdjustColors()
-	RdKGToolTH.SetEnabled(RdKGToolTH.tpVars.enabled)
+	BeltalowdaTH.state.initialized = true
+	BeltalowdaTH.AdjustColors()
+	BeltalowdaTH.SetEnabled(BeltalowdaTH.tpVars.enabled)
 end
 
-function RdKGToolTH.SetTlwLocation()
-	if RdKGToolTH.tpVars.location == nil then
-		RdKGToolTH.controls.TLW:SetAnchor(CENTER, GuiRoot, CENTER, -200, -125)
+function BeltalowdaTH.SetTlwLocation()
+	if BeltalowdaTH.tpVars.location == nil then
+		BeltalowdaTH.controls.TLW:SetAnchor(CENTER, GuiRoot, CENTER, -200, -125)
 	else
-		RdKGToolTH.controls.TLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, RdKGToolTH.tpVars.location.x, RdKGToolTH.tpVars.location.y)
+		BeltalowdaTH.controls.TLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, BeltalowdaTH.tpVars.location.x, BeltalowdaTH.tpVars.location.y)
 	end
 end
 
-function RdKGToolTH.CreateUI()
-	RdKGToolTH.controls.TLW = wm:CreateTopLevelWindow(RdKGToolTH.constants.TLW)
+function BeltalowdaTH.CreateUI()
+	BeltalowdaTH.controls.TLW = wm:CreateTopLevelWindow(BeltalowdaTH.constants.TLW)
 	
-	RdKGToolTH.SetTlwLocation()
+	BeltalowdaTH.SetTlwLocation()
 	
 	
-	RdKGToolTH.controls.TLW:SetClampedToScreen(RdKGToolTH.config.isClampedToScreen)
-	RdKGToolTH.controls.TLW:SetHandler("OnMoveStop", RdKGToolTH.SaveWindowLocation)
-	RdKGToolTH.controls.TLW:SetDimensions(RdKGToolTH.config.width, RdKGToolTH.config.height)
+	BeltalowdaTH.controls.TLW:SetClampedToScreen(BeltalowdaTH.config.isClampedToScreen)
+	BeltalowdaTH.controls.TLW:SetHandler("OnMoveStop", BeltalowdaTH.SaveWindowLocation)
+	BeltalowdaTH.controls.TLW:SetDimensions(BeltalowdaTH.config.width, BeltalowdaTH.config.height)
 	
-	RdKGToolTH.controls.TLW.rootControl = wm:CreateControl(nil, RdKGToolTH.controls.TLW, CT_CONTROL)
+	BeltalowdaTH.controls.TLW.rootControl = wm:CreateControl(nil, BeltalowdaTH.controls.TLW, CT_CONTROL)
 	
-	local rootControl = RdKGToolTH.controls.TLW.rootControl
+	local rootControl = BeltalowdaTH.controls.TLW.rootControl
 	
-	rootControl:SetDimensions(RdKGToolTH.config.width, RdKGToolTH.config.height)
-	rootControl:SetAnchor(TOPLEFT, RdKGToolTH.controls.TLW, TOPLEFT, 0, 0)
+	rootControl:SetDimensions(BeltalowdaTH.config.width, BeltalowdaTH.config.height)
+	rootControl:SetAnchor(TOPLEFT, BeltalowdaTH.controls.TLW, TOPLEFT, 0, 0)
 	
 	rootControl.movableBackdrop = wm:CreateControl(nil, rootControl, CT_BACKDROP)
 	
 	rootControl.movableBackdrop:SetAnchor(TOPLEFT, rootControl, TOPLEFT, 0, 0)
-	rootControl.movableBackdrop:SetDimensions(RdKGToolTH.config.width, RdKGToolTH.config.height)
+	rootControl.movableBackdrop:SetDimensions(BeltalowdaTH.config.width, BeltalowdaTH.config.height)
 	
 	rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
 	rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	
 	rootControl.buffs = {}
 	for i = 1, 10 do
-		rootControl.buffs[i] = RdKGToolBuffs.CreateBuffControl(rootControl, 0, (i - 1) * 20)
-		rootControl.buffs[i].texture:SetTexture(RdKGToolTH.config.buffs[i].texture)
+		rootControl.buffs[i] = BeltalowdaBuffs.CreateBuffControl(rootControl, 0, (i - 1) * 20)
+		rootControl.buffs[i].texture:SetTexture(BeltalowdaTH.config.buffs[i].texture)
 	end
 	
 end
 
-function RdKGToolTH.GetDefaults()
+function BeltalowdaTH.GetDefaults()
 	local defaults = {}
 	
 	return defaults
 end
 
-function RdKGToolTH.GetCharDefaults()
+function BeltalowdaTH.GetCharDefaults()
 	local defaults = {}
 	defaults.enabled = false
 	defaults.pvpOnly = true
@@ -227,89 +227,89 @@ function RdKGToolTH.GetCharDefaults()
 	return defaults
 end
 
-function RdKGToolTH.SetEnabled(value)
-	if RdKGToolTH.state.initialized == true and value ~= nil then
-		RdKGToolTH.tpVars.enabled = value
+function BeltalowdaTH.SetEnabled(value)
+	if BeltalowdaTH.state.initialized == true and value ~= nil then
+		BeltalowdaTH.tpVars.enabled = value
 		if value == true then
-			if RdKGToolTH.state.registredConsumers == false then
-				EVENT_MANAGER:RegisterForEvent(RdKGToolTH.callbackName, EVENT_ACTION_LAYER_POPPED, RdKGToolTH.SetForegroundVisibility)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolTH.callbackName, EVENT_ACTION_LAYER_PUSHED, RdKGToolTH.SetForegroundVisibility)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolTH.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolTH.OnPlayerActivated)
+			if BeltalowdaTH.state.registredConsumers == false then
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaTH.callbackName, EVENT_ACTION_LAYER_POPPED, BeltalowdaTH.SetForegroundVisibility)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaTH.callbackName, EVENT_ACTION_LAYER_PUSHED, BeltalowdaTH.SetForegroundVisibility)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaTH.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaTH.OnPlayerActivated)
 			end
-			RdKGToolTH.state.registredConsumers = true
+			BeltalowdaTH.state.registredConsumers = true
 		else
-			if RdKGToolTH.state.registredConsumers == true then
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolTH.callbackName, EVENT_ACTION_LAYER_POPPED)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolTH.callbackName, EVENT_ACTION_LAYER_PUSHED)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolTH.callbackName, EVENT_PLAYER_ACTIVATED)
+			if BeltalowdaTH.state.registredConsumers == true then
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaTH.callbackName, EVENT_ACTION_LAYER_POPPED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaTH.callbackName, EVENT_ACTION_LAYER_PUSHED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaTH.callbackName, EVENT_PLAYER_ACTIVATED)
 				
 			end
-			RdKGToolTH.state.registredConsumers = false
+			BeltalowdaTH.state.registredConsumers = false
 		end
-		RdKGToolTH.SetControlVisibility()
-		RdKGToolTH.OnPlayerActivated()
+		BeltalowdaTH.SetControlVisibility()
+		BeltalowdaTH.OnPlayerActivated()
 	end
 end
 
-function RdKGToolTH.GetBuffColors(buffType)
-	local color = RdKGToolTH.tpVars.damageColor
-	local textColor = RdKGToolTH.tpVars.damageLabelColor
-	if buffType == RdKGToolTH.constants.BUFF_TYPES.HEALING then
-		color = RdKGToolTH.tpVars.healingColor
-		textColor = RdKGToolTH.tpVars.healingLabelColor
-	elseif buffType == RdKGToolTH.constants.BUFF_TYPES.RECOVERY then
-		color = RdKGToolTH.tpVars.recoveryColor
-		textColor = RdKGToolTH.tpVars.recoveryLabelColor
+function BeltalowdaTH.GetBuffColors(buffType)
+	local color = BeltalowdaTH.tpVars.damageColor
+	local textColor = BeltalowdaTH.tpVars.damageLabelColor
+	if buffType == BeltalowdaTH.constants.BUFF_TYPES.HEALING then
+		color = BeltalowdaTH.tpVars.healingColor
+		textColor = BeltalowdaTH.tpVars.healingLabelColor
+	elseif buffType == BeltalowdaTH.constants.BUFF_TYPES.RECOVERY then
+		color = BeltalowdaTH.tpVars.recoveryColor
+		textColor = BeltalowdaTH.tpVars.recoveryLabelColor
 	end
 	return color, textColor
 end
 
-function RdKGToolTH.AdjustColors()
+function BeltalowdaTH.AdjustColors()
 	for i = 1, #buffControls do
-		local color, textColor = RdKGToolTH.GetBuffColors(RdKGToolTH.config.buffs[i].buffType)
+		local color, textColor = BeltalowdaTH.GetBuffColors(BeltalowdaTH.config.buffs[i].buffType)
 
 		buffControls[i].progress:SetColor(color.r, color.g, color.b ,0.7)
 		buffControls[i].timeLabel:SetColor(textColor.r, textColor.g, textColor.b ,1.0)
 	end
 end
 
-function RdKGToolTH.SetPositionLocked(value)
-	RdKGToolTH.tpVars.positionLocked = value
-	RdKGToolTH.controls.TLW:SetMovable(not value)
-	RdKGToolTH.controls.TLW:SetMouseEnabled(not value)
+function BeltalowdaTH.SetPositionLocked(value)
+	BeltalowdaTH.tpVars.positionLocked = value
+	BeltalowdaTH.controls.TLW:SetMovable(not value)
+	BeltalowdaTH.controls.TLW:SetMouseEnabled(not value)
 	
 	if value == true then
-		RdKGToolTH.controls.TLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
-		RdKGToolTH.controls.TLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+		BeltalowdaTH.controls.TLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
+		BeltalowdaTH.controls.TLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	else
-		RdKGToolTH.controls.TLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
-		RdKGToolTH.controls.TLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+		BeltalowdaTH.controls.TLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
+		BeltalowdaTH.controls.TLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	end
-	--RdKGToolTH.SetControlVisibility()
+	--BeltalowdaTH.SetControlVisibility()
 end
 
-function RdKGToolTH.SetControlVisibility()
-	local enabled = RdKGToolTH.tpVars.enabled
-	local pvpOnly = RdKGToolTH.tpVars.pvpOnly
+function BeltalowdaTH.SetControlVisibility()
+	local enabled = BeltalowdaTH.tpVars.enabled
+	local pvpOnly = BeltalowdaTH.tpVars.pvpOnly
 	local setHidden = true
 	if enabled ~= nil and pvpOnly ~= nil then
 
-		if enabled == true and (pvpOnly == false or (pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
+		if enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 			setHidden = false
 		end
 	end
 	if setHidden == false then
-		if RdKGToolTH.state.foreground == false then
-			RdKGToolTH.controls.TLW:SetHidden(RdKGToolTH.state.activeLayerIndex > 2)
+		if BeltalowdaTH.state.foreground == false then
+			BeltalowdaTH.controls.TLW:SetHidden(BeltalowdaTH.state.activeLayerIndex > 2)
 		else
-			RdKGToolTH.controls.TLW:SetHidden(false)
+			BeltalowdaTH.controls.TLW:SetHidden(false)
 		end
 	else
-		RdKGToolTH.controls.TLW:SetHidden(setHidden)
+		BeltalowdaTH.controls.TLW:SetHidden(setHidden)
 	end
 end
 
-function RdKGToolTH.AdjustProgress(buff, control, currentTime)
+function BeltalowdaTH.AdjustProgress(buff, control, currentTime)
 	local timer = 0
 	local percent = 0
 	if buff ~= nil then
@@ -334,90 +334,90 @@ function RdKGToolTH.AdjustProgress(buff, control, currentTime)
 	control.progress:SetValue(percent)
 end
 
-function RdKGToolTH.CreateCharVars()
-		local charVars = RdKGTool.profile.GetCharacterVars()
+function BeltalowdaTH.CreateCharVars()
+		local charVars = Beltalowda.profile.GetCharacterVars()
 		charVars.crBgTp = charVars.crBgTp or {}
-		RdKGToolTH.tpVars = charVars.crBgTp
+		BeltalowdaTH.tpVars = charVars.crBgTp
 		
-		local defaults = RdKGToolTH.GetCharDefaults()
+		local defaults = BeltalowdaTH.GetCharDefaults()
 		
-		RdKGTool.PopulateWithDefaults(RdKGToolTH.tpVars, defaults)
+		Beltalowda.PopulateWithDefaults(BeltalowdaTH.tpVars, defaults)
 		
 end
 
 --callbacks
-function RdKGToolTH.OnProfileChanged(currentProfile)
+function BeltalowdaTH.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		--RdKGToolTH.tpVars = currentProfile.classRole.bg.tpHeal
-		RdKGToolTH.CreateCharVars()
+		--BeltalowdaTH.tpVars = currentProfile.classRole.bg.tpHeal
+		BeltalowdaTH.CreateCharVars()
 
-		if RdKGToolTH.state.initialized == true then
-			RdKGToolTH.SetControlVisibility()
-			RdKGToolTH.AdjustColors()
-			RdKGToolTH.SetPositionLocked(RdKGToolTH.tpVars.positionLocked)
-			RdKGToolTH.SetTlwLocation()
+		if BeltalowdaTH.state.initialized == true then
+			BeltalowdaTH.SetControlVisibility()
+			BeltalowdaTH.AdjustColors()
+			BeltalowdaTH.SetPositionLocked(BeltalowdaTH.tpVars.positionLocked)
+			BeltalowdaTH.SetTlwLocation()
 		end
-		RdKGToolTH.SetEnabled(RdKGToolTH.tpVars.enabled)
+		BeltalowdaTH.SetEnabled(BeltalowdaTH.tpVars.enabled)
 		
 	end
 end
 
-function RdKGToolTH.SaveWindowLocation()
-	if RdKGToolTH.tpVars.positionLocked == false then
-		RdKGToolTH.tpVars.location = RdKGToolTH.tpVars.location or {}
-		RdKGToolTH.tpVars.location.x = RdKGToolTH.controls.TLW:GetLeft()
-		RdKGToolTH.tpVars.location.y = RdKGToolTH.controls.TLW:GetTop()
+function BeltalowdaTH.SaveWindowLocation()
+	if BeltalowdaTH.tpVars.positionLocked == false then
+		BeltalowdaTH.tpVars.location = BeltalowdaTH.tpVars.location or {}
+		BeltalowdaTH.tpVars.location.x = BeltalowdaTH.controls.TLW:GetLeft()
+		BeltalowdaTH.tpVars.location.y = BeltalowdaTH.controls.TLW:GetTop()
 	end
 end
 
-function RdKGToolTH.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
+function BeltalowdaTH.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
 	if eventCode == EVENT_ACTION_LAYER_POPPED then
-		RdKGToolTH.state.foreground = true
+		BeltalowdaTH.state.foreground = true
 	elseif eventCode == EVENT_ACTION_LAYER_PUSHED then
-		RdKGToolTH.state.foreground = false
+		BeltalowdaTH.state.foreground = false
 	end
 	--hack?
-	RdKGToolTH.state.activeLayerIndex = activeLayerIndex
+	BeltalowdaTH.state.activeLayerIndex = activeLayerIndex
 	
-	RdKGToolTH.SetControlVisibility()
+	BeltalowdaTH.SetControlVisibility()
 end
 
-function RdKGToolTH.OnPlayerActivated(eventCode, initial)
-	if RdKGToolTH.tpVars.enabled == true and (RdKGToolTH.tpVars.pvpOnly == false or (RdKGToolTH.tpVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
-		if RdKGToolTH.state.registredActiveConsumers == false then
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolTH.callbackName, RdKGToolTH.config.updateInterval, RdKGToolTH.UiLoop)
-			RdKGToolUtilGroup.AddFeature(RdKGToolTH.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_BUFFS, RdKGToolTH.config.updateInterval)
-			RdKGToolUtilGroup.SetCrBgTpHealBuffs(RdKGToolTH.config.buffs)
+function BeltalowdaTH.OnPlayerActivated(eventCode, initial)
+	if BeltalowdaTH.tpVars.enabled == true and (BeltalowdaTH.tpVars.pvpOnly == false or (BeltalowdaTH.tpVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
+		if BeltalowdaTH.state.registredActiveConsumers == false then
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaTH.callbackName, BeltalowdaTH.config.updateInterval, BeltalowdaTH.UiLoop)
+			BeltalowdaUtilGroup.AddFeature(BeltalowdaTH.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_BUFFS, BeltalowdaTH.config.updateInterval)
+			BeltalowdaUtilGroup.SetCrBgTpHealBuffs(BeltalowdaTH.config.buffs)
 			
-			RdKGToolTH.state.registredActiveConsumers = true
+			BeltalowdaTH.state.registredActiveConsumers = true
 		end
 	else
-		if RdKGToolTH.state.registredActiveConsumers == true then
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolTH.callbackName)
-			RdKGToolUtilGroup.RemoveFeature(RdKGToolTH.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_BUFFS)
-			RdKGToolUtilGroup.SetCrBgTpHealBuffs(nil)
+		if BeltalowdaTH.state.registredActiveConsumers == true then
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaTH.callbackName)
+			BeltalowdaUtilGroup.RemoveFeature(BeltalowdaTH.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_BUFFS)
+			BeltalowdaUtilGroup.SetCrBgTpHealBuffs(nil)
 			
-			RdKGToolTH.state.registredActiveConsumers = false
+			BeltalowdaTH.state.registredActiveConsumers = false
 		end
 	end
-	RdKGToolTH.SetControlVisibility()
+	BeltalowdaTH.SetControlVisibility()
 end
 
-function RdKGToolTH.UiLoop()
+function BeltalowdaTH.UiLoop()
 	--d("loop")
-	if RdKGToolTH.tpVars.pvpOnly == false or (RdKGToolTH.tpVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea()) then
+	if BeltalowdaTH.tpVars.pvpOnly == false or (BeltalowdaTH.tpVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea()) then
 		--d("inner loop")
-		local buffs = RdKGToolUtilGroup.GetUnitFromRawCharName(GetRawUnitName("player")).buffs
+		local buffs = BeltalowdaUtilGroup.GetUnitFromRawCharName(GetRawUnitName("player")).buffs
 		if buffs ~= nil and buffs.specialInformation ~= nil and buffs.specialInformation.crBgTpHealBuffs ~= nil then
-			buffs = RdKGToolUtilGroup.GetUnitFromRawCharName(GetRawUnitName("player")).buffs.specialInformation.crBgTpHealBuffs
-			local confBuffs = RdKGToolTH.config.buffs
+			buffs = BeltalowdaUtilGroup.GetUnitFromRawCharName(GetRawUnitName("player")).buffs.specialInformation.crBgTpHealBuffs
+			local confBuffs = BeltalowdaTH.config.buffs
 			local currentTime = GetGameTimeMilliseconds()
 			--d(buffs)
 			for i = 1, #confBuffs do
-				RdKGToolTH.AdjustProgress(buffs[confBuffs[i].name], buffControls[i], currentTime)
-				if confBuffs[i].cdType == RdKGToolTH.constants.COOLDOWN_TYPES.PROC then
+				BeltalowdaTH.AdjustProgress(buffs[confBuffs[i].name], buffControls[i], currentTime)
+				if confBuffs[i].cdType == BeltalowdaTH.constants.COOLDOWN_TYPES.PROC then
 					local buff = buffs[confBuffs[i].name]
-					local _, labelColor = RdKGToolTH.GetBuffColors(confBuffs[i].buffType)
+					local _, labelColor = BeltalowdaTH.GetBuffColors(confBuffs[i].buffType)
 					if buff == nil then
 						if confBuffs[i].cooldown.lastProc > 0 then
 							local timeSinceProc = currentTime / 1000 - confBuffs[i].cooldown.lastProc
@@ -426,7 +426,7 @@ function RdKGToolTH.UiLoop()
 								timer = 0
 							end
 							if timer > 0 then
-								labelColor = RdKGToolTH.tpVars.cooldownLabelColor
+								labelColor = BeltalowdaTH.tpVars.cooldownLabelColor
 							end
 							buffControls[i].timeLabel:SetColor(labelColor.r, labelColor.g, labelColor.b ,1.0)
 							buffControls[i].timeLabel:SetText(string.format("%.1f", timer))
@@ -444,77 +444,77 @@ end
 
 
 --menu interaction
-function RdKGToolTH.GetMenu()
+function BeltalowdaTH.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.CRBG_TPHEAL_HEADER,
+			name = BeltalowdaMenu.constants.CRBG_TPHEAL_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CRBG_TPHEAL_ENABLED,
-					getFunc = RdKGToolTH.GetCrBgTpHealEnabled,
-					setFunc = RdKGToolTH.SetCrBgTpHealEnabled
+					name = BeltalowdaMenu.constants.CRBG_TPHEAL_ENABLED,
+					getFunc = BeltalowdaTH.GetCrBgTpHealEnabled,
+					setFunc = BeltalowdaTH.SetCrBgTpHealEnabled
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CRBG_TPHEAL_PVP_ONLY,
-					getFunc = RdKGToolTH.GetCrBgTpHealPvpOnly,
-					setFunc = RdKGToolTH.SetCrBgTpHealPvpOnly
+					name = BeltalowdaMenu.constants.CRBG_TPHEAL_PVP_ONLY,
+					getFunc = BeltalowdaTH.GetCrBgTpHealPvpOnly,
+					setFunc = BeltalowdaTH.SetCrBgTpHealPvpOnly
 				},
 				[3] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CRBG_TPHEAL_POSITION_FIXED,
-					getFunc = RdKGToolTH.GetCrBgTpHealPositionLocked,
-					setFunc = RdKGToolTH.SetCrBgTpHealPositionLocked
+					name = BeltalowdaMenu.constants.CRBG_TPHEAL_POSITION_FIXED,
+					getFunc = BeltalowdaTH.GetCrBgTpHealPositionLocked,
+					setFunc = BeltalowdaTH.SetCrBgTpHealPositionLocked
 				},
 				[4] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CRBG_TPHEAL_COLOR_PROGRESS_DAMAGE,
-					getFunc = RdKGToolTH.GetCrBgTpHealColorProgressDamage,
-					setFunc = RdKGToolTH.SetCrBgTpHealColorProgressDamage,
+					name = BeltalowdaMenu.constants.CRBG_TPHEAL_COLOR_PROGRESS_DAMAGE,
+					getFunc = BeltalowdaTH.GetCrBgTpHealColorProgressDamage,
+					setFunc = BeltalowdaTH.SetCrBgTpHealColorProgressDamage,
 					width = "full"
 				},
 				[5] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CRBG_TPHEAL_COLOR_LABEL_DAMAGE,
-					getFunc = RdKGToolTH.GetCrBgTpHealColorLabelDamage,
-					setFunc = RdKGToolTH.SetCrBgTpHealColorLabelDamage,
+					name = BeltalowdaMenu.constants.CRBG_TPHEAL_COLOR_LABEL_DAMAGE,
+					getFunc = BeltalowdaTH.GetCrBgTpHealColorLabelDamage,
+					setFunc = BeltalowdaTH.SetCrBgTpHealColorLabelDamage,
 					width = "full"
 				},
 				[6] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CRBG_TPHEAL_COLOR_PROGRESS_HEALING,
-					getFunc = RdKGToolTH.GetCrBgTpHealColorProgressHealing,
-					setFunc = RdKGToolTH.SetCrBgTpHealColorProgressHealing,
+					name = BeltalowdaMenu.constants.CRBG_TPHEAL_COLOR_PROGRESS_HEALING,
+					getFunc = BeltalowdaTH.GetCrBgTpHealColorProgressHealing,
+					setFunc = BeltalowdaTH.SetCrBgTpHealColorProgressHealing,
 					width = "full"
 				},
 				[7] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CRBG_TPHEAL_COLOR_LABEL_HEALING,
-					getFunc = RdKGToolTH.GetCrBgTpHealColorLabelHealing,
-					setFunc = RdKGToolTH.SetCrBgTpHealColorLabelHealing,
+					name = BeltalowdaMenu.constants.CRBG_TPHEAL_COLOR_LABEL_HEALING,
+					getFunc = BeltalowdaTH.GetCrBgTpHealColorLabelHealing,
+					setFunc = BeltalowdaTH.SetCrBgTpHealColorLabelHealing,
 					width = "full"
 				},
 				[8] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CRBG_TPHEAL_COLOR_PROGRESS_RECOVERY,
-					getFunc = RdKGToolTH.GetCrBgTpHealColorProgressRecovery,
-					setFunc = RdKGToolTH.SetCrBgTpHealColorProgressRecovery,
+					name = BeltalowdaMenu.constants.CRBG_TPHEAL_COLOR_PROGRESS_RECOVERY,
+					getFunc = BeltalowdaTH.GetCrBgTpHealColorProgressRecovery,
+					setFunc = BeltalowdaTH.SetCrBgTpHealColorProgressRecovery,
 					width = "full"
 				},
 				[9] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CRBG_TPHEAL_COLOR_LABEL_RECOVERY,
-					getFunc = RdKGToolTH.GetCrBgTpHealColorLabelRecovery,
-					setFunc = RdKGToolTH.SetCrBgTpHealColorLabelRecovery,
+					name = BeltalowdaMenu.constants.CRBG_TPHEAL_COLOR_LABEL_RECOVERY,
+					getFunc = BeltalowdaTH.GetCrBgTpHealColorLabelRecovery,
+					setFunc = BeltalowdaTH.SetCrBgTpHealColorLabelRecovery,
 					width = "full"
 				},
 				[10] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CRBG_TPHEAL_COLOR_LABEL_COOLDOWN,
-					getFunc = RdKGToolTH.GetCrBgTpHealColorLabelCooldown,
-					setFunc = RdKGToolTH.SetCrBgTpHealColorLabelCooldown,
+					name = BeltalowdaMenu.constants.CRBG_TPHEAL_COLOR_LABEL_COOLDOWN,
+					getFunc = BeltalowdaTH.GetCrBgTpHealColorLabelCooldown,
+					setFunc = BeltalowdaTH.SetCrBgTpHealColorLabelCooldown,
 					width = "full"
 				},
 			}
@@ -523,90 +523,90 @@ function RdKGToolTH.GetMenu()
 	return menu
 end
 
-function RdKGToolTH.GetCrBgTpHealEnabled()
-	return RdKGToolTH.tpVars.enabled
+function BeltalowdaTH.GetCrBgTpHealEnabled()
+	return BeltalowdaTH.tpVars.enabled
 end
 
-function RdKGToolTH.SetCrBgTpHealEnabled(value)
-	RdKGToolTH.SetEnabled(value)
+function BeltalowdaTH.SetCrBgTpHealEnabled(value)
+	BeltalowdaTH.SetEnabled(value)
 end
 
-function RdKGToolTH.GetCrBgTpHealPositionLocked()
-	return RdKGToolTH.tpVars.positionLocked
+function BeltalowdaTH.GetCrBgTpHealPositionLocked()
+	return BeltalowdaTH.tpVars.positionLocked
 end
 
-function RdKGToolTH.SetCrBgTpHealPositionLocked(value)
-	RdKGToolTH.SetPositionLocked(value)
+function BeltalowdaTH.SetCrBgTpHealPositionLocked(value)
+	BeltalowdaTH.SetPositionLocked(value)
 end
 
-function RdKGToolTH.GetCrBgTpHealPvpOnly()
-	return RdKGToolTH.tpVars.pvpOnly
+function BeltalowdaTH.GetCrBgTpHealPvpOnly()
+	return BeltalowdaTH.tpVars.pvpOnly
 end
 
-function RdKGToolTH.SetCrBgTpHealPvpOnly(value)
-	RdKGToolTH.tpVars.pvpOnly = value
-	RdKGToolTH.SetEnabled(RdKGToolTH.tpVars.enabled)
+function BeltalowdaTH.SetCrBgTpHealPvpOnly(value)
+	BeltalowdaTH.tpVars.pvpOnly = value
+	BeltalowdaTH.SetEnabled(BeltalowdaTH.tpVars.enabled)
 end
 
-function RdKGToolTH.GetCrBgTpHealColorProgressDamage()
-	return RdKGToolMenu.GetRGBColor(RdKGToolTH.tpVars.damageColor)
+function BeltalowdaTH.GetCrBgTpHealColorProgressDamage()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaTH.tpVars.damageColor)
 end
 
-function RdKGToolTH.SetCrBgTpHealColorProgressDamage(r, g, b)
-	RdKGToolTH.tpVars.damageColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolTH.AdjustColors()
+function BeltalowdaTH.SetCrBgTpHealColorProgressDamage(r, g, b)
+	BeltalowdaTH.tpVars.damageColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaTH.AdjustColors()
 end
 
-function RdKGToolTH.GetCrBgTpHealColorProgressRecovery()
-	return RdKGToolMenu.GetRGBColor(RdKGToolTH.tpVars.recoveryColor)
+function BeltalowdaTH.GetCrBgTpHealColorProgressRecovery()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaTH.tpVars.recoveryColor)
 end
 
-function RdKGToolTH.SetCrBgTpHealColorProgressRecovery(r, g, b)
-	RdKGToolTH.tpVars.recoveryColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolTH.AdjustColors()
+function BeltalowdaTH.SetCrBgTpHealColorProgressRecovery(r, g, b)
+	BeltalowdaTH.tpVars.recoveryColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaTH.AdjustColors()
 end
 
-function RdKGToolTH.GetCrBgTpHealColorProgressHealing()
-	return RdKGToolMenu.GetRGBColor(RdKGToolTH.tpVars.healingColor)
+function BeltalowdaTH.GetCrBgTpHealColorProgressHealing()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaTH.tpVars.healingColor)
 end
 
-function RdKGToolTH.SetCrBgTpHealColorProgressHealing(r, g, b)
-	RdKGToolTH.tpVars.healingColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolTH.AdjustColors()
+function BeltalowdaTH.SetCrBgTpHealColorProgressHealing(r, g, b)
+	BeltalowdaTH.tpVars.healingColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaTH.AdjustColors()
 end
 
-function RdKGToolTH.GetCrBgTpHealColorLabelDamage()
-	return RdKGToolMenu.GetRGBColor(RdKGToolTH.tpVars.damageLabelColor)
+function BeltalowdaTH.GetCrBgTpHealColorLabelDamage()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaTH.tpVars.damageLabelColor)
 end
 
-function RdKGToolTH.SetCrBgTpHealColorLabelDamage(r, g, b)
-	RdKGToolTH.tpVars.damageLabelColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolTH.AdjustColors()
+function BeltalowdaTH.SetCrBgTpHealColorLabelDamage(r, g, b)
+	BeltalowdaTH.tpVars.damageLabelColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaTH.AdjustColors()
 end
 
-function RdKGToolTH.GetCrBgTpHealColorLabelRecovery()
-	return RdKGToolMenu.GetRGBColor(RdKGToolTH.tpVars.recoveryLabelColor)
+function BeltalowdaTH.GetCrBgTpHealColorLabelRecovery()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaTH.tpVars.recoveryLabelColor)
 end
 
-function RdKGToolTH.SetCrBgTpHealColorLabelRecovery(r, g, b)
-	RdKGToolTH.tpVars.recoveryLabelColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolTH.AdjustColors()
+function BeltalowdaTH.SetCrBgTpHealColorLabelRecovery(r, g, b)
+	BeltalowdaTH.tpVars.recoveryLabelColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaTH.AdjustColors()
 end
 
-function RdKGToolTH.GetCrBgTpHealColorLabelHealing()
-	return RdKGToolMenu.GetRGBColor(RdKGToolTH.tpVars.healingLabelColor)
+function BeltalowdaTH.GetCrBgTpHealColorLabelHealing()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaTH.tpVars.healingLabelColor)
 end
 
-function RdKGToolTH.SetCrBgTpHealColorLabelHealing(r, g, b)
-	RdKGToolTH.tpVars.healingLabelColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolTH.AdjustColors()
+function BeltalowdaTH.SetCrBgTpHealColorLabelHealing(r, g, b)
+	BeltalowdaTH.tpVars.healingLabelColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaTH.AdjustColors()
 end
 
-function RdKGToolTH.GetCrBgTpHealColorLabelCooldown()
-	return RdKGToolMenu.GetRGBColor(RdKGToolTH.tpVars.cooldownLabelColor)
+function BeltalowdaTH.GetCrBgTpHealColorLabelCooldown()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaTH.tpVars.cooldownLabelColor)
 end
 
-function RdKGToolTH.SetCrBgTpHealColorLabelCooldown(r, g, b)
-	RdKGToolTH.tpVars.cooldownLabelColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolTH.AdjustColors()
+function BeltalowdaTH.SetCrBgTpHealColorLabelCooldown(r, g, b)
+	BeltalowdaTH.tpVars.cooldownLabelColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaTH.AdjustColors()
 end

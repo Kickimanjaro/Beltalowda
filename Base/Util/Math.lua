@@ -1,19 +1,19 @@
--- RdK Group Tool Util Math
+-- Beltalowda Util Math
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.math = RdKGToolUtil.math or {}
-local RdKGToolMath = RdKGToolUtil.math
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.math = BeltalowdaUtil.math or {}
+local BeltalowdaMath = BeltalowdaUtil.math
 
-function RdKGToolMath.IsBitFieldPresent(bx, bitfield)
+function BeltalowdaMath.IsBitFieldPresent(bx, bitfield)
 	local isPresent = false
 	if bx ~= nil and bitfield ~= nil then
 		local hasBitfieldMarkerErrors = false
 		
-		bx = RdKGToolMath.DecodeBitArrayHelper(bx)
-		bitfield = RdKGToolMath.DecodeBitArrayHelper(bitfield)
+		bx = BeltalowdaMath.DecodeBitArrayHelper(bx)
+		bitfield = BeltalowdaMath.DecodeBitArrayHelper(bitfield)
 
 		for i = 1, #bx do
 			if bitfield[i] == 1 and bx[i] == 1 then
@@ -29,7 +29,7 @@ function RdKGToolMath.IsBitFieldPresent(bx, bitfield)
 	return isPresent
 end
 
-function RdKGToolMath.CreateEmptyBitfield(size)
+function BeltalowdaMath.CreateEmptyBitfield(size)
 	local array = {}
 	if size ~= nil then
 		for i = 1, size do
@@ -39,7 +39,7 @@ function RdKGToolMath.CreateEmptyBitfield(size)
 	return array
 end
 
-function RdKGToolMath.CopyBitfieldRange(origin, destination, size, originFrom, destinationFrom)
+function BeltalowdaMath.CopyBitfieldRange(origin, destination, size, originFrom, destinationFrom)
 	if origin ~= nil and destination ~= nil and size ~= nil and originFrom ~= nil and destinationFrom ~= nil then
 		if destinationFrom + size - 1 <= #destination and originFrom + size - 1 <= #origin then
 			--d(originFrom + size - 1)
@@ -51,7 +51,7 @@ function RdKGToolMath.CopyBitfieldRange(origin, destination, size, originFrom, d
 	return destination
 end
 
-function RdKGToolMath.BitToBoolean(value)
+function BeltalowdaMath.BitToBoolean(value)
 	local retVal = nil
 		if value == 0 then
 			retVal = false
@@ -61,7 +61,7 @@ function RdKGToolMath.BitToBoolean(value)
 	return retVal
 end
 
-function RdKGToolMath.BooleanToBit(value)
+function BeltalowdaMath.BooleanToBit(value)
 	local retVal = 0
 	if value == true then
 		retVal = 1
@@ -69,11 +69,11 @@ function RdKGToolMath.BooleanToBit(value)
 	return retVal
 end
 
-function RdKGToolMath.Int32ToArray(int32)
-	return RdKGToolMath.IntToArray(int32, 4294967295, 31)
+function BeltalowdaMath.Int32ToArray(int32)
+	return BeltalowdaMath.IntToArray(int32, 4294967295, 31)
 end
 
-function RdKGToolMath.IntToArray(int, maxVal, exponent)
+function BeltalowdaMath.IntToArray(int, maxVal, exponent)
 	local array = {}
 	if int ~= nil and int <= maxVal then
 		--d(int)
@@ -90,8 +90,8 @@ function RdKGToolMath.IntToArray(int, maxVal, exponent)
 	return array
 end
 
-function RdKGToolMath.Int24ToArray(int24)
-	return RdKGToolMath.IntToArray(int24, 16777215, 23)
+function BeltalowdaMath.Int24ToArray(int24)
+	return BeltalowdaMath.IntToArray(int24, 16777215, 23)
 	--[[
 	local array = {}
 	if int24 ~= nil and int24 <= 16777215 then
@@ -110,7 +110,7 @@ function RdKGToolMath.Int24ToArray(int24)
 	]]
 end
 
-function RdKGToolMath.ArrayToInt24(array)
+function BeltalowdaMath.ArrayToInt24(array)
 	--[[
 	1			00000000 00000000 00000001
 	2			00000000 00000000 00000010
@@ -148,7 +148,7 @@ function RdKGToolMath.ArrayToInt24(array)
 	return retVal
 end
 
-function RdKGToolMath.EncodeBitArrayHelper(array, offset)
+function BeltalowdaMath.EncodeBitArrayHelper(array, offset)
 	--[[
 	1       0x1     00000001
 	2       0x2     00000010
@@ -187,7 +187,7 @@ function RdKGToolMath.EncodeBitArrayHelper(array, offset)
 	return bx
 end
 
-function RdKGToolMath.DecodeBitArrayHelper(bx)
+function BeltalowdaMath.DecodeBitArrayHelper(bx)
 	local array = {}
 	if bx >= 128 then
 		bx = bx - 128
@@ -240,40 +240,40 @@ function RdKGToolMath.DecodeBitArrayHelper(bx)
 	return array
 end
 
-function RdKGToolMath.FloatingPointToByte(value)
+function BeltalowdaMath.FloatingPointToByte(value)
 	--[[
 	if value ~= nil and value >= 0 and value <= 1 then
 		return math.floor(value * 255)
 	end
 	return nil]]
-	return RdKGToolMath.FloatingPointToValue(value, 255)
+	return BeltalowdaMath.FloatingPointToValue(value, 255)
 end
 
-function RdKGToolMath.ByteToFloatingPoint(value)
+function BeltalowdaMath.ByteToFloatingPoint(value)
 	--[[
 	if value ~= nil and value >= 0 and value <= 255 then
 		return 1 / 255 * value
 	end
 	return nil
 	]]
-	return RdKGToolMath.ValueToFloatingPoint(value, 255)
+	return BeltalowdaMath.ValueToFloatingPoint(value, 255)
 end
 
-function RdKGToolMath.ValueToFloatingPoint(value, base)
+function BeltalowdaMath.ValueToFloatingPoint(value, base)
 	if value ~= nil and base ~= nil and value >= 0 and value <= base then
 		return 1 / base * value
 	end
 	return nil
 end
 
-function RdKGToolMath.FloatingPointToValue(value, base)
+function BeltalowdaMath.FloatingPointToValue(value, base)
 	if value ~= nil and base ~= nil and value >= 0 and value <= base then
 		return math.floor(value * base)
 	end
 	return nil
 end
 
-function RdKGToolMath.FourBitValueToHex(value)
+function BeltalowdaMath.FourBitValueToHex(value)
 	local hex = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"}
 	if value == nil or type(value) ~= "number" or value < 0 or value > 15 then
 		return nil
@@ -281,32 +281,32 @@ function RdKGToolMath.FourBitValueToHex(value)
 	return hex[value + 1]
 end
 
-function RdKGToolMath.ByteToHex(value)
+function BeltalowdaMath.ByteToHex(value)
 	if value == nil then
 		return nil
 	end
 	if type(value) ~= "table" then
-		value = RdKGToolMath.DecodeBitArrayHelper(value)
+		value = BeltalowdaMath.DecodeBitArrayHelper(value)
 	end
-	local bitfield = RdKGToolMath.CreateEmptyBitfield(4)
-	local rValue = RdKGToolMath.FourBitValueToHex(RdKGToolMath.EncodeBitArrayHelper(RdKGToolMath.CopyBitfieldRange(value, bitfield, 4, 1, 1), 0))
-	local lValue = RdKGToolMath.FourBitValueToHex(RdKGToolMath.EncodeBitArrayHelper(RdKGToolMath.CopyBitfieldRange(value, bitfield, 4, 5, 1), 0))
+	local bitfield = BeltalowdaMath.CreateEmptyBitfield(4)
+	local rValue = BeltalowdaMath.FourBitValueToHex(BeltalowdaMath.EncodeBitArrayHelper(BeltalowdaMath.CopyBitfieldRange(value, bitfield, 4, 1, 1), 0))
+	local lValue = BeltalowdaMath.FourBitValueToHex(BeltalowdaMath.EncodeBitArrayHelper(BeltalowdaMath.CopyBitfieldRange(value, bitfield, 4, 5, 1), 0))
 	if rValue ~= nil and lValue ~= nil then
 		return lValue .. rValue
 	end
 	return nil
 end
 
-function RdKGToolMath.Int32ToHex(value)
+function BeltalowdaMath.Int32ToHex(value)
 	if value ~= nil and value <= 4294967295 then
 		local byte1 = math.floor(value / 16777216)
 		local byte2 = math.floor((value % 16777216) / 65536)
 		local byte3 = math.floor((value % 65536) / 256)
 		local byte4 = value % 256
-		byte1 = RdKGToolMath.ByteToHex(byte1)
-		byte2 = RdKGToolMath.ByteToHex(byte2)
-		byte3 = RdKGToolMath.ByteToHex(byte3)
-		byte4 = RdKGToolMath.ByteToHex(byte4)
+		byte1 = BeltalowdaMath.ByteToHex(byte1)
+		byte2 = BeltalowdaMath.ByteToHex(byte2)
+		byte3 = BeltalowdaMath.ByteToHex(byte3)
+		byte4 = BeltalowdaMath.ByteToHex(byte4)
 		if byte1 ~= nil and byte2 ~= nil and byte3 ~= nil and byte4 ~= nil then
 			return byte1 .. byte2 .. byte3 .. byte4
 		end
@@ -314,7 +314,7 @@ function RdKGToolMath.Int32ToHex(value)
 	return nil
 end
 
-function RdKGToolMath.HexToFourBitValue(value)
+function BeltalowdaMath.HexToFourBitValue(value)
 	local hex = {["1"] = 1, ["2"] = 2, ["3"] = 3, ["4"] = 4, ["5"] = 5, ["6"] = 6, ["7"] = 7, ["8"] = 8, ["9"] = 9, ["A"] = 10, ["B"] = 11, ["C"] = 12, ["D"] = 13, ["E"] = 14, ["F"] = 15}
 	if type(value) ~= "string" and string.len(value) ~= 1 then
 		return nil
@@ -322,22 +322,22 @@ function RdKGToolMath.HexToFourBitValue(value)
 	return hex[value]
 end
 
-function RdKGToolMath.HexToByte(value)
+function BeltalowdaMath.HexToByte(value)
 	if type(value) ~= "string" and string.len(value) ~= 2 then
 		return nil
 	end
-	local rValue = RdKGToolMath.HexToFourBitValue(value:sub(2))
-	local lValue = RdKGToolMath.HexToFourBitValue(value:sub(1,1))
+	local rValue = BeltalowdaMath.HexToFourBitValue(value:sub(2))
+	local lValue = BeltalowdaMath.HexToFourBitValue(value:sub(1,1))
 	if lValue ~= nil and rValue ~= nil then
-		local bitfield = RdKGToolMath.CreateEmptyBitfield(8)
-		bitfield = RdKGToolMath.CopyBitfieldRange(RdKGToolMath.DecodeBitArrayHelper(rValue), bitfield, 4, 1, 1)
-		bitfield = RdKGToolMath.CopyBitfieldRange(RdKGToolMath.DecodeBitArrayHelper(lValue), bitfield, 4, 1, 5)
-		return RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)
+		local bitfield = BeltalowdaMath.CreateEmptyBitfield(8)
+		bitfield = BeltalowdaMath.CopyBitfieldRange(BeltalowdaMath.DecodeBitArrayHelper(rValue), bitfield, 4, 1, 1)
+		bitfield = BeltalowdaMath.CopyBitfieldRange(BeltalowdaMath.DecodeBitArrayHelper(lValue), bitfield, 4, 1, 5)
+		return BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)
 	end
 	return nil
 end
 
-function RdKGToolMath.HexToInt32(value)
+function BeltalowdaMath.HexToInt32(value)
 	if value ~= nil and string.len(value) <= 8 then
 		if string.len(value) ~= 8 then
 			local prefix = ""
@@ -346,10 +346,10 @@ function RdKGToolMath.HexToInt32(value)
 			end
 			value = prefix .. value
 		end
-		local byte1 = RdKGToolMath.HexToByte(value:sub(1,2))
-		local byte2 = RdKGToolMath.HexToByte(value:sub(3,4))
-		local byte3 = RdKGToolMath.HexToByte(value:sub(5,6))
-		local byte4 = RdKGToolMath.HexToByte(value:sub(7,8))
+		local byte1 = BeltalowdaMath.HexToByte(value:sub(1,2))
+		local byte2 = BeltalowdaMath.HexToByte(value:sub(3,4))
+		local byte3 = BeltalowdaMath.HexToByte(value:sub(5,6))
+		local byte4 = BeltalowdaMath.HexToByte(value:sub(7,8))
 		if byte1 ~= nil and byte2 ~= nil and byte3 ~= nil and byte4 ~= nil then
 			return byte1 * 16777216 + byte2 * 65536 + byte3 * 256 + byte3
 		end

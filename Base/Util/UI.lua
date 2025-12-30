@@ -1,23 +1,23 @@
--- RdK Group Tool UI
+-- Beltalowda UI
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
-RdKGTool.util.ui = RdKGTool.util.ui or {}
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
+Beltalowda.util.ui = Beltalowda.util.ui or {}
 
-local RdKGToolUI = RdKGTool.util.ui
+local BeltalowdaUI = Beltalowda.util.ui
 local wm = GetWindowManager()
 
-RdKGToolUI.labelFont = "$(BOLD_FONT)|$(KB_20)soft-shadow-thick"
+BeltalowdaUI.labelFont = "$(BOLD_FONT)|$(KB_20)soft-shadow-thick"
 
 --checkbox
 local function CheckBoxSetChecked(control, isChecked)
 	if isChecked ~= nil then
 		control.isChecked = isChecked
 		if isChecked == true then
-			control.labelButton:SetText(RdKGToolUI.constants.ON)
+			control.labelButton:SetText(BeltalowdaUI.constants.ON)
 		elseif isChecked == false then
-			control.labelButton:SetText(RdKGToolUI.constants.OFF)
+			control.labelButton:SetText(BeltalowdaUI.constants.OFF)
 		end
 		control:AdjustColor(false)
 	end
@@ -80,7 +80,7 @@ local function CheckboxSetEnabled(control, isEnabled)
 	end
 end
 
-function RdKGToolUI.CreateCheckBox(parent, data, controlName)
+function BeltalowdaUI.CreateCheckBox(parent, data, controlName)
 	if data.width ~= nil and data.height ~= nil then
 		local control = wm:CreateControl(controlName, parent, CT_CONTROL)
 		control:SetDimensions(data.width, data.height)
@@ -100,12 +100,12 @@ function RdKGToolUI.CreateCheckBox(parent, data, controlName)
 		control.labelText:SetWidth(data.width - 45)
 		control.labelText:SetText(data.text)
 		control.labelText:SetAnchor(TOPLEFT, control, TOPLEFT, 0, 0)
-		control.labelText:SetFont(RdKGToolUI.labelFont)
+		control.labelText:SetFont(BeltalowdaUI.labelFont)
 		
 		control.labelButton = wm:CreateControl(nil, control, CT_LABEL)
 		control.labelButton:SetWidth(45)
 		control.labelButton:SetAnchor(TOPLEFT, control, TOPLEFT, data.width - 45, 0)
-		control.labelButton:SetFont(RdKGToolUI.labelFont)
+		control.labelButton:SetFont(BeltalowdaUI.labelFont)
 		
 		control.isChecked = data.isChecked
 		if control.isChecked == nil then
@@ -134,7 +134,7 @@ end
 
 --Util
 --Moves the arrow around for 180 degrees -> used by follow the crown visual
-function RdKGToolUI.NormalizeAngle(angle)
+function BeltalowdaUI.NormalizeAngle(angle)
     if angle < -math.pi then 
 		return angle + 2 * math.pi 
 	end

@@ -1,6 +1,6 @@
 <GuiXml>
 	<Controls>
-		<TopLevelControl name="RdKGTool_AutoInvite" inherits="ZO_RightPanelFootPrint" hidden="true">
+		<TopLevelControl name="Beltalowda_AutoInvite" inherits="ZO_RightPanelFootPrint" hidden="true">
 			<OnInitialized>
 				
 			</OnInitialized>

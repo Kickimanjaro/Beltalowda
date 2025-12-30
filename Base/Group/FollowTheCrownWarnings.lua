@@ -1,127 +1,127 @@
--- RdK Group Tool Follow The Crown Warnings
+-- Beltalowda Follow The Crown Warnings
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.group.ftcw = RdKGTool.group.ftcw or {}
-local RdKGToolFtcw = RdKGTool.group.ftcw
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util or {}
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolGroup = RdKGToolUtil.group
+Beltalowda.group.ftcw = Beltalowda.group.ftcw or {}
+local BeltalowdaFtcw = Beltalowda.group.ftcw
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util or {}
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaGroup = BeltalowdaUtil.group
 
 
-RdKGToolFtcw.callbackName = RdKGTool.addonName .. "FollowTheCrownWarnings"
+BeltalowdaFtcw.callbackName = Beltalowda.addonName .. "FollowTheCrownWarnings"
 
 local wm = GetWindowManager()
 
-RdKGToolFtcw.config = {}
-RdKGToolFtcw.config.isClampedToScreen = true
-RdKGToolFtcw.config.initialMeterOffset = 100
-RdKGToolFtcw.config.updateInterval = 100
-RdKGToolFtcw.config.fontDistance = "$(BOLD_FONT)|$(KB_20)soft-shadow-thick"
-RdKGToolFtcw.config.fontWarning = "$(BOLD_FONT)|$(KB_40)soft-shadow-thick"
+BeltalowdaFtcw.config = {}
+BeltalowdaFtcw.config.isClampedToScreen = true
+BeltalowdaFtcw.config.initialMeterOffset = 100
+BeltalowdaFtcw.config.updateInterval = 100
+BeltalowdaFtcw.config.fontDistance = "$(BOLD_FONT)|$(KB_20)soft-shadow-thick"
+BeltalowdaFtcw.config.fontWarning = "$(BOLD_FONT)|$(KB_40)soft-shadow-thick"
 
-RdKGToolFtcw.controls = {}
+BeltalowdaFtcw.controls = {}
 
-RdKGToolFtcw.constants = {}
-RdKGToolFtcw.constants.TLW_METER_NAME = "RdKGToolGroupFtcwMeterTLW"
-RdKGToolFtcw.constants.TLW_WARNING_NAME = "RdKGToolGroupFtcwWarningTLW"
+BeltalowdaFtcw.constants = {}
+BeltalowdaFtcw.constants.TLW_METER_NAME = "BeltalowdaGroupFtcwMeterTLW"
+BeltalowdaFtcw.constants.TLW_WARNING_NAME = "BeltalowdaGroupFtcwWarningTLW"
 
-RdKGToolFtcw.state = {}
-RdKGToolFtcw.state.initialized = false
-RdKGToolFtcw.state.registeredConsumer = false
-RdKGToolFtcw.state.registredActiveConsumers = false
-RdKGToolFtcw.state.activeLayerIndex = 1
+BeltalowdaFtcw.state = {}
+BeltalowdaFtcw.state.initialized = false
+BeltalowdaFtcw.state.registeredConsumer = false
+BeltalowdaFtcw.state.registredActiveConsumers = false
+BeltalowdaFtcw.state.activeLayerIndex = 1
 
 
-function RdKGToolFtcw.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolFtcw.callbackName, RdKGToolFtcw.OnProfileChanged)
+function BeltalowdaFtcw.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaFtcw.callbackName, BeltalowdaFtcw.OnProfileChanged)
 	--Meter Display
-	RdKGToolFtcw.controls.TLW_Meter = wm:CreateTopLevelWindow(RdKGToolFtcw.constants.TLW_RETICLE_NAME)
-	RdKGToolFtcw.controls.TLW_Meter:SetDimensions(100, 40)
+	BeltalowdaFtcw.controls.TLW_Meter = wm:CreateTopLevelWindow(BeltalowdaFtcw.constants.TLW_RETICLE_NAME)
+	BeltalowdaFtcw.controls.TLW_Meter:SetDimensions(100, 40)
 
 		
-	RdKGToolFtcw.controls.TLW_Meter:SetClampedToScreen(RdKGToolFtcw.config.isClampedToScreen)
-	RdKGToolFtcw.controls.TLW_Meter:SetDrawLayer(0)
-	RdKGToolFtcw.controls.TLW_Meter:SetDrawLevel(0)
-	RdKGToolFtcw.controls.TLW_Meter:SetHandler("OnMoveStop", RdKGToolFtcw.SaveWindowLocation)
+	BeltalowdaFtcw.controls.TLW_Meter:SetClampedToScreen(BeltalowdaFtcw.config.isClampedToScreen)
+	BeltalowdaFtcw.controls.TLW_Meter:SetDrawLayer(0)
+	BeltalowdaFtcw.controls.TLW_Meter:SetDrawLevel(0)
+	BeltalowdaFtcw.controls.TLW_Meter:SetHandler("OnMoveStop", BeltalowdaFtcw.SaveWindowLocation)
 	
-	RdKGToolFtcw.controls.meter = wm:CreateControl(nil, RdKGToolFtcw.controls.TLW_Meter, CT_CONTROL)
-	RdKGToolFtcw.controls.meter:SetDimensions(100, 40)
-	RdKGToolFtcw.controls.meter:SetAnchor(TOPLEFT, RdKGToolFtcw.controls.TLW_Meter, TOPLEFT, 0, 0)
+	BeltalowdaFtcw.controls.meter = wm:CreateControl(nil, BeltalowdaFtcw.controls.TLW_Meter, CT_CONTROL)
+	BeltalowdaFtcw.controls.meter:SetDimensions(100, 40)
+	BeltalowdaFtcw.controls.meter:SetAnchor(TOPLEFT, BeltalowdaFtcw.controls.TLW_Meter, TOPLEFT, 0, 0)
 	
-	RdKGToolFtcw.controls.meter.movableBackdrop = wm:CreateControl(nil, RdKGToolFtcw.controls.meter, CT_BACKDROP)
+	BeltalowdaFtcw.controls.meter.movableBackdrop = wm:CreateControl(nil, BeltalowdaFtcw.controls.meter, CT_BACKDROP)
 	
-	RdKGToolFtcw.controls.meter.movableBackdrop:SetAnchor(TOPLEFT, RdKGToolFtcw.controls.meter, TOPLEFT, 0, 0)
-	RdKGToolFtcw.controls.meter.movableBackdrop:SetDimensions(100, 40)
+	BeltalowdaFtcw.controls.meter.movableBackdrop:SetAnchor(TOPLEFT, BeltalowdaFtcw.controls.meter, TOPLEFT, 0, 0)
+	BeltalowdaFtcw.controls.meter.movableBackdrop:SetDimensions(100, 40)
 
 		
 	
-	RdKGToolFtcw.controls.meter.label = wm:CreateControl(nil, RdKGToolFtcw.controls.meter.movableBackdrop, CT_LABEL)
-	RdKGToolFtcw.controls.meter.label:SetDimensions(80, 26)
-	RdKGToolFtcw.controls.meter.label:SetAnchor(CENTER, RdKGToolFtcw.controls.meter, CENTER, 0, 0)
-	RdKGToolFtcw.controls.meter.label:SetFont(RdKGToolFtcw.config.fontDistance)
-	RdKGToolFtcw.controls.meter.label:SetText("")
-	RdKGToolFtcw.controls.meter.label:SetHorizontalAlignment(TEXT_ALIGN_CENTER) 
-	RdKGToolFtcw.controls.meter.label:SetColor(RdKGToolFtcw.ftcwVars.distanceColor.r, RdKGToolFtcw.ftcwVars.distanceColor.g, RdKGToolFtcw.ftcwVars.distanceColor.b)
+	BeltalowdaFtcw.controls.meter.label = wm:CreateControl(nil, BeltalowdaFtcw.controls.meter.movableBackdrop, CT_LABEL)
+	BeltalowdaFtcw.controls.meter.label:SetDimensions(80, 26)
+	BeltalowdaFtcw.controls.meter.label:SetAnchor(CENTER, BeltalowdaFtcw.controls.meter, CENTER, 0, 0)
+	BeltalowdaFtcw.controls.meter.label:SetFont(BeltalowdaFtcw.config.fontDistance)
+	BeltalowdaFtcw.controls.meter.label:SetText("")
+	BeltalowdaFtcw.controls.meter.label:SetHorizontalAlignment(TEXT_ALIGN_CENTER) 
+	BeltalowdaFtcw.controls.meter.label:SetColor(BeltalowdaFtcw.ftcwVars.distanceColor.r, BeltalowdaFtcw.ftcwVars.distanceColor.g, BeltalowdaFtcw.ftcwVars.distanceColor.b)
 	
 	
 	
 	--Warning Display
-	RdKGToolFtcw.controls.TLW_Warning = wm:CreateTopLevelWindow(RdKGToolFtcw.constants.TLW_WARNING_NAME)
-	RdKGToolFtcw.controls.TLW_Warning:SetDimensions(600, 60)
+	BeltalowdaFtcw.controls.TLW_Warning = wm:CreateTopLevelWindow(BeltalowdaFtcw.constants.TLW_WARNING_NAME)
+	BeltalowdaFtcw.controls.TLW_Warning:SetDimensions(600, 60)
 
 		
-	RdKGToolFtcw.controls.TLW_Warning:SetClampedToScreen(RdKGToolFtcw.config.isClampedToScreen)
-	RdKGToolFtcw.controls.TLW_Warning:SetDrawLayer(0)
-	RdKGToolFtcw.controls.TLW_Warning:SetDrawLevel(0)
-	RdKGToolFtcw.controls.TLW_Warning:SetHandler("OnMoveStop", RdKGToolFtcw.SaveWindowLocation)
+	BeltalowdaFtcw.controls.TLW_Warning:SetClampedToScreen(BeltalowdaFtcw.config.isClampedToScreen)
+	BeltalowdaFtcw.controls.TLW_Warning:SetDrawLayer(0)
+	BeltalowdaFtcw.controls.TLW_Warning:SetDrawLevel(0)
+	BeltalowdaFtcw.controls.TLW_Warning:SetHandler("OnMoveStop", BeltalowdaFtcw.SaveWindowLocation)
 	
-	RdKGToolFtcw.controls.warning = wm:CreateControl(nil, RdKGToolFtcw.controls.TLW_Warning, CT_CONTROL)
-	RdKGToolFtcw.controls.warning:SetDimensions(600, 60)
-	RdKGToolFtcw.controls.warning:SetAnchor(TOPLEFT, RdKGToolFtcw.controls.TLW_Warning, TOPLEFT, 0, 0)
+	BeltalowdaFtcw.controls.warning = wm:CreateControl(nil, BeltalowdaFtcw.controls.TLW_Warning, CT_CONTROL)
+	BeltalowdaFtcw.controls.warning:SetDimensions(600, 60)
+	BeltalowdaFtcw.controls.warning:SetAnchor(TOPLEFT, BeltalowdaFtcw.controls.TLW_Warning, TOPLEFT, 0, 0)
 	
-	RdKGToolFtcw.controls.warning.movableBackdrop = wm:CreateControl(nil, RdKGToolFtcw.controls.warning, CT_BACKDROP)
+	BeltalowdaFtcw.controls.warning.movableBackdrop = wm:CreateControl(nil, BeltalowdaFtcw.controls.warning, CT_BACKDROP)
 	
-	RdKGToolFtcw.controls.warning.movableBackdrop:SetAnchor(TOPLEFT, RdKGToolFtcw.controls.warning, TOPLEFT, 0, 0)
-	RdKGToolFtcw.controls.warning.movableBackdrop:SetDimensions(600, 60)
+	BeltalowdaFtcw.controls.warning.movableBackdrop:SetAnchor(TOPLEFT, BeltalowdaFtcw.controls.warning, TOPLEFT, 0, 0)
+	BeltalowdaFtcw.controls.warning.movableBackdrop:SetDimensions(600, 60)
 
 	
 
-	RdKGToolFtcw.controls.warning.label = wm:CreateControl(nil, RdKGToolFtcw.controls.warning.movableBackdrop, CT_LABEL)
-	RdKGToolFtcw.controls.warning.label:SetDimensions(580, 46)
-	RdKGToolFtcw.controls.warning.label:SetAnchor(CENTER, RdKGToolFtcw.controls.warning, CENTER, 0, 0)
-	RdKGToolFtcw.controls.warning.label:SetFont(RdKGToolFtcw.config.fontWarning)
-	RdKGToolFtcw.controls.warning.label:SetHorizontalAlignment(TEXT_ALIGN_CENTER) 
-	RdKGToolFtcw.controls.warning.label:SetText("")
-	RdKGToolFtcw.controls.warning.label:SetColor(RdKGToolFtcw.ftcwVars.warningColor.r, RdKGToolFtcw.ftcwVars.warningColor.g, RdKGToolFtcw.ftcwVars.warningColor.b)
+	BeltalowdaFtcw.controls.warning.label = wm:CreateControl(nil, BeltalowdaFtcw.controls.warning.movableBackdrop, CT_LABEL)
+	BeltalowdaFtcw.controls.warning.label:SetDimensions(580, 46)
+	BeltalowdaFtcw.controls.warning.label:SetAnchor(CENTER, BeltalowdaFtcw.controls.warning, CENTER, 0, 0)
+	BeltalowdaFtcw.controls.warning.label:SetFont(BeltalowdaFtcw.config.fontWarning)
+	BeltalowdaFtcw.controls.warning.label:SetHorizontalAlignment(TEXT_ALIGN_CENTER) 
+	BeltalowdaFtcw.controls.warning.label:SetText("")
+	BeltalowdaFtcw.controls.warning.label:SetColor(BeltalowdaFtcw.ftcwVars.warningColor.r, BeltalowdaFtcw.ftcwVars.warningColor.g, BeltalowdaFtcw.ftcwVars.warningColor.b)
 	
-	RdKGToolFtcw.SetTlwLocation()
+	BeltalowdaFtcw.SetTlwLocation()
 	
-	RdKGToolMenu.AddPositionFixedConsumer(RdKGToolFtcw.SetFtcwPositionLocked)
+	BeltalowdaMenu.AddPositionFixedConsumer(BeltalowdaFtcw.SetFtcwPositionLocked)
 	
-	RdKGToolFtcw.state.initialized = true
-	RdKGToolFtcw.SetEnabled(RdKGToolFtcw.ftcwVars.enabled)
-	RdKGToolFtcw.SetMovable(not RdKGToolFtcw.ftcwVars.positionLocked)
+	BeltalowdaFtcw.state.initialized = true
+	BeltalowdaFtcw.SetEnabled(BeltalowdaFtcw.ftcwVars.enabled)
+	BeltalowdaFtcw.SetMovable(not BeltalowdaFtcw.ftcwVars.positionLocked)
 end
 
-function RdKGToolFtcw.SetTlwLocation()
-	RdKGToolFtcw.controls.TLW_Meter:ClearAnchors()
-	if RdKGToolFtcw.ftcwVars.distanceLocation == nil then
-		RdKGToolFtcw.controls.TLW_Meter:SetAnchor(CENTER, GuiRoot, CENTER, 0, 150)
+function BeltalowdaFtcw.SetTlwLocation()
+	BeltalowdaFtcw.controls.TLW_Meter:ClearAnchors()
+	if BeltalowdaFtcw.ftcwVars.distanceLocation == nil then
+		BeltalowdaFtcw.controls.TLW_Meter:SetAnchor(CENTER, GuiRoot, CENTER, 0, 150)
 	else
-		RdKGToolFtcw.controls.TLW_Meter:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, RdKGToolFtcw.ftcwVars.distanceLocation.x, RdKGToolFtcw.ftcwVars.distanceLocation.y)
+		BeltalowdaFtcw.controls.TLW_Meter:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, BeltalowdaFtcw.ftcwVars.distanceLocation.x, BeltalowdaFtcw.ftcwVars.distanceLocation.y)
 	end
-	RdKGToolFtcw.controls.TLW_Warning:ClearAnchors()
-	if RdKGToolFtcw.ftcwVars.warningLocation == nil then
-		RdKGToolFtcw.controls.TLW_Warning:SetAnchor(CENTER, GuiRoot, CENTER, 250, -250)
+	BeltalowdaFtcw.controls.TLW_Warning:ClearAnchors()
+	if BeltalowdaFtcw.ftcwVars.warningLocation == nil then
+		BeltalowdaFtcw.controls.TLW_Warning:SetAnchor(CENTER, GuiRoot, CENTER, 250, -250)
 	else
-		RdKGToolFtcw.controls.TLW_Warning:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, RdKGToolFtcw.ftcwVars.warningLocation.x, RdKGToolFtcw.ftcwVars.warningLocation.y)
+		BeltalowdaFtcw.controls.TLW_Warning:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, BeltalowdaFtcw.ftcwVars.warningLocation.x, BeltalowdaFtcw.ftcwVars.warningLocation.y)
 	end
 end
 
-function RdKGToolFtcw.GetDefaults()
+function BeltalowdaFtcw.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
 	defaults.distanceEnabled = true
@@ -146,265 +146,265 @@ function RdKGToolFtcw.GetDefaults()
 	return defaults
 end
 
-function RdKGToolFtcw.SetEnabled(value)
-	if RdKGToolFtcw.state.initialized == true and value ~= nil then
-		RdKGToolFtcw.ftcwVars.enabled = value
+function BeltalowdaFtcw.SetEnabled(value)
+	if BeltalowdaFtcw.state.initialized == true and value ~= nil then
+		BeltalowdaFtcw.ftcwVars.enabled = value
 		if value == true then
-			if RdKGToolFtcw.state.registredConsumers == false then
+			if BeltalowdaFtcw.state.registredConsumers == false then
 				
-				EVENT_MANAGER:RegisterForEvent(RdKGToolFtcw.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolFtcw.OnPlayerActivated)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaFtcw.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaFtcw.OnPlayerActivated)
 				
 			end
-			RdKGToolFtcw.state.registredConsumers = true
+			BeltalowdaFtcw.state.registredConsumers = true
 		else
-			if RdKGToolFtcw.state.registredConsumers == true then
+			if BeltalowdaFtcw.state.registredConsumers == true then
 				
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolFtcw.callbackName, EVENT_PLAYER_ACTIVATED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaFtcw.callbackName, EVENT_PLAYER_ACTIVATED)
 				
 			end
-			RdKGToolFtcw.state.registredConsumers = false
+			BeltalowdaFtcw.state.registredConsumers = false
 		end
-		RdKGToolFtcw.OnPlayerActivated()
+		BeltalowdaFtcw.OnPlayerActivated()
 	end
 end
 
-function RdKGToolFtcw.SetBackdropColors()
-	if RdKGToolFtcw.ftcwVars.positionLocked == false then
-		RdKGToolFtcw.controls.meter.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
-		RdKGToolFtcw.controls.meter.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
-		RdKGToolFtcw.controls.warning.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
-		RdKGToolFtcw.controls.warning.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+function BeltalowdaFtcw.SetBackdropColors()
+	if BeltalowdaFtcw.ftcwVars.positionLocked == false then
+		BeltalowdaFtcw.controls.meter.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
+		BeltalowdaFtcw.controls.meter.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+		BeltalowdaFtcw.controls.warning.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
+		BeltalowdaFtcw.controls.warning.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	else
-		if IsUnitGrouped("player") == true and RdKGToolGroup.IsPlayerGroupLeader() == false then
-			if RdKGToolFtcw.ftcwVars.distanceBackdropEnabled == true and ( RdKGToolFtcw.ftcwVars.pvpOnly == false or (RdKGToolFtcw.ftcwVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea()))then
-				RdKGToolFtcw.controls.meter.movableBackdrop:SetCenterColor(0.1, 0.1, 0.1, 0.3)
-				RdKGToolFtcw.controls.meter.movableBackdrop:SetEdgeColor(0.1, 0.1, 0.1, 0.0)
+		if IsUnitGrouped("player") == true and BeltalowdaGroup.IsPlayerGroupLeader() == false then
+			if BeltalowdaFtcw.ftcwVars.distanceBackdropEnabled == true and ( BeltalowdaFtcw.ftcwVars.pvpOnly == false or (BeltalowdaFtcw.ftcwVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea()))then
+				BeltalowdaFtcw.controls.meter.movableBackdrop:SetCenterColor(0.1, 0.1, 0.1, 0.3)
+				BeltalowdaFtcw.controls.meter.movableBackdrop:SetEdgeColor(0.1, 0.1, 0.1, 0.0)
 			else
-				RdKGToolFtcw.controls.meter.movableBackdrop:SetCenterColor(0.0, 0.0, 0.0, 0.0)
-				RdKGToolFtcw.controls.meter.movableBackdrop:SetEdgeColor(0.0, 0.0, 0.0, 0.0)
+				BeltalowdaFtcw.controls.meter.movableBackdrop:SetCenterColor(0.0, 0.0, 0.0, 0.0)
+				BeltalowdaFtcw.controls.meter.movableBackdrop:SetEdgeColor(0.0, 0.0, 0.0, 0.0)
 			end
 		else
-			RdKGToolFtcw.controls.meter.movableBackdrop:SetCenterColor(0.0, 0.0, 0.0, 0.0)
-			RdKGToolFtcw.controls.meter.movableBackdrop:SetEdgeColor(0.0, 0.0, 0.0, 0.0)
+			BeltalowdaFtcw.controls.meter.movableBackdrop:SetCenterColor(0.0, 0.0, 0.0, 0.0)
+			BeltalowdaFtcw.controls.meter.movableBackdrop:SetEdgeColor(0.0, 0.0, 0.0, 0.0)
 		end
-		RdKGToolFtcw.controls.warning.movableBackdrop:SetCenterColor(0, 0, 0, 0.0)
-		RdKGToolFtcw.controls.warning.movableBackdrop:SetEdgeColor(0, 0, 0, 0.0)	
+		BeltalowdaFtcw.controls.warning.movableBackdrop:SetCenterColor(0, 0, 0, 0.0)
+		BeltalowdaFtcw.controls.warning.movableBackdrop:SetEdgeColor(0, 0, 0, 0.0)	
 	end
 end
 
-function RdKGToolFtcw.SetMovable(isMovable)
-	RdKGToolFtcw.ftcwVars.positionLocked = not isMovable
-	RdKGToolFtcw.controls.TLW_Meter:SetMovable(isMovable)
-	RdKGToolFtcw.controls.TLW_Meter:SetMouseEnabled(isMovable)
-	RdKGToolFtcw.controls.TLW_Warning:SetMovable(isMovable)
-	RdKGToolFtcw.controls.TLW_Warning:SetMouseEnabled(isMovable)
-	RdKGToolFtcw.SetBackdropColors()
+function BeltalowdaFtcw.SetMovable(isMovable)
+	BeltalowdaFtcw.ftcwVars.positionLocked = not isMovable
+	BeltalowdaFtcw.controls.TLW_Meter:SetMovable(isMovable)
+	BeltalowdaFtcw.controls.TLW_Meter:SetMouseEnabled(isMovable)
+	BeltalowdaFtcw.controls.TLW_Warning:SetMovable(isMovable)
+	BeltalowdaFtcw.controls.TLW_Warning:SetMouseEnabled(isMovable)
+	BeltalowdaFtcw.SetBackdropColors()
 end
 
-function RdKGToolFtcw.SetControlVisibility()
-	local enabled = RdKGToolFtcw.ftcwVars.enabled
-	local pvpOnly = RdKGToolFtcw.ftcwVars.pvpOnly
+function BeltalowdaFtcw.SetControlVisibility()
+	local enabled = BeltalowdaFtcw.ftcwVars.enabled
+	local pvpOnly = BeltalowdaFtcw.ftcwVars.pvpOnly
 	local setHidden = true
 	if enabled ~= nil and pvpOnly ~= nil then
 
-		if enabled == true and (pvpOnly == false or (pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
+		if enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 			setHidden = false
 		end
 	end
 	if setHidden == false then
-		if RdKGToolFtcw.state.foreground == false then
-			RdKGToolFtcw.controls.TLW_Meter:SetHidden(RdKGToolFtcw.state.activeLayerIndex > 2)
-			RdKGToolFtcw.controls.TLW_Warning:SetHidden(RdKGToolFtcw.state.activeLayerIndex > 2)
+		if BeltalowdaFtcw.state.foreground == false then
+			BeltalowdaFtcw.controls.TLW_Meter:SetHidden(BeltalowdaFtcw.state.activeLayerIndex > 2)
+			BeltalowdaFtcw.controls.TLW_Warning:SetHidden(BeltalowdaFtcw.state.activeLayerIndex > 2)
 		else
-			RdKGToolFtcw.controls.TLW_Meter:SetHidden(false)
-			RdKGToolFtcw.controls.TLW_Warning:SetHidden(false)
+			BeltalowdaFtcw.controls.TLW_Meter:SetHidden(false)
+			BeltalowdaFtcw.controls.TLW_Warning:SetHidden(false)
 		end
 	else
-		RdKGToolFtcw.controls.TLW_Meter:SetHidden(setHidden)
-		RdKGToolFtcw.controls.TLW_Warning:SetHidden(setHidden)
+		BeltalowdaFtcw.controls.TLW_Meter:SetHidden(setHidden)
+		BeltalowdaFtcw.controls.TLW_Warning:SetHidden(setHidden)
 	end
-	if RdKGToolFtcw.ftcwVars.distanceEnabled == false then
-		RdKGToolFtcw.controls.TLW_Meter:SetHidden(true)
+	if BeltalowdaFtcw.ftcwVars.distanceEnabled == false then
+		BeltalowdaFtcw.controls.TLW_Meter:SetHidden(true)
 	end
-	if RdKGToolFtcw.ftcwVars.warningsEnabled == false then
-		RdKGToolFtcw.controls.TLW_Warning:SetHidden(true)
+	if BeltalowdaFtcw.ftcwVars.warningsEnabled == false then
+		BeltalowdaFtcw.controls.TLW_Warning:SetHidden(true)
 	end
 end
 
 --callbacks
-function RdKGToolFtcw.OnProfileChanged(currentProfile)
+function BeltalowdaFtcw.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		--RdKGToolFtcw.SetEnabled(false)
-		RdKGToolFtcw.ftcwVars = currentProfile.group.ftcw
-		if RdKGToolFtcw.controls.meter ~= nil and RdKGToolFtcw.controls.warning ~= nil then
-			RdKGToolFtcw.controls.meter.label:SetColor(RdKGToolFtcw.ftcwVars.distanceColor.r, RdKGToolFtcw.ftcwVars.distanceColor.g, RdKGToolFtcw.ftcwVars.distanceColor.b)
-			RdKGToolFtcw.controls.warning.label:SetColor(RdKGToolFtcw.ftcwVars.warningColor.r, RdKGToolFtcw.ftcwVars.warningColor.g, RdKGToolFtcw.ftcwVars.warningColor.b)
-			RdKGToolFtcw.SetMovable(not RdKGToolFtcw.ftcwVars.positionLocked)
-			RdKGToolFtcw.SetTlwLocation()
+		--BeltalowdaFtcw.SetEnabled(false)
+		BeltalowdaFtcw.ftcwVars = currentProfile.group.ftcw
+		if BeltalowdaFtcw.controls.meter ~= nil and BeltalowdaFtcw.controls.warning ~= nil then
+			BeltalowdaFtcw.controls.meter.label:SetColor(BeltalowdaFtcw.ftcwVars.distanceColor.r, BeltalowdaFtcw.ftcwVars.distanceColor.g, BeltalowdaFtcw.ftcwVars.distanceColor.b)
+			BeltalowdaFtcw.controls.warning.label:SetColor(BeltalowdaFtcw.ftcwVars.warningColor.r, BeltalowdaFtcw.ftcwVars.warningColor.g, BeltalowdaFtcw.ftcwVars.warningColor.b)
+			BeltalowdaFtcw.SetMovable(not BeltalowdaFtcw.ftcwVars.positionLocked)
+			BeltalowdaFtcw.SetTlwLocation()
 		end
 		
-		RdKGToolFtcw.SetEnabled(RdKGToolFtcw.ftcwVars.enabled)
+		BeltalowdaFtcw.SetEnabled(BeltalowdaFtcw.ftcwVars.enabled)
 		
 	end
 end
 
-function RdKGToolFtcw.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
+function BeltalowdaFtcw.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
 	if eventCode == EVENT_ACTION_LAYER_POPPED then
-		RdKGToolFtcw.state.foreground = true
+		BeltalowdaFtcw.state.foreground = true
 	elseif eventCode == EVENT_ACTION_LAYER_PUSHED then
-		RdKGToolFtcw.state.foreground = false
+		BeltalowdaFtcw.state.foreground = false
 	end
 	--hack?
-	RdKGToolFtcw.state.activeLayerIndex = activeLayerIndex
+	BeltalowdaFtcw.state.activeLayerIndex = activeLayerIndex
 	
-	RdKGToolFtcw.SetControlVisibility()
+	BeltalowdaFtcw.SetControlVisibility()
 end
 
-function RdKGToolFtcw.OnPlayerActivated(eventCode, initial)
-	if RdKGToolFtcw.ftcwVars.enabled == true and (RdKGToolFtcw.ftcwVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true or RdKGToolFtcw.ftcwVars.pvpOnly == false) then
-		if RdKGToolFtcw.state.registredActiveConsumers == false then
-			EVENT_MANAGER:RegisterForEvent(RdKGToolFtcw.callbackName, EVENT_ACTION_LAYER_POPPED, RdKGToolFtcw.SetForegroundVisibility)
-			EVENT_MANAGER:RegisterForEvent(RdKGToolFtcw.callbackName, EVENT_ACTION_LAYER_PUSHED, RdKGToolFtcw.SetForegroundVisibility)
-			RdKGTool.util.group.AddFeature(RdKGToolFtcw.callbackName, RdKGTool.util.group.features.FEATURE_GROUP_LEADER_DISTANCE, RdKGToolFtcw.config.updateInterval)
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolFtcw.callbackName, RdKGToolFtcw.config.updateInterval, RdKGToolFtcw.OnUpdate)
-			RdKGToolFtcw.state.registredActiveConsumers = true
+function BeltalowdaFtcw.OnPlayerActivated(eventCode, initial)
+	if BeltalowdaFtcw.ftcwVars.enabled == true and (BeltalowdaFtcw.ftcwVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true or BeltalowdaFtcw.ftcwVars.pvpOnly == false) then
+		if BeltalowdaFtcw.state.registredActiveConsumers == false then
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaFtcw.callbackName, EVENT_ACTION_LAYER_POPPED, BeltalowdaFtcw.SetForegroundVisibility)
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaFtcw.callbackName, EVENT_ACTION_LAYER_PUSHED, BeltalowdaFtcw.SetForegroundVisibility)
+			Beltalowda.util.group.AddFeature(BeltalowdaFtcw.callbackName, Beltalowda.util.group.features.FEATURE_GROUP_LEADER_DISTANCE, BeltalowdaFtcw.config.updateInterval)
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaFtcw.callbackName, BeltalowdaFtcw.config.updateInterval, BeltalowdaFtcw.OnUpdate)
+			BeltalowdaFtcw.state.registredActiveConsumers = true
 		end
 	else
-		if RdKGToolFtcw.state.registredActiveConsumers == true then
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolFtcw.callbackName, EVENT_ACTION_LAYER_POPPED)
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolFtcw.callbackName, EVENT_ACTION_LAYER_PUSHED)
-			RdKGTool.util.group.RemoveFeature(RdKGToolFtcw.callbackName, RdKGTool.util.group.features.FEATURE_GROUP_LEADER_DISTANCE)
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolFtcw.callbackName)
-			RdKGToolFtcw.state.registredActiveConsumers = false
+		if BeltalowdaFtcw.state.registredActiveConsumers == true then
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaFtcw.callbackName, EVENT_ACTION_LAYER_POPPED)
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaFtcw.callbackName, EVENT_ACTION_LAYER_PUSHED)
+			Beltalowda.util.group.RemoveFeature(BeltalowdaFtcw.callbackName, Beltalowda.util.group.features.FEATURE_GROUP_LEADER_DISTANCE)
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaFtcw.callbackName)
+			BeltalowdaFtcw.state.registredActiveConsumers = false
 		end
 	end
-	RdKGToolFtcw.SetControlVisibility()
+	BeltalowdaFtcw.SetControlVisibility()
 end
 
-function RdKGToolFtcw.OnUpdate()
-	if IsUnitGrouped("player") == true and RdKGToolGroup.IsPlayerGroupLeader() == false and ( RdKGToolFtcw.ftcwVars.pvpOnly == false or (RdKGToolFtcw.ftcwVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea())) then
-		local distance = RdKGTool.util.group.GetLeaderDistance()
+function BeltalowdaFtcw.OnUpdate()
+	if IsUnitGrouped("player") == true and BeltalowdaGroup.IsPlayerGroupLeader() == false and ( BeltalowdaFtcw.ftcwVars.pvpOnly == false or (BeltalowdaFtcw.ftcwVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea())) then
+		local distance = Beltalowda.util.group.GetLeaderDistance()
 		--d(distance)
 		if distance ~= nil then
-			if distance > RdKGToolFtcw.ftcwVars.maxDistance and distance < RdKGToolFtcw.ftcwVars.ignoreDistance then
-				RdKGToolFtcw.controls.warning.label:SetText(RdKGToolFtcw.constants.FTCW_MAX_DISTANCE)
-				RdKGToolFtcw.controls.meter.label:SetColor(RdKGToolFtcw.ftcwVars.distanceAlertColor.r, RdKGToolFtcw.ftcwVars.distanceAlertColor.g, RdKGToolFtcw.ftcwVars.distanceAlertColor.b)
+			if distance > BeltalowdaFtcw.ftcwVars.maxDistance and distance < BeltalowdaFtcw.ftcwVars.ignoreDistance then
+				BeltalowdaFtcw.controls.warning.label:SetText(BeltalowdaFtcw.constants.FTCW_MAX_DISTANCE)
+				BeltalowdaFtcw.controls.meter.label:SetColor(BeltalowdaFtcw.ftcwVars.distanceAlertColor.r, BeltalowdaFtcw.ftcwVars.distanceAlertColor.g, BeltalowdaFtcw.ftcwVars.distanceAlertColor.b)
 			else
-				RdKGToolFtcw.controls.warning.label:SetText("")
-				RdKGToolFtcw.controls.meter.label:SetColor(RdKGToolFtcw.ftcwVars.distanceColor.r, RdKGToolFtcw.ftcwVars.distanceColor.g, RdKGToolFtcw.ftcwVars.distanceColor.b)
+				BeltalowdaFtcw.controls.warning.label:SetText("")
+				BeltalowdaFtcw.controls.meter.label:SetColor(BeltalowdaFtcw.ftcwVars.distanceColor.r, BeltalowdaFtcw.ftcwVars.distanceColor.g, BeltalowdaFtcw.ftcwVars.distanceColor.b)
 			end
 			local unit = "m"
 			if distance >= 1000 then
 				distance = distance / 1000
 				unit = "km"
 			end
-			RdKGToolFtcw.controls.meter.label:SetText(string.format("%.1f %s", distance, unit))
+			BeltalowdaFtcw.controls.meter.label:SetText(string.format("%.1f %s", distance, unit))
 		end
 	else
-		RdKGToolFtcw.controls.meter.label:SetText("")
-		RdKGToolFtcw.controls.warning.label:SetText("")
+		BeltalowdaFtcw.controls.meter.label:SetText("")
+		BeltalowdaFtcw.controls.warning.label:SetText("")
 	end
-	RdKGToolFtcw.SetBackdropColors()
+	BeltalowdaFtcw.SetBackdropColors()
 end
 
-function RdKGToolFtcw.SaveWindowLocation()
-	if RdKGToolFtcw.ftcwVars.positionLocked == false then
-		RdKGToolFtcw.ftcwVars.warningLocation = RdKGToolFtcw.ftcwVars.warningLocation or {}
-		RdKGToolFtcw.ftcwVars.warningLocation.x = RdKGToolFtcw.controls.TLW_Warning:GetLeft()
-		RdKGToolFtcw.ftcwVars.warningLocation.y = RdKGToolFtcw.controls.TLW_Warning:GetTop()
+function BeltalowdaFtcw.SaveWindowLocation()
+	if BeltalowdaFtcw.ftcwVars.positionLocked == false then
+		BeltalowdaFtcw.ftcwVars.warningLocation = BeltalowdaFtcw.ftcwVars.warningLocation or {}
+		BeltalowdaFtcw.ftcwVars.warningLocation.x = BeltalowdaFtcw.controls.TLW_Warning:GetLeft()
+		BeltalowdaFtcw.ftcwVars.warningLocation.y = BeltalowdaFtcw.controls.TLW_Warning:GetTop()
 		
-		RdKGToolFtcw.ftcwVars.distanceLocation = RdKGToolFtcw.ftcwVars.distanceLocation or {}
-		RdKGToolFtcw.ftcwVars.distanceLocation.x = RdKGToolFtcw.controls.TLW_Meter:GetLeft()
-		RdKGToolFtcw.ftcwVars.distanceLocation.y = RdKGToolFtcw.controls.TLW_Meter:GetTop()
+		BeltalowdaFtcw.ftcwVars.distanceLocation = BeltalowdaFtcw.ftcwVars.distanceLocation or {}
+		BeltalowdaFtcw.ftcwVars.distanceLocation.x = BeltalowdaFtcw.controls.TLW_Meter:GetLeft()
+		BeltalowdaFtcw.ftcwVars.distanceLocation.y = BeltalowdaFtcw.controls.TLW_Meter:GetTop()
 	end
 end
 
 --menu interaction
-function RdKGToolFtcw.GetMenu()
+function BeltalowdaFtcw.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.FTCW_HEADER,
+			name = BeltalowdaMenu.constants.FTCW_HEADER,
 			--width = "full",
 			controls = {
 
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCW_ENABLED,
-					getFunc = RdKGToolFtcw.GetFtcwEnabled,
-					setFunc = RdKGToolFtcw.SetFtcwEnabled,
+					name = BeltalowdaMenu.constants.FTCW_ENABLED,
+					getFunc = BeltalowdaFtcw.GetFtcwEnabled,
+					setFunc = BeltalowdaFtcw.SetFtcwEnabled,
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCW_PVP_ONLY,
-					getFunc = RdKGToolFtcw.GetFtcwPvpOnly,
-					setFunc = RdKGToolFtcw.SetFtcwPvpOnly,
+					name = BeltalowdaMenu.constants.FTCW_PVP_ONLY,
+					getFunc = BeltalowdaFtcw.GetFtcwPvpOnly,
+					setFunc = BeltalowdaFtcw.SetFtcwPvpOnly,
 				},
 				[3] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCW_WARNINGS_ENABLED,
-					getFunc = RdKGToolFtcw.GetFtcwWarningsEnabled,
-					setFunc = RdKGToolFtcw.SetFtcwWarningsEnabled,
+					name = BeltalowdaMenu.constants.FTCW_WARNINGS_ENABLED,
+					getFunc = BeltalowdaFtcw.GetFtcwWarningsEnabled,
+					setFunc = BeltalowdaFtcw.SetFtcwWarningsEnabled,
 				},
 				[4] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCW_DISTANCE_ENABLED,
-					getFunc = RdKGToolFtcw.GetFtcwDistanceEnabled,
-					setFunc = RdKGToolFtcw.SetFtcwDistanceEnabled,
+					name = BeltalowdaMenu.constants.FTCW_DISTANCE_ENABLED,
+					getFunc = BeltalowdaFtcw.GetFtcwDistanceEnabled,
+					setFunc = BeltalowdaFtcw.SetFtcwDistanceEnabled,
 				},
 				[5] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCW_DISTANCE_BACKDROP_ENABLED,
-					getFunc = RdKGToolFtcw.GetFtcwDistanceBackdropEnabled,
-					setFunc = RdKGToolFtcw.SetFtcwDistanceBackdropEnabled,
+					name = BeltalowdaMenu.constants.FTCW_DISTANCE_BACKDROP_ENABLED,
+					getFunc = BeltalowdaFtcw.GetFtcwDistanceBackdropEnabled,
+					setFunc = BeltalowdaFtcw.SetFtcwDistanceBackdropEnabled,
 				},
 				[6] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCW_POSITION_FIXED,
-					getFunc = RdKGToolFtcw.GetFtcwPositionLocked,
-					setFunc = RdKGToolFtcw.SetFtcwPositionLocked,
+					name = BeltalowdaMenu.constants.FTCW_POSITION_FIXED,
+					getFunc = BeltalowdaFtcw.GetFtcwPositionLocked,
+					setFunc = BeltalowdaFtcw.SetFtcwPositionLocked,
 				},
 				[7] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.FTCW_DISTANCE,
+					name = BeltalowdaMenu.constants.FTCW_DISTANCE,
 					min = 0,
 					max = 25,
 					step = 1,
-					getFunc = RdKGToolFtcw.GetFtcwMaxDistance,
-					setFunc = RdKGToolFtcw.SetFtcwMaxDistance,
+					getFunc = BeltalowdaFtcw.GetFtcwMaxDistance,
+					setFunc = BeltalowdaFtcw.SetFtcwMaxDistance,
 					width = "full",
 					default = 8
 				},
 				[8] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.FTCW_IGNORE_DISTANCE,
+					name = BeltalowdaMenu.constants.FTCW_IGNORE_DISTANCE,
 					min = 100,
 					max = 1000,
 					step = 1,
-					getFunc = RdKGToolFtcw.GetFtcwIgnoreDistance,
-					setFunc = RdKGToolFtcw.SetFtcwIgnoreDistance,
+					getFunc = BeltalowdaFtcw.GetFtcwIgnoreDistance,
+					setFunc = BeltalowdaFtcw.SetFtcwIgnoreDistance,
 					width = "full",
 					default = 100
 				},
 				[9] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.FTCW_WARNING_COLOR,
-					getFunc = RdKGToolFtcw.GetFtcwWarningColor,
-					setFunc = RdKGToolFtcw.SetFtcwWarningColor,
+					name = BeltalowdaMenu.constants.FTCW_WARNING_COLOR,
+					getFunc = BeltalowdaFtcw.GetFtcwWarningColor,
+					setFunc = BeltalowdaFtcw.SetFtcwWarningColor,
 					width = "full"
 				},
 				[10] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.FTCW_DISTANCE_COLOR_NORMAL,
-					getFunc = RdKGToolFtcw.GetFtcwDistanceColor,
-					setFunc = RdKGToolFtcw.SetFtcwDistanceColor,
+					name = BeltalowdaMenu.constants.FTCW_DISTANCE_COLOR_NORMAL,
+					getFunc = BeltalowdaFtcw.GetFtcwDistanceColor,
+					setFunc = BeltalowdaFtcw.SetFtcwDistanceColor,
 					width = "full"
 				},
 				[11] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.FTCW_DISTANCE_COLOR_ALERT,
-					getFunc = RdKGToolFtcw.GetFtcwDistanceAlertColor,
-					setFunc = RdKGToolFtcw.SetFtcwDistanceAlertColor,
+					name = BeltalowdaMenu.constants.FTCW_DISTANCE_COLOR_ALERT,
+					getFunc = BeltalowdaFtcw.GetFtcwDistanceAlertColor,
+					setFunc = BeltalowdaFtcw.SetFtcwDistanceAlertColor,
 					width = "full"
 				}
 			}
@@ -413,98 +413,98 @@ function RdKGToolFtcw.GetMenu()
 	return menu
 end
 
-function RdKGToolFtcw.GetFtcwEnabled()
-	return RdKGToolFtcw.ftcwVars.enabled
+function BeltalowdaFtcw.GetFtcwEnabled()
+	return BeltalowdaFtcw.ftcwVars.enabled
 end
 
-function RdKGToolFtcw.SetFtcwEnabled(value)
-	RdKGToolFtcw.SetEnabled(value)
+function BeltalowdaFtcw.SetFtcwEnabled(value)
+	BeltalowdaFtcw.SetEnabled(value)
 end
 
-function RdKGToolFtcw.GetFtcwPvpOnly()
-	return RdKGToolFtcw.ftcwVars.pvpOnly
+function BeltalowdaFtcw.GetFtcwPvpOnly()
+	return BeltalowdaFtcw.ftcwVars.pvpOnly
 end
 
-function RdKGToolFtcw.SetFtcwPvpOnly(value)
-	RdKGToolFtcw.ftcwVars.pvpOnly = value
-	RdKGToolFtcw.SetEnabled(RdKGToolFtcw.ftcwVars.enabled)
+function BeltalowdaFtcw.SetFtcwPvpOnly(value)
+	BeltalowdaFtcw.ftcwVars.pvpOnly = value
+	BeltalowdaFtcw.SetEnabled(BeltalowdaFtcw.ftcwVars.enabled)
 end
 
-function RdKGToolFtcw.GetFtcwWarningsEnabled()
-	return RdKGToolFtcw.ftcwVars.warningsEnabled
+function BeltalowdaFtcw.GetFtcwWarningsEnabled()
+	return BeltalowdaFtcw.ftcwVars.warningsEnabled
 end
 
-function RdKGToolFtcw.SetFtcwWarningsEnabled(value)
-	RdKGToolFtcw.ftcwVars.warningsEnabled = value
-	RdKGToolFtcw.SetEnabled(RdKGToolFtcw.ftcwVars.enabled)
+function BeltalowdaFtcw.SetFtcwWarningsEnabled(value)
+	BeltalowdaFtcw.ftcwVars.warningsEnabled = value
+	BeltalowdaFtcw.SetEnabled(BeltalowdaFtcw.ftcwVars.enabled)
 end
 
-function RdKGToolFtcw.GetFtcwDistanceEnabled()
-	return RdKGToolFtcw.ftcwVars.distanceEnabled
+function BeltalowdaFtcw.GetFtcwDistanceEnabled()
+	return BeltalowdaFtcw.ftcwVars.distanceEnabled
 end
 
-function RdKGToolFtcw.SetFtcwDistanceEnabled(value)
-	RdKGToolFtcw.ftcwVars.distanceEnabled = value
-	RdKGToolFtcw.SetEnabled(RdKGToolFtcw.ftcwVars.enabled)
+function BeltalowdaFtcw.SetFtcwDistanceEnabled(value)
+	BeltalowdaFtcw.ftcwVars.distanceEnabled = value
+	BeltalowdaFtcw.SetEnabled(BeltalowdaFtcw.ftcwVars.enabled)
 end
 
-function RdKGToolFtcw.GetFtcwDistanceBackdropEnabled()
-	return RdKGToolFtcw.ftcwVars.distanceBackdropEnabled
+function BeltalowdaFtcw.GetFtcwDistanceBackdropEnabled()
+	return BeltalowdaFtcw.ftcwVars.distanceBackdropEnabled
 end
 
-function RdKGToolFtcw.SetFtcwDistanceBackdropEnabled(value)
-	RdKGToolFtcw.ftcwVars.distanceBackdropEnabled = value
-	RdKGToolFtcw.SetEnabled(RdKGToolFtcw.ftcwVars.enabled)
+function BeltalowdaFtcw.SetFtcwDistanceBackdropEnabled(value)
+	BeltalowdaFtcw.ftcwVars.distanceBackdropEnabled = value
+	BeltalowdaFtcw.SetEnabled(BeltalowdaFtcw.ftcwVars.enabled)
 end
 
-function RdKGToolFtcw.GetFtcwPositionLocked()
-	return RdKGToolFtcw.ftcwVars.positionLocked
+function BeltalowdaFtcw.GetFtcwPositionLocked()
+	return BeltalowdaFtcw.ftcwVars.positionLocked
 end
 
-function RdKGToolFtcw.SetFtcwPositionLocked(value)
-	RdKGToolFtcw.SetMovable(not value)
+function BeltalowdaFtcw.SetFtcwPositionLocked(value)
+	BeltalowdaFtcw.SetMovable(not value)
 end
 
-function RdKGToolFtcw.GetFtcwMaxDistance()
-	return RdKGToolFtcw.ftcwVars.maxDistance
+function BeltalowdaFtcw.GetFtcwMaxDistance()
+	return BeltalowdaFtcw.ftcwVars.maxDistance
 end
 
-function RdKGToolFtcw.SetFtcwMaxDistance(value)
-	RdKGToolFtcw.ftcwVars.maxDistance = value
+function BeltalowdaFtcw.SetFtcwMaxDistance(value)
+	BeltalowdaFtcw.ftcwVars.maxDistance = value
 end
 
-function RdKGToolFtcw.GetFtcwIgnoreDistance()
-	return RdKGToolFtcw.ftcwVars.ignoreDistance
+function BeltalowdaFtcw.GetFtcwIgnoreDistance()
+	return BeltalowdaFtcw.ftcwVars.ignoreDistance
 end
 
-function RdKGToolFtcw.SetFtcwIgnoreDistance(value)
-	RdKGToolFtcw.ftcwVars.ignoreDistance = value
+function BeltalowdaFtcw.SetFtcwIgnoreDistance(value)
+	BeltalowdaFtcw.ftcwVars.ignoreDistance = value
 end
 
-function RdKGToolFtcw.GetFtcwWarningColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolFtcw.ftcwVars.warningColor)
+function BeltalowdaFtcw.GetFtcwWarningColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaFtcw.ftcwVars.warningColor)
 end
 
-function RdKGToolFtcw.SetFtcwWarningColor(r, g, b)
-	RdKGToolFtcw.ftcwVars.warningColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolFtcw.controls.warning.label:SetColor(r, g, b)
+function BeltalowdaFtcw.SetFtcwWarningColor(r, g, b)
+	BeltalowdaFtcw.ftcwVars.warningColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaFtcw.controls.warning.label:SetColor(r, g, b)
 end
 
-function RdKGToolFtcw.GetFtcwDistanceColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolFtcw.ftcwVars.distanceColor)
+function BeltalowdaFtcw.GetFtcwDistanceColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaFtcw.ftcwVars.distanceColor)
 end
 
-function RdKGToolFtcw.SetFtcwDistanceColor(r, g, b)
-	RdKGToolFtcw.ftcwVars.distanceColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolFtcw.controls.meter.label:SetColor(r, g, b)
+function BeltalowdaFtcw.SetFtcwDistanceColor(r, g, b)
+	BeltalowdaFtcw.ftcwVars.distanceColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaFtcw.controls.meter.label:SetColor(r, g, b)
 end
 
-function RdKGToolFtcw.GetFtcwDistanceAlertColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolFtcw.ftcwVars.distanceAlertColor)
+function BeltalowdaFtcw.GetFtcwDistanceAlertColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaFtcw.ftcwVars.distanceAlertColor)
 end
 
-function RdKGToolFtcw.SetFtcwDistanceAlertColor(r, g, b)
-	RdKGToolFtcw.ftcwVars.distanceAlertColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaFtcw.SetFtcwDistanceAlertColor(r, g, b)
+	BeltalowdaFtcw.ftcwVars.distanceAlertColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
 end
 
 
@@ -512,42 +512,42 @@ end
 --Follow The Crown Warnings
 
 --[[
-function RdKGToolMenu.GetFtcwWarningColor()
-	local color = RdKGToolFtcw.GetFtcwWarningColor()
+function BeltalowdaMenu.GetFtcwWarningColor()
+	local color = BeltalowdaFtcw.GetFtcwWarningColor()
 	return color.r, color.g, color.b
 end
 
-function RdKGToolMenu.SetFtcwWarningColor(r, g, b, a)
+function BeltalowdaMenu.SetFtcwWarningColor(r, g, b, a)
 	local color = {}
 	color.r = r
 	color.g = g
 	color.b = b
-	RdKGToolFtcw.SetFtcwWarningColor(color)
+	BeltalowdaFtcw.SetFtcwWarningColor(color)
 end
 
-function RdKGToolMenu.GetFtcwDistanceColor()
-	local color = RdKGToolFtcw.GetFtcwDistanceColor()
+function BeltalowdaMenu.GetFtcwDistanceColor()
+	local color = BeltalowdaFtcw.GetFtcwDistanceColor()
 	return color.r, color.g, color.b
 end
 
-function RdKGToolMenu.SetFtcwDistanceColor(r, g, b, a)
+function BeltalowdaMenu.SetFtcwDistanceColor(r, g, b, a)
 	local color = {}
 	color.r = r
 	color.g = g
 	color.b = b
-	RdKGToolFtcw.SetFtcwDistanceColor(color)
+	BeltalowdaFtcw.SetFtcwDistanceColor(color)
 end
 
-function RdKGToolMenu.GetFtcwDistanceAlertColor()
-	local color = RdKGToolFtcw.GetFtcwDistanceAlertColor()
+function BeltalowdaMenu.GetFtcwDistanceAlertColor()
+	local color = BeltalowdaFtcw.GetFtcwDistanceAlertColor()
 	return color.r, color.g, color.b
 end
 
-function RdKGToolMenu.SetFtcwDistanceAlertColor(r, g, b, a)
+function BeltalowdaMenu.SetFtcwDistanceAlertColor(r, g, b, a)
 	local color = {}
 	color.r = r
 	color.g = g
 	color.b = b
-	RdKGToolFtcw.SetFtcwDistanceAlertColor(color)
+	BeltalowdaFtcw.SetFtcwDistanceAlertColor(color)
 end
 ]]

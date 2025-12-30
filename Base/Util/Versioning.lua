@@ -1,85 +1,85 @@
--- RdK Group Tool Util Versioning
+-- Beltalowda Util Versioning
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.versioning = RdKGToolUtil.versioning or {}
-local RdKGToolVersioning = RdKGToolUtil.versioning
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolGroup = RdKGToolUtil.group
-RdKGToolUtil.networking = RdKGToolUtil.networking or {}
-local RdKGToolNetworking = RdKGToolUtil.networking
-RdKGToolUtil.roster = RdKGToolUtil.roster or {}
-local RdKGToolRoster = RdKGToolUtil.roster
-RdKGToolUtil.chatSystem = RdKGToolUtil.chatSystem or {}
-local RdKGToolChat = RdKGToolUtil.chatSystem
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.versioning = BeltalowdaUtil.versioning or {}
+local BeltalowdaVersioning = BeltalowdaUtil.versioning
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaGroup = BeltalowdaUtil.group
+BeltalowdaUtil.networking = BeltalowdaUtil.networking or {}
+local BeltalowdaNetworking = BeltalowdaUtil.networking
+BeltalowdaUtil.roster = BeltalowdaUtil.roster or {}
+local BeltalowdaRoster = BeltalowdaUtil.roster
+BeltalowdaUtil.chatSystem = BeltalowdaUtil.chatSystem or {}
+local BeltalowdaChat = BeltalowdaUtil.chatSystem
 
-RdKGToolVersioning.callbackName = RdKGTool.addonName .. "UtilVersioning"
-RdKGToolVersioning.queueCallbackName = RdKGTool.addonName .. "UtilVersioningQueue"
+BeltalowdaVersioning.callbackName = Beltalowda.addonName .. "UtilVersioning"
+BeltalowdaVersioning.queueCallbackName = Beltalowda.addonName .. "UtilVersioningQueue"
 
 
-RdKGToolVersioning.config = {}
-RdKGToolVersioning.config.featureInterval = 100
-RdKGToolVersioning.config.sendInterval = 900000
-RdKGToolVersioning.config.requestInterval = 2000
+BeltalowdaVersioning.config = {}
+BeltalowdaVersioning.config.featureInterval = 100
+BeltalowdaVersioning.config.sendInterval = 900000
+BeltalowdaVersioning.config.requestInterval = 2000
 
-RdKGToolVersioning.constants = {}
-RdKGToolVersioning.constants.NO_MESSAGE_INTERVAL = 30000
-RdKGToolVersioning.constants.INFORMATION_REQUEST_ALL = 25
-RdKGToolVersioning.constants.PREFIX = "Version"
+BeltalowdaVersioning.constants = {}
+BeltalowdaVersioning.constants.NO_MESSAGE_INTERVAL = 30000
+BeltalowdaVersioning.constants.INFORMATION_REQUEST_ALL = 25
+BeltalowdaVersioning.constants.PREFIX = "Version"
 
-RdKGToolVersioning.state = {}
-RdKGToolVersioning.state.clientVersion = {}
-RdKGToolVersioning.state.clientVersion.major = 0
-RdKGToolVersioning.state.clientVersion.minor = 0
-RdKGToolVersioning.state.clientVersion.revision = 0
-RdKGToolVersioning.state.clientOutOfDate = false
-RdKGToolVersioning.state.isInGroup = false
-RdKGToolVersioning.state.requestQueue = {}
+BeltalowdaVersioning.state = {}
+BeltalowdaVersioning.state.clientVersion = {}
+BeltalowdaVersioning.state.clientVersion.major = 0
+BeltalowdaVersioning.state.clientVersion.minor = 0
+BeltalowdaVersioning.state.clientVersion.revision = 0
+BeltalowdaVersioning.state.clientOutOfDate = false
+BeltalowdaVersioning.state.isInGroup = false
+BeltalowdaVersioning.state.requestQueue = {}
 
-RdKGToolVersioning.state.lastMessage = nil
-RdKGToolVersioning.state.lastMessageTimeStamp = nil
+BeltalowdaVersioning.state.lastMessage = nil
+BeltalowdaVersioning.state.lastMessageTimeStamp = nil
 
 --functions
-function RdKGToolVersioning.Initialize()
-	RdKGToolGroup.AddFeature(RdKGToolVersioning.callbackName, RdKGToolGroup.features.FEATURE_GROUP_VERSIONING, RdKGToolVersioning.config.featureInterval)
-	RdKGToolGroup.SetVersionCheckCallback(RdKGToolVersioning.CheckVersionInformation)
-	RdKGToolVersioning.state.clientVersion = RdKGToolVersioning.GetVersionArray(RdKGTool.versionString)
+function BeltalowdaVersioning.Initialize()
+	BeltalowdaGroup.AddFeature(BeltalowdaVersioning.callbackName, BeltalowdaGroup.features.FEATURE_GROUP_VERSIONING, BeltalowdaVersioning.config.featureInterval)
+	BeltalowdaGroup.SetVersionCheckCallback(BeltalowdaVersioning.CheckVersionInformation)
+	BeltalowdaVersioning.state.clientVersion = BeltalowdaVersioning.GetVersionArray(Beltalowda.versionString)
 	
 	if GetGroupSize() ~= 0 then
-		RdKGToolVersioning.GroupMemberOnJoined()
+		BeltalowdaVersioning.GroupMemberOnJoined()
 	end
 	
-	EVENT_MANAGER:RegisterForEvent(RdKGToolVersioning.callbackName, EVENT_GROUP_MEMBER_JOINED, RdKGToolVersioning.GroupMemberOnJoined)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolVersioning.callbackName, EVENT_GROUP_MEMBER_LEFT, RdKGToolVersioning.GroupMemberOnLeft)
-	RdKGToolNetworking.AddRawMessageHandler(RdKGToolVersioning.callbackName, RdKGToolVersioning.HandleRawVersioningRequestNetworkMessage)
-	EVENT_MANAGER:RegisterForUpdate(RdKGToolVersioning.queueCallbackName, RdKGToolVersioning.config.requestInterval, RdKGToolVersioning.SendQueuedRequests)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaVersioning.callbackName, EVENT_GROUP_MEMBER_JOINED, BeltalowdaVersioning.GroupMemberOnJoined)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaVersioning.callbackName, EVENT_GROUP_MEMBER_LEFT, BeltalowdaVersioning.GroupMemberOnLeft)
+	BeltalowdaNetworking.AddRawMessageHandler(BeltalowdaVersioning.callbackName, BeltalowdaVersioning.HandleRawVersioningRequestNetworkMessage)
+	EVENT_MANAGER:RegisterForUpdate(BeltalowdaVersioning.queueCallbackName, BeltalowdaVersioning.config.requestInterval, BeltalowdaVersioning.SendQueuedRequests)
 end
 
 
 
-function RdKGToolVersioning.CheckVersionInformation(player)
+function BeltalowdaVersioning.CheckVersionInformation(player)
 	if player ~= nil and player.clientVersion ~= nil then
 		--d(player.clientVersion)
-		--d(RdKGToolVersioning.state.clientVersion)
-		if RdKGToolVersioning.VersionBiggerThan(RdKGToolVersioning.state.clientVersion, player.clientVersion) then
+		--d(BeltalowdaVersioning.state.clientVersion)
+		if BeltalowdaVersioning.VersionBiggerThan(BeltalowdaVersioning.state.clientVersion, player.clientVersion) then
 			--d("Other client has an older version")
 			if player.clientVersion.versionAlertSent == false then
 				player.clientVersion.versionAlertSent = true
-				RdKGToolVersioning.SendClientVersionInformation()
+				BeltalowdaVersioning.SendClientVersionInformation()
 			end
-		elseif RdKGToolVersioning.VersionLesserThan(RdKGToolVersioning.state.clientVersion, player.clientVersion) then
+		elseif BeltalowdaVersioning.VersionLesserThan(BeltalowdaVersioning.state.clientVersion, player.clientVersion) then
 			--d("Other client has a newer version")
-			if RdKGToolVersioning.state.clientOutOfDate == false then
-				RdKGToolChat.SendChatMessage(RdKGToolVersioning.constants.CLIENT_OUT_OF_DATE, RdKGToolVersioning.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_WARNING)
-				RdKGToolVersioning.state.clientOutOfDate = true
+			if BeltalowdaVersioning.state.clientOutOfDate == false then
+				BeltalowdaChat.SendChatMessage(BeltalowdaVersioning.constants.CLIENT_OUT_OF_DATE, BeltalowdaVersioning.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
+				BeltalowdaVersioning.state.clientOutOfDate = true
 			end
 		end
 	end
 end
 
-function RdKGToolVersioning.VersionBiggerThan(versionA, versionB)
+function BeltalowdaVersioning.VersionBiggerThan(versionA, versionB)
 	local bigger = false
 		if versionA.major > versionB.major or
 		   (versionA.major == versionB.major and versionA.minor > versionB.minor) or
@@ -89,7 +89,7 @@ function RdKGToolVersioning.VersionBiggerThan(versionA, versionB)
 	return bigger
 end
 
-function RdKGToolVersioning.VersionLesserThan(versionA, versionB)
+function BeltalowdaVersioning.VersionLesserThan(versionA, versionB)
 	local lesser = false
 		if versionA.major < versionB.major or
 		   (versionA.major == versionB.major and versionA.minor < versionB.minor) or
@@ -99,7 +99,7 @@ function RdKGToolVersioning.VersionLesserThan(versionA, versionB)
 	return lesser
 end
 
-function RdKGToolVersioning.GetVersionArray(versionString)
+function BeltalowdaVersioning.GetVersionArray(versionString)
 	local versionInformation = {}
 	versionInformation.major, versionInformation.minor, versionInformation.revision = 0,0,0
 	if versionString ~= nil then
@@ -117,12 +117,12 @@ function RdKGToolVersioning.GetVersionArray(versionString)
 	return versionInformation
 end
 
-function RdKGToolVersioning.GetHighestKnownVersionNumber()
+function BeltalowdaVersioning.GetHighestKnownVersionNumber()
 	local version = nil
-	local players = RdKGToolGroup.GetGroupInformation()
+	local players = BeltalowdaGroup.GetGroupInformation()
 	if players ~= nil then
 		for i = 1, #players do
-			if version == nil or (version ~= nil and players[i].clientVersion ~= nil and players[i].clientVersion.major ~= nil and players[i].minor ~= nil and players[i].revision ~= nil and RdKGToolVersioning.VersionBiggerThan(players[i].clientVersion, version) == true) then
+			if version == nil or (version ~= nil and players[i].clientVersion ~= nil and players[i].clientVersion.major ~= nil and players[i].minor ~= nil and players[i].revision ~= nil and BeltalowdaVersioning.VersionBiggerThan(players[i].clientVersion, version) == true) then
 				version = players[i].clientVersion
 			end
 		end
@@ -137,49 +137,49 @@ function RdKGToolVersioning.GetHighestKnownVersionNumber()
 	return version
 end
 
-function RdKGToolVersioning.SendClientVersionInformation()
+function BeltalowdaVersioning.SendClientVersionInformation()
 	--d("send client information")
-	if (RdKGToolVersioning.state.lastMessage == nil or RdKGToolVersioning.state.lastMessage.sent == true) and (RdKGToolVersioning.state.lastMessageTimeStamp == nil or RdKGToolVersioning.state.lastMessageTimeStamp + RdKGToolVersioning.constants.NO_MESSAGE_INTERVAL < GetGameTimeMilliseconds()) then
+	if (BeltalowdaVersioning.state.lastMessage == nil or BeltalowdaVersioning.state.lastMessage.sent == true) and (BeltalowdaVersioning.state.lastMessageTimeStamp == nil or BeltalowdaVersioning.state.lastMessageTimeStamp + BeltalowdaVersioning.constants.NO_MESSAGE_INTERVAL < GetGameTimeMilliseconds()) then
 		local message = {}
-		message.b0 = RdKGToolNetworking.messageTypes.MESSAGE_ID_VERSION_INFORMATION
-		message.b1 = RdKGToolVersioning.state.clientVersion.major
-		message.b2 = RdKGToolVersioning.state.clientVersion.minor
-		message.b3 = RdKGToolVersioning.state.clientVersion.revision
+		message.b0 = BeltalowdaNetworking.messageTypes.MESSAGE_ID_VERSION_INFORMATION
+		message.b1 = BeltalowdaVersioning.state.clientVersion.major
+		message.b2 = BeltalowdaVersioning.state.clientVersion.minor
+		message.b3 = BeltalowdaVersioning.state.clientVersion.revision
 		message.sent = false
-		RdKGToolVersioning.state.lastMessage = message
-		RdKGToolNetworking.SendVersionMessage(message, RdKGToolNetworking.constants.priorities.MEDIUM)
-		RdKGToolVersioning.state.lastMessageTimeStamp = GetGameTimeMilliseconds()
+		BeltalowdaVersioning.state.lastMessage = message
+		BeltalowdaNetworking.SendVersionMessage(message, BeltalowdaNetworking.constants.priorities.MEDIUM)
+		BeltalowdaVersioning.state.lastMessageTimeStamp = GetGameTimeMilliseconds()
 		--d(message)
 	end
 end
 
-function RdKGToolVersioning.AddVersionInformationRequestToQueue(message)
-	if message ~= nil and RdKGToolRoster.IsGuildOfficer(GetUnitDisplayName("player")) then
+function BeltalowdaVersioning.AddVersionInformationRequestToQueue(message)
+	if message ~= nil and BeltalowdaRoster.IsGuildOfficer(GetUnitDisplayName("player")) then
 		--d(message)
 		local queueMessage = true
-		for i = 1, #RdKGToolVersioning.state.requestQueue do
-			local messageEntry = RdKGToolVersioning.state.requestQueue[i]
+		for i = 1, #BeltalowdaVersioning.state.requestQueue do
+			local messageEntry = BeltalowdaVersioning.state.requestQueue[i]
 			if message.b1 == messageEntry.message.b1 and messageEntry.message.sent == false then
 				queueMessage = false
 			end
 		end
 		if queueMessage == true then
 			--d("adding to queue")
-			table.insert(RdKGToolVersioning.state.requestQueue, {requestAdded = false, message = message})
+			table.insert(BeltalowdaVersioning.state.requestQueue, {requestAdded = false, message = message})
 		end
 	end
 end
 
-function RdKGToolVersioning.RequestVersionInformation(unitTag)
+function BeltalowdaVersioning.RequestVersionInformation(unitTag)
 	--d(unitTag)
 	local message = {}
-	message.b0 = RdKGToolNetworking.messageTypes.MESSAGE_ID_VERSION_REQUEST
+	message.b0 = BeltalowdaNetworking.messageTypes.MESSAGE_ID_VERSION_REQUEST
 	message.b1 = 0
 	message.b2 = 0
 	message.b3 = 0
 	message.sent = false
 	if unitTag ~= nil and unitTag ~= "player" then
-		local players = RdKGToolGroup.GetGroupInformation()
+		local players = BeltalowdaGroup.GetGroupInformation()
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].unitTag == unitTag then
@@ -189,22 +189,22 @@ function RdKGToolVersioning.RequestVersionInformation(unitTag)
 			end
 		end
 	elseif unitTag == nil then
-		message.b1 = RdKGToolVersioning.constants.INFORMATION_REQUEST_ALL
+		message.b1 = BeltalowdaVersioning.constants.INFORMATION_REQUEST_ALL
 	end
 	if message.b1 > 0 then
-		RdKGToolVersioning.AddVersionInformationRequestToQueue(message)
+		BeltalowdaVersioning.AddVersionInformationRequestToQueue(message)
 	end
 end
 
-function RdKGToolVersioning.ProcessVersionInformationRequest(requestingUnitTag, unitIndex)
+function BeltalowdaVersioning.ProcessVersionInformationRequest(requestingUnitTag, unitIndex)
 	--d(requestingUnitTag)
 	if unitIndex ~= nil and requestingUnitTag ~= nil then
-		--if RdKGToolRoster.IsRdKAdmin(GetUnitDisplayName(requestingUnitTag)) then
-		if RdKGToolRoster.IsGuildOfficerOf(GetUnitDisplayName("player"),GetUnitDisplayName(requestingUnitTag)) then
+		--if BeltalowdaRoster.IsBeltalowdaAdmin(GetUnitDisplayName(requestingUnitTag)) then
+		if BeltalowdaRoster.IsGuildOfficerOf(GetUnitDisplayName("player"),GetUnitDisplayName(requestingUnitTag)) then
 			--d("Version Information Requested")
-			local players = RdKGToolGroup.GetGroupInformation()
+			local players = BeltalowdaGroup.GetGroupInformation()
 			local sendInformation = false
-			if unitIndex == RdKGToolVersioning.constants.INFORMATION_REQUEST_ALL then
+			if unitIndex == BeltalowdaVersioning.constants.INFORMATION_REQUEST_ALL then
 				sendInformation = true
 			elseif players ~= nil and players[unitIndex] ~= nil then
 				local player = players[unitIndex]
@@ -214,56 +214,56 @@ function RdKGToolVersioning.ProcessVersionInformationRequest(requestingUnitTag, 
 			end
 			if sendInformation == true then
 				--d("send version information")
-				RdKGToolVersioning.SendClientVersionInformation()
+				BeltalowdaVersioning.SendClientVersionInformation()
 			end
 		end
 	end
 end
 
 --functions version fix
-function RdKGToolVersioning.InitializeFixes(savedVars, charVars)
-	RdKGToolVersioning.FixVars(savedVars, charVars, RdKGTool.versionString, savedVars.lastVersion)
-	if savedVars.lastVersion ~= RdKGTool.versionString then
+function BeltalowdaVersioning.InitializeFixes(savedVars, charVars)
+	BeltalowdaVersioning.FixVars(savedVars, charVars, Beltalowda.versionString, savedVars.lastVersion)
+	if savedVars.lastVersion ~= Beltalowda.versionString then
 		savedVars.reported = nil
 	end
-	savedVars.lastVersion = RdKGTool.versionString
+	savedVars.lastVersion = Beltalowda.versionString
 end
 
-function RdKGToolVersioning.FixVars(savedVars, charVars, currentVersion, lastVersion)
+function BeltalowdaVersioning.FixVars(savedVars, charVars, currentVersion, lastVersion)
 	if lastVersion ~= nil then
-		local current = RdKGToolVersioning.GetVersionArray(currentVersion)
-		local last = RdKGToolVersioning.GetVersionArray(lastVersion)
-		if RdKGToolVersioning.VersionLesserThan(last, RdKGToolVersioning.GetVersionArray("1.1.0")) then
-			RdKGToolVersioning.Apply1d1d0Fix(savedVars)
+		local current = BeltalowdaVersioning.GetVersionArray(currentVersion)
+		local last = BeltalowdaVersioning.GetVersionArray(lastVersion)
+		if BeltalowdaVersioning.VersionLesserThan(last, BeltalowdaVersioning.GetVersionArray("1.1.0")) then
+			BeltalowdaVersioning.Apply1d1d0Fix(savedVars)
 		end
-		if RdKGToolVersioning.VersionLesserThan(last, RdKGToolVersioning.GetVersionArray("1.2.1")) then
-			RdKGToolVersioning.Apply1d2d1Fix(savedVars)
+		if BeltalowdaVersioning.VersionLesserThan(last, BeltalowdaVersioning.GetVersionArray("1.2.1")) then
+			BeltalowdaVersioning.Apply1d2d1Fix(savedVars)
 		end
-		if RdKGToolVersioning.VersionLesserThan(last, RdKGToolVersioning.GetVersionArray("1.3.0")) then
-			RdKGToolVersioning.Apply1d3d0Fix(savedVars)
+		if BeltalowdaVersioning.VersionLesserThan(last, BeltalowdaVersioning.GetVersionArray("1.3.0")) then
+			BeltalowdaVersioning.Apply1d3d0Fix(savedVars)
 		end
-		if RdKGToolVersioning.VersionLesserThan(last, RdKGToolVersioning.GetVersionArray("1.12.0")) then
-			RdKGToolVersioning.Apply1d12d0Fix(savedVars)
+		if BeltalowdaVersioning.VersionLesserThan(last, BeltalowdaVersioning.GetVersionArray("1.12.0")) then
+			BeltalowdaVersioning.Apply1d12d0Fix(savedVars)
 		end
-		if RdKGToolVersioning.VersionLesserThan(last, RdKGToolVersioning.GetVersionArray("1.12.2")) then
-			RdKGToolVersioning.Apply1d12d2Fix(savedVars)
+		if BeltalowdaVersioning.VersionLesserThan(last, BeltalowdaVersioning.GetVersionArray("1.12.2")) then
+			BeltalowdaVersioning.Apply1d12d2Fix(savedVars)
 		end
-		if RdKGToolVersioning.VersionLesserThan(last, RdKGToolVersioning.GetVersionArray("2.0.1")) then
-			RdKGToolVersioning.Apply2d0d1Fix(savedVars)
+		if BeltalowdaVersioning.VersionLesserThan(last, BeltalowdaVersioning.GetVersionArray("2.0.1")) then
+			BeltalowdaVersioning.Apply2d0d1Fix(savedVars)
 		end
-		if RdKGToolVersioning.VersionLesserThan(last, RdKGToolVersioning.GetVersionArray("2.0.40")) then
-			RdKGToolVersioning.Apply2d0d40Fix(savedVars)
+		if BeltalowdaVersioning.VersionLesserThan(last, BeltalowdaVersioning.GetVersionArray("2.0.40")) then
+			BeltalowdaVersioning.Apply2d0d40Fix(savedVars)
 		end
-		if RdKGToolVersioning.VersionLesserThan(last, RdKGToolVersioning.GetVersionArray("2.0.43")) then
-			RdKGToolVersioning.Apply2d0d43Fix(savedVars)
+		if BeltalowdaVersioning.VersionLesserThan(last, BeltalowdaVersioning.GetVersionArray("2.0.43")) then
+			BeltalowdaVersioning.Apply2d0d43Fix(savedVars)
 		end
-		if RdKGToolVersioning.VersionLesserThan(last, RdKGToolVersioning.GetVersionArray("2.1.1")) then
-			RdKGToolVersioning.Apply2d1d1Fix(savedVars)
+		if BeltalowdaVersioning.VersionLesserThan(last, BeltalowdaVersioning.GetVersionArray("2.1.1")) then
+			BeltalowdaVersioning.Apply2d1d1Fix(savedVars)
 		end
 	end
 end
 
-function RdKGToolVersioning.Apply1d1d0Fix(savedVars)
+function BeltalowdaVersioning.Apply1d1d0Fix(savedVars)
 	local profiles = savedVars.profiles
 	for i = 1, #profiles do
 		profiles[i].group.ftca.selectedSound = "CrownCrates_Purchased_With_Gems"
@@ -271,7 +271,7 @@ function RdKGToolVersioning.Apply1d1d0Fix(savedVars)
 	end
 end
 
-function RdKGToolVersioning.Apply1d2d1Fix(savedVars)
+function BeltalowdaVersioning.Apply1d2d1Fix(savedVars)
 	local profiles = savedVars.profiles
 	for i = 1, #profiles do
 		if profiles[i].group.bft ~= nil then
@@ -280,7 +280,7 @@ function RdKGToolVersioning.Apply1d2d1Fix(savedVars)
 	end
 end
 
-function RdKGToolVersioning.Apply1d3d0Fix(savedVars)
+function BeltalowdaVersioning.Apply1d3d0Fix(savedVars)
 	local profiles = savedVars.profiles
 	for i = 1, #profiles do
 		if profiles[i].group.bft ~= nil then
@@ -290,7 +290,7 @@ function RdKGToolVersioning.Apply1d3d0Fix(savedVars)
 	end
 end
 
-function RdKGToolVersioning.Apply1d12d0Fix(savedVars)
+function BeltalowdaVersioning.Apply1d12d0Fix(savedVars)
 	local profiles = savedVars.profiles
 	for i = 1, #profiles do
 		if profiles[i].group ~= nil and profiles[i].group.gb ~= nil and profiles[i].group.gb.roles ~= nil then
@@ -301,7 +301,7 @@ function RdKGToolVersioning.Apply1d12d0Fix(savedVars)
 	end
 end
 
-function RdKGToolVersioning.Apply1d12d2Fix(savedVars)
+function BeltalowdaVersioning.Apply1d12d2Fix(savedVars)
 	local profiles = savedVars.profiles
 	for i = 1, #profiles do
 		if profiles[i].group ~= nil and profiles[i].group.ro ~= nil and profiles[i].group.ro.ultimates ~= nil then
@@ -311,7 +311,7 @@ function RdKGToolVersioning.Apply1d12d2Fix(savedVars)
 	end
 end
 
-function RdKGToolVersioning.Apply2d0d1Fix(savedVars)
+function BeltalowdaVersioning.Apply2d0d1Fix(savedVars)
 	local profiles = savedVars.profiles
 	for i = 1, #profiles do
 		if profiles[i].group ~= nil and profiles[i].group.dt ~= nil and profiles[i].group.dt.fontColor ~= nil and profiles[i].group.dt.detonation ~= nil then
@@ -329,10 +329,10 @@ end
 --[[
 runebreak SO -> Übersetzungen
 runebreak SP -> Übersetzungen
-/script RdKGTool.util.versioning.Apply2d0d40Fix(RdKGTool.vars.acc)
+/script Beltalowda.util.versioning.Apply2d0d40Fix(Beltalowda.vars.acc)
 ]]
 
-function RdKGToolVersioning.Apply2d0d40Fix(savedVars)
+function BeltalowdaVersioning.Apply2d0d40Fix(savedVars)
 	local profiles = savedVars.profiles
 	for i = 1, #profiles do
 		if profiles[i].group ~= nil and profiles[i].group.ro ~= nil and profiles[i].group.ro.groups ~= nil and profiles[i].group.ro.groups.ultimateGroups ~= nil then
@@ -354,7 +354,7 @@ function RdKGToolVersioning.Apply2d0d40Fix(savedVars)
 end
 
 
-function RdKGToolVersioning.Apply2d0d43Fix(savedVars)
+function BeltalowdaVersioning.Apply2d0d43Fix(savedVars)
 	local profiles = savedVars.profiles
 	for i = 1, #profiles do
 		local smItems = profiles[i].toolbox.sm.items
@@ -370,7 +370,7 @@ function RdKGToolVersioning.Apply2d0d43Fix(savedVars)
 	
 end
 
-function RdKGToolVersioning.Apply2d1d1Fix(savedVars)
+function BeltalowdaVersioning.Apply2d1d1Fix(savedVars)
 	local profiles = savedVars.profiles
 	for i = 1, #profiles do
 		local netItems = profiles[i].util.networking
@@ -380,12 +380,12 @@ function RdKGToolVersioning.Apply2d1d1Fix(savedVars)
 end
 
 --callbacks
-function RdKGToolVersioning.SendQueuedRequests()
-	--d(#RdKGToolVersioning.state.requestQueue)
-	for i = 1, #RdKGToolVersioning.state.requestQueue do
-		local messageEntry = RdKGToolVersioning.state.requestQueue[i]
+function BeltalowdaVersioning.SendQueuedRequests()
+	--d(#BeltalowdaVersioning.state.requestQueue)
+	for i = 1, #BeltalowdaVersioning.state.requestQueue do
+		local messageEntry = BeltalowdaVersioning.state.requestQueue[i]
 		if messageEntry ~= nil and messageEntry.message ~= nil and messageEntry.message.sent == true then
-			table.remove(RdKGToolVersioning.state.requestQueue, i)
+			table.remove(BeltalowdaVersioning.state.requestQueue, i)
 			i = i - 1
 		elseif messageEntry ~= nil then
 			if messageEntry.requestAdded == true then
@@ -393,38 +393,38 @@ function RdKGToolVersioning.SendQueuedRequests()
 			else
 				messageEntry.requestAdded = true
 				--d("sending message")
-				RdKGToolNetworking.SendVersionMessage(messageEntry.message, RdKGToolNetworking.constants.priorities.MEDIUM)
+				BeltalowdaNetworking.SendVersionMessage(messageEntry.message, BeltalowdaNetworking.constants.priorities.MEDIUM)
 			end
 		end
 	end
 end
 
-function RdKGToolVersioning.SendLoop()
+function BeltalowdaVersioning.SendLoop()
 	--d("sent")
-	RdKGToolVersioning.SendClientVersionInformation()
+	BeltalowdaVersioning.SendClientVersionInformation()
 end
 
-function RdKGToolVersioning.GroupMemberOnJoined(...)
-	if RdKGToolVersioning.state.isInGroup == false then
-		RdKGToolVersioning.state.isInGroup = true
-		RdKGToolVersioning.SendClientVersionInformation()
-		EVENT_MANAGER:RegisterForUpdate(RdKGToolVersioning.callbackName,  RdKGToolVersioning.config.sendInterval, RdKGToolVersioning.SendLoop)
+function BeltalowdaVersioning.GroupMemberOnJoined(...)
+	if BeltalowdaVersioning.state.isInGroup == false then
+		BeltalowdaVersioning.state.isInGroup = true
+		BeltalowdaVersioning.SendClientVersionInformation()
+		EVENT_MANAGER:RegisterForUpdate(BeltalowdaVersioning.callbackName,  BeltalowdaVersioning.config.sendInterval, BeltalowdaVersioning.SendLoop)
 	end
 end
 
-function RdKGToolVersioning.GroupMemberOnLeft(...)
+function BeltalowdaVersioning.GroupMemberOnLeft(...)
 	if GetGroupSize() ~= 0 then
-		RdKGToolVersioning.state.isInGroup = true
+		BeltalowdaVersioning.state.isInGroup = true
 	else
-		RdKGToolVersioning.state.isInGroup = false
-		EVENT_MANAGER:UnregisterForUpdate(RdKGToolVersioning.callbackName)
+		BeltalowdaVersioning.state.isInGroup = false
+		EVENT_MANAGER:UnregisterForUpdate(BeltalowdaVersioning.callbackName)
 	end
 end
 
-function RdKGToolVersioning.HandleRawVersioningRequestNetworkMessage(message)
-	if message ~= nil and message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_VERSION_REQUEST then
+function BeltalowdaVersioning.HandleRawVersioningRequestNetworkMessage(message)
+	if message ~= nil and message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_VERSION_REQUEST then
 		--d("version request received")
 		--d(message)
-		RdKGToolVersioning.ProcessVersionInformationRequest(message.pingTag, message.b1)
+		BeltalowdaVersioning.ProcessVersionInformationRequest(message.pingTag, message.b1)
 	end
 end

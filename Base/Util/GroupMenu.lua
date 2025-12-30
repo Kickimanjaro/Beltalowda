@@ -1,90 +1,90 @@
--- RdK Group Tool Group Menu
+-- Beltalowda Group Menu
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
 
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.groupMenu = RdKGToolUtil.groupMenu or {}
-local RdKGToolGMenu = RdKGToolUtil.groupMenu
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolGroup = RdKGToolUtil.group
-RdKGTool.group = RdKGTool.group or {}
-RdKGTool.group.gb = RdKGTool.group.gb or {}
-local RdKGToolGBeam = RdKGTool.group.gb
-RdKGTool.toolbox = RdKGTool.toolbox or {}
-local RdKGToolTB = RdKGTool.toolbox
-RdKGToolTB.ra = RdKGToolTB.ra or {}
-local RdKGToolRa = RdKGToolTB.ra
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.groupMenu = BeltalowdaUtil.groupMenu or {}
+local BeltalowdaGMenu = BeltalowdaUtil.groupMenu
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaGroup = BeltalowdaUtil.group
+Beltalowda.group = Beltalowda.group or {}
+Beltalowda.group.gb = Beltalowda.group.gb or {}
+local BeltalowdaGBeam = Beltalowda.group.gb
+Beltalowda.toolbox = Beltalowda.toolbox or {}
+local BeltalowdaTB = Beltalowda.toolbox
+BeltalowdaTB.ra = BeltalowdaTB.ra or {}
+local BeltalowdaRa = BeltalowdaTB.ra
 
-RdKGToolGMenu.callbackName = RdKGTool.addonName .. "GroupMenu"
+BeltalowdaGMenu.callbackName = Beltalowda.addonName .. "GroupMenu"
 
-RdKGToolGMenu.constants = RdKGToolGMenu.constants or {}
+BeltalowdaGMenu.constants = BeltalowdaGMenu.constants or {}
 
-RdKGToolGMenu.config = {}
+BeltalowdaGMenu.config = {}
 
-RdKGToolGMenu.state = {}
-RdKGToolGMenu.state.initialized = false
+BeltalowdaGMenu.state = {}
+BeltalowdaGMenu.state.initialized = false
 
-function RdKGToolGMenu.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolGMenu.callbackName, RdKGToolGMenu.OnProfileChanged)
-	RdKGToolGMenu.state.initialized = true
-	RdKGToolGMenu.AdjustGroupMenu()
+function BeltalowdaGMenu.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaGMenu.callbackName, BeltalowdaGMenu.OnProfileChanged)
+	BeltalowdaGMenu.state.initialized = true
+	BeltalowdaGMenu.AdjustGroupMenu()
 end
 
-function RdKGToolGMenu.GetDefaults()
+function BeltalowdaGMenu.GetDefaults()
 	local defaults = {}
 	
 	return defaults
 end
 
-function RdKGToolGMenu.BgAddCrown(charName, displayName)
-	RdKGToolGroup.SetBgCrown(charName, displayName)
-	RdKGToolGMenu.SetRole(charName, displayName, nil)
+function BeltalowdaGMenu.BgAddCrown(charName, displayName)
+	BeltalowdaGroup.SetBgCrown(charName, displayName)
+	BeltalowdaGMenu.SetRole(charName, displayName, nil)
 end
 
-function RdKGToolGMenu.BgRemoveCrown(charName, displayName)
-	RdKGToolGroup.RemoveBgCrown(charName, displayName)
+function BeltalowdaGMenu.BgRemoveCrown(charName, displayName)
+	BeltalowdaGroup.RemoveBgCrown(charName, displayName)
 end
 
-function RdKGToolGMenu.SetRole(charName, displayName, role)
-	RdKGToolGroup.SetRole(charName, displayName, role)
+function BeltalowdaGMenu.SetRole(charName, displayName, role)
+	BeltalowdaGroup.SetRole(charName, displayName, role)
 	if charName == GetUnitName("player") and displayName == GetUnitDisplayName("player") then
-		RdKGToolRa.SendRole()
+		BeltalowdaRa.SendRole()
 	else
-		RdKGToolRa.SetPlayerRole(charName, displayName, role)
+		BeltalowdaRa.SetPlayerRole(charName, displayName, role)
 	end
 end
 
-function RdKGToolGMenu.CreateRoleSubEntry(player, role, description)
+function BeltalowdaGMenu.CreateRoleSubEntry(player, role, description)
 	local entry = {}
 	if player.role == role then
-		entry.label = string.format("%s %s", RdKGToolGMenu.constants.ROLE_SUBMENU_REMOVE, description)
-		entry.callback = function() RdKGToolGMenu.SetRole(player.charName, player.displayName, nil) end
+		entry.label = string.format("%s %s", BeltalowdaGMenu.constants.ROLE_SUBMENU_REMOVE, description)
+		entry.callback = function() BeltalowdaGMenu.SetRole(player.charName, player.displayName, nil) end
 	else
-		entry.label = string.format("%s %s", RdKGToolGMenu.constants.ROLE_SUBMENU_SET, description)
-		entry.callback = function() RdKGToolGMenu.SetRole(player.charName, player.displayName, role) end
+		entry.label = string.format("%s %s", BeltalowdaGMenu.constants.ROLE_SUBMENU_SET, description)
+		entry.callback = function() BeltalowdaGMenu.SetRole(player.charName, player.displayName, role) end
 	end
 	return entry
 end
 
-function RdKGToolGMenu.CreateRoleSubEntries(player)
+function BeltalowdaGMenu.CreateRoleSubEntries(player)
 	local entries = {}
 	if player ~= nil then
-		table.insert(entries, RdKGToolGMenu.CreateRoleSubEntry(player, RdKGToolGroup.constants.roles.ROLE_RAPID, RdKGToolGMenu.constants.ROLE_SUBMENU_RAPID))
-		table.insert(entries, RdKGToolGMenu.CreateRoleSubEntry(player, RdKGToolGroup.constants.roles.ROLE_PURGE, RdKGToolGMenu.constants.ROLE_SUBMENU_PURGE))
-		table.insert(entries, RdKGToolGMenu.CreateRoleSubEntry(player, RdKGToolGroup.constants.roles.ROLE_HEAL, RdKGToolGMenu.constants.ROLE_SUBMENU_HEAL))
-		table.insert(entries, RdKGToolGMenu.CreateRoleSubEntry(player, RdKGToolGroup.constants.roles.ROLE_DD, RdKGToolGMenu.constants.ROLE_SUBMENU_DD))
-		table.insert(entries, RdKGToolGMenu.CreateRoleSubEntry(player, RdKGToolGroup.constants.roles.ROLE_SYNERGY, RdKGToolGMenu.constants.ROLE_SUBMENU_SYNERGY))
-		table.insert(entries, RdKGToolGMenu.CreateRoleSubEntry(player, RdKGToolGroup.constants.roles.ROLE_CC, RdKGToolGMenu.constants.ROLE_SUBMENU_CC))
-		table.insert(entries, RdKGToolGMenu.CreateRoleSubEntry(player, RdKGToolGroup.constants.roles.ROLE_SUPPORT, RdKGToolGMenu.constants.ROLE_SUBMENU_SUPPORT))
-		table.insert(entries, RdKGToolGMenu.CreateRoleSubEntry(player, RdKGToolGroup.constants.roles.ROLE_PLACEHOLDER, RdKGToolGMenu.constants.ROLE_SUBMENU_PLACEHOLDER))
-		table.insert(entries, RdKGToolGMenu.CreateRoleSubEntry(player, RdKGToolGroup.constants.roles.ROLE_APPLICANT, RdKGToolGMenu.constants.ROLE_SUBMENU_APPLICANT))
+		table.insert(entries, BeltalowdaGMenu.CreateRoleSubEntry(player, BeltalowdaGroup.constants.roles.ROLE_RAPID, BeltalowdaGMenu.constants.ROLE_SUBMENU_RAPID))
+		table.insert(entries, BeltalowdaGMenu.CreateRoleSubEntry(player, BeltalowdaGroup.constants.roles.ROLE_PURGE, BeltalowdaGMenu.constants.ROLE_SUBMENU_PURGE))
+		table.insert(entries, BeltalowdaGMenu.CreateRoleSubEntry(player, BeltalowdaGroup.constants.roles.ROLE_HEAL, BeltalowdaGMenu.constants.ROLE_SUBMENU_HEAL))
+		table.insert(entries, BeltalowdaGMenu.CreateRoleSubEntry(player, BeltalowdaGroup.constants.roles.ROLE_DD, BeltalowdaGMenu.constants.ROLE_SUBMENU_DD))
+		table.insert(entries, BeltalowdaGMenu.CreateRoleSubEntry(player, BeltalowdaGroup.constants.roles.ROLE_SYNERGY, BeltalowdaGMenu.constants.ROLE_SUBMENU_SYNERGY))
+		table.insert(entries, BeltalowdaGMenu.CreateRoleSubEntry(player, BeltalowdaGroup.constants.roles.ROLE_CC, BeltalowdaGMenu.constants.ROLE_SUBMENU_CC))
+		table.insert(entries, BeltalowdaGMenu.CreateRoleSubEntry(player, BeltalowdaGroup.constants.roles.ROLE_SUPPORT, BeltalowdaGMenu.constants.ROLE_SUBMENU_SUPPORT))
+		table.insert(entries, BeltalowdaGMenu.CreateRoleSubEntry(player, BeltalowdaGroup.constants.roles.ROLE_PLACEHOLDER, BeltalowdaGMenu.constants.ROLE_SUBMENU_PLACEHOLDER))
+		table.insert(entries, BeltalowdaGMenu.CreateRoleSubEntry(player, BeltalowdaGroup.constants.roles.ROLE_APPLICANT, BeltalowdaGMenu.constants.ROLE_SUBMENU_APPLICANT))
 	end
 	return entries
 end
 
-function RdKGToolGMenu.AdjustGroupMenu()
+function BeltalowdaGMenu.AdjustGroupMenu()
 	local groupMenu = GROUP_LIST.GroupListRow_OnMouseUp
 	GROUP_LIST.GroupListRow_OnMouseUp = function(selfControl, control, button, upInside)
 		groupMenu(selfControl, control, button, upInside)
@@ -98,25 +98,25 @@ function RdKGToolGMenu.AdjustGroupMenu()
 				data.unitTag
 				data.online]]
 				if data.online == true then
-					local players = RdKGToolGroup.GetGroupInformation()
+					local players = BeltalowdaGroup.GetGroupInformation()
 					if players ~= nil then
 						for i = 1, #players do
 							if players[i].unitTag == data.unitTag then
 								if IsActiveWorldBattleground() then
 									if players[i].isLeader == true then
-										AddCustomMenuItem(RdKGToolGMenu.constants.BG_LEADER_REMOVE_CROWN, function() RdKGToolGMenu.BgRemoveCrown(players[i].charName, players[i].displayName) end )
+										AddCustomMenuItem(BeltalowdaGMenu.constants.BG_LEADER_REMOVE_CROWN, function() BeltalowdaGMenu.BgRemoveCrown(players[i].charName, players[i].displayName) end )
 									else
-										AddCustomMenuItem(RdKGToolGMenu.constants.BG_LEADER_ADD_CROWN, function() RdKGToolGMenu.BgAddCrown(players[i].charName, players[i].displayName) end )
+										AddCustomMenuItem(BeltalowdaGMenu.constants.BG_LEADER_ADD_CROWN, function() BeltalowdaGMenu.BgAddCrown(players[i].charName, players[i].displayName) end )
 										--if players[i].isLeader == false then
-											--if RdKGToolGBeam.GetEnabled() == true then
-												AddCustomSubMenuItem(RdKGToolGMenu.constants.ROLE_MENU_ENTRY, RdKGToolGMenu.CreateRoleSubEntries(players[i]))
+											--if BeltalowdaGBeam.GetEnabled() == true then
+												AddCustomSubMenuItem(BeltalowdaGMenu.constants.ROLE_MENU_ENTRY, BeltalowdaGMenu.CreateRoleSubEntries(players[i]))
 											--end
 										--end
 									end
 								else
 									--if players[i].isLeader == false then
-										--if RdKGToolGBeam.GetEnabled() == true then
-											AddCustomSubMenuItem(RdKGToolGMenu.constants.ROLE_MENU_ENTRY, RdKGToolGMenu.CreateRoleSubEntries(players[i]))
+										--if BeltalowdaGBeam.GetEnabled() == true then
+											AddCustomSubMenuItem(BeltalowdaGMenu.constants.ROLE_MENU_ENTRY, BeltalowdaGMenu.CreateRoleSubEntries(players[i]))
 										--end
 									--end
 								end
@@ -133,8 +133,8 @@ function RdKGToolGMenu.AdjustGroupMenu()
 end
 
 --callbacks
-function RdKGToolGMenu.OnProfileChanged(currentProfile)
+function BeltalowdaGMenu.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolGMenu.gmVars = currentProfile.util.groupMenu
+		BeltalowdaGMenu.gmVars = currentProfile.util.groupMenu
 	end
 end

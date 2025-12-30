@@ -1,82 +1,82 @@
--- RdK Group Tool Debuff Overview
+-- Beltalowda Debuff Overview
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.group = RdKGTool.group or {}
-RdKGTool.group.dbo = RdKGTool.group.dbo or {}
-local RdKGToolDbo = RdKGTool.group.dbo
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.fonts = RdKGToolUtil.fonts or {}
-local RdKGToolFonts = RdKGToolUtil.fonts
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolGroup = RdKGToolUtil.group
+Beltalowda.group = Beltalowda.group or {}
+Beltalowda.group.dbo = Beltalowda.group.dbo or {}
+local BeltalowdaDbo = Beltalowda.group.dbo
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.fonts = BeltalowdaUtil.fonts or {}
+local BeltalowdaFonts = BeltalowdaUtil.fonts
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaGroup = BeltalowdaUtil.group
 
-RdKGToolDbo.constants = RdKGToolDbo.constants or {}
-RdKGToolDbo.constants.TLW_NAME = "RdKGTool.group.dbo.TLW"
+BeltalowdaDbo.constants = BeltalowdaDbo.constants or {}
+BeltalowdaDbo.constants.TLW_NAME = "Beltalowda.group.dbo.TLW"
 
-RdKGToolDbo.constants.size = {}
-RdKGToolDbo.constants.size.SMALL = 1
-RdKGToolDbo.constants.size.BIG = 2
+BeltalowdaDbo.constants.size = {}
+BeltalowdaDbo.constants.size.SMALL = 1
+BeltalowdaDbo.constants.size.BIG = 2
 
-RdKGToolDbo.callbackName = RdKGTool.addonName .. "DebuffOverview"
+BeltalowdaDbo.callbackName = Beltalowda.addonName .. "DebuffOverview"
 
-RdKGToolDbo.config = {}
-RdKGToolDbo.config.updateInterval = 100
-RdKGToolDbo.config.isClampedToScreen = true
-RdKGToolDbo.config.sizes = {}
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL] = {}
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingHeight = 3
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingWidth = 10
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].textWidth = 85
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].debuffWidth = 20
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].width = RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].textWidth + RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].debuffWidth
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].windowWidth = 2 * RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].width + RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingWidth
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].height = 10
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].windowHeight = 12 * RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].height + 11 * RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingHeight
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].fontSize = 12
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG] = {}
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].spacingHeight = 6
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].spacingWidth = 20
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].textWidth = 170
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].debuffWidth = 40
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].width = RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].textWidth + RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].debuffWidth
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].windowWidth = 2 * RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].width + RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].spacingWidth
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].height = 20
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].windowHeight = 12 * RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].height + 11 * RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].spacingHeight
-RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].fontSize = 24
+BeltalowdaDbo.config = {}
+BeltalowdaDbo.config.updateInterval = 100
+BeltalowdaDbo.config.isClampedToScreen = true
+BeltalowdaDbo.config.sizes = {}
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL] = {}
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingHeight = 3
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingWidth = 10
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].textWidth = 85
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].debuffWidth = 20
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].width = BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].textWidth + BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].debuffWidth
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].windowWidth = 2 * BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].width + BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingWidth
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].height = 10
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].windowHeight = 12 * BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].height + 11 * BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingHeight
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].fontSize = 12
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG] = {}
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].spacingHeight = 6
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].spacingWidth = 20
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].textWidth = 170
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].debuffWidth = 40
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].width = BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].textWidth + BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].debuffWidth
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].windowWidth = 2 * BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].width + BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].spacingWidth
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].height = 20
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].windowHeight = 12 * BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].height + 11 * BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].spacingHeight
+BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].fontSize = 24
 
-RdKGToolDbo.state = {}
-RdKGToolDbo.state.initialized = false
-RdKGToolDbo.state.foreground = true
-RdKGToolDbo.state.registredConsumers = false
-RdKGToolDbo.state.registredActiveConsumers = false
-RdKGToolDbo.state.activeLayerIndex = 1
-RdKGToolDbo.state.colors = {}
+BeltalowdaDbo.state = {}
+BeltalowdaDbo.state.initialized = false
+BeltalowdaDbo.state.foreground = true
+BeltalowdaDbo.state.registredConsumers = false
+BeltalowdaDbo.state.registredActiveConsumers = false
+BeltalowdaDbo.state.activeLayerIndex = 1
+BeltalowdaDbo.state.colors = {}
 
 
 
-RdKGToolDbo.controls = {}
+BeltalowdaDbo.controls = {}
 
 local wm = WINDOW_MANAGER
 
-function RdKGToolDbo.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolDbo.callbackName, RdKGToolDbo.OnProfileChanged)
+function BeltalowdaDbo.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaDbo.callbackName, BeltalowdaDbo.OnProfileChanged)
 	
-	RdKGToolDbo.CreateUI()
+	BeltalowdaDbo.CreateUI()
 	
-	RdKGToolMenu.AddPositionFixedConsumer(RdKGToolDbo.SetDboPositionLocked)
+	BeltalowdaMenu.AddPositionFixedConsumer(BeltalowdaDbo.SetDboPositionLocked)
 	
-	RdKGToolDbo.state.initialized = true
-	RdKGToolDbo.SetEnabled(RdKGToolDbo.dboVars.enabled)
-	RdKGToolDbo.CalculateColors()
-	RdKGToolDbo.SetMovable(not RdKGToolDbo.dboVars.positionLocked)
-	RdKGToolDbo.AdjustSize()
+	BeltalowdaDbo.state.initialized = true
+	BeltalowdaDbo.SetEnabled(BeltalowdaDbo.dboVars.enabled)
+	BeltalowdaDbo.CalculateColors()
+	BeltalowdaDbo.SetMovable(not BeltalowdaDbo.dboVars.positionLocked)
+	BeltalowdaDbo.AdjustSize()
 	
 end
 
-function RdKGToolDbo.CreatePlayerDebuffControl(parent, offsetHeight, offsetWidth, height, labelWidth, countWidth, font)
+function BeltalowdaDbo.CreatePlayerDebuffControl(parent, offsetHeight, offsetWidth, height, labelWidth, countWidth, font)
 	local playerDebuffControl = wm:CreateControl(nil, parent, CT_CONTROL)
 	playerDebuffControl:SetAnchor(TOPLEFT, parent, TOPLEFT, offsetWidth, offsetHeight)
 	playerDebuffControl:SetDimensions(labelWidth + countWidth, height)
@@ -100,56 +100,56 @@ function RdKGToolDbo.CreatePlayerDebuffControl(parent, offsetHeight, offsetWidth
 	return playerDebuffControl
 end
 
-function RdKGToolDbo.SetTlwLocation()
-	RdKGToolDbo.controls.TLW:ClearAnchors()
-	if RdKGToolDbo.dboVars.debuffLocation == nil then
-		RdKGToolDbo.controls.TLW:SetAnchor(CENTER, GuiRoot, CENTER, 250, 0)
+function BeltalowdaDbo.SetTlwLocation()
+	BeltalowdaDbo.controls.TLW:ClearAnchors()
+	if BeltalowdaDbo.dboVars.debuffLocation == nil then
+		BeltalowdaDbo.controls.TLW:SetAnchor(CENTER, GuiRoot, CENTER, 250, 0)
 	else
-		RdKGToolDbo.controls.TLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, RdKGToolDbo.dboVars.debuffLocation.x, RdKGToolDbo.dboVars.debuffLocation.y)
+		BeltalowdaDbo.controls.TLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, BeltalowdaDbo.dboVars.debuffLocation.x, BeltalowdaDbo.dboVars.debuffLocation.y)
 	end
 end
 
-function RdKGToolDbo.CreateUI()
-	local height = 12 * RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].height + 11 * RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingHeight
-	local width = (2 * RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].textWidth) + (2 * RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].debuffWidth) + RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingWidth
-	local font = RdKGToolFonts.CreateFontString(RdKGToolFonts.constants.BOLD_FONT, RdKGToolFonts.constants.INPUT_KB, RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].fontSize, RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
-	RdKGToolDbo.controls.TLW = wm:CreateTopLevelWindow(RdKGToolDbo.constants.TLW_NAME)
+function BeltalowdaDbo.CreateUI()
+	local height = 12 * BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].height + 11 * BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingHeight
+	local width = (2 * BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].textWidth) + (2 * BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].debuffWidth) + BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingWidth
+	local font = BeltalowdaFonts.CreateFontString(BeltalowdaFonts.constants.BOLD_FONT, BeltalowdaFonts.constants.INPUT_KB, BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].fontSize, BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
+	BeltalowdaDbo.controls.TLW = wm:CreateTopLevelWindow(BeltalowdaDbo.constants.TLW_NAME)
 	
-	RdKGToolDbo.SetTlwLocation()
+	BeltalowdaDbo.SetTlwLocation()
 
 		
-	RdKGToolDbo.controls.TLW:SetClampedToScreen(RdKGToolDbo.config.isClampedToScreen)
-	RdKGToolDbo.controls.TLW:SetDrawLayer(0)
-	RdKGToolDbo.controls.TLW:SetDrawLevel(0)
-	RdKGToolDbo.controls.TLW:SetHandler("OnMoveStop", RdKGToolDbo.SaveWindowLocation)
-	RdKGToolDbo.controls.TLW:SetDimensions(width, height)
-	RdKGToolDbo.controls.TLW:SetHidden(not RdKGToolDbo.dboVars.enabled)
+	BeltalowdaDbo.controls.TLW:SetClampedToScreen(BeltalowdaDbo.config.isClampedToScreen)
+	BeltalowdaDbo.controls.TLW:SetDrawLayer(0)
+	BeltalowdaDbo.controls.TLW:SetDrawLevel(0)
+	BeltalowdaDbo.controls.TLW:SetHandler("OnMoveStop", BeltalowdaDbo.SaveWindowLocation)
+	BeltalowdaDbo.controls.TLW:SetDimensions(width, height)
+	BeltalowdaDbo.controls.TLW:SetHidden(not BeltalowdaDbo.dboVars.enabled)
 	
-	RdKGToolDbo.controls.tlwControl = wm:CreateControl(nil, RdKGToolDbo.controls.TLW, CT_CONTROL)
-	RdKGToolDbo.controls.tlwControl:SetDimensions(width, height)
-	RdKGToolDbo.controls.tlwControl:SetAnchor(TOPLEFT, RdKGToolDbo.controls.TLW, TOPLEFT, 0, 0)
+	BeltalowdaDbo.controls.tlwControl = wm:CreateControl(nil, BeltalowdaDbo.controls.TLW, CT_CONTROL)
+	BeltalowdaDbo.controls.tlwControl:SetDimensions(width, height)
+	BeltalowdaDbo.controls.tlwControl:SetAnchor(TOPLEFT, BeltalowdaDbo.controls.TLW, TOPLEFT, 0, 0)
 	
-	RdKGToolDbo.controls.tlwControl.movableBackdrop = wm:CreateControl(nil, RdKGToolDbo.controls.tlwControl, CT_BACKDROP)
+	BeltalowdaDbo.controls.tlwControl.movableBackdrop = wm:CreateControl(nil, BeltalowdaDbo.controls.tlwControl, CT_BACKDROP)
 	
-	RdKGToolDbo.controls.tlwControl.movableBackdrop:SetAnchor(TOPLEFT, RdKGToolDbo.controls.tlwControl, TOPLEFT, 0, 0)
-	RdKGToolDbo.controls.tlwControl.movableBackdrop:SetDimensions(width, height)
+	BeltalowdaDbo.controls.tlwControl.movableBackdrop:SetAnchor(TOPLEFT, BeltalowdaDbo.controls.tlwControl, TOPLEFT, 0, 0)
+	BeltalowdaDbo.controls.tlwControl.movableBackdrop:SetDimensions(width, height)
 	
-	RdKGToolDbo.controls.tlwControl.playerDebuffControls = {}
+	BeltalowdaDbo.controls.tlwControl.playerDebuffControls = {}
 	
 	for i = 1, 24 do
 		local offset = 0
 		if i > 12 then
-			offset = RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].textWidth + RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].debuffWidth + RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingWidth
+			offset = BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].textWidth + BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].debuffWidth + BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingWidth
 		end
 		local itemIndex = i - 1
 		if itemIndex > 11 then
 			itemIndex = itemIndex - 12
 		end
-		RdKGToolDbo.controls.tlwControl.playerDebuffControls[i] = RdKGToolDbo.CreatePlayerDebuffControl(RdKGToolDbo.controls.tlwControl, itemIndex * (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].height + RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingHeight), offset, RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].height, RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].textWidth, RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].debuffWidth, font)
+		BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i] = BeltalowdaDbo.CreatePlayerDebuffControl(BeltalowdaDbo.controls.tlwControl, itemIndex * (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].height + BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingHeight), offset, BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].height, BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].textWidth, BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].debuffWidth, font)
 	end
 end
 
-function RdKGToolDbo.GetDefaults()
+function BeltalowdaDbo.GetDefaults()
 	local defaults = {}
 	defaults.enabled = false
 	defaults.pvponly = true
@@ -172,55 +172,55 @@ function RdKGToolDbo.GetDefaults()
 	defaults.colors.outOfRange.g = 1
 	defaults.colors.outOfRange.b = 1
 	defaults.positionLocked = true
-	defaults.size = RdKGToolDbo.constants.size.SMALL
+	defaults.size = BeltalowdaDbo.constants.size.SMALL
 	return defaults
 end
 
-function RdKGToolDbo.SetEnabled(value)
-	if RdKGToolDbo.state.initialized == true and value ~= nil then
-		RdKGToolDbo.dboVars.enabled = value
+function BeltalowdaDbo.SetEnabled(value)
+	if BeltalowdaDbo.state.initialized == true and value ~= nil then
+		BeltalowdaDbo.dboVars.enabled = value
 		if value == true then
-			if RdKGToolDbo.state.registredConsumers == false then
+			if BeltalowdaDbo.state.registredConsumers == false then
 				
-				EVENT_MANAGER:RegisterForEvent(RdKGToolDbo.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolDbo.OnPlayerActivated)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaDbo.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaDbo.OnPlayerActivated)
 				
 			end
-			RdKGToolDbo.state.registredConsumers = true
+			BeltalowdaDbo.state.registredConsumers = true
 		else
-			if RdKGToolDbo.state.registredConsumers == true then
+			if BeltalowdaDbo.state.registredConsumers == true then
 				
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolDbo.callbackName, EVENT_PLAYER_ACTIVATED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaDbo.callbackName, EVENT_PLAYER_ACTIVATED)
 				
 			end
-			RdKGToolDbo.state.registredConsumers = false
+			BeltalowdaDbo.state.registredConsumers = false
 		end
-		RdKGToolDbo.OnPlayerActivated()
+		BeltalowdaDbo.OnPlayerActivated()
 	end
 end
 
-function RdKGToolDbo.SetControlVisibility()
-	local enabled = RdKGToolDbo.dboVars.enabled
-	local pvpOnly = RdKGToolDbo.dboVars.pvponly
+function BeltalowdaDbo.SetControlVisibility()
+	local enabled = BeltalowdaDbo.dboVars.enabled
+	local pvpOnly = BeltalowdaDbo.dboVars.pvponly
 	local setHidden = true
 	if enabled ~= nil and pvpOnly ~= nil then
 
-		if enabled == true and (pvpOnly == false or (pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
+		if enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 			setHidden = false
 		end
 	end
 	if setHidden == false then
-		if RdKGToolDbo.state.foreground == false then
-			RdKGToolDbo.controls.TLW:SetHidden(RdKGToolDbo.state.activeLayerIndex > 2)
+		if BeltalowdaDbo.state.foreground == false then
+			BeltalowdaDbo.controls.TLW:SetHidden(BeltalowdaDbo.state.activeLayerIndex > 2)
 		else
-			RdKGToolDbo.controls.TLW:SetHidden(false)
+			BeltalowdaDbo.controls.TLW:SetHidden(false)
 		end
 	else
-		RdKGToolDbo.controls.TLW:SetHidden(setHidden)
+		BeltalowdaDbo.controls.TLW:SetHidden(setHidden)
 	end
 end
 
-function RdKGToolDbo.GetColorTone(r1, r2, distance)
-	local d = RdKGToolDbo.dboVars.criticalAmount - 1
+function BeltalowdaDbo.GetColorTone(r1, r2, distance)
+	local d = BeltalowdaDbo.dboVars.criticalAmount - 1
 	local color = r1
 	
 	local delta = r2 - r1
@@ -233,40 +233,40 @@ function RdKGToolDbo.GetColorTone(r1, r2, distance)
 	return color
 end
 
-function RdKGToolDbo.SetBackdropColors()
-	if RdKGToolDbo.dboVars.positionLocked == false then
-		RdKGToolDbo.controls.tlwControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
-		RdKGToolDbo.controls.tlwControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+function BeltalowdaDbo.SetBackdropColors()
+	if BeltalowdaDbo.dboVars.positionLocked == false then
+		BeltalowdaDbo.controls.tlwControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
+		BeltalowdaDbo.controls.tlwControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	else
-		RdKGToolDbo.controls.tlwControl.movableBackdrop:SetCenterColor(0, 0, 0, 0.0)
-		RdKGToolDbo.controls.tlwControl.movableBackdrop:SetEdgeColor(0, 0, 0, 0.0)	
+		BeltalowdaDbo.controls.tlwControl.movableBackdrop:SetCenterColor(0, 0, 0, 0.0)
+		BeltalowdaDbo.controls.tlwControl.movableBackdrop:SetEdgeColor(0, 0, 0, 0.0)	
 	end
 end
 
-function RdKGToolDbo.SetMovable(isMovable)
-	RdKGToolDbo.dboVars.positionLocked = not isMovable
-	RdKGToolDbo.controls.TLW:SetMovable(isMovable)
-	RdKGToolDbo.controls.TLW:SetMouseEnabled(isMovable)
-	RdKGToolDbo.SetBackdropColors()
+function BeltalowdaDbo.SetMovable(isMovable)
+	BeltalowdaDbo.dboVars.positionLocked = not isMovable
+	BeltalowdaDbo.controls.TLW:SetMovable(isMovable)
+	BeltalowdaDbo.controls.TLW:SetMouseEnabled(isMovable)
+	BeltalowdaDbo.SetBackdropColors()
 end
 
-function RdKGToolDbo.CalculateColors()
+function BeltalowdaDbo.CalculateColors()
 	--r1 = okay, r2 = ciritical
-	RdKGToolDbo.state.colors[1] = {}
-	RdKGToolDbo.state.colors[1].r = RdKGToolDbo.dboVars.colors.okay.r
-	RdKGToolDbo.state.colors[1].g = RdKGToolDbo.dboVars.colors.okay.g
-	RdKGToolDbo.state.colors[1].b = RdKGToolDbo.dboVars.colors.okay.b
+	BeltalowdaDbo.state.colors[1] = {}
+	BeltalowdaDbo.state.colors[1].r = BeltalowdaDbo.dboVars.colors.okay.r
+	BeltalowdaDbo.state.colors[1].g = BeltalowdaDbo.dboVars.colors.okay.g
+	BeltalowdaDbo.state.colors[1].b = BeltalowdaDbo.dboVars.colors.okay.b
 	for i = 2, 11 do
-		RdKGToolDbo.state.colors[i] = {}
-		RdKGToolDbo.state.colors[i].r = RdKGToolDbo.GetColorTone(RdKGToolDbo.dboVars.colors.notOkay.r, RdKGToolDbo.dboVars.colors.critical.r, i - 2)
-		RdKGToolDbo.state.colors[i].g = RdKGToolDbo.GetColorTone(RdKGToolDbo.dboVars.colors.notOkay.g, RdKGToolDbo.dboVars.colors.critical.g, i - 2)
-		RdKGToolDbo.state.colors[i].b = RdKGToolDbo.GetColorTone(RdKGToolDbo.dboVars.colors.notOkay.b, RdKGToolDbo.dboVars.colors.critical.b, i - 2)
+		BeltalowdaDbo.state.colors[i] = {}
+		BeltalowdaDbo.state.colors[i].r = BeltalowdaDbo.GetColorTone(BeltalowdaDbo.dboVars.colors.notOkay.r, BeltalowdaDbo.dboVars.colors.critical.r, i - 2)
+		BeltalowdaDbo.state.colors[i].g = BeltalowdaDbo.GetColorTone(BeltalowdaDbo.dboVars.colors.notOkay.g, BeltalowdaDbo.dboVars.colors.critical.g, i - 2)
+		BeltalowdaDbo.state.colors[i].b = BeltalowdaDbo.GetColorTone(BeltalowdaDbo.dboVars.colors.notOkay.b, BeltalowdaDbo.dboVars.colors.critical.b, i - 2)
 	end
 end
 
-function RdKGToolDbo.GetPlayerDebuffs()
+function BeltalowdaDbo.GetPlayerDebuffs()
 	local debuffs = 0
-	local players = RdKGToolGroup.GetGroupInformation()
+	local players = BeltalowdaGroup.GetGroupInformation()
 	if players ~= nil then
 		for i = 1, #players do
 			if players[i].isPlayer == true then
@@ -283,26 +283,26 @@ function RdKGToolDbo.GetPlayerDebuffs()
 	return debuffs
 end
 
-function RdKGToolDbo.AdjustSize()
-	local sizeIncrease = RdKGToolDbo.dboVars.size - RdKGToolDbo.constants.size.SMALL
-	local spacingHeight = (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingHeight + (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].spacingHeight - RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingHeight) * sizeIncrease)
-	local spacingWidth = (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingWidth + (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].spacingWidth - RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].spacingWidth) * sizeIncrease)
-	local textWidth = (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].textWidth + (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].textWidth - RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].textWidth) * sizeIncrease)
-	local debuffWidth = (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].debuffWidth + (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].debuffWidth - RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].debuffWidth) * sizeIncrease)
+function BeltalowdaDbo.AdjustSize()
+	local sizeIncrease = BeltalowdaDbo.dboVars.size - BeltalowdaDbo.constants.size.SMALL
+	local spacingHeight = (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingHeight + (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].spacingHeight - BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingHeight) * sizeIncrease)
+	local spacingWidth = (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingWidth + (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].spacingWidth - BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].spacingWidth) * sizeIncrease)
+	local textWidth = (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].textWidth + (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].textWidth - BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].textWidth) * sizeIncrease)
+	local debuffWidth = (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].debuffWidth + (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].debuffWidth - BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].debuffWidth) * sizeIncrease)
 	local width = textWidth + debuffWidth
 	local windowWidth = 2 * width + spacingWidth
-	local height = (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].height + (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].height - RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].height) * sizeIncrease)
+	local height = (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].height + (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].height - BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].height) * sizeIncrease)
 	local windowHeight = 12 * height + 11 * spacingHeight
-	local fontSize = (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].fontSize + (RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.BIG].fontSize - RdKGToolDbo.config.sizes[RdKGToolDbo.constants.size.SMALL].fontSize) * sizeIncrease)
-	local font = RdKGToolFonts.CreateFontString(RdKGToolFonts.constants.MEDIUM_FONT, RdKGToolFonts.constants.INPUT_KB, fontSize, RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
+	local fontSize = (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].fontSize + (BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.BIG].fontSize - BeltalowdaDbo.config.sizes[BeltalowdaDbo.constants.size.SMALL].fontSize) * sizeIncrease)
+	local font = BeltalowdaFonts.CreateFontString(BeltalowdaFonts.constants.MEDIUM_FONT, BeltalowdaFonts.constants.INPUT_KB, fontSize, BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
 
 	
-	RdKGToolDbo.controls.TLW:SetDimensions(windowWidth, windowHeight)
-	RdKGToolDbo.controls.tlwControl:SetDimensions(windowWidth, windowHeight)
-	RdKGToolDbo.controls.tlwControl.movableBackdrop:SetDimensions(windowWidth, windowHeight)
+	BeltalowdaDbo.controls.TLW:SetDimensions(windowWidth, windowHeight)
+	BeltalowdaDbo.controls.tlwControl:SetDimensions(windowWidth, windowHeight)
+	BeltalowdaDbo.controls.tlwControl.movableBackdrop:SetDimensions(windowWidth, windowHeight)
 	
 	
-	local playerDebuffControls = RdKGToolDbo.controls.tlwControl.playerDebuffControls
+	local playerDebuffControls = BeltalowdaDbo.controls.tlwControl.playerDebuffControls
 	
 	for i = 1, #playerDebuffControls do
 		local offset = 0
@@ -315,7 +315,7 @@ function RdKGToolDbo.AdjustSize()
 		end
 		
 		playerDebuffControls[i]:ClearAnchors()
-		playerDebuffControls[i]:SetAnchor(TOPLEFT, RdKGToolDbo.controls.tlwControl, TOPLEFT, offset, itemIndex * (height + spacingHeight))
+		playerDebuffControls[i]:SetAnchor(TOPLEFT, BeltalowdaDbo.controls.tlwControl, TOPLEFT, offset, itemIndex * (height + spacingHeight))
 		playerDebuffControls[i]:SetDimensions(textWidth + debuffWidth, height)
 		
 		
@@ -332,63 +332,63 @@ function RdKGToolDbo.AdjustSize()
 end
 
 --callbacks
-function RdKGToolDbo.OnProfileChanged(currentProfile)
+function BeltalowdaDbo.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		--RdKGToolDbo.SetEnabled(false)
-		RdKGToolDbo.dboVars = currentProfile.group.dbo
-		if RdKGToolDbo.state.initialized == true then
-			RdKGToolDbo.CalculateColors()
-			RdKGToolDbo.SetMovable(not RdKGToolDbo.dboVars.positionLocked)
-			RdKGToolDbo.SetTlwLocation()
-			RdKGToolDbo.AdjustSize()
-			--RdKGToolDbo.OnPlayerActivated()
+		--BeltalowdaDbo.SetEnabled(false)
+		BeltalowdaDbo.dboVars = currentProfile.group.dbo
+		if BeltalowdaDbo.state.initialized == true then
+			BeltalowdaDbo.CalculateColors()
+			BeltalowdaDbo.SetMovable(not BeltalowdaDbo.dboVars.positionLocked)
+			BeltalowdaDbo.SetTlwLocation()
+			BeltalowdaDbo.AdjustSize()
+			--BeltalowdaDbo.OnPlayerActivated()
 		end
-		RdKGToolDbo.SetEnabled(RdKGToolDbo.dboVars.enabled)
+		BeltalowdaDbo.SetEnabled(BeltalowdaDbo.dboVars.enabled)
 		
 	end
 end
 
-function RdKGToolDbo.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
+function BeltalowdaDbo.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
 	if eventCode == EVENT_ACTION_LAYER_POPPED then
-		RdKGToolDbo.state.foreground = true
+		BeltalowdaDbo.state.foreground = true
 	elseif eventCode == EVENT_ACTION_LAYER_PUSHED then
-		RdKGToolDbo.state.foreground = false
+		BeltalowdaDbo.state.foreground = false
 	end
 	--hack?
-	RdKGToolDbo.state.activeLayerIndex = activeLayerIndex
+	BeltalowdaDbo.state.activeLayerIndex = activeLayerIndex
 	
-	RdKGToolDbo.SetControlVisibility()
+	BeltalowdaDbo.SetControlVisibility()
 end
 
-function RdKGToolDbo.OnPlayerActivated(eventCode, initial)
-	if RdKGToolDbo.dboVars.enabled == true and (RdKGToolDbo.dboVars.pvponly == true and RdKGToolUtil.IsInPvPArea() == true or RdKGToolDbo.dboVars.pvponly == false) then
-		if RdKGToolDbo.state.registredActiveConsumers == false then
-			EVENT_MANAGER:RegisterForEvent(RdKGToolDbo.callbackName, EVENT_ACTION_LAYER_POPPED, RdKGToolDbo.SetForegroundVisibility)
-			EVENT_MANAGER:RegisterForEvent(RdKGToolDbo.callbackName, EVENT_ACTION_LAYER_PUSHED, RdKGToolDbo.SetForegroundVisibility)
-			RdKGToolGroup.AddFeature(RdKGToolDbo.callbackName, RdKGToolGroup.features.FEATURE_GROUP_BUFFS, RdKGToolDbo.config.updateInterval)
-			RdKGToolGroup.AddFeature(RdKGToolDbo.callbackName, RdKGToolGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE, RdKGToolDbo.config.updateInterval)
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolDbo.callbackName, RdKGToolDbo.config.updateInterval, RdKGToolDbo.OnUpdate)
-			RdKGToolDbo.state.registredActiveConsumers = true
+function BeltalowdaDbo.OnPlayerActivated(eventCode, initial)
+	if BeltalowdaDbo.dboVars.enabled == true and (BeltalowdaDbo.dboVars.pvponly == true and BeltalowdaUtil.IsInPvPArea() == true or BeltalowdaDbo.dboVars.pvponly == false) then
+		if BeltalowdaDbo.state.registredActiveConsumers == false then
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaDbo.callbackName, EVENT_ACTION_LAYER_POPPED, BeltalowdaDbo.SetForegroundVisibility)
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaDbo.callbackName, EVENT_ACTION_LAYER_PUSHED, BeltalowdaDbo.SetForegroundVisibility)
+			BeltalowdaGroup.AddFeature(BeltalowdaDbo.callbackName, BeltalowdaGroup.features.FEATURE_GROUP_BUFFS, BeltalowdaDbo.config.updateInterval)
+			BeltalowdaGroup.AddFeature(BeltalowdaDbo.callbackName, BeltalowdaGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE, BeltalowdaDbo.config.updateInterval)
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaDbo.callbackName, BeltalowdaDbo.config.updateInterval, BeltalowdaDbo.OnUpdate)
+			BeltalowdaDbo.state.registredActiveConsumers = true
 		end
 	else
-		if RdKGToolDbo.state.registredActiveConsumers == true then
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolDbo.callbackName, EVENT_ACTION_LAYER_POPPED)
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolDbo.callbackName, EVENT_ACTION_LAYER_PUSHED)
-			RdKGToolGroup.RemoveFeature(RdKGToolDbo.callbackName, RdKGToolGroup.features.FEATURE_GROUP_BUFFS)
-			RdKGToolGroup.RemoveFeature(RdKGToolDbo.callbackName, RdKGToolGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE)
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolDbo.callbackName)
-			RdKGToolDbo.state.registredActiveConsumers = false
+		if BeltalowdaDbo.state.registredActiveConsumers == true then
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaDbo.callbackName, EVENT_ACTION_LAYER_POPPED)
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaDbo.callbackName, EVENT_ACTION_LAYER_PUSHED)
+			BeltalowdaGroup.RemoveFeature(BeltalowdaDbo.callbackName, BeltalowdaGroup.features.FEATURE_GROUP_BUFFS)
+			BeltalowdaGroup.RemoveFeature(BeltalowdaDbo.callbackName, BeltalowdaGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE)
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaDbo.callbackName)
+			BeltalowdaDbo.state.registredActiveConsumers = false
 		end
 	end
-	RdKGToolDbo.SetControlVisibility()
+	BeltalowdaDbo.SetControlVisibility()
 end
 
-function RdKGToolDbo.OnUpdate()
+function BeltalowdaDbo.OnUpdate()
 	--d("DBO onUpdate")
-	if RdKGToolDbo.dboVars.enabled then
-		local pvpZone = RdKGToolUtil.IsInPvPArea()
-		if RdKGToolDbo.dboVars.pvponly == true and pvpZone == true or RdKGToolDbo.dboVars.pvponly == false then
-			local players = RdKGToolGroup.GetGroupInformation()
+	if BeltalowdaDbo.dboVars.enabled then
+		local pvpZone = BeltalowdaUtil.IsInPvPArea()
+		if BeltalowdaDbo.dboVars.pvponly == true and pvpZone == true or BeltalowdaDbo.dboVars.pvponly == false then
+			local players = BeltalowdaGroup.GetGroupInformation()
 			--temp = players
 			if players ~= nil then
 
@@ -407,133 +407,133 @@ function RdKGToolDbo.OnUpdate()
 							distance = 0
 						end
 						if distance > 18 then
-							RdKGToolDbo.controls.tlwControl.playerDebuffControls[i].playerLabel:SetColor(RdKGToolDbo.dboVars.colors.outOfRange.r, RdKGToolDbo.dboVars.colors.outOfRange.g, RdKGToolDbo.dboVars.colors.outOfRange.b)
-							RdKGToolDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetColor(RdKGToolDbo.dboVars.colors.outOfRange.r, RdKGToolDbo.dboVars.colors.outOfRange.g, RdKGToolDbo.dboVars.colors.outOfRange.b)
+							BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i].playerLabel:SetColor(BeltalowdaDbo.dboVars.colors.outOfRange.r, BeltalowdaDbo.dboVars.colors.outOfRange.g, BeltalowdaDbo.dboVars.colors.outOfRange.b)
+							BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetColor(BeltalowdaDbo.dboVars.colors.outOfRange.r, BeltalowdaDbo.dboVars.colors.outOfRange.g, BeltalowdaDbo.dboVars.colors.outOfRange.b)
 						else
-							RdKGToolDbo.controls.tlwControl.playerDebuffControls[i].playerLabel:SetColor(RdKGToolDbo.state.colors[colorIndex].r, RdKGToolDbo.state.colors[colorIndex].g, RdKGToolDbo.state.colors[colorIndex].b)
-							RdKGToolDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetColor(RdKGToolDbo.state.colors[colorIndex].r, RdKGToolDbo.state.colors[colorIndex].g, RdKGToolDbo.state.colors[colorIndex].b)
+							BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i].playerLabel:SetColor(BeltalowdaDbo.state.colors[colorIndex].r, BeltalowdaDbo.state.colors[colorIndex].g, BeltalowdaDbo.state.colors[colorIndex].b)
+							BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetColor(BeltalowdaDbo.state.colors[colorIndex].r, BeltalowdaDbo.state.colors[colorIndex].g, BeltalowdaDbo.state.colors[colorIndex].b)
 						end
 						if players[i].isPlayer == true then
-							RdKGToolDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetText(players[i].buffs.numPurgableBuffs)
+							BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetText(players[i].buffs.numPurgableBuffs)
 							--d("DBO")
 							--d(players[i].buffs.numPurgableBuffs)
 						else
 							--d("DBO")
 							--d(players[i].buffs.numPurgableBuffs)
 							if players[i].buffs.numPurgableBuffs > 6 then
-								RdKGToolDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetText("6+")
+								BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetText("6+")
 							else
-								RdKGToolDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetText(players[i].buffs.numPurgableBuffs)
+								BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetText(players[i].buffs.numPurgableBuffs)
 							end
 						end
-						RdKGToolDbo.controls.tlwControl.playerDebuffControls[i].playerLabel:SetText(players[i].name)
-						RdKGToolDbo.controls.tlwControl.playerDebuffControls[i]:SetHidden(false)
+						BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i].playerLabel:SetText(players[i].name)
+						BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i]:SetHidden(false)
 					end
 				end
 				for i = #players + 1, 24 do
-					RdKGToolDbo.controls.tlwControl.playerDebuffControls[i]:SetHidden(true)
-					RdKGToolDbo.controls.tlwControl.playerDebuffControls[i].playerLabel:SetText("")
-					RdKGToolDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetText("")
+					BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i]:SetHidden(true)
+					BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i].playerLabel:SetText("")
+					BeltalowdaDbo.controls.tlwControl.playerDebuffControls[i].debuffLabel:SetText("")
 				end
 				
-				--if RdKGToolDbo.state.foreground == true then
-				--	RdKGToolDbo.controls.TLW:SetHidden(false)
+				--if BeltalowdaDbo.state.foreground == true then
+				--	BeltalowdaDbo.controls.TLW:SetHidden(false)
 				--end
 			end
 		else
-			--RdKGToolDbo.controls.TLW:SetHidden(true)
+			--BeltalowdaDbo.controls.TLW:SetHidden(true)
 		end
 	else
-		--RdKGToolDbo.controls.TLW:SetHidden(true)
+		--BeltalowdaDbo.controls.TLW:SetHidden(true)
 	end
 end
 
-function RdKGToolDbo.SaveWindowLocation()
-	if RdKGToolDbo.dboVars.positionLocked == false then
-		RdKGToolDbo.dboVars.debuffLocation = RdKGToolDbo.dboVars.debuffLocation or {}
-		RdKGToolDbo.dboVars.debuffLocation.x = RdKGToolDbo.controls.TLW:GetLeft()
-		RdKGToolDbo.dboVars.debuffLocation.y = RdKGToolDbo.controls.TLW:GetTop()
+function BeltalowdaDbo.SaveWindowLocation()
+	if BeltalowdaDbo.dboVars.positionLocked == false then
+		BeltalowdaDbo.dboVars.debuffLocation = BeltalowdaDbo.dboVars.debuffLocation or {}
+		BeltalowdaDbo.dboVars.debuffLocation.x = BeltalowdaDbo.controls.TLW:GetLeft()
+		BeltalowdaDbo.dboVars.debuffLocation.y = BeltalowdaDbo.controls.TLW:GetTop()
 	end
 end
 
 --menu interaction
-function RdKGToolDbo.GetMenu()
+function BeltalowdaDbo.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.DBO_HEADER,
+			name = BeltalowdaMenu.constants.DBO_HEADER,
 			controls = {
 				[1] = {
 					type = "description",
-					text = RdKGToolMenu.constants.DBO_DESCRIPTION
+					text = BeltalowdaMenu.constants.DBO_DESCRIPTION
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.DBO_ENABLED,
-					getFunc = RdKGToolDbo.GetDboEnabled,
-					setFunc = RdKGToolDbo.SetDboEnabled
+					name = BeltalowdaMenu.constants.DBO_ENABLED,
+					getFunc = BeltalowdaDbo.GetDboEnabled,
+					setFunc = BeltalowdaDbo.SetDboEnabled
 				},				
 				[3] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.DBO_PVP_ONLY,
-					getFunc = RdKGToolDbo.GetDboPvpOnly,
-					setFunc = RdKGToolDbo.SetDboPvpOnly,
+					name = BeltalowdaMenu.constants.DBO_PVP_ONLY,
+					getFunc = BeltalowdaDbo.GetDboPvpOnly,
+					setFunc = BeltalowdaDbo.SetDboPvpOnly,
 				},
 				[4] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.DBO_POSITION_FIXED,
-					getFunc = RdKGToolDbo.GetDboPositionLocked,
-					setFunc = RdKGToolDbo.SetDboPositionLocked,
+					name = BeltalowdaMenu.constants.DBO_POSITION_FIXED,
+					getFunc = BeltalowdaDbo.GetDboPositionLocked,
+					setFunc = BeltalowdaDbo.SetDboPositionLocked,
 				},
 				[5] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.DBO_CRITICAL_AMOUNT,
+					name = BeltalowdaMenu.constants.DBO_CRITICAL_AMOUNT,
 					min = 1,
 					max = 10,
 					step = 1,
-					getFunc = RdKGToolDbo.GetDboCriticalAmount,
-					setFunc = RdKGToolDbo.SetDboCriticalAmount,
+					getFunc = BeltalowdaDbo.GetDboCriticalAmount,
+					setFunc = BeltalowdaDbo.SetDboCriticalAmount,
 					width = "full",
 					default = 3
 				},
 				[6] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.DBO_SIZE,
+					name = BeltalowdaMenu.constants.DBO_SIZE,
 					min = 1.0,
 					max = 2.0,
 					step = 0.01,
-					getFunc = RdKGToolDbo.GetDboSize,
-					setFunc = RdKGToolDbo.SetDboSelectedSize,
+					getFunc = BeltalowdaDbo.GetDboSize,
+					setFunc = BeltalowdaDbo.SetDboSelectedSize,
 					width = "full",
 					decimals = 2,
 					default = 1.0
 				},
 				[7] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DBO_COLOR_OKAY,
-					getFunc = RdKGToolDbo.GetDboColorOkay,
-					setFunc = RdKGToolDbo.SetDboColorOkay,
+					name = BeltalowdaMenu.constants.DBO_COLOR_OKAY,
+					getFunc = BeltalowdaDbo.GetDboColorOkay,
+					setFunc = BeltalowdaDbo.SetDboColorOkay,
 					width = "full"
 				},
 				[8] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DBO_COLOR_NOT_OKAY,
-					getFunc = RdKGToolDbo.GetDboColorNotOkay,
-					setFunc = RdKGToolDbo.SetDboColorNotOkay,
+					name = BeltalowdaMenu.constants.DBO_COLOR_NOT_OKAY,
+					getFunc = BeltalowdaDbo.GetDboColorNotOkay,
+					setFunc = BeltalowdaDbo.SetDboColorNotOkay,
 					width = "full"
 				},
 				[9] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DBO_COLOR_CRITICAL,
-					getFunc = RdKGToolDbo.GetDboColorCritical,
-					setFunc = RdKGToolDbo.SetDboColorCritical,
+					name = BeltalowdaMenu.constants.DBO_COLOR_CRITICAL,
+					getFunc = BeltalowdaDbo.GetDboColorCritical,
+					setFunc = BeltalowdaDbo.SetDboColorCritical,
 					width = "full"
 				},
 				[10] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DBO_COLOR_OUT_OF_RANGE,
-					getFunc = RdKGToolDbo.GetDboColorOutOfRange,
-					setFunc = RdKGToolDbo.SetDboColorOutOfRange,
+					name = BeltalowdaMenu.constants.DBO_COLOR_OUT_OF_RANGE,
+					getFunc = BeltalowdaDbo.GetDboColorOutOfRange,
+					setFunc = BeltalowdaDbo.SetDboColorOutOfRange,
 					width = "full"
 				}
 			}
@@ -542,81 +542,81 @@ function RdKGToolDbo.GetMenu()
 	return menu
 end
 
-function RdKGToolDbo.GetDboEnabled()
-	return RdKGToolDbo.dboVars.enabled
+function BeltalowdaDbo.GetDboEnabled()
+	return BeltalowdaDbo.dboVars.enabled
 end
 
-function RdKGToolDbo.SetDboEnabled(value)
-	RdKGToolDbo.SetEnabled(value)
+function BeltalowdaDbo.SetDboEnabled(value)
+	BeltalowdaDbo.SetEnabled(value)
 end
 
-function RdKGToolDbo.GetDboPvpOnly()
-	return RdKGToolDbo.dboVars.pvponly
+function BeltalowdaDbo.GetDboPvpOnly()
+	return BeltalowdaDbo.dboVars.pvponly
 end
 
-function RdKGToolDbo.SetDboPvpOnly(value)
-	RdKGToolDbo.dboVars.pvponly = value
-	RdKGToolDbo.SetEnabled(RdKGToolDbo.dboVars.enabled)
+function BeltalowdaDbo.SetDboPvpOnly(value)
+	BeltalowdaDbo.dboVars.pvponly = value
+	BeltalowdaDbo.SetEnabled(BeltalowdaDbo.dboVars.enabled)
 end
 
-function RdKGToolDbo.GetDboPositionLocked()
-	return RdKGToolDbo.dboVars.positionLocked
+function BeltalowdaDbo.GetDboPositionLocked()
+	return BeltalowdaDbo.dboVars.positionLocked
 end
 
-function RdKGToolDbo.SetDboPositionLocked(value)
-	RdKGToolDbo.SetMovable(not value)
+function BeltalowdaDbo.SetDboPositionLocked(value)
+	BeltalowdaDbo.SetMovable(not value)
 end
 
-function RdKGToolDbo.GetDboCriticalAmount()
-	return RdKGToolDbo.dboVars.criticalAmount
+function BeltalowdaDbo.GetDboCriticalAmount()
+	return BeltalowdaDbo.dboVars.criticalAmount
 end
 
-function RdKGToolDbo.SetDboCriticalAmount(value)
-	RdKGToolDbo.dboVars.criticalAmount = value
-	RdKGToolDbo.CalculateColors()
+function BeltalowdaDbo.SetDboCriticalAmount(value)
+	BeltalowdaDbo.dboVars.criticalAmount = value
+	BeltalowdaDbo.CalculateColors()
 end
 
-function RdKGToolDbo.GetDboSize()
-	return RdKGToolDbo.dboVars.size
+function BeltalowdaDbo.GetDboSize()
+	return BeltalowdaDbo.dboVars.size
 end
 
-function RdKGToolDbo.SetDboSelectedSize(value)
-	RdKGToolDbo.dboVars.size = value
-	RdKGToolDbo.AdjustSize()
+function BeltalowdaDbo.SetDboSelectedSize(value)
+	BeltalowdaDbo.dboVars.size = value
+	BeltalowdaDbo.AdjustSize()
 end
 
-function RdKGToolDbo.GetDboColorOkay()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDbo.dboVars.colors.okay)
+function BeltalowdaDbo.GetDboColorOkay()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDbo.dboVars.colors.okay)
 end
 
-function RdKGToolDbo.SetDboColorOkay(r, g, b)
-	RdKGToolDbo.dboVars.colors.okay = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDbo.CalculateColors()
+function BeltalowdaDbo.SetDboColorOkay(r, g, b)
+	BeltalowdaDbo.dboVars.colors.okay = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDbo.CalculateColors()
 end
 
-function RdKGToolDbo.GetDboColorNotOkay()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDbo.dboVars.colors.notOkay)
+function BeltalowdaDbo.GetDboColorNotOkay()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDbo.dboVars.colors.notOkay)
 end
 
-function RdKGToolDbo.SetDboColorNotOkay(r, g, b)
-	RdKGToolDbo.dboVars.colors.notOkay = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDbo.CalculateColors()
+function BeltalowdaDbo.SetDboColorNotOkay(r, g, b)
+	BeltalowdaDbo.dboVars.colors.notOkay = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDbo.CalculateColors()
 end
 
-function RdKGToolDbo.GetDboColorCritical()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDbo.dboVars.colors.critical)
+function BeltalowdaDbo.GetDboColorCritical()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDbo.dboVars.colors.critical)
 end
 
-function RdKGToolDbo.SetDboColorCritical(r, g, b)
-	RdKGToolDbo.dboVars.colors.critical = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDbo.CalculateColors()
+function BeltalowdaDbo.SetDboColorCritical(r, g, b)
+	BeltalowdaDbo.dboVars.colors.critical = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDbo.CalculateColors()
 end
 
-function RdKGToolDbo.GetDboColorOutOfRange()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDbo.dboVars.colors.outOfRange)
+function BeltalowdaDbo.GetDboColorOutOfRange()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDbo.dboVars.colors.outOfRange)
 end
 
-function RdKGToolDbo.SetDboColorOutOfRange(r, g, b)
-	RdKGToolDbo.dboVars.colors.outOfRange = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDbo.CalculateColors()
+function BeltalowdaDbo.SetDboColorOutOfRange(r, g, b)
+	BeltalowdaDbo.dboVars.colors.outOfRange = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDbo.CalculateColors()
 end

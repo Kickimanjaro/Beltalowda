@@ -1,42 +1,42 @@
 -- RdK AddOn Integration
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
+Beltalowda = Beltalowda or {}
 
-RdKGTool.addOnIntegration = RdKGTool.addOnIntegration or {}
+Beltalowda.addOnIntegration = Beltalowda.addOnIntegration or {}
 
-local RdKGToolAOI = RdKGTool.addOnIntegration
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
+local BeltalowdaAOI = Beltalowda.addOnIntegration
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
 
 
-function RdKGToolAOI.Initialize()
+function BeltalowdaAOI.Initialize()
 	--Not running Miats PvP Alerts AddOn Integration anymore as it did not really
 	--fix the bug causing frame drops. Therefore, this module isn't active in any way anymore.
-	--RdKGToolAOI.mpa.Initialize()
+	--BeltalowdaAOI.mpa.Initialize()
 end
 
-function RdKGToolAOI.SlashCmd(param)
+function BeltalowdaAOI.SlashCmd(param)
 	if param ~= nil then
 
 	end
 end
 
-function RdKGToolAOI.GetMenu()
+function BeltalowdaAOI.GetMenu()
 	local menu = {
 		--Not active currently
 		--[1] = {
 		--	type = "header",
-		--	name = RdKGToolMenu.constants.ADDON_INTEGRATION_HEADER,
+		--	name = BeltalowdaMenu.constants.ADDON_INTEGRATION_HEADER,
 		--	width = "full",
 		--}
 	}
-	--RdKGToolMenu.AddMenuEntries(menu, RdKGToolAOI.mpa.GetMenu())
+	--BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaAOI.mpa.GetMenu())
 	return menu
 end
 
-function RdKGToolAOI.GetDefaults()
+function BeltalowdaAOI.GetDefaults()
 	local defaults = {}
-	--defaults.mpa = RdKGToolAOI.mpa.GetDefaults()
+	--defaults.mpa = BeltalowdaAOI.mpa.GetDefaults()
 	return defaults
 end

@@ -1,110 +1,110 @@
--- RdK Group Tool Fonts
+-- Beltalowda Fonts
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.fonts = RdKGToolUtil.fonts or {}
-local RdKGToolFonts = RdKGToolUtil.fonts
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.fonts = BeltalowdaUtil.fonts or {}
+local BeltalowdaFonts = BeltalowdaUtil.fonts
 
-RdKGToolFonts.constants = {}
-RdKGToolFonts.constants.COMPLEX_FONT = "$(%s)|$(%s_%d)|%s"
-RdKGToolFonts.constants.SIMPLE_FONT = "$(%s)|$(%s_%d)"
+BeltalowdaFonts.constants = {}
+BeltalowdaFonts.constants.COMPLEX_FONT = "$(%s)|$(%s_%d)|%s"
+BeltalowdaFonts.constants.SIMPLE_FONT = "$(%s)|$(%s_%d)"
 
-RdKGToolFonts.constants.INPUT_KB = 1
-RdKGToolFonts.constants.INPUT_GP = 2
+BeltalowdaFonts.constants.INPUT_KB = 1
+BeltalowdaFonts.constants.INPUT_GP = 2
 
-RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THICK = 1
-RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THIN = 2
-RdKGToolFonts.constants.WEIGHT_THICK_OUTLINE = 3
+BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THICK = 1
+BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THIN = 2
+BeltalowdaFonts.constants.WEIGHT_THICK_OUTLINE = 3
 
-RdKGToolFonts.constants.MEDIUM_FONT = 1
-RdKGToolFonts.constants.BOLD_FONT = 2
-RdKGToolFonts.constants.CHAT_FONT = 3
-RdKGToolFonts.constants.GAMEPAD_LIGHT_FONT = 4
-RdKGToolFonts.constants.GAMEPAD_MEDIUM_FONT = 5
-RdKGToolFonts.constants.GAMEPAD_BOLD_FONT = 6
-RdKGToolFonts.constants.ANTIQUE_FONT = 7
-RdKGToolFonts.constants.HANDWRITTEN_FONT = 8
-RdKGToolFonts.constants.STONE_TABLET_FONT = 9
-
-
-RdKGToolFonts.config = {}
-RdKGToolFonts.config.sizes = {}
-RdKGToolFonts.config.sizes.names = {}
-RdKGToolFonts.config.sizes.names[RdKGToolFonts.constants.INPUT_KB] = "KB"
-RdKGToolFonts.config.sizes.names[RdKGToolFonts.constants.INPUT_GP] = "GP"
-RdKGToolFonts.config.sizes.kb = {}
-RdKGToolFonts.config.sizes.kb[1] = 8
-RdKGToolFonts.config.sizes.kb[2] = 9
-RdKGToolFonts.config.sizes.kb[3] = 10
-RdKGToolFonts.config.sizes.kb[4] = 11
-RdKGToolFonts.config.sizes.kb[5] = 12
-RdKGToolFonts.config.sizes.kb[6] = 13
-RdKGToolFonts.config.sizes.kb[7] = 14
-RdKGToolFonts.config.sizes.kb[8] = 15
-RdKGToolFonts.config.sizes.kb[9] = 16
-RdKGToolFonts.config.sizes.kb[10] = 17
-RdKGToolFonts.config.sizes.kb[11] = 18
-RdKGToolFonts.config.sizes.kb[12] = 19
-RdKGToolFonts.config.sizes.kb[13] = 20
-RdKGToolFonts.config.sizes.kb[14] = 21
-RdKGToolFonts.config.sizes.kb[15] = 22
-RdKGToolFonts.config.sizes.kb[16] = 23
-RdKGToolFonts.config.sizes.kb[17] = 24
-RdKGToolFonts.config.sizes.kb[18] = 25
-RdKGToolFonts.config.sizes.kb[19] = 26
-RdKGToolFonts.config.sizes.kb[20] = 28
-RdKGToolFonts.config.sizes.kb[21] = 30
-RdKGToolFonts.config.sizes.kb[22] = 32
-RdKGToolFonts.config.sizes.kb[23] = 34
-RdKGToolFonts.config.sizes.kb[24] = 36
-RdKGToolFonts.config.sizes.kb[25] = 40
-RdKGToolFonts.config.sizes.kb[26] = 48
-RdKGToolFonts.config.sizes.kb[27] = 54
-
-RdKGToolFonts.config.sizes.gp = {}
-RdKGToolFonts.config.sizes.gp[1] = 18
-RdKGToolFonts.config.sizes.gp[2] = 20
-RdKGToolFonts.config.sizes.gp[3] = 22
-RdKGToolFonts.config.sizes.gp[4] = 25
-RdKGToolFonts.config.sizes.gp[5] = 27
-RdKGToolFonts.config.sizes.gp[6] = 30
-RdKGToolFonts.config.sizes.gp[7] = 34
-RdKGToolFonts.config.sizes.gp[8] = 36
-RdKGToolFonts.config.sizes.gp[9] = 42
-RdKGToolFonts.config.sizes.gp[10] = 45
-RdKGToolFonts.config.sizes.gp[11] = 48
-RdKGToolFonts.config.sizes.gp[12] = 54
-RdKGToolFonts.config.sizes.gp[13] = 61
-
-RdKGToolFonts.config.styles = {}
-RdKGToolFonts.config.styles[RdKGToolFonts.constants.MEDIUM_FONT] = "MEDIUM_FONT"
-RdKGToolFonts.config.styles[RdKGToolFonts.constants.BOLD_FONT] = "BOLD_FONT"
-RdKGToolFonts.config.styles[RdKGToolFonts.constants.CHAT_FONT] = "CHAT_FONT"
-RdKGToolFonts.config.styles[RdKGToolFonts.constants.GAMEPAD_LIGHT_FONT] = "GAMEPAD_LIGHT_FONT"
-RdKGToolFonts.config.styles[RdKGToolFonts.constants.GAMEPAD_MEDIUM_FONT] = "GAMEPAD_MEDIUM_FONT"
-RdKGToolFonts.config.styles[RdKGToolFonts.constants.GAMEPAD_BOLD_FONT] = "GAMEPAD_BOLD_FONT"
-RdKGToolFonts.config.styles[RdKGToolFonts.constants.ANTIQUE_FONT] = "ANTIQUE_FONT"
-RdKGToolFonts.config.styles[RdKGToolFonts.constants.HANDWRITTEN_FONT] = "HANDWRITTEN_FONT"
-RdKGToolFonts.config.styles[RdKGToolFonts.constants.STONE_TABLET_FONT] = "STONE_TABLET_FONT"
+BeltalowdaFonts.constants.MEDIUM_FONT = 1
+BeltalowdaFonts.constants.BOLD_FONT = 2
+BeltalowdaFonts.constants.CHAT_FONT = 3
+BeltalowdaFonts.constants.GAMEPAD_LIGHT_FONT = 4
+BeltalowdaFonts.constants.GAMEPAD_MEDIUM_FONT = 5
+BeltalowdaFonts.constants.GAMEPAD_BOLD_FONT = 6
+BeltalowdaFonts.constants.ANTIQUE_FONT = 7
+BeltalowdaFonts.constants.HANDWRITTEN_FONT = 8
+BeltalowdaFonts.constants.STONE_TABLET_FONT = 9
 
 
-RdKGToolFonts.config.weights = {}
-RdKGToolFonts.config.weights[RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THICK] = "soft-shadow-thick"
-RdKGToolFonts.config.weights[RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THIN] = "soft-shadow-thin"
-RdKGToolFonts.config.weights[RdKGToolFonts.constants.WEIGHT_THICK_OUTLINE] = "thick-outline"
+BeltalowdaFonts.config = {}
+BeltalowdaFonts.config.sizes = {}
+BeltalowdaFonts.config.sizes.names = {}
+BeltalowdaFonts.config.sizes.names[BeltalowdaFonts.constants.INPUT_KB] = "KB"
+BeltalowdaFonts.config.sizes.names[BeltalowdaFonts.constants.INPUT_GP] = "GP"
+BeltalowdaFonts.config.sizes.kb = {}
+BeltalowdaFonts.config.sizes.kb[1] = 8
+BeltalowdaFonts.config.sizes.kb[2] = 9
+BeltalowdaFonts.config.sizes.kb[3] = 10
+BeltalowdaFonts.config.sizes.kb[4] = 11
+BeltalowdaFonts.config.sizes.kb[5] = 12
+BeltalowdaFonts.config.sizes.kb[6] = 13
+BeltalowdaFonts.config.sizes.kb[7] = 14
+BeltalowdaFonts.config.sizes.kb[8] = 15
+BeltalowdaFonts.config.sizes.kb[9] = 16
+BeltalowdaFonts.config.sizes.kb[10] = 17
+BeltalowdaFonts.config.sizes.kb[11] = 18
+BeltalowdaFonts.config.sizes.kb[12] = 19
+BeltalowdaFonts.config.sizes.kb[13] = 20
+BeltalowdaFonts.config.sizes.kb[14] = 21
+BeltalowdaFonts.config.sizes.kb[15] = 22
+BeltalowdaFonts.config.sizes.kb[16] = 23
+BeltalowdaFonts.config.sizes.kb[17] = 24
+BeltalowdaFonts.config.sizes.kb[18] = 25
+BeltalowdaFonts.config.sizes.kb[19] = 26
+BeltalowdaFonts.config.sizes.kb[20] = 28
+BeltalowdaFonts.config.sizes.kb[21] = 30
+BeltalowdaFonts.config.sizes.kb[22] = 32
+BeltalowdaFonts.config.sizes.kb[23] = 34
+BeltalowdaFonts.config.sizes.kb[24] = 36
+BeltalowdaFonts.config.sizes.kb[25] = 40
+BeltalowdaFonts.config.sizes.kb[26] = 48
+BeltalowdaFonts.config.sizes.kb[27] = 54
 
-function RdKGToolFonts.CreateFontString(style, inputType, size, weight)
+BeltalowdaFonts.config.sizes.gp = {}
+BeltalowdaFonts.config.sizes.gp[1] = 18
+BeltalowdaFonts.config.sizes.gp[2] = 20
+BeltalowdaFonts.config.sizes.gp[3] = 22
+BeltalowdaFonts.config.sizes.gp[4] = 25
+BeltalowdaFonts.config.sizes.gp[5] = 27
+BeltalowdaFonts.config.sizes.gp[6] = 30
+BeltalowdaFonts.config.sizes.gp[7] = 34
+BeltalowdaFonts.config.sizes.gp[8] = 36
+BeltalowdaFonts.config.sizes.gp[9] = 42
+BeltalowdaFonts.config.sizes.gp[10] = 45
+BeltalowdaFonts.config.sizes.gp[11] = 48
+BeltalowdaFonts.config.sizes.gp[12] = 54
+BeltalowdaFonts.config.sizes.gp[13] = 61
+
+BeltalowdaFonts.config.styles = {}
+BeltalowdaFonts.config.styles[BeltalowdaFonts.constants.MEDIUM_FONT] = "MEDIUM_FONT"
+BeltalowdaFonts.config.styles[BeltalowdaFonts.constants.BOLD_FONT] = "BOLD_FONT"
+BeltalowdaFonts.config.styles[BeltalowdaFonts.constants.CHAT_FONT] = "CHAT_FONT"
+BeltalowdaFonts.config.styles[BeltalowdaFonts.constants.GAMEPAD_LIGHT_FONT] = "GAMEPAD_LIGHT_FONT"
+BeltalowdaFonts.config.styles[BeltalowdaFonts.constants.GAMEPAD_MEDIUM_FONT] = "GAMEPAD_MEDIUM_FONT"
+BeltalowdaFonts.config.styles[BeltalowdaFonts.constants.GAMEPAD_BOLD_FONT] = "GAMEPAD_BOLD_FONT"
+BeltalowdaFonts.config.styles[BeltalowdaFonts.constants.ANTIQUE_FONT] = "ANTIQUE_FONT"
+BeltalowdaFonts.config.styles[BeltalowdaFonts.constants.HANDWRITTEN_FONT] = "HANDWRITTEN_FONT"
+BeltalowdaFonts.config.styles[BeltalowdaFonts.constants.STONE_TABLET_FONT] = "STONE_TABLET_FONT"
+
+
+BeltalowdaFonts.config.weights = {}
+BeltalowdaFonts.config.weights[BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THICK] = "soft-shadow-thick"
+BeltalowdaFonts.config.weights[BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THIN] = "soft-shadow-thin"
+BeltalowdaFonts.config.weights[BeltalowdaFonts.constants.WEIGHT_THICK_OUTLINE] = "thick-outline"
+
+function BeltalowdaFonts.CreateFontString(style, inputType, size, weight)
 	local fontString = nil
 	if style ~= nil and inputType ~= nil and size ~= nil then
-		style = RdKGToolFonts.config.styles[style]
-		local inputTypeString = RdKGToolFonts.config.sizes.names[inputType]
+		style = BeltalowdaFonts.config.styles[style]
+		local inputTypeString = BeltalowdaFonts.config.sizes.names[inputType]
 		if style ~= nil and inputTypeString ~= nil then
 			local sizes = nil
-			if inputType == RdKGToolFonts.constants.INPUT_KB then
-				sizes = RdKGToolFonts.config.sizes.kb
-			elseif inputType == RdKGToolFonts.constants.INPUT_GP then
-				sizes = RdKGToolFonts.config.sizes.gp
+			if inputType == BeltalowdaFonts.constants.INPUT_KB then
+				sizes = BeltalowdaFonts.config.sizes.kb
+			elseif inputType == BeltalowdaFonts.constants.INPUT_GP then
+				sizes = BeltalowdaFonts.config.sizes.gp
 			end
 			if sizes ~= nil then
 				for i = 1, #sizes do
@@ -121,12 +121,12 @@ function RdKGToolFonts.CreateFontString(style, inputType, size, weight)
 					end
 				end
 				if weight ~= nil then
-					weight = RdKGToolFonts.config.weights[weight]
+					weight = BeltalowdaFonts.config.weights[weight]
 					if weight ~= nil then
-						fontString = string.format(RdKGToolFonts.constants.COMPLEX_FONT, style, inputTypeString, size, weight)
+						fontString = string.format(BeltalowdaFonts.constants.COMPLEX_FONT, style, inputTypeString, size, weight)
 					end
 				else
-					fontString = string.format(RdKGToolFonts.constants.SIMPLE_FONT, style, inputTypeString, size)
+					fontString = string.format(BeltalowdaFonts.constants.SIMPLE_FONT, style, inputTypeString, size)
 				end
 			end
 		end

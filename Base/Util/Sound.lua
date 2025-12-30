@@ -1,17 +1,17 @@
--- RdK Group Tool Sound
+-- Beltalowda Sound
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
-RdKGTool.util.sound = RdKGTool.util.sound or {}
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
+Beltalowda.util.sound = Beltalowda.util.sound or {}
 
-local RdKGToolSound = RdKGTool.util.sound
-RdKGToolSound.state = {}
+local BeltalowdaSound = Beltalowda.util.sound
+BeltalowdaSound.state = {}
 
-function RdKGToolSound.Initialize()
+function BeltalowdaSound.Initialize()
 	local index = 1
-	RdKGToolSound.state.allSounds = {}
-	local allSounds = RdKGToolSound.state.allSounds
+	BeltalowdaSound.state.allSounds = {}
+	local allSounds = BeltalowdaSound.state.allSounds
 	for key, value in pairs(SOUNDS) do
 		local sound = {}
 		sound.key = key
@@ -19,12 +19,12 @@ function RdKGToolSound.Initialize()
 		allSounds[index] = sound
 		index = index + 1
 	end
-	RdKGToolSound.CreateRestrictedSoundList()
+	BeltalowdaSound.CreateRestrictedSoundList()
 end
 
-function RdKGToolSound.CreateRestrictedSoundList()
-	RdKGToolSound.state.restrictedSounds = {}
-	local sounds = RdKGToolSound.state.restrictedSounds
+function BeltalowdaSound.CreateRestrictedSoundList()
+	BeltalowdaSound.state.restrictedSounds = {}
+	local sounds = BeltalowdaSound.state.restrictedSounds
 	sounds[1] = {}
 	sounds[1].key = "DYEING_TOOL_SET_FILL_USED"
 	sounds[1].name = "Dyeing_Tool_Set_Fill_Used"
@@ -105,40 +105,40 @@ function RdKGToolSound.CreateRestrictedSoundList()
 	sounds[26].name = "BG_One_Minute_Warning"
 end
 
-function RdKGToolSound.GetRestrictedSounds()
-	return RdKGToolSound.state.restrictedSounds
+function BeltalowdaSound.GetRestrictedSounds()
+	return BeltalowdaSound.state.restrictedSounds
 end
 
-function RdKGToolSound.GetAllSounds()
-	return RdKGToolSound.state.allSounds
+function BeltalowdaSound.GetAllSounds()
+	return BeltalowdaSound.state.allSounds
 end
 
-function RdKGToolSound.PlaySoundByKey(key)
-	RdKGToolSound.PlaySoundByName(SOUNDS[key])
+function BeltalowdaSound.PlaySoundByKey(key)
+	BeltalowdaSound.PlaySoundByName(SOUNDS[key])
 end
 
-function RdKGToolSound.PlaySoundByName(name)
+function BeltalowdaSound.PlaySoundByName(name)
 	if name ~= nil then
 		PlaySound(name)
 	end
 end
 
-function RdKGToolSound.PlaySoundByGlobalIndex(index)
-	local sound = RdKGToolSound.state.allSounds[index]
+function BeltalowdaSound.PlaySoundByGlobalIndex(index)
+	local sound = BeltalowdaSound.state.allSounds[index]
 	if sound ~= nil then
-		RdKGToolSound.PlaySoundByName(sound.name)
+		BeltalowdaSound.PlaySoundByName(sound.name)
 	end
 end
 
-function RdKGToolSound.PlaySoundByRestrictedIndex(index)
-	local sound = RdKGToolSound.state.restrictedSounds[index]
+function BeltalowdaSound.PlaySoundByRestrictedIndex(index)
+	local sound = BeltalowdaSound.state.restrictedSounds[index]
 	if sound ~= nil then
-		RdKGToolSound.PlaySoundByName(sound.name)
+		BeltalowdaSound.PlaySoundByName(sound.name)
 	end
 end
 
 --sound check
 --[[
-/script local i = 6 d(RdKGTool.util.sound.state.allSounds[i]) RdKGTool.util.sound.PlaySoundByGlobalIndex(i)
+/script local i = 6 d(Beltalowda.util.sound.state.allSounds[i]) Beltalowda.util.sound.PlaySoundByGlobalIndex(i)
 
 ]]

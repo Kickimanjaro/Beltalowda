@@ -1,42 +1,43 @@
--- RdK Group Tool
--- By @s0rdrak (PC / EU)
+-- Beltalowda
+-- By @Kickimanjaro
+-- Based on RdK Group Tool by @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.addonName = "RdKGroupTool"
-RdKGTool.version = 1 --for saved vars, shouldn't be used (version.fix instead)
-RdKGTool.versionString = "2.1.1"
-RdKGTool.updateInterval = 50 -- in ms
-RdKGTool.author = "@s0rdrak (PC / EU)"
-RdKGTool.credits = "RdK :)" 
-RdKGTool.slashCmd = "/rdk"
-RdKGTool.PREFIX = "+"
+Beltalowda = Beltalowda or {}
+Beltalowda.addonName = "Beltalowda"
+Beltalowda.version = 1 --for saved vars, shouldn't be used (version.fix instead)
+Beltalowda.versionString = "0.2.0"
+Beltalowda.updateInterval = 50 -- in ms
+Beltalowda.author = "@Kickimanjaro"
+Beltalowda.credits = "Based on RdK Group Tool by @s0rdrak (PC / EU)" 
+Beltalowda.slashCmd = "/beltalowda"
+Beltalowda.PREFIX = "+"
 
-RdKGTool.addonState = {}
+Beltalowda.addonState = {}
 
-RdKGTool.config = {}
-RdKGTool.config.constants = {}
+Beltalowda.config = {}
+Beltalowda.config.constants = {}
 
-RdKGTool.constants = {}
+Beltalowda.constants = {}
 
-RdKGTool.default = {}
+Beltalowda.default = {}
 
 
-RdKGTool.menu = {}
-RdKGTool.menu.name = "RdKGroupToolMenu"
+Beltalowda.menu = {}
+Beltalowda.menu.name = "BeltalowdaMenu"
 
-RdKGTool.state = {}
+Beltalowda.state = {}
 
 --do not directly access them!
-RdKGTool.vars = {}
+Beltalowda.vars = {}
 
---/script RdKGTool.RdKGToolOnInitialize(nil, "RdKGroupTool")
-function RdKGTool.RdKGToolOnInitialize(event, addonName)
-	if addonName == RdKGTool.addonName then
-		local libsLoaded, missingLibs = RdKGTool.AreLibrariesLoaded()
+--/script Beltalowda.BeltalowdaOnInitialize(nil, "Beltalowda")
+function Beltalowda.BeltalowdaOnInitialize(event, addonName)
+	if addonName == Beltalowda.addonName then
+		local libsLoaded, missingLibs = Beltalowda.AreLibrariesLoaded()
 		if libsLoaded == false then
 			zo_callLater(
 			function()
-				d(RdKGTool.constants.MISSING_LIBRARIES)
+				d(Beltalowda.constants.MISSING_LIBRARIES)
 				for i = 1, #missingLibs do
 					d(missingLibs[i])
 				end
@@ -44,79 +45,79 @@ function RdKGTool.RdKGToolOnInitialize(event, addonName)
 			return
 		end
 		--create default values in case there aren't any saved vars
-		RdKGTool.default.profiles = RdKGTool.profile.GetAccountDefaults()
-		RdKGTool.default.character = RdKGTool.profile.GetCharacterDefaults()
+		Beltalowda.default.profiles = Beltalowda.profile.GetAccountDefaults()
+		Beltalowda.default.character = Beltalowda.profile.GetCharacterDefaults()
 		
 		--update this part when new defaults / functionality is added
-		if RdKGTool.default.profiles ~= nil and RdKGTool.default.profiles.profiles ~= nil then
-			for key, value in pairs(RdKGTool.default.profiles.profiles) do
-				RdKGTool.default.profiles.profiles[key] = RdKGTool.CreateCleanProfile()
+		if Beltalowda.default.profiles ~= nil and Beltalowda.default.profiles.profiles ~= nil then
+			for key, value in pairs(Beltalowda.default.profiles.profiles) do
+				Beltalowda.default.profiles.profiles[key] = Beltalowda.CreateCleanProfile()
 			end
 		end
 			
-		local charVars = ZO_SavedVars:New("RdKGroupToolVars", RdKGTool.version, nil, RdKGTool.default.character)
-		local accVars = ZO_SavedVars:NewAccountWide("RdKGroupToolVars", RdKGTool.version, nil, RdKGTool.default.profiles)
+		local charVars = ZO_SavedVars:New("BeltalowdaVars", Beltalowda.version, nil, Beltalowda.default.character)
+		local accVars = ZO_SavedVars:NewAccountWide("BeltalowdaVars", Beltalowda.version, nil, Beltalowda.default.profiles)
 			
 		for i = 1, #accVars.profiles do
-			local profile = RdKGTool.CreateCleanProfile()
+			local profile = Beltalowda.CreateCleanProfile()
 			profile.name = "___"
-			RdKGTool.PopulateWithDefaults(accVars.profiles[i], profile)
+			Beltalowda.PopulateWithDefaults(accVars.profiles[i], profile)
 		end
 		--do not directly access them!
-		RdKGTool.vars.acc = accVars
-		RdKGTool.vars.char = charVars
+		Beltalowda.vars.acc = accVars
+		Beltalowda.vars.char = charVars
 	
-		RdKGTool.util.versioning.InitializeFixes(accVars, charVars)
+		Beltalowda.util.versioning.InitializeFixes(accVars, charVars)
 
 			
-		RdKGTool.profile.Initialize(accVars, charVars)
+		Beltalowda.profile.Initialize(accVars, charVars)
 			
-		RdKGTool.ui.Initialize()
-		RdKGTool.util.Initialize()			
-		RdKGTool.group.Initialize()
-		RdKGTool.compass.Initialize()
-		RdKGTool.toolbox.Initialize()
-		RdKGTool.classRole.Initialize()
-		RdKGTool.addOnIntegration.Initialize()
-		RdKGTool.admin.Initialize()
-		RdKGTool.cfg.Initialize()
+		Beltalowda.ui.Initialize()
+		Beltalowda.util.Initialize()			
+		Beltalowda.group.Initialize()
+		Beltalowda.compass.Initialize()
+		Beltalowda.toolbox.Initialize()
+		Beltalowda.classRole.Initialize()
+		Beltalowda.addOnIntegration.Initialize()
+		Beltalowda.admin.Initialize()
+		Beltalowda.cfg.Initialize()
 			
-		RdKGTool.menu.Initialize()
+		Beltalowda.menu.Initialize()
 
-		EVENT_MANAGER:UnregisterForEvent(RdKGTool.addonName, EVENT_ADD_ON_LOADED)
+		EVENT_MANAGER:UnregisterForEvent(Beltalowda.addonName, EVENT_ADD_ON_LOADED)
 
 	end
 end
 
 --update this method when new defaults / functionality is added
-function RdKGTool.CreateCleanProfile()
-	local profile = RdKGTool.profile.GetAccountDefaults().profiles[1]
-	profile.ui = RdKGTool.ui.GetDefaults()
-	profile.group = RdKGTool.group.GetDefaults()
-	profile.compass = RdKGTool.compass.GetDefaults()
-	profile.toolbox = RdKGTool.toolbox.GetDefaults()
-	profile.classRole = RdKGTool.classRole.GetDefaults()
-	profile.addOnIntegration = RdKGTool.addOnIntegration.GetDefaults()
-	profile.util = RdKGTool.util.GetDefaults()
-	profile.admin = RdKGTool.admin.GetDefaults()
-	profile.cfg = RdKGTool.cfg.GetDefaults()
+function Beltalowda.CreateCleanProfile()
+	local profile = Beltalowda.profile.GetAccountDefaults().profiles[1]
+	profile.ui = Beltalowda.ui.GetDefaults()
+	profile.group = Beltalowda.group.GetDefaults()
+	profile.compass = Beltalowda.compass.GetDefaults()
+	profile.toolbox = Beltalowda.toolbox.GetDefaults()
+	profile.classRole = Beltalowda.classRole.GetDefaults()
+	profile.addOnIntegration = Beltalowda.addOnIntegration.GetDefaults()
+	profile.util = Beltalowda.util.GetDefaults()
+	profile.admin = Beltalowda.admin.GetDefaults()
+	profile.cfg = Beltalowda.cfg.GetDefaults()
 	return profile
 end
 
 --helper functions
-function RdKGTool.PopulateWithDefaults(orig, defaults)
+function Beltalowda.PopulateWithDefaults(orig, defaults)
 	if orig ~= nil and type(orig) == "table" then
 		for key, value in pairs(defaults) do
 			if orig[key] == nil then
 				orig[key] = defaults[key]
 			elseif type(orig[key]) == "table" and type(defaults[key]) == "table" then
-				RdKGTool.PopulateWithDefaults(orig[key], defaults[key])
+				Beltalowda.PopulateWithDefaults(orig[key], defaults[key])
 			end
 		end
 	end
 end
 
-function RdKGTool.AreLibrariesLoaded()
+function Beltalowda.AreLibrariesLoaded()
 	local loaded = true
 	local missingLibs = {}
 	if LibAddonMenu2 == nil then
@@ -151,35 +152,35 @@ function RdKGTool.AreLibrariesLoaded()
 	return loaded, missingLibs
 end
 
-EVENT_MANAGER:RegisterForEvent(RdKGTool.addonName, EVENT_ADD_ON_LOADED, RdKGTool.RdKGToolOnInitialize)
+EVENT_MANAGER:RegisterForEvent(Beltalowda.addonName, EVENT_ADD_ON_LOADED, Beltalowda.BeltalowdaOnInitialize)
 
 
-SLASH_COMMANDS[RdKGTool.slashCmd] = function(param)
-	local chat = RdKGTool.util.chatSystem
-	chat.SendChatMessage(string.format("%s %s", RdKGTool.slashCmd, param), RdKGTool.PREFIX, chat.constants.messageTypes.MESSAGE_NORMAL)
+SLASH_COMMANDS[Beltalowda.slashCmd] = function(param)
+	local chat = Beltalowda.util.chatSystem
+	chat.SendChatMessage(string.format("%s %s", Beltalowda.slashCmd, param), Beltalowda.PREFIX, chat.constants.messageTypes.MESSAGE_NORMAL)
 	--param = zo_strtrim(param)
 	param = {zo_strsplit(" ", zo_strtrim(param))}
 	--d(param)
 	if param == nil then
-		chat.SendChatMessage(RdKGTool.config.constants.CMD_TEXT_MENU)
-		--d(RdKGTool.config.constants.CMD_TEXT_MENU)
+		chat.SendChatMessage(Beltalowda.config.constants.CMD_TEXT_MENU)
+		--d(Beltalowda.config.constants.CMD_TEXT_MENU)
 	else
 		param[1] = string.lower(param[1])
 		--d(param)
 		if param[1] == "menu" then
-			RdKGTool.menu.OpenMenu()
+			Beltalowda.menu.OpenMenu()
 		elseif param[1] == "ai" then
-			RdKGTool.group.SlashCmd(param)
+			Beltalowda.group.SlashCmd(param)
 		elseif param[1] == "crown" then
-			RdKGTool.group.SlashCmd(param)
+			Beltalowda.group.SlashCmd(param)
 		elseif param[1] == "hdm" then
-			RdKGTool.group.SlashCmd(param)
+			Beltalowda.group.SlashCmd(param)
 		elseif param[1] == "admin" then
-			RdKGTool.admin.SlashCmd(param)
+			Beltalowda.admin.SlashCmd(param)
 		elseif param[1] == "config" then
-			RdKGTool.cfg.SlashCmd(param)
+			Beltalowda.cfg.SlashCmd(param)
 		else
-			chat.SendChatMessage(RdKGTool.config.constants.CMD_TEXT_MENU, RdKGTool.PREFIX, chat.constants.messageTypes.MESSAGE_NORMAL)
+			chat.SendChatMessage(Beltalowda.config.constants.CMD_TEXT_MENU, Beltalowda.PREFIX, chat.constants.messageTypes.MESSAGE_NORMAL)
 		end
 	end
 end
@@ -212,9 +213,9 @@ end
 
 --[[
 
-<TopLevelControl name="RdKGTool_Crown_Test" tier="0" layer="0" level="0">
+<TopLevelControl name="Beltalowda_Crown_Test" tier="0" layer="0" level="0">
 			<Controls>
-				<Texture name="$(parent)Icon" textureFile="RdKGroupTool/Art/Crowns/Krone.dds" level="3" />
+				<Texture name="$(parent)Icon" textureFile="Beltalowda/Art/Crowns/Krone.dds" level="3" />
 ]]
 
 function testMultiLineEdit()
@@ -255,8 +256,8 @@ end
 
 --Test Crap - Remove later
 --local lib3D = LibStub("Lib3D2")
-local control = RdKGTool_Crown_Test
-local controlIcon = RdKGTool_Crown_TestIcon
+local control = Beltalowda_Crown_Test
+local controlIcon = Beltalowda_Crown_TestIcon
 function test3d()
 --[[
 	local wm = GetWindowManager() 
@@ -269,7 +270,7 @@ function test3d()
 	controlX:SetDimensions(100,100)
 	lib3D:RegisterControl(controlX)
 	controlX.texture = wm:CreateControl(nil, controlX, CT_TEXTURE)
-	controlX.texture:SetTexture("RdKGroupTool/Art/3DObjects/ray.dds")
+	controlX.texture:SetTexture("Beltalowda/Art/3DObjects/ray.dds")
 	controlX:Create3DRenderSpace()
 	controlX.texture:Create3DRenderSpace()
 	controlX.texture:Set3DLocalDimensions(1, 1)
@@ -278,7 +279,7 @@ function test3d()
 	--lib3D:RegisterControl(controlX.texture)
 	]]
 	if control == nil or controlIcon == nil then
-		test3dControls(RdKGTool_Crown_Test, RdKGTool_Crown_TestIcon)
+		test3dControls(Beltalowda_Crown_Test, Beltalowda_Crown_TestIcon)
 	end
 	
 	control:Create3DRenderSpace()
@@ -286,7 +287,7 @@ function test3d()
 	controlIcon:Create3DRenderSpace()
 	test3dDimensions(1, 256)
 	controlIcon:Set3DRenderSpaceUsesDepthBuffer(true)
-	--d(RdKGTool_Crown_Test:GetParent())
+	--d(Beltalowda_Crown_Test:GetParent())
 	--local x, y, z = GetMapPlayerPosition("player")
 	local name = controlIcon.name
 	if name == nil then
@@ -299,10 +300,10 @@ function test3d()
 	
 	controlIcon:Set3DRenderSpaceOrigin(worldX, height, worldZ)
 	--controlX.texture:Set3DRenderSpaceOrigin(worldX, height, worldZ)
-	--RdKGTool_Crown_TestIcon:Set3DRenderSpaceOrigin(8,8,8)
-	--RdKGTool_Crown_Test:Set3DRenderSpaceOrigin(8,8,8)
-	--RdKGTool_Crown_Test:SetHidden(true)
-	--RdKGTool_Crown_TestIcon:Set3DRenderSpaceOrigin(WorldPositionToGuiRender3DPosition(GetMapPlayerPosition("player")))
+	--Beltalowda_Crown_TestIcon:Set3DRenderSpaceOrigin(8,8,8)
+	--Beltalowda_Crown_Test:Set3DRenderSpaceOrigin(8,8,8)
+	--Beltalowda_Crown_Test:SetHidden(true)
+	--Beltalowda_Crown_TestIcon:Set3DRenderSpaceOrigin(WorldPositionToGuiRender3DPosition(GetMapPlayerPosition("player")))
 	--EVENT_MANAGER:RegisterForUpdate("dafuqtest",10,dafuqupdatetest)
 end
 
@@ -377,7 +378,7 @@ function dafuqupdatetest()
 		worldX, _, worldZ = WorldPositionToGuiRender3DPosition(worldX * 100, 0, worldZ*100)
 	end
 	controlIcon:Set3DRenderSpaceOrigin(worldX, height , worldZ)
-	--RdKGTool_Crown_TestIcon:Set3DRenderSpaceOrigin(19194.756282235,120.04095458984,9457.358678526)
+	--Beltalowda_Crown_TestIcon:Set3DRenderSpaceOrigin(19194.756282235,120.04095458984,9457.358678526)
 	local heading = GetPlayerCameraHeading()
 	if heading > math.pi then 
 		heading = heading - 2 * math.pi
@@ -387,15 +388,15 @@ function dafuqupdatetest()
 	testData1.y = worldZ
 	controlIcon:Set3DRenderSpaceOrientation(0, heading, 0)
 	--controlX.texture:Set3DRenderSpaceOrigin(worldX, height, worldZ)
-	--/script lx, ly, lz = RdKGTool_Crown_TestIcon:Get3DRenderSpaceOrigin()
-	--/script RdKGTool_Crown_TestIcon:Set3DRenderSpaceOrigin(lx, ly, lz)
+	--/script lx, ly, lz = Beltalowda_Crown_TestIcon:Get3DRenderSpaceOrigin()
+	--/script Beltalowda_Crown_TestIcon:Set3DRenderSpaceOrigin(lx, ly, lz)
 	--
 	
 	local x, y, z = GetMapPlayerPosition(GetGroupUnitTagByIndex(1))
 	local worldX, worldZ = lib3D:GetPersistentWorldCoordsFromLocal(x, currentY)
 	local _, height, _ = lib3D:GetCameraCurrentWorldCoords()
 	
-	RdKGTool_Crown_TestIcon:Set3DRenderSpaceOrigin(worldX, height, worldZ)
+	Beltalowda_Crown_TestIcon:Set3DRenderSpaceOrigin(worldX, height, worldZ)
 
 	
 end
@@ -409,23 +410,23 @@ function test3dDimensions(width, height)
 end
 
 function test3d2(player1, player2)
-	RdKGTool_Crown_Test:Create3DRenderSpace()
-	RdKGTool_Crown_TestIcon:Create3DRenderSpace()
-	RdKGTool_Crown_TestIcon.player = player1
-	RdKGTool_Crown_TestIcon:SetColor(1,0,0,0.5)
-	RdKGTool_Crown_TestIcon2:Create3DRenderSpace()
-	RdKGTool_Crown_TestIcon2.player = player2
-	RdKGTool_Crown_TestIcon2:SetColor(0,0,1,0.5)
-	RdKGTool_Crown_TestIcon:Set3DLocalDimensions(1, 256)
-	RdKGTool_Crown_TestIcon2:Set3DLocalDimensions(1, 256)
-	RdKGTool_Crown_Test:Set3DRenderSpaceOrigin(0,0,0)
+	Beltalowda_Crown_Test:Create3DRenderSpace()
+	Beltalowda_Crown_TestIcon:Create3DRenderSpace()
+	Beltalowda_Crown_TestIcon.player = player1
+	Beltalowda_Crown_TestIcon:SetColor(1,0,0,0.5)
+	Beltalowda_Crown_TestIcon2:Create3DRenderSpace()
+	Beltalowda_Crown_TestIcon2.player = player2
+	Beltalowda_Crown_TestIcon2:SetColor(0,0,1,0.5)
+	Beltalowda_Crown_TestIcon:Set3DLocalDimensions(1, 256)
+	Beltalowda_Crown_TestIcon2:Set3DLocalDimensions(1, 256)
+	Beltalowda_Crown_Test:Set3DRenderSpaceOrigin(0,0,0)
 	EVENT_MANAGER:RegisterForUpdate("test3d2",10,test3d2OnUpdate)
 end
 --[[
 function test3d2OnUpdate()
 	local lib3D = LibStub("Lib3D2")
 	
-	local x, y, z = GetMapPlayerPosition(RdKGTool_Crown_TestIcon.player)
+	local x, y, z = GetMapPlayerPosition(Beltalowda_Crown_TestIcon.player)
 	local worldX, worldZ = lib3D:LocalToWorld(x, y)
 	local _, height, _ = lib3D:GetCameraRenderSpacePosition()
 	--local _, height, _ = lib3D:GetCameraCurrentWorldCoords()
@@ -434,9 +435,9 @@ function test3d2OnUpdate()
 	if worldX ~= nil and worldZ ~= nil then
 		worldX, _, worldZ = WorldPositionToGuiRender3DPosition(worldX * 100, 0, worldZ*100)
 	end
-	RdKGTool_Crown_TestIcon:Set3DRenderSpaceOrigin(worldX, height , worldZ)
+	Beltalowda_Crown_TestIcon:Set3DRenderSpaceOrigin(worldX, height , worldZ)
 	
-	x, y, z = GetMapPlayerPosition(RdKGTool_Crown_TestIcon2.player)
+	x, y, z = GetMapPlayerPosition(Beltalowda_Crown_TestIcon2.player)
 	worldX, worldZ = lib3D:LocalToWorld(x, y)
 	_, height, _ = lib3D:GetCameraRenderSpacePosition()
 	--local _, height, _ = lib3D:GetCameraCurrentWorldCoords()
@@ -445,24 +446,24 @@ function test3d2OnUpdate()
 	if worldX ~= nil and worldZ ~= nil then
 		worldX, _, worldZ = WorldPositionToGuiRender3DPosition(worldX * 100, 0, worldZ*100)
 	end
-	RdKGTool_Crown_TestIcon2:Set3DRenderSpaceOrigin(worldX, height , worldZ)
+	Beltalowda_Crown_TestIcon2:Set3DRenderSpaceOrigin(worldX, height , worldZ)
 	
 	local heading = GetPlayerCameraHeading()
 	if heading > math.pi then 
 		heading = heading - 2 * math.pi
 	end
-	RdKGTool_Crown_TestIcon:Set3DRenderSpaceOrientation(0, heading, 0)
-	RdKGTool_Crown_TestIcon2:Set3DRenderSpaceOrientation(0, heading, 0)
+	Beltalowda_Crown_TestIcon:Set3DRenderSpaceOrientation(0, heading, 0)
+	Beltalowda_Crown_TestIcon2:Set3DRenderSpaceOrientation(0, heading, 0)
 	
 end]]
 
 function analyzeIconMetatables()
-	local metatable = getmetatable(getmetatable(RdKGTool_Crown_TestIcon)["__index"])["__index"]
+	local metatable = getmetatable(getmetatable(Beltalowda_Crown_TestIcon)["__index"])["__index"]
 	iconTable = {}
 	for key, value in pairs(metatable) do
 		--d(key)
 		if type(value) == "function" and key:sub(1,3) == "Get" then
-			pcall(function() iconTable[key] = value(RdKGTool_Crown_TestIcon) end)
+			pcall(function() iconTable[key] = value(Beltalowda_Crown_TestIcon) end)
 		end
 	end
 	
@@ -485,12 +486,12 @@ function analyzeIconMetatables()
 end
 
 function analyzeControlMetatables()
-	local metatable = getmetatable(RdKGTool_Crown_Test)["__index"]
+	local metatable = getmetatable(Beltalowda_Crown_Test)["__index"]
 	iconTable = {}
 	for key, value in pairs(metatable) do
 		--d(key)
 		if type(value) == "function" and key:sub(1,3) == "Get" then
-			pcall(function() iconTable[key] = value(RdKGTool_Crown_Test) end)
+			pcall(function() iconTable[key] = value(Beltalowda_Crown_Test) end)
 		end
 	end
 	
@@ -528,13 +529,13 @@ function test3d3()
 	--controlX:SetDimensions(100,100)
 	--lib3D:RegisterControl(controlX)
 	controlX.texture = wm:CreateControl("weeeeee22", controlX, CT_TEXTURE)
-	controlX.texture:SetTexture("RdKGroupTool/Art/3DObjects/Beam1.dds")
+	controlX.texture:SetTexture("Beltalowda/Art/3DObjects/Beam1.dds")
 	controlX:Create3DRenderSpace()
 	controlX.texture:Create3DRenderSpace()
 	controlX.texture:Set3DLocalDimensions(1, 256)
 	controlX.texture:SetDrawLevel(3)
 	controlX.texture:SetColor(1,1,1,1)
-	controlX.texture:SetParent(controlX) --works with RdKGTool_Crown_Test
+	controlX.texture:SetParent(controlX) --works with Beltalowda_Crown_Test
 	--controlX.texture:SetAlpha(1)
 	controlX:Set3DRenderSpaceOrigin(0,0,0)
 	
@@ -555,7 +556,7 @@ function test3d3()
 	--analyzeMetatables()
 end]]
 
-function RdKGTool.CreateTempBuffIconPicker()
+function Beltalowda.CreateTempBuffIconPicker()
 	local effects = GroupBuffsData.effects
 	if effects ~= nil then
 	
@@ -593,7 +594,7 @@ function test3dNew()
 	controlY:SetDrawLayer(0)
 	controlY:SetDrawLevel(0)
 	controlY.texture = wm:CreateControl("test3dNew2", controlY, CT_TEXTURE)
-	controlY.texture:SetTexture("RdKGroupTool/Art/3DObjects/Beam1.dds")
+	controlY.texture:SetTexture("Beltalowda/Art/3DObjects/Beam1.dds")
 	controlY:Create3DRenderSpace()
 	controlY.texture:Create3DRenderSpace()
 	controlY.texture:Set3DLocalDimensions(1, 1)
@@ -641,7 +642,7 @@ function test3d2New()
 	controlZ:SetDrawTier(0)
 	controlZ:SetDrawLayer(0)
 	controlZ:SetDrawLevel(0)
-	controlZ.child = RdKGTool.ui.buffs.CreateBuffControl(controlZ,0,0)
+	controlZ.child = Beltalowda.ui.buffs.CreateBuffControl(controlZ,0,0)
 	controlZ.child:Create3DRenderSpace()
 	--controlZ.child:Set3DLocalDimensions(1, 1)
 	controlZ.child.backdrop:Create3DRenderSpace()
@@ -667,7 +668,7 @@ function test3d2ad(height)
 	controlZ.child:Set3DRenderSpaceOrigin(worldX, worldY + height, worldZ)
 end
 
-function RdKGTool.Temp_SortTheCrap(a,b) 
+function Beltalowda.Temp_SortTheCrap(a,b) 
 	if a.secsSinceLogoff<b.secsSinceLogoff then
 		return true
 	else
@@ -690,16 +691,16 @@ function Temp_ExtractGuildInfo()
 			--retTable = retTable .. name .. " - " .. secsSinceLogoff .. "\r\n"
 		end
 		--implement sort here
-		table.sort(retVals, function(a,b) return RdKGTool.Temp_SortTheCrap(a,b) end)
+		table.sort(retVals, function(a,b) return Beltalowda.Temp_SortTheCrap(a,b) end)
 		for i = 1, #retVals do
 			retTable = retTable .. retVals[i].name .. " - " .. retVals[i].secsSinceLogoff .. "\r\n"
 		end
-		RdKGTool.savedVars.GuildMembers = retTable
+		Beltalowda.savedVars.GuildMembers = retTable
 	end
 end
 
 function testEffectChanged()
-	EVENT_MANAGER:RegisterForEvent("RdKGToolTestEffectChanged", EVENT_EFFECT_CHANGED, function(eventCode, changeType, effectSlot, effectName, unitTag, beginTime, endTime, stackCount, iconName, buffType, effectType, abilityType, statusEffectType, unitName, unitId, abilityId, sourceType) 
+	EVENT_MANAGER:RegisterForEvent("BeltalowdaTestEffectChanged", EVENT_EFFECT_CHANGED, function(eventCode, changeType, effectSlot, effectName, unitTag, beginTime, endTime, stackCount, iconName, buffType, effectType, abilityType, statusEffectType, unitName, unitId, abilityId, sourceType) 
 		if unitTag ~= nil and unitTag ~= "player" and unitTag ~= "" then
 			if effectType == BUFF_EFFECT_TYPE_DEBUFF then
 				d("---------")

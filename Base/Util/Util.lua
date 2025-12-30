@@ -1,93 +1,93 @@
--- RdK Group Tool Util
+-- Beltalowda Util
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
 
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.roster = RdKGToolUtil.roster or {}
-local RdKGToolRoster = RdKGToolUtil.roster
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.roster = BeltalowdaUtil.roster or {}
+local BeltalowdaRoster = BeltalowdaUtil.roster
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
 
-RdKGToolUtil.callbackReportName = RdKGTool.addonName .. "Report"
+BeltalowdaUtil.callbackReportName = Beltalowda.addonName .. "Report"
 
-RdKGToolUtil.state = {}
-RdKGToolUtil.state.parameterPreHooks = {}
-RdKGToolUtil.state.parameterPostHooks = {}
-RdKGToolUtil.state.preHooks = {}
-RdKGToolUtil.state.postHooks = {}
-RdKGToolUtil.state.conditionalPreHooks = {}
+BeltalowdaUtil.state = {}
+BeltalowdaUtil.state.parameterPreHooks = {}
+BeltalowdaUtil.state.parameterPostHooks = {}
+BeltalowdaUtil.state.preHooks = {}
+BeltalowdaUtil.state.postHooks = {}
+BeltalowdaUtil.state.conditionalPreHooks = {}
 
 --functions
 --General
-function RdKGToolUtil.Initialize()
-	RdKGToolUtil.chatSystem.Initialize()
-	RdKGToolUtil.roster.Initialize()
-	RdKGToolUtil.group.Initialize()
-	RdKGToolUtil.groupMenu.Initialize()
-	RdKGToolUtil.sound.Initialize()
-	RdKGToolUtil.ultimates.Initialize()
-	RdKGToolUtil.networking.Initialize()
-	RdKGToolUtil.versioning.Initialize()
-	RdKGToolUtil.sb.Initialize()
-	RdKGToolUtil.allianceColor.Initialize()
-	RdKGToolUtil.cyrodiil.Initialize()
-	RdKGToolUtil.moving3DObjects.Initialize()
+function BeltalowdaUtil.Initialize()
+	BeltalowdaUtil.chatSystem.Initialize()
+	BeltalowdaUtil.roster.Initialize()
+	BeltalowdaUtil.group.Initialize()
+	BeltalowdaUtil.groupMenu.Initialize()
+	BeltalowdaUtil.sound.Initialize()
+	BeltalowdaUtil.ultimates.Initialize()
+	BeltalowdaUtil.networking.Initialize()
+	BeltalowdaUtil.versioning.Initialize()
+	BeltalowdaUtil.sb.Initialize()
+	BeltalowdaUtil.allianceColor.Initialize()
+	BeltalowdaUtil.cyrodiil.Initialize()
+	BeltalowdaUtil.moving3DObjects.Initialize()
 end
 
-function RdKGToolUtil.GetMenu()
+function BeltalowdaUtil.GetMenu()
 	local menu = {
 		[1] = {
 			type = "header",
-			name = RdKGToolMenu.constants.UTIL_HEADER,
+			name = BeltalowdaMenu.constants.UTIL_HEADER,
 			width = "full",
 		}
 	}
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolUtil.networking.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolUtil.group.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolUtil.allianceColor.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolUtil.chatSystem.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaUtil.networking.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaUtil.group.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaUtil.allianceColor.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaUtil.chatSystem.GetMenu())
 	return menu
 end
 
-function RdKGToolUtil.GetDefaults()
+function BeltalowdaUtil.GetDefaults()
 	local defaults = {}
-		defaults.chatSystem = RdKGToolUtil.chatSystem.GetDefaults()
-		defaults.networking = RdKGToolUtil.networking.GetDefaults()
-		defaults.group = RdKGToolUtil.group.GetDefaults()
-		defaults.groupMenu = RdKGToolUtil.groupMenu.GetDefaults()
-		defaults.allianceColor = RdKGToolUtil.allianceColor.GetDefaults()
-		defaults.moving3DObjects = RdKGToolUtil.moving3DObjects.GetDefaults()
+		defaults.chatSystem = BeltalowdaUtil.chatSystem.GetDefaults()
+		defaults.networking = BeltalowdaUtil.networking.GetDefaults()
+		defaults.group = BeltalowdaUtil.group.GetDefaults()
+		defaults.groupMenu = BeltalowdaUtil.groupMenu.GetDefaults()
+		defaults.allianceColor = BeltalowdaUtil.allianceColor.GetDefaults()
+		defaults.moving3DObjects = BeltalowdaUtil.moving3DObjects.GetDefaults()
 	return defaults
 end
 
 --callbacks
-function RdKGToolUtil.ReportFailed(eventCode, reason)
+function BeltalowdaUtil.ReportFailed(eventCode, reason)
 	if eventCode == EVENT_MAIL_SEND_FAILED then
-		EVENT_MANAGER:UnregisterForEvent(RdKGToolUtil.callbackReportName, EVENT_MAIL_SEND_FAILED)
-		EVENT_MANAGER:UnregisterForEvent(RdKGToolUtil.callbackReportName, EVENT_MAIL_SEND_SUCCESS)
-		RdKGTool.vars.acc.reported = false
+		EVENT_MANAGER:UnregisterForEvent(BeltalowdaUtil.callbackReportName, EVENT_MAIL_SEND_FAILED)
+		EVENT_MANAGER:UnregisterForEvent(BeltalowdaUtil.callbackReportName, EVENT_MAIL_SEND_SUCCESS)
+		Beltalowda.vars.acc.reported = false
 	end
 end
 
-function RdKGToolUtil.ReportSuccess()
+function BeltalowdaUtil.ReportSuccess()
 	if eventCode == EVENT_MAIL_SEND_SUCCESS then
-		EVENT_MANAGER:UnregisterForEvent(RdKGToolUtil.callbackReportName, EVENT_MAIL_SEND_FAILED)
-		EVENT_MANAGER:UnregisterForEvent(RdKGToolUtil.callbackReportName, EVENT_MAIL_SEND_SUCCESS)
-		RdKGTool.vars.acc.reported = true
+		EVENT_MANAGER:UnregisterForEvent(BeltalowdaUtil.callbackReportName, EVENT_MAIL_SEND_FAILED)
+		EVENT_MANAGER:UnregisterForEvent(BeltalowdaUtil.callbackReportName, EVENT_MAIL_SEND_SUCCESS)
+		Beltalowda.vars.acc.reported = true
 	end
 end
 
 --Util
-function RdKGToolUtil.DeepCopy(target, source)
+function BeltalowdaUtil.DeepCopy(target, source)
 	if source ~= nil and target ~= nil and type(source) == "table" then
 		for key, value in pairs(source) do
 			if type(source[key]) == "table" then
 				if target[key] == nil or type(target[key]) ~= "table" then
 					target[key] = {}
 				end
-				RdKGToolUtil.DeepCopy(target[key], source[key])
+				BeltalowdaUtil.DeepCopy(target[key], source[key])
 			else 
 				target[key] = source[key]
 			end
@@ -95,15 +95,15 @@ function RdKGToolUtil.DeepCopy(target, source)
 	end
 end
 
-function RdKGToolUtil.ColorRgbToParams(color)
+function BeltalowdaUtil.ColorRgbToParams(color)
 	return color.r, color.g, color.b
 end
 
-function RdKGToolUtil.ColorRgbaToParams(color)
+function BeltalowdaUtil.ColorRgbaToParams(color)
 	return color.r, color.g, color.b, color.a
 end
 
-function RdKGToolUtil.HookTableContainsEntry(hookName, hookTable)
+function BeltalowdaUtil.HookTableContainsEntry(hookName, hookTable)
 	local containsName = false
 	if hookName ~= nil and hookTable ~= nil then
 		for i = 1, #hookTable do
@@ -116,7 +116,7 @@ function RdKGToolUtil.HookTableContainsEntry(hookName, hookTable)
 	return containsName
 end
 
-function RdKGToolUtil.RemoveHook(hookName, hookTable)
+function BeltalowdaUtil.RemoveHook(hookName, hookTable)
 	if hookName ~= nil and hookTable ~= nil then
 		for i = 1, #hookTable do
 			if hookTable[i].hookName == hookName then
@@ -132,8 +132,8 @@ function RdKGToolUtil.RemoveHook(hookName, hookTable)
 	end
 end
 
-function RdKGToolUtil.PreHook(hookName, object, fn, callback)
-	if RdKGToolUtil.HookTableContainsEntry(hookName, RdKGToolUtil.state.preHooks) == false then
+function BeltalowdaUtil.PreHook(hookName, object, fn, callback)
+	if BeltalowdaUtil.HookTableContainsEntry(hookName, BeltalowdaUtil.state.preHooks) == false then
 		local entry = {}
 		entry.hookName = hookName
 		entry.fn = fn
@@ -153,18 +153,18 @@ function RdKGToolUtil.PreHook(hookName, object, fn, callback)
 		else
 			object[fn] = hook
 		end
-		table.insert(RdKGToolUtil.state.preHooks, entry)
+		table.insert(BeltalowdaUtil.state.preHooks, entry)
 	end
 end
 
-function RdKGToolUtil.RemovePreHook(hookName)
+function BeltalowdaUtil.RemovePreHook(hookName)
 	if hookName ~= nil then
-		RdKGToolUtil.RemoveHook(hookName, RdKGToolUtil.state.preHooks)
+		BeltalowdaUtil.RemoveHook(hookName, BeltalowdaUtil.state.preHooks)
 	end
 end
 
-function RdKGToolUtil.PostHook(hookName, object, fn, callback)
-	if RdKGToolUtil.HookTableContainsEntry(hookName, RdKGToolUtil.state.postHooks) == false then
+function BeltalowdaUtil.PostHook(hookName, object, fn, callback)
+	if BeltalowdaUtil.HookTableContainsEntry(hookName, BeltalowdaUtil.state.postHooks) == false then
 		local entry = {}
 		entry.hookName = hookName
 		entry.fn = fn
@@ -184,18 +184,18 @@ function RdKGToolUtil.PostHook(hookName, object, fn, callback)
 		else
 			object[fn] = hook
 		end
-		table.insert(RdKGToolUtil.state.postHooks, entry)
+		table.insert(BeltalowdaUtil.state.postHooks, entry)
 	end
 end
 
-function RdKGToolUtil.RemovePostHook(hookName)
+function BeltalowdaUtil.RemovePostHook(hookName)
 	if hookName ~= nil then
-		RdKGToolUtil.RemoveHook(hookName, RdKGToolUtil.state.postHooks)
+		BeltalowdaUtil.RemoveHook(hookName, BeltalowdaUtil.state.postHooks)
 	end
 end
 
-function RdKGToolUtil.AddConditionalPreHook(hookName, object, fn, callback, defaultValues)
-	if RdKGToolUtil.HookTableContainsEntry(hookName, RdKGToolUtil.state.conditionalPreHooks) == false then
+function BeltalowdaUtil.AddConditionalPreHook(hookName, object, fn, callback, defaultValues)
+	if BeltalowdaUtil.HookTableContainsEntry(hookName, BeltalowdaUtil.state.conditionalPreHooks) == false then
 		local entry = {}
 		entry.hookName = hookName
 		entry.fn = fn
@@ -225,18 +225,18 @@ function RdKGToolUtil.AddConditionalPreHook(hookName, object, fn, callback, defa
 		else
 			object[fn] = hook
 		end
-		table.insert(RdKGToolUtil.state.conditionalPreHooks, entry)
+		table.insert(BeltalowdaUtil.state.conditionalPreHooks, entry)
 	end
 end
 
-function RdKGToolUtil.RemoveConditionalPreHook(hookName)
+function BeltalowdaUtil.RemoveConditionalPreHook(hookName)
 	if hookName ~= nil then
-		RdKGToolUtil.RemoveHook(hookName, RdKGToolUtil.state.conditionalPreHooks)
+		BeltalowdaUtil.RemoveHook(hookName, BeltalowdaUtil.state.conditionalPreHooks)
 	end
 end
 
-function RdKGToolUtil.ParameterPreHook(hookName, object, fn, callback)
-	if RdKGToolUtil.HookTableContainsEntry(hookName, RdKGToolUtil.state.parameterPreHooks) == false then
+function BeltalowdaUtil.ParameterPreHook(hookName, object, fn, callback)
+	if BeltalowdaUtil.HookTableContainsEntry(hookName, BeltalowdaUtil.state.parameterPreHooks) == false then
 		local entry = {}
 		entry.hookName = hookName
 		entry.fn = fn
@@ -255,18 +255,18 @@ function RdKGToolUtil.ParameterPreHook(hookName, object, fn, callback)
 		else
 			object[fn] = hook
 		end
-		table.insert(RdKGToolUtil.state.parameterPreHooks, entry)
+		table.insert(BeltalowdaUtil.state.parameterPreHooks, entry)
 	end
 end
 
-function RdKGToolUtil.RemoveParameterPreHook(hookName)
+function BeltalowdaUtil.RemoveParameterPreHook(hookName)
 	if hookName ~= nil then
-		RdKGToolUtil.RemoveHook(hookName, RdKGToolUtil.state.parameterPreHooks)
+		BeltalowdaUtil.RemoveHook(hookName, BeltalowdaUtil.state.parameterPreHooks)
 	end
 end
 
-function RdKGToolUtil.ParameterPostHook(hookName, object, fn, callback)	
-	if RdKGToolUtil.HookTableContainsEntry(hookName, RdKGToolUtil.state.parameterPostHooks) == false then
+function BeltalowdaUtil.ParameterPostHook(hookName, object, fn, callback)	
+	if BeltalowdaUtil.HookTableContainsEntry(hookName, BeltalowdaUtil.state.parameterPostHooks) == false then
 		local entry = {}
 		entry.hookName = hookName
 		entry.fn = fn
@@ -285,18 +285,18 @@ function RdKGToolUtil.ParameterPostHook(hookName, object, fn, callback)
 		else
 			object[fn] = hook
 		end
-		table.insert(RdKGToolUtil.state.parameterPostHooks, entry)
+		table.insert(BeltalowdaUtil.state.parameterPostHooks, entry)
 	end
 end
 
-function RdKGToolUtil.RemoveParameterPostHook(hookName)
+function BeltalowdaUtil.RemoveParameterPostHook(hookName)
 	if hookName ~= nil then
-		RdKGToolUtil.RemoveHook(hookName, RdKGToolUtil.state.parameterPostHooks)
+		BeltalowdaUtil.RemoveHook(hookName, BeltalowdaUtil.state.parameterPostHooks)
 	end
 end
 
 --Player, Character, Group
-function RdKGToolUtil.IsInPvPArea()
+function BeltalowdaUtil.IsInPvPArea()
 	if IsPlayerInAvAWorld() == true then
 		return true
 	end
@@ -315,7 +315,7 @@ function RdKGToolUtil.IsInPvPArea()
 	return false
 end
 
-function RdKGToolUtil.IsInCyrodiil()
+function BeltalowdaUtil.IsInCyrodiil()
 	if IsInCyrodiil() == true then
 		return true
 	elseif IsInCyrodiil() == false and IsPlayerInAvAWorld() == true and IsInAvAZone() == true and IsInImperialCity() == false and IsActiveWorldBattleground() == false then
@@ -325,7 +325,7 @@ function RdKGToolUtil.IsInCyrodiil()
 	end
 end
 
-function RdKGToolUtil.GetUnitTagFromGroupMemberName(name)
+function BeltalowdaUtil.GetUnitTagFromGroupMemberName(name)
 	local size = GetGroupSize()
 	for i = 1, size do
 		local tag = GetGroupUnitTagByIndex(i)

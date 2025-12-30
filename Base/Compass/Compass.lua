@@ -1,41 +1,41 @@
--- RdK Group Tool Compass
+-- Beltalowda Compass
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
+Beltalowda = Beltalowda or {}
 
-RdKGTool.compass = RdKGTool.compass or {}
+Beltalowda.compass = Beltalowda.compass or {}
 
-local RdKGToolCompass = RdKGTool.compass
+local BeltalowdaCompass = Beltalowda.compass
 
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
 
 
-function RdKGToolCompass.Initialize()
-	RdKGToolCompass.yacs.Initialize()
-	RdKGToolCompass.sc.Initialize()
+function BeltalowdaCompass.Initialize()
+	BeltalowdaCompass.yacs.Initialize()
+	BeltalowdaCompass.sc.Initialize()
 end
 
-function RdKGToolCompass.SlashCmd(param)
+function BeltalowdaCompass.SlashCmd(param)
 
 end
 
-function RdKGToolCompass.GetMenu()
+function BeltalowdaCompass.GetMenu()
 	local menu = {
 		[1] = {
 			type = "header",
-			name = RdKGToolMenu.constants.COMPASS_HEADER,
+			name = BeltalowdaMenu.constants.COMPASS_HEADER,
 			width = "full",
 		},
 	}
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolCompass.yacs.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolCompass.sc.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaCompass.yacs.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaCompass.sc.GetMenu())
 	return menu
 end
 
-function RdKGToolCompass.GetDefaults()
+function BeltalowdaCompass.GetDefaults()
 	local defaults = {}
-	defaults.yacs = RdKGToolCompass.yacs.GetDefaults()
-	defaults.sc = RdKGToolCompass.sc.GetDefaults()
+	defaults.yacs = BeltalowdaCompass.yacs.GetDefaults()
+	defaults.sc = BeltalowdaCompass.sc.GetDefaults()
 	return defaults
 end

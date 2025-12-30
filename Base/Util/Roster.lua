@@ -1,50 +1,50 @@
--- RdK Group Tool Roster
+-- Beltalowda Roster
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
-RdKGTool.util.roster = RdKGTool.util.roster or {}
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
+Beltalowda.util.roster = Beltalowda.util.roster or {}
 
-local RdKGToolRoster = RdKGTool.util.roster
+local BeltalowdaRoster = Beltalowda.util.roster
 
-RdKGToolRoster.callbackName = RdKGTool.addonName .. "Util.Roster"
-RdKGToolRoster.friends = {}
-RdKGToolRoster.guilds = {}
-RdKGToolRoster.guilds[1] = {}
-RdKGToolRoster.guilds[1].all = {}
-RdKGToolRoster.guilds[1].at = {}
-RdKGToolRoster.guilds[1].name = ""
-RdKGToolRoster.guilds[1].id = 0
-RdKGToolRoster.guilds[2] = {}
-RdKGToolRoster.guilds[2].all = {}
-RdKGToolRoster.guilds[2].at = {}
-RdKGToolRoster.guilds[2].name = ""
-RdKGToolRoster.guilds[2].id = 0
-RdKGToolRoster.guilds[3] = {}
-RdKGToolRoster.guilds[3].all = {}
-RdKGToolRoster.guilds[3].at = {}
-RdKGToolRoster.guilds[3].name = ""
-RdKGToolRoster.guilds[3].id = 0
-RdKGToolRoster.guilds[4] = {}
-RdKGToolRoster.guilds[4].all = {}
-RdKGToolRoster.guilds[4].at = {}
-RdKGToolRoster.guilds[4].name = ""
-RdKGToolRoster.guilds[4].id = 0
-RdKGToolRoster.guilds[5] = {}
-RdKGToolRoster.guilds[5].all = {}
-RdKGToolRoster.guilds[5].at = {}
-RdKGToolRoster.guilds[5].name = ""
-RdKGToolRoster.guilds[5].id = 0
+BeltalowdaRoster.callbackName = Beltalowda.addonName .. "Util.Roster"
+BeltalowdaRoster.friends = {}
+BeltalowdaRoster.guilds = {}
+BeltalowdaRoster.guilds[1] = {}
+BeltalowdaRoster.guilds[1].all = {}
+BeltalowdaRoster.guilds[1].at = {}
+BeltalowdaRoster.guilds[1].name = ""
+BeltalowdaRoster.guilds[1].id = 0
+BeltalowdaRoster.guilds[2] = {}
+BeltalowdaRoster.guilds[2].all = {}
+BeltalowdaRoster.guilds[2].at = {}
+BeltalowdaRoster.guilds[2].name = ""
+BeltalowdaRoster.guilds[2].id = 0
+BeltalowdaRoster.guilds[3] = {}
+BeltalowdaRoster.guilds[3].all = {}
+BeltalowdaRoster.guilds[3].at = {}
+BeltalowdaRoster.guilds[3].name = ""
+BeltalowdaRoster.guilds[3].id = 0
+BeltalowdaRoster.guilds[4] = {}
+BeltalowdaRoster.guilds[4].all = {}
+BeltalowdaRoster.guilds[4].at = {}
+BeltalowdaRoster.guilds[4].name = ""
+BeltalowdaRoster.guilds[4].id = 0
+BeltalowdaRoster.guilds[5] = {}
+BeltalowdaRoster.guilds[5].all = {}
+BeltalowdaRoster.guilds[5].at = {}
+BeltalowdaRoster.guilds[5].name = ""
+BeltalowdaRoster.guilds[5].id = 0
 
-RdKGToolRoster.state = {}
-RdKGToolRoster.state.guildListConsumers = {}
+BeltalowdaRoster.state = {}
+BeltalowdaRoster.state.guildListConsumers = {}
 
-RdKGToolRoster.constants = {}
-RdKGToolRoster.constants.RDK = "Retter des Kaiserreiches"
-RdKGToolRoster.constants.adminRanks = {}
-RdKGToolRoster.constants.adminRanks[1] = 1
-RdKGToolRoster.constants.adminRanks[2] = 2
-RdKGToolRoster.constants.adminRanks[3] = 3
+BeltalowdaRoster.constants = {}
+BeltalowdaRoster.constants.RDK = "Retter des Kaiserreiches"
+BeltalowdaRoster.constants.adminRanks = {}
+BeltalowdaRoster.constants.adminRanks[1] = 1
+BeltalowdaRoster.constants.adminRanks[2] = 2
+BeltalowdaRoster.constants.adminRanks[3] = 3
 
 
 --[[
@@ -53,14 +53,14 @@ RdKGToolRoster.constants.adminRanks[3] = 3
 	- If anything changes on the roster during a loading screen, it won't be noticed. EVENT_PLAYER_ACTIVATED should be used to completely rebuild the roster. Yet for performance reason this hasn't been implemented.
 ]]
 
-function RdKGToolRoster.Initialize()
+function BeltalowdaRoster.Initialize()
 	--create list
 	
 	for guildId = 1, GetNumGuilds() do
-		RdKGToolRoster.guilds[guildId].name = GetGuildName(RdKGToolRoster.GetGuildIdFromId(guildId))
-        for memberId = 1, GetNumGuildMembers(RdKGToolRoster.GetGuildIdFromId(guildId)) do
-            local hasCharacter, charName, zoneName, classType, alliance, level, championRank, zoneId = GetGuildMemberCharacterInfo(RdKGToolRoster.GetGuildIdFromId(guildId), memberId)
-            local name, note, rankIndex, playerStatus, secsSinceLogoff = GetGuildMemberInfo(RdKGToolRoster.GetGuildIdFromId(guildId), memberId)
+		BeltalowdaRoster.guilds[guildId].name = GetGuildName(BeltalowdaRoster.GetGuildIdFromId(guildId))
+        for memberId = 1, GetNumGuildMembers(BeltalowdaRoster.GetGuildIdFromId(guildId)) do
+            local hasCharacter, charName, zoneName, classType, alliance, level, championRank, zoneId = GetGuildMemberCharacterInfo(BeltalowdaRoster.GetGuildIdFromId(guildId), memberId)
+            local name, note, rankIndex, playerStatus, secsSinceLogoff = GetGuildMemberInfo(BeltalowdaRoster.GetGuildIdFromId(guildId), memberId)
 
 			charName = zo_strformat("<<!aC:1>>", charName)
 			local character = {}
@@ -70,13 +70,13 @@ function RdKGToolRoster.Initialize()
 			local charNameIndex = string.sub(charName, 1, 1)
 			local displayNameIndex = string.sub(name, 2, 2)
 
-			RdKGToolRoster.guilds[guildId][charNameIndex] = RdKGToolRoster.guilds[guildId][charNameIndex] or {}
-			RdKGToolRoster.guilds[guildId].at[displayNameIndex] = RdKGToolRoster.guilds[guildId].at[displayNameIndex] or {}
-			RdKGToolRoster.guilds[guildId].id = GetGuildId(guildId)
+			BeltalowdaRoster.guilds[guildId][charNameIndex] = BeltalowdaRoster.guilds[guildId][charNameIndex] or {}
+			BeltalowdaRoster.guilds[guildId].at[displayNameIndex] = BeltalowdaRoster.guilds[guildId].at[displayNameIndex] or {}
+			BeltalowdaRoster.guilds[guildId].id = GetGuildId(guildId)
 			
-			table.insert(RdKGToolRoster.guilds[guildId].all, character)
-			table.insert(RdKGToolRoster.guilds[guildId].at[displayNameIndex], character)
-			table.insert(RdKGToolRoster.guilds[guildId][charNameIndex], character)
+			table.insert(BeltalowdaRoster.guilds[guildId].all, character)
+			table.insert(BeltalowdaRoster.guilds[guildId].at[displayNameIndex], character)
+			table.insert(BeltalowdaRoster.guilds[guildId][charNameIndex], character)
 			
 		end
 	end
@@ -90,22 +90,22 @@ function RdKGToolRoster.Initialize()
 		character.displayName = displayName
 		character.name = characterName
 		
-		table.insert(RdKGToolRoster.friends, character)
+		table.insert(BeltalowdaRoster.friends, character)
     end
 	
 	
-	EVENT_MANAGER:RegisterForEvent(RdKGToolRoster.callbackName, EVENT_FRIEND_ADDED, RdKGToolRoster.OnFriendAdded)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolRoster.callbackName, EVENT_FRIEND_REMOVED, RdKGToolRoster.OnFriendRemoved)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolRoster.callbackName, EVENT_GUILD_MEMBER_ADDED, RdKGToolRoster.OnGuildMemberAdded)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolRoster.callbackName, EVENT_GUILD_MEMBER_REMOVED, RdKGToolRoster.OnGuildMemberRemoved)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolRoster.callbackName, EVENT_GUILD_MEMBER_RANK_CHANGED, RdKGToolRoster.OnGuildMemberRankChanged)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaRoster.callbackName, EVENT_FRIEND_ADDED, BeltalowdaRoster.OnFriendAdded)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaRoster.callbackName, EVENT_FRIEND_REMOVED, BeltalowdaRoster.OnFriendRemoved)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaRoster.callbackName, EVENT_GUILD_MEMBER_ADDED, BeltalowdaRoster.OnGuildMemberAdded)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaRoster.callbackName, EVENT_GUILD_MEMBER_REMOVED, BeltalowdaRoster.OnGuildMemberRemoved)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaRoster.callbackName, EVENT_GUILD_MEMBER_RANK_CHANGED, BeltalowdaRoster.OnGuildMemberRankChanged)
 	
-	EVENT_MANAGER:RegisterForEvent(RdKGToolRoster.callbackName, EVENT_GUILD_SELF_JOINED_GUILD, RdKGToolRoster.OnGuildJoined)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolRoster.callbackName, EVENT_GUILD_SELF_LEFT_GUILD, RdKGToolRoster.OnGuildLeft)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaRoster.callbackName, EVENT_GUILD_SELF_JOINED_GUILD, BeltalowdaRoster.OnGuildJoined)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaRoster.callbackName, EVENT_GUILD_SELF_LEFT_GUILD, BeltalowdaRoster.OnGuildLeft)
 end
 
 --functions
-function RdKGToolRoster.GetGuildIdFromId(id)
+function BeltalowdaRoster.GetGuildIdFromId(id)
 --Elsweyr Changes
 	if GetGuildId ~= nil then
 		return GetGuildId(id)
@@ -114,7 +114,7 @@ function RdKGToolRoster.GetGuildIdFromId(id)
 	end
 end
 
-function RdKGToolRoster.GetGuidIdFromEventGuidId(id)
+function BeltalowdaRoster.GetGuidIdFromEventGuidId(id)
 	if GetGuildId ~= nil then
 		for guildId = 1, GetNumGuilds() do
 			if id == GetGuildId(guildId) then
@@ -126,11 +126,11 @@ function RdKGToolRoster.GetGuidIdFromEventGuidId(id)
 	return id
 end
 
-function RdKGToolRoster.IsFriendByCharName(name)
+function BeltalowdaRoster.IsFriendByCharName(name)
 	local nameExists = false
 	if name ~= nil then
-		for i = 1, #RdKGToolRoster.friends do
-			if RdKGToolRoster.friends[i].name == name then
+		for i = 1, #BeltalowdaRoster.friends do
+			if BeltalowdaRoster.friends[i].name == name then
 				nameExists = true
 				break
 			end	
@@ -139,11 +139,11 @@ function RdKGToolRoster.IsFriendByCharName(name)
 	return nameExists
 end
 
-function RdKGToolRoster.IsFriendByAccountName(name)
+function BeltalowdaRoster.IsFriendByAccountName(name)
 	local nameExists = false
 	if name ~= nil then
-		for i = 1, #RdKGToolRoster.friends do
-			if RdKGToolRoster.friends[i].displayName == name then
+		for i = 1, #BeltalowdaRoster.friends do
+			if BeltalowdaRoster.friends[i].displayName == name then
 				nameExists = true
 				break
 			end	
@@ -152,11 +152,11 @@ function RdKGToolRoster.IsFriendByAccountName(name)
 	return nameExists
 end
 
-function RdKGToolRoster.IsFriend(name)
+function BeltalowdaRoster.IsFriend(name)
 	local nameExists = false
 	if name ~= nil then
-		for i = 1, #RdKGToolRoster.friends do
-			if RdKGToolRoster.friends[i].displayName == name or RdKGToolRoster.friends[i].name == name then
+		for i = 1, #BeltalowdaRoster.friends do
+			if BeltalowdaRoster.friends[i].displayName == name or BeltalowdaRoster.friends[i].name == name then
 				nameExists = true
 				break
 			end	
@@ -165,12 +165,12 @@ function RdKGToolRoster.IsFriend(name)
 	return nameExists
 end
 
-function RdKGToolRoster.IsGuildMemberByCharName(name, guildAllowed)
+function BeltalowdaRoster.IsGuildMemberByCharName(name, guildAllowed)
 	local nameExists = false
 	if name ~= nil and string.len(name) > 2 then
 		local index = string.sub(name, 1, 1)
-		for guildId = 1, #RdKGToolRoster.guilds do
-			local guildDictionary = RdKGToolRoster.guilds[guildId][index]
+		for guildId = 1, #BeltalowdaRoster.guilds do
+			local guildDictionary = BeltalowdaRoster.guilds[guildId][index]
 			if guildAllowed == nil or (guildAllowed ~= nil and guildAllowed[guildId] ~= nil and guildAllowed[guildId] == true) then
 				if guildDictionary ~= nil then
 					for i = 1, #guildDictionary do
@@ -186,12 +186,12 @@ function RdKGToolRoster.IsGuildMemberByCharName(name, guildAllowed)
 	return nameExists
 end
 
-function RdKGToolRoster.IsGuildMemberByAccountName(name, guildAllowed)
+function BeltalowdaRoster.IsGuildMemberByAccountName(name, guildAllowed)
 	local nameExists = false
 	if name ~= nil and string.len(name) > 2 then
 		local index = string.sub(name, 2, 2)
-		for guildId = 1, #RdKGToolRoster.guilds do
-			local guildDictionary = RdKGToolRoster.guilds[guildId].at[index]
+		for guildId = 1, #BeltalowdaRoster.guilds do
+			local guildDictionary = BeltalowdaRoster.guilds[guildId].at[index]
 			if guildAllowed == nil or (guildAllowed ~= nil and guildAllowed[guildId] ~= nil and guildAllowed[guildId] == true) then
 				if guildDictionary ~= nil then
 					for i = 1, #guildDictionary do
@@ -207,13 +207,13 @@ function RdKGToolRoster.IsGuildMemberByAccountName(name, guildAllowed)
 	return nameExists
 end
 
-function RdKGToolRoster.IsGuildMember(name)
+function BeltalowdaRoster.IsGuildMember(name)
 	local nameExists = false
 	if name ~= nil and string.len(name) > 2 then
 		local accIndex = string.sub(name, 2, 2)
 		local charIndex = string.sub(name, 1, 1)
-		for guildId = 1, #RdKGToolRoster.guilds do
-			local guildDictionary = RdKGToolRoster.guilds[guildId][charIndex]
+		for guildId = 1, #BeltalowdaRoster.guilds do
+			local guildDictionary = BeltalowdaRoster.guilds[guildId][charIndex]
 			if guildDictionary ~= nil then
 				for i = 1, #guildDictionary do
 					if guildDictionary[i].name == name then
@@ -222,7 +222,7 @@ function RdKGToolRoster.IsGuildMember(name)
 					end
 				end
 			end
-			guildDictionary = RdKGToolRoster.guilds[guildId].at[accIndex]
+			guildDictionary = BeltalowdaRoster.guilds[guildId].at[accIndex]
 			if guildDictionary ~= nil then
 				for i = 1, #guildDictionary do
 					if guildDictionary[i].displayName == name then
@@ -236,11 +236,11 @@ function RdKGToolRoster.IsGuildMember(name)
 	return nameExists
 end
 
-function RdKGToolRoster.GetGuildIdForName(name)
+function BeltalowdaRoster.GetGuildIdForName(name)
 	local retVal = nil
 	if name ~= nil then
-		for i = 1, #RdKGToolRoster.guilds do
-			if RdKGToolRoster.guilds[i].name == name then
+		for i = 1, #BeltalowdaRoster.guilds do
+			if BeltalowdaRoster.guilds[i].name == name then
 				retVal = i
 				break
 			end
@@ -249,11 +249,11 @@ function RdKGToolRoster.GetGuildIdForName(name)
 	return retVal
 end
 
-function RdKGToolRoster.IsRdKMember(displayName)
+function BeltalowdaRoster.IsBeltalowdaMember(displayName)
 	local isMember = false
-	for guildId = 1, #RdKGToolRoster.guilds do
-		if RdKGToolRoster.guilds[guildId].name == RdKGToolRoster.constants.RDK then
-			local guild = RdKGToolRoster.guilds[guildId]
+	for guildId = 1, #BeltalowdaRoster.guilds do
+		if BeltalowdaRoster.guilds[guildId].name == BeltalowdaRoster.constants.RDK then
+			local guild = BeltalowdaRoster.guilds[guildId]
 			local guildDictionary = guild.at[string.sub(displayName, 2, 2)]
 			if guildDictionary ~= nil then
 				for j = 1, #guildDictionary do
@@ -269,12 +269,12 @@ function RdKGToolRoster.IsRdKMember(displayName)
 	return isMember
 end
 
-function RdKGToolRoster.IsGuildOfficerOf(targetName, officerName)
+function BeltalowdaRoster.IsGuildOfficerOf(targetName, officerName)
 	local isOfficer = false
 	if targetName ~= nil and officerName ~= nil then
-		for guildId = 1, #RdKGToolRoster.guilds do
+		for guildId = 1, #BeltalowdaRoster.guilds do
 			
-			local guild = RdKGToolRoster.guilds[guildId]
+			local guild = BeltalowdaRoster.guilds[guildId]
 			local targetGuildDictionary = guild.at[string.sub(targetName, 2, 2)]
 			local officerGuildDictionary = guild.at[string.sub(officerName, 2, 2)]
 			local isInGuild = false
@@ -288,8 +288,8 @@ function RdKGToolRoster.IsGuildOfficerOf(targetName, officerName)
 				end
 				for j = 1, #officerGuildDictionary do
 					if officerGuildDictionary[j].displayName == officerName then
-						for k = 1, #RdKGToolRoster.constants.adminRanks do
-							if RdKGToolRoster.constants.adminRanks[k] == officerGuildDictionary[j].rankIndex then
+						for k = 1, #BeltalowdaRoster.constants.adminRanks do
+							if BeltalowdaRoster.constants.adminRanks[k] == officerGuildDictionary[j].rankIndex then
 								isGuidOfficer = true
 								break
 							end
@@ -306,19 +306,19 @@ function RdKGToolRoster.IsGuildOfficerOf(targetName, officerName)
 	return isOfficer
 end
 
-function RdKGToolRoster.IsGuildOfficer(displayName)
+function BeltalowdaRoster.IsGuildOfficer(displayName)
 	local isOfficer = false
 	if displayName ~= nil then
-		for guildId = 1, #RdKGToolRoster.guilds do
+		for guildId = 1, #BeltalowdaRoster.guilds do
 			--d("index: " .. guildId)
-			local guild = RdKGToolRoster.guilds[guildId]
+			local guild = BeltalowdaRoster.guilds[guildId]
 			local guildDictionary = guild.at[string.sub(displayName, 2, 2)]
 			if guildDictionary ~= nil then
 				for j = 1, #guildDictionary do
 					if guildDictionary[j].displayName == displayName then
 						--d("member exists")
-						for k = 1, #RdKGToolRoster.constants.adminRanks do
-							if RdKGToolRoster.constants.adminRanks[k] == guildDictionary[j].rankIndex then
+						for k = 1, #BeltalowdaRoster.constants.adminRanks do
+							if BeltalowdaRoster.constants.adminRanks[k] == guildDictionary[j].rankIndex then
 								isOfficer = true
 								break
 							end
@@ -335,19 +335,19 @@ function RdKGToolRoster.IsGuildOfficer(displayName)
 	return isOfficer
 end
 
-function RdKGToolRoster.IsRdKAdmin(displayName)
+function BeltalowdaRoster.IsBeltalowdaAdmin(displayName)
 	local isAdmin = false
 	if displayName ~= nil then
-		for guildId = 1, #RdKGToolRoster.guilds do
-			if RdKGToolRoster.guilds[guildId].name == RdKGToolRoster.constants.RDK then
-				local guild = RdKGToolRoster.guilds[guildId]
+		for guildId = 1, #BeltalowdaRoster.guilds do
+			if BeltalowdaRoster.guilds[guildId].name == BeltalowdaRoster.constants.RDK then
+				local guild = BeltalowdaRoster.guilds[guildId]
 				local guildDictionary = guild.at[string.sub(displayName, 2, 2)]
 				if guildDictionary ~= nil then
 
 					for j = 1, #guildDictionary do
 						if guildDictionary[j].displayName == displayName then
-							for k = 1, #RdKGToolRoster.constants.adminRanks do
-								if RdKGToolRoster.constants.adminRanks[k] == guildDictionary[j].rankIndex then
+							for k = 1, #BeltalowdaRoster.constants.adminRanks do
+								if BeltalowdaRoster.constants.adminRanks[k] == guildDictionary[j].rankIndex then
 									isAdmin = true
 									break
 								end
@@ -365,11 +365,11 @@ end
 
 
 --consumers / listeners
-function RdKGToolRoster.GuildListConsumerExists(name)
+function BeltalowdaRoster.GuildListConsumerExists(name)
 	local exists = false
 	if name ~= nil then
-		for i = 1, #RdKGToolRoster.state.guildListConsumers do
-			if RdKGToolRoster.state.guildListConsumers[i].name == name then
+		for i = 1, #BeltalowdaRoster.state.guildListConsumers do
+			if BeltalowdaRoster.state.guildListConsumers[i].name == name then
 				exists = true
 				break
 			end
@@ -378,40 +378,40 @@ function RdKGToolRoster.GuildListConsumerExists(name)
 	return exists
 end
 
-function RdKGToolRoster.AddGuildListConsumer(name, callback)
+function BeltalowdaRoster.AddGuildListConsumer(name, callback)
 	if name ~= nil and callback ~= nil then
-		if RdKGToolRoster.GuildListConsumerExists(name) == false then
+		if BeltalowdaRoster.GuildListConsumerExists(name) == false then
 			local entry = {}
 			entry.name = name
 			entry.callback = callback
-			table.insert(RdKGToolRoster.state.guildListConsumers, entry)
+			table.insert(BeltalowdaRoster.state.guildListConsumers, entry)
 		end
 	end
 end
 
-function RdKGToolRoster.RemoveGuildListConsumer(name)
+function BeltalowdaRoster.RemoveGuildListConsumer(name)
 	if name ~= nil then
-		for i = 1, #RdKGToolRoster.state.guildListConsumers do
-			if RdKGToolRoster.state.guildListConsumers[i].name == name then
-				table.remove(RdKGToolRoster.state.guildListConsumers, i)
+		for i = 1, #BeltalowdaRoster.state.guildListConsumers do
+			if BeltalowdaRoster.state.guildListConsumers[i].name == name then
+				table.remove(BeltalowdaRoster.state.guildListConsumers, i)
 				break
 			end
 		end
 	end
 end
 
-function RdKGToolRoster.GuildListChanged()
-	for i = 1, #RdKGToolRoster.state.guildListConsumers do
-		if type(RdKGToolRoster.state.guildListConsumers[i].callback) == "function" then
-			RdKGToolRoster.state.guildListConsumers[i].callback()
+function BeltalowdaRoster.GuildListChanged()
+	for i = 1, #BeltalowdaRoster.state.guildListConsumers do
+		if type(BeltalowdaRoster.state.guildListConsumers[i].callback) == "function" then
+			BeltalowdaRoster.state.guildListConsumers[i].callback()
 		end
 	end
 end
 
-function RdKGToolRoster.GetGuildIndex(guildId)
+function BeltalowdaRoster.GetGuildIndex(guildId)
 	local guildIndex = nil
 	for i = 1, 5 do
-		if guildId == RdKGToolRoster.guilds[i].id then
+		if guildId == BeltalowdaRoster.guilds[i].id then
 			guildIndex = i
 			break
 		end
@@ -420,7 +420,7 @@ function RdKGToolRoster.GetGuildIndex(guildId)
 end
 
 --callbacks
-function RdKGToolRoster.OnFriendAdded(eventCode, name)
+function BeltalowdaRoster.OnFriendAdded(eventCode, name)
 	if eventCode == EVENT_FRIEND_ADDED then
 		for friendIndex = 1, GetNumFriends() do
 			local displayName, note, playerStatus, secsSinceLogoff = GetFriendInfo(friendIndex)
@@ -431,32 +431,32 @@ function RdKGToolRoster.OnFriendAdded(eventCode, name)
 				character.displayName = displayName
 				character.name = characterName
 				
-				table.insert(RdKGToolRoster.friends, character)
+				table.insert(BeltalowdaRoster.friends, character)
 				break
 			end
 		end
 	end
 end
 
-function RdKGToolRoster.OnFriendRemoved(eventCode, displayName)
+function BeltalowdaRoster.OnFriendRemoved(eventCode, displayName)
 	if eventCode == EVENT_FRIEND_REMOVED then
-		for i = 1, #RdKGToolRoster.friends do
-			if RdKGToolRoster.friends[i].displayName == displayName then
-				table.remove(RdKGToolRoster.friends, i)
+		for i = 1, #BeltalowdaRoster.friends do
+			if BeltalowdaRoster.friends[i].displayName == displayName then
+				table.remove(BeltalowdaRoster.friends, i)
 				break
 			end
 		end
 	end
 end
 
-function RdKGToolRoster.OnGuildMemberAdded(eventCode, guildId, displayName)
+function BeltalowdaRoster.OnGuildMemberAdded(eventCode, guildId, displayName)
 	if eventCode == EVENT_GUILD_MEMBER_ADDED and guildId ~= nil then
-		guildId = RdKGToolRoster.GetGuildIndex(guildId)
-		for memberId = 1, GetNumGuildMembers(RdKGToolRoster.GetGuildIdFromId(guildId)) do
+		guildId = BeltalowdaRoster.GetGuildIndex(guildId)
+		for memberId = 1, GetNumGuildMembers(BeltalowdaRoster.GetGuildIdFromId(guildId)) do
 			
-			local name, note, rankIndex, playerStatus, secsSinceLogoff = GetGuildMemberInfo(RdKGToolRoster.GetGuildIdFromId(guildId), memberId)
+			local name, note, rankIndex, playerStatus, secsSinceLogoff = GetGuildMemberInfo(BeltalowdaRoster.GetGuildIdFromId(guildId), memberId)
 			if name == displayName then
-				local hasCharacter, charName, zoneName, classType, alliance, level, championRank, zoneId = GetGuildMemberCharacterInfo(RdKGToolRoster.GetGuildIdFromId(guildId), memberId)
+				local hasCharacter, charName, zoneName, classType, alliance, level, championRank, zoneId = GetGuildMemberCharacterInfo(BeltalowdaRoster.GetGuildIdFromId(guildId), memberId)
 				charName = zo_strformat("<<!aC:1>>", charName)
 
 				local character = {}
@@ -465,33 +465,33 @@ function RdKGToolRoster.OnGuildMemberAdded(eventCode, guildId, displayName)
 
 				local charNameIndex = string.sub(charName, 1, 1)
 				local displayNameIndex = string.sub(name, 2, 2)
-				RdKGToolRoster.guilds[guildId][charNameIndex] = RdKGToolRoster.guilds[guildId][charNameIndex] or {}
-				RdKGToolRoster.guilds[guildId].at[displayNameIndex] = RdKGToolRoster.guilds[guildId].at[displayNameIndex] or {}
+				BeltalowdaRoster.guilds[guildId][charNameIndex] = BeltalowdaRoster.guilds[guildId][charNameIndex] or {}
+				BeltalowdaRoster.guilds[guildId].at[displayNameIndex] = BeltalowdaRoster.guilds[guildId].at[displayNameIndex] or {}
 			
-				table.insert(RdKGToolRoster.guilds[guildId].all, character)
-				table.insert(RdKGToolRoster.guilds[guildId].at[displayNameIndex], character)
-				table.insert(RdKGToolRoster.guilds[guildId][charNameIndex], character)
+				table.insert(BeltalowdaRoster.guilds[guildId].all, character)
+				table.insert(BeltalowdaRoster.guilds[guildId].at[displayNameIndex], character)
+				table.insert(BeltalowdaRoster.guilds[guildId][charNameIndex], character)
 				break
 			end
 		end
 	end
 end
 
-function RdKGToolRoster.OnGuildMemberRemoved(eventCode, guildId, displayName, characterName)
+function BeltalowdaRoster.OnGuildMemberRemoved(eventCode, guildId, displayName, characterName)
 	if eventCode == EVENT_GUILD_MEMBER_REMOVED and guildId ~= nil then
-		guildId = RdKGToolRoster.GetGuildIndex(guildId)
+		guildId = BeltalowdaRoster.GetGuildIndex(guildId)
 		local charName = ""
 		local accIndex = string.sub(displayName, 2, 2)
 		
-		for i = 1, #RdKGToolRoster.guilds[guildId].all do
-			if RdKGToolRoster.guilds[guildId].all[i].displayName == displayName then
-				charName = RdKGToolRoster.guilds[guildId].all[i].name
-				table.remove(RdKGToolRoster.guilds[guildId].all, i)
+		for i = 1, #BeltalowdaRoster.guilds[guildId].all do
+			if BeltalowdaRoster.guilds[guildId].all[i].displayName == displayName then
+				charName = BeltalowdaRoster.guilds[guildId].all[i].name
+				table.remove(BeltalowdaRoster.guilds[guildId].all, i)
 				break
 			end
 		end
 		
-		local accDictionary = RdKGToolRoster.guilds[guildId].at[accIndex]
+		local accDictionary = BeltalowdaRoster.guilds[guildId].at[accIndex]
 		if accDictionary ~= nil then
 			for i = 1, #accDictionary do
 				if accDictionary[i].displayName == displayName then
@@ -505,7 +505,7 @@ function RdKGToolRoster.OnGuildMemberRemoved(eventCode, guildId, displayName, ch
 			--debug
 		else
 			local charIndex = string.sub(charName, 1, 1)
-			local charDictionary = RdKGToolRoster.guilds[guildId][charIndex]
+			local charDictionary = BeltalowdaRoster.guilds[guildId][charIndex]
 			if charDictionary ~= nil then
 				for i = 1, #charDictionary do
 					if charDictionary[i].name == charName then
@@ -518,10 +518,10 @@ function RdKGToolRoster.OnGuildMemberRemoved(eventCode, guildId, displayName, ch
 	end
 end
 
-function RdKGToolRoster.OnGuildMemberRankChanged(eventCode, guildId, displayName, rankIndex)
+function BeltalowdaRoster.OnGuildMemberRankChanged(eventCode, guildId, displayName, rankIndex)
 	if eventCode == EVENT_GUILD_MEMBER_RANK_CHANGED then
-		guildId = RdKGToolRoster.GetGuildIndex(guildId)
-		local guild = RdKGToolRoster.guilds[guildId]
+		guildId = BeltalowdaRoster.GetGuildIndex(guildId)
+		local guild = BeltalowdaRoster.guilds[guildId]
 		local accIndex = string.sub(displayName, 2, 2)
 		local accDictionary = guild.at[accIndex]
 		if accDictionary ~= nil then
@@ -535,14 +535,14 @@ function RdKGToolRoster.OnGuildMemberRankChanged(eventCode, guildId, displayName
 	end
 end
 
-function RdKGToolRoster.OnGuildJoined(eventCode, guildId, guildName)
+function BeltalowdaRoster.OnGuildJoined(eventCode, guildId, guildName)
 	--d("id: " .. guildId)
 	--d("Num: " .. GetNumGuilds())
 	if eventCode == EVENT_GUILD_SELF_JOINED_GUILD then
-		--guildId = RdKGToolRoster.GetGuidIdFromEventGuidId(guildId)
+		--guildId = BeltalowdaRoster.GetGuidIdFromEventGuidId(guildId)
 		local guildIndex = GetNumGuilds()
 		if guildIndex ~= nil then
-			RdKGToolRoster.guilds[guildIndex].name = GetGuildName(guildId)
+			BeltalowdaRoster.guilds[guildIndex].name = GetGuildName(guildId)
 			for memberId = 1, GetNumGuildMembers(guildId) do
 				local hasCharacter, charName, zoneName, classType, alliance, level, championRank, zoneId = GetGuildMemberCharacterInfo(guildId, memberId)
 				local name, note, rankIndex, playerStatus, secsSinceLogoff = GetGuildMemberInfo(guildId, memberId)
@@ -554,34 +554,34 @@ function RdKGToolRoster.OnGuildJoined(eventCode, guildId, guildName)
 				local charNameIndex = string.sub(charName, 1, 1)
 				local displayNameIndex = string.sub(name, 2, 2)
 
-				RdKGToolRoster.guilds[guildIndex][charNameIndex] = RdKGToolRoster.guilds[guildIndex][charNameIndex] or {}
-				RdKGToolRoster.guilds[guildIndex].at[displayNameIndex] = RdKGToolRoster.guilds[guildIndex].at[displayNameIndex] or {}
-				RdKGToolRoster.guilds[guildIndex].id = GetGuildId(guildIndex)
+				BeltalowdaRoster.guilds[guildIndex][charNameIndex] = BeltalowdaRoster.guilds[guildIndex][charNameIndex] or {}
+				BeltalowdaRoster.guilds[guildIndex].at[displayNameIndex] = BeltalowdaRoster.guilds[guildIndex].at[displayNameIndex] or {}
+				BeltalowdaRoster.guilds[guildIndex].id = GetGuildId(guildIndex)
 				
-				table.insert(RdKGToolRoster.guilds[guildIndex].all, character)
-				table.insert(RdKGToolRoster.guilds[guildIndex].at[displayNameIndex], character)
-				table.insert(RdKGToolRoster.guilds[guildIndex][charNameIndex], character)
+				table.insert(BeltalowdaRoster.guilds[guildIndex].all, character)
+				table.insert(BeltalowdaRoster.guilds[guildIndex].at[displayNameIndex], character)
+				table.insert(BeltalowdaRoster.guilds[guildIndex][charNameIndex], character)
 				
 			end
-			RdKGToolRoster.GuildListChanged()
+			BeltalowdaRoster.GuildListChanged()
 		end
 	end
 end
 
-function RdKGToolRoster.OnGuildLeft(eventCode, guildId, guildName)
+function BeltalowdaRoster.OnGuildLeft(eventCode, guildId, guildName)
 	--d(guildId)
 	if eventCode == EVENT_GUILD_SELF_LEFT_GUILD then
-		guildId = RdKGToolRoster.GetGuildIndex(guildId)
+		guildId = BeltalowdaRoster.GetGuildIndex(guildId)
 		--if guildId > 5 then
-		--	guildId = RdKGToolRoster.GetGuildIndex(guildId)
+		--	guildId = BeltalowdaRoster.GetGuildIndex(guildId)
 		--end
 		if guildId ~= nil and guildId >= 1 and guildId <= 5 then
-			table.remove(RdKGToolRoster.guilds, guildId)
-			RdKGToolRoster.guilds[5] = {}
-			RdKGToolRoster.guilds[5].all = {}
-			RdKGToolRoster.guilds[5].at = {}
-			RdKGToolRoster.guilds[5].name = ""
+			table.remove(BeltalowdaRoster.guilds, guildId)
+			BeltalowdaRoster.guilds[5] = {}
+			BeltalowdaRoster.guilds[5].all = {}
+			BeltalowdaRoster.guilds[5].at = {}
+			BeltalowdaRoster.guilds[5].name = ""
 		end
-		RdKGToolRoster.GuildListChanged()
+		BeltalowdaRoster.GuildListChanged()
 	end
 end

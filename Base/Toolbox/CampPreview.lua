@@ -1,51 +1,51 @@
--- RdK Group Tool Camp Preview
+-- Beltalowda Camp Preview
 -- By @s0rdrak (PC / EU)
 
 --local libMapPins = LibStub("LibMapPins-1.0")
 local libMapPins = LibMapPins
 
-RdKGTool.toolbox = RdKGTool.toolbox or {}
-local RdKGToolTB = RdKGTool.toolbox
-RdKGToolTB.camp = RdKGToolTB.camp or {}
-local RdKGToolCamp = RdKGToolTB.camp
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
+Beltalowda.toolbox = Beltalowda.toolbox or {}
+local BeltalowdaTB = Beltalowda.toolbox
+BeltalowdaTB.camp = BeltalowdaTB.camp or {}
+local BeltalowdaCamp = BeltalowdaTB.camp
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
 
-RdKGToolCamp.constants = RdKGToolCamp.constants or {}
+BeltalowdaCamp.constants = BeltalowdaCamp.constants or {}
 
-RdKGToolCamp.callbackName = RdKGTool.addonName .. "CampPreview"
+BeltalowdaCamp.callbackName = Beltalowda.addonName .. "CampPreview"
 
-RdKGToolCamp.config = {}
-RdKGToolCamp.config.pinType = "RdKGToolToolboxCampPreviewPinType"
-RdKGToolCamp.config.pinTag = "RdKGToolToolboxCampPreviewPinTag"
-RdKGToolCamp.config.updateInterval = 50
-RdKGToolCamp.config.zoneRadius = 0.026000000536442
-RdKGToolCamp.config.subZoneRadius = 0.52204173803329
-RdKGToolCamp.config.worldRadius = 0.0046799997799098
+BeltalowdaCamp.config = {}
+BeltalowdaCamp.config.pinType = "BeltalowdaToolboxCampPreviewPinType"
+BeltalowdaCamp.config.pinTag = "BeltalowdaToolboxCampPreviewPinTag"
+BeltalowdaCamp.config.updateInterval = 50
+BeltalowdaCamp.config.zoneRadius = 0.026000000536442
+BeltalowdaCamp.config.subZoneRadius = 0.52204173803329
+BeltalowdaCamp.config.worldRadius = 0.0046799997799098
 
-RdKGToolCamp.state = {}
-RdKGToolCamp.state.initialized = false
-RdKGToolCamp.state.alreadyEnabled = false
-RdKGToolCamp.state.registredActivationConsumers = false
-RdKGToolCamp.state.campId = 0
-RdKGToolCamp.state.campPreviewUp = false
-RdKGToolCamp.state.previousCoordinates = {}
-RdKGToolCamp.state.previousCoordinates.x = 0
-RdKGToolCamp.state.previousCoordinates.y = 0
-RdKGToolCamp.state.pinLayoutData = {}
-RdKGToolCamp.state.pinLayoutData.level = 111
-RdKGToolCamp.state.pinLayoutData.texture = nil -- "/art/fx/texture/aoe_circle_hollow.dds"
-RdKGToolCamp.state.pinLayoutData.size = 0 -- 0.026000000536442
-RdKGToolCamp.state.pinLayoutData.tint = nil
---RdKGToolCamp.state.pinLayoutData.color = {r=1,g=0,b=0,a=1}
-RdKGToolCamp.state.pinLayoutData.grayscale = false
-RdKGToolCamp.state.pinLayoutData.insetX = 0
-RdKGToolCamp.state.pinLayoutData.insetY = 0
-RdKGToolCamp.state.pinLayoutData.minSize = 0
-RdKGToolCamp.state.pinLayoutData.minAreaSize = nil
-RdKGToolCamp.state.pinLayoutData.showsPinAndArea = true
-RdKGToolCamp.state.pinLayoutData.isAnimated = false
-RdKGToolCamp.state.updateLoopRunning = false
+BeltalowdaCamp.state = {}
+BeltalowdaCamp.state.initialized = false
+BeltalowdaCamp.state.alreadyEnabled = false
+BeltalowdaCamp.state.registredActivationConsumers = false
+BeltalowdaCamp.state.campId = 0
+BeltalowdaCamp.state.campPreviewUp = false
+BeltalowdaCamp.state.previousCoordinates = {}
+BeltalowdaCamp.state.previousCoordinates.x = 0
+BeltalowdaCamp.state.previousCoordinates.y = 0
+BeltalowdaCamp.state.pinLayoutData = {}
+BeltalowdaCamp.state.pinLayoutData.level = 111
+BeltalowdaCamp.state.pinLayoutData.texture = nil -- "/art/fx/texture/aoe_circle_hollow.dds"
+BeltalowdaCamp.state.pinLayoutData.size = 0 -- 0.026000000536442
+BeltalowdaCamp.state.pinLayoutData.tint = nil
+--BeltalowdaCamp.state.pinLayoutData.color = {r=1,g=0,b=0,a=1}
+BeltalowdaCamp.state.pinLayoutData.grayscale = false
+BeltalowdaCamp.state.pinLayoutData.insetX = 0
+BeltalowdaCamp.state.pinLayoutData.insetY = 0
+BeltalowdaCamp.state.pinLayoutData.minSize = 0
+BeltalowdaCamp.state.pinLayoutData.minAreaSize = nil
+BeltalowdaCamp.state.pinLayoutData.showsPinAndArea = true
+BeltalowdaCamp.state.pinLayoutData.isAnimated = false
+BeltalowdaCamp.state.updateLoopRunning = false
 --[[
 /script d("|t50:50:/art/fx/texture/aoe_circle_hollow.dds|t")
 /script d("|t50:50:/art/fx/texture/aoe_circle_hollow_thinouter.dds|t")
@@ -72,41 +72,41 @@ pinLayoutData: table which can contain the following keys:
    isAnimated = true/false
   ]]
 
-function RdKGToolCamp.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolCamp.callbackName, RdKGToolCamp.OnProfileChanged)
-	RdKGToolCamp.state.campId = RdKGToolCamp.GetCampId()
-	libMapPins:AddPinType(RdKGToolCamp.config.pinType, function() end, function() end, RdKGToolCamp.state.pinLayoutData, nil)
-	RdKGToolCamp.state.initialized = true
-	RdKGToolCamp.SetEnabled(RdKGToolCamp.cpVars.enabled)
+function BeltalowdaCamp.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaCamp.callbackName, BeltalowdaCamp.OnProfileChanged)
+	BeltalowdaCamp.state.campId = BeltalowdaCamp.GetCampId()
+	libMapPins:AddPinType(BeltalowdaCamp.config.pinType, function() end, function() end, BeltalowdaCamp.state.pinLayoutData, nil)
+	BeltalowdaCamp.state.initialized = true
+	BeltalowdaCamp.SetEnabled(BeltalowdaCamp.cpVars.enabled)
 end
 
-function RdKGToolCamp.GetDefaults()
+function BeltalowdaCamp.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
 	return defaults
 end
 
-function RdKGToolCamp.SetEnabled(value)
-	if RdKGToolCamp.state.initialized == true and value ~= nil then
-		RdKGToolCamp.cpVars.enabled = value
+function BeltalowdaCamp.SetEnabled(value)
+	if BeltalowdaCamp.state.initialized == true and value ~= nil then
+		BeltalowdaCamp.cpVars.enabled = value
 		if value == true then
-			if RdKGToolCamp.state.alreadyEnabled == false then
-				EVENT_MANAGER:RegisterForEvent(RdKGToolCamp.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolCamp.OnPlayerActivated)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolCamp.callbackName, EVENT_PLAYER_DEACTIVATED, RdKGToolCamp.OnPlayerDeactivated)
-				RdKGToolCamp.state.alreadyEnabled = true
+			if BeltalowdaCamp.state.alreadyEnabled == false then
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaCamp.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaCamp.OnPlayerActivated)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaCamp.callbackName, EVENT_PLAYER_DEACTIVATED, BeltalowdaCamp.OnPlayerDeactivated)
+				BeltalowdaCamp.state.alreadyEnabled = true
 			end
 		else
-			if RdKGToolCamp.state.alreadyEnabled == true then
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolCamp.callbackName, EVENT_PLAYER_ACTIVATED)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolCamp.callbackName, EVENT_PLAYER_DEACTIVATED)
-				RdKGToolCamp.state.alreadyEnabled = false
+			if BeltalowdaCamp.state.alreadyEnabled == true then
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaCamp.callbackName, EVENT_PLAYER_ACTIVATED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaCamp.callbackName, EVENT_PLAYER_DEACTIVATED)
+				BeltalowdaCamp.state.alreadyEnabled = false
 			end
 		end
-		RdKGToolCamp.OnPlayerActivated()
+		BeltalowdaCamp.OnPlayerActivated()
 	end
 end
 
-function RdKGToolCamp.GetCampId()
+function BeltalowdaCamp.GetCampId()
 	local alliance = GetUnitAlliance("player")
 	local campId = 0
 	if alliance == ALLIANCE_ALDMERI_DOMINION then
@@ -119,123 +119,123 @@ function RdKGToolCamp.GetCampId()
 	return campId
 end
 
-function RdKGToolCamp.ShowCamp()
+function BeltalowdaCamp.ShowCamp()
 	--d("show loop")
 	local updatePosition = true
 	local x, y, _ = GetMapPlayerPosition("player")
-	if RdKGToolCamp.state.campPreviewUp == true then
-		if RdKGToolCamp.state.previousCoordinates.x == x and RdKGToolCamp.state.previousCoordinates.y == y then
+	if BeltalowdaCamp.state.campPreviewUp == true then
+		if BeltalowdaCamp.state.previousCoordinates.x == x and BeltalowdaCamp.state.previousCoordinates.y == y then
 			updatePosition = false
 		else
-			RdKGToolCamp.HideCamp()
+			BeltalowdaCamp.HideCamp()
 		end
 	end
 	if updatePosition == true then
-		local radius = RdKGToolCamp.config.zoneRadius
+		local radius = BeltalowdaCamp.config.zoneRadius
 		if GetMapType() == MAPTYPE_SUBZONE then
-			radius = RdKGToolCamp.config.subZoneRadius
+			radius = BeltalowdaCamp.config.subZoneRadius
 		elseif GetMapType() == MAPTYPE_WORLD then
-			radius = RdKGToolCamp.config.worldRadius
+			radius = BeltalowdaCamp.config.worldRadius
 		end
-		libMapPins:CreatePin(RdKGToolCamp.config.pinType, RdKGToolCamp.config.pinTag, x, y, radius)
+		libMapPins:CreatePin(BeltalowdaCamp.config.pinType, BeltalowdaCamp.config.pinTag, x, y, radius)
 		--[[
 			GetForwardCampPinInfo(number BattlegroundQueryContextType battlegroundContext, number index)
 			Returns: number pinType, number normalizedX, number normalizedY, number normalizedRadius (0.026000000536442), boolean useable
 			zone:    0.026000000536442
 			subZone: 0.52204173803329
 		]]
-		RdKGToolCamp.state.previousCoordinates.x = x
-		RdKGToolCamp.state.previousCoordinates.y = y
-		RdKGToolCamp.state.campPreviewUp = true
-		--libMapPins:RefreshPins(RdKGToolCamp.config.pinType)
+		BeltalowdaCamp.state.previousCoordinates.x = x
+		BeltalowdaCamp.state.previousCoordinates.y = y
+		BeltalowdaCamp.state.campPreviewUp = true
+		--libMapPins:RefreshPins(BeltalowdaCamp.config.pinType)
 	end
 end
 
-function RdKGToolCamp.HideCamp()
-	libMapPins:RemoveCustomPin(RdKGToolCamp.config.pinType, RdKGToolCamp.config.pinTag)
-	RdKGToolCamp.state.campPreviewUp = false
-	--libMapPins:RefreshPins(RdKGToolCamp.config.pinType)
+function BeltalowdaCamp.HideCamp()
+	libMapPins:RemoveCustomPin(BeltalowdaCamp.config.pinType, BeltalowdaCamp.config.pinTag)
+	BeltalowdaCamp.state.campPreviewUp = false
+	--libMapPins:RefreshPins(BeltalowdaCamp.config.pinType)
 end
 
 --callbacks
-function RdKGToolCamp.OnProfileChanged(currentProfile)
+function BeltalowdaCamp.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolCamp.cpVars = currentProfile.toolbox.camp
-		RdKGToolCamp.SetEnabled(RdKGToolCamp.cpVars.enabled)
+		BeltalowdaCamp.cpVars = currentProfile.toolbox.camp
+		BeltalowdaCamp.SetEnabled(BeltalowdaCamp.cpVars.enabled)
 	end
 end
 
-function RdKGToolCamp.OnPlayerActivated(eventCode, initial)
-	if RdKGToolCamp.cpVars.enabled == true and IsInCyrodiil() == true then
+function BeltalowdaCamp.OnPlayerActivated(eventCode, initial)
+	if BeltalowdaCamp.cpVars.enabled == true and IsInCyrodiil() == true then
 		--d("activated")
-		if RdKGToolCamp.state.registredActivationConsumers == false then
-			EVENT_MANAGER:RegisterForEvent(RdKGToolCamp.callbackName, EVENT_ACTIVE_QUICKSLOT_CHANGED, RdKGToolCamp.OnQuickSlotChanged)
-			RdKGToolCamp.state.registredActivationConsumers = true
+		if BeltalowdaCamp.state.registredActivationConsumers == false then
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaCamp.callbackName, EVENT_ACTIVE_QUICKSLOT_CHANGED, BeltalowdaCamp.OnQuickSlotChanged)
+			BeltalowdaCamp.state.registredActivationConsumers = true
 		end
-		RdKGToolCamp.OnQuickSlotChanged(EVENT_ACTIVE_QUICKSLOT_CHANGED, GetCurrentQuickslot())
+		BeltalowdaCamp.OnQuickSlotChanged(EVENT_ACTIVE_QUICKSLOT_CHANGED, GetCurrentQuickslot())
 	else
-		if RdKGToolCamp.state.registredActivationConsumers == true then
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolCamp.callbackName, EVENT_ACTIVE_QUICKSLOT_CHANGED)
-			RdKGToolCamp.state.registredActivationConsumers = false
+		if BeltalowdaCamp.state.registredActivationConsumers == true then
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaCamp.callbackName, EVENT_ACTIVE_QUICKSLOT_CHANGED)
+			BeltalowdaCamp.state.registredActivationConsumers = false
 		end
-		if RdKGToolCamp.state.updateLoopRunning == true then
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolCamp.callbackName)
-			RdKGToolCamp.state.updateLoopRunning = false
+		if BeltalowdaCamp.state.updateLoopRunning == true then
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaCamp.callbackName)
+			BeltalowdaCamp.state.updateLoopRunning = false
 		end
-		RdKGToolCamp.HideCamp()
+		BeltalowdaCamp.HideCamp()
 	end
 end
 
-function RdKGToolCamp.OnPlayerDeactivated()
-	if RdKGToolCamp.state.updateLoopRunning == true then
+function BeltalowdaCamp.OnPlayerDeactivated()
+	if BeltalowdaCamp.state.updateLoopRunning == true then
 		--d("deactivated")
-		EVENT_MANAGER:UnregisterForUpdate(RdKGToolCamp.callbackName)
-		RdKGToolCamp.state.updateLoopRunning = false
+		EVENT_MANAGER:UnregisterForUpdate(BeltalowdaCamp.callbackName)
+		BeltalowdaCamp.state.updateLoopRunning = false
 	end
-	RdKGToolCamp.HideCamp()
+	BeltalowdaCamp.HideCamp()
 end
 
-function RdKGToolCamp.OnQuickSlotChanged(eventCode, slotId)
+function BeltalowdaCamp.OnQuickSlotChanged(eventCode, slotId)
 	--d("quickslot changed")
 	--local itemLink = GetSlotItemLink(slotId + 1)
 	local itemLink = GetSlotItemLink(slotId)
 	if itemLink ~= nil then
 		local _, _, _, itemId = ZO_LinkHandler_ParseLink(itemLink)
 		--d(itemId)
-		if itemId ~= nil and tonumber(itemId) == RdKGToolCamp.state.campId then
-			if RdKGToolCamp.state.updateLoopRunning == false then
+		if itemId ~= nil and tonumber(itemId) == BeltalowdaCamp.state.campId then
+			if BeltalowdaCamp.state.updateLoopRunning == false then
 				--d("register for update")
-				EVENT_MANAGER:RegisterForUpdate(RdKGToolCamp.callbackName, RdKGToolCamp.config.updateInterval, RdKGToolCamp.ShowCamp)
-				RdKGToolCamp.state.updateLoopRunning = true
+				EVENT_MANAGER:RegisterForUpdate(BeltalowdaCamp.callbackName, BeltalowdaCamp.config.updateInterval, BeltalowdaCamp.ShowCamp)
+				BeltalowdaCamp.state.updateLoopRunning = true
 			end
 		else
-			if RdKGToolCamp.state.updateLoopRunning == true then
-				EVENT_MANAGER:UnregisterForUpdate(RdKGToolCamp.callbackName)
-				RdKGToolCamp.state.updateLoopRunning = false
+			if BeltalowdaCamp.state.updateLoopRunning == true then
+				EVENT_MANAGER:UnregisterForUpdate(BeltalowdaCamp.callbackName)
+				BeltalowdaCamp.state.updateLoopRunning = false
 			end
-			RdKGToolCamp.HideCamp()
+			BeltalowdaCamp.HideCamp()
 		end
 	else
-		if RdKGToolCamp.state.updateLoopRunning == true then
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolCamp.callbackName)
-			RdKGToolCamp.state.updateLoopRunning = false
+		if BeltalowdaCamp.state.updateLoopRunning == true then
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaCamp.callbackName)
+			BeltalowdaCamp.state.updateLoopRunning = false
 		end
-		RdKGToolCamp.HideCamp()
+		BeltalowdaCamp.HideCamp()
 	end
 end
 
 --menu interactions
-function RdKGToolCamp.GetMenu()
+function BeltalowdaCamp.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.CP_HEADER,
+			name = BeltalowdaMenu.constants.CP_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CP_ENABLED,
-					getFunc = RdKGToolCamp.GetCampEnabled,
-					setFunc = RdKGToolCamp.SetCampEnabled
+					name = BeltalowdaMenu.constants.CP_ENABLED,
+					getFunc = BeltalowdaCamp.GetCampEnabled,
+					setFunc = BeltalowdaCamp.SetCampEnabled
 				}
 			}
 		}
@@ -243,10 +243,10 @@ function RdKGToolCamp.GetMenu()
 	return menu
 end
 
-function RdKGToolCamp.GetCampEnabled()
-	return RdKGToolCamp.cpVars.enabled
+function BeltalowdaCamp.GetCampEnabled()
+	return BeltalowdaCamp.cpVars.enabled
 end
 
-function RdKGToolCamp.SetCampEnabled(value)
-	RdKGToolCamp.SetEnabled(value)
+function BeltalowdaCamp.SetCampEnabled(value)
+	BeltalowdaCamp.SetEnabled(value)
 end

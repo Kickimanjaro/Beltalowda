@@ -1,121 +1,121 @@
--- RdK Group Tool Detonation Tracker
+-- Beltalowda Detonation Tracker
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGTool.group = RdKGTool.group or {}
-local RdKGToolGroup = RdKGTool.group
-RdKGToolGroup.dt = RdKGToolGroup.dt or {}
-local RdKGToolDt = RdKGToolGroup.dt
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolUtilGroup = RdKGToolUtil.group
-RdKGToolUtil.fonts = RdKGToolUtil.fonts or {}
-local RdKGToolFonts = RdKGToolUtil.fonts
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+Beltalowda.group = Beltalowda.group or {}
+local BeltalowdaGroup = Beltalowda.group
+BeltalowdaGroup.dt = BeltalowdaGroup.dt or {}
+local BeltalowdaDt = BeltalowdaGroup.dt
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaUtilGroup = BeltalowdaUtil.group
+BeltalowdaUtil.fonts = BeltalowdaUtil.fonts or {}
+local BeltalowdaFonts = BeltalowdaUtil.fonts
 
-RdKGToolDt.constants = RdKGToolDt.constants or {}
-RdKGToolDt.constants.TLW = "RdKGTool.group.dt.tlw"
+BeltalowdaDt.constants = BeltalowdaDt.constants or {}
+BeltalowdaDt.constants.TLW = "Beltalowda.group.dt.tlw"
 
-RdKGToolDt.constants.size = {}
-RdKGToolDt.constants.size.SMALL = 1
-RdKGToolDt.constants.size.BIG = 2
+BeltalowdaDt.constants.size = {}
+BeltalowdaDt.constants.size.SMALL = 1
+BeltalowdaDt.constants.size.BIG = 2
 
-RdKGToolDt.constants.modes = {}
-RdKGToolDt.constants.MODE_BOTH = 1
-RdKGToolDt.constants.MODE_DETONATION = 2
-RdKGToolDt.constants.MODE_SHALK = 3
+BeltalowdaDt.constants.modes = {}
+BeltalowdaDt.constants.MODE_BOTH = 1
+BeltalowdaDt.constants.MODE_DETONATION = 2
+BeltalowdaDt.constants.MODE_SHALK = 3
 
-RdKGToolDt.constants.TYPE_DETONATION = 1
-RdKGToolDt.constants.TYPE_SUBTERRANEAN_ASSAULT = 2
-RdKGToolDt.constants.TYPE_DEEP_FRISSURE = 3
+BeltalowdaDt.constants.TYPE_DETONATION = 1
+BeltalowdaDt.constants.TYPE_SUBTERRANEAN_ASSAULT = 2
+BeltalowdaDt.constants.TYPE_DEEP_FRISSURE = 3
 
-RdKGToolDt.callbackName = RdKGTool.addonName .. "DetonationTracker"
+BeltalowdaDt.callbackName = Beltalowda.addonName .. "DetonationTracker"
 
-RdKGToolDt.config = {}
-RdKGToolDt.config.updateInterval = 100
-RdKGToolDt.config.isClampedToScreen = false
-RdKGToolDt.config.sizes = {}
-RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL] = {}
-RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].width = 150
-RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].blockHeight = 20
-RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].height = 200
-RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].fontSize = 15
-RdKGToolDt.config.sizes[RdKGToolDt.constants.size.BIG] = {}
-RdKGToolDt.config.sizes[RdKGToolDt.constants.size.BIG].width = 300
-RdKGToolDt.config.sizes[RdKGToolDt.constants.size.BIG].blockHeight = 40
-RdKGToolDt.config.sizes[RdKGToolDt.constants.size.BIG].height = 400
-RdKGToolDt.config.sizes[RdKGToolDt.constants.size.BIG].fontSize = 30
+BeltalowdaDt.config = {}
+BeltalowdaDt.config.updateInterval = 100
+BeltalowdaDt.config.isClampedToScreen = false
+BeltalowdaDt.config.sizes = {}
+BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL] = {}
+BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].width = 150
+BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].blockHeight = 20
+BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].height = 200
+BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].fontSize = 15
+BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.BIG] = {}
+BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.BIG].width = 300
+BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.BIG].blockHeight = 40
+BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.BIG].height = 400
+BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.BIG].fontSize = 30
 
-RdKGToolDt.state = {}
-RdKGToolDt.state.initialized = false
-RdKGToolDt.state.foreground = true
-RdKGToolDt.state.registredConsumers = false
-RdKGToolDt.state.activeLayerIndex = 1
-RdKGToolDt.state.registredActiveConsumers = false
-RdKGToolDt.state.width = RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].width
-RdKGToolDt.state.blockHeight = RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].blockHeight
-RdKGToolDt.state.height = RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].height
-RdKGToolDt.state.fontSize = RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].fontSize
-RdKGToolDt.state.font = nil
+BeltalowdaDt.state = {}
+BeltalowdaDt.state.initialized = false
+BeltalowdaDt.state.foreground = true
+BeltalowdaDt.state.registredConsumers = false
+BeltalowdaDt.state.activeLayerIndex = 1
+BeltalowdaDt.state.registredActiveConsumers = false
+BeltalowdaDt.state.width = BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].width
+BeltalowdaDt.state.blockHeight = BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].blockHeight
+BeltalowdaDt.state.height = BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].height
+BeltalowdaDt.state.fontSize = BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].fontSize
+BeltalowdaDt.state.font = nil
 
-RdKGToolDt.controls = {}
+BeltalowdaDt.controls = {}
 
 local wm = WINDOW_MANAGER
 
-function RdKGToolDt.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolDt.callbackName, RdKGToolDt.OnProfileChanged)
+function BeltalowdaDt.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaDt.callbackName, BeltalowdaDt.OnProfileChanged)
 	
-	RdKGToolDt.CreateUI()
+	BeltalowdaDt.CreateUI()
 	
-	RdKGToolMenu.AddPositionFixedConsumer(RdKGToolDt.SetDtPositionLocked)
+	BeltalowdaMenu.AddPositionFixedConsumer(BeltalowdaDt.SetDtPositionLocked)
 	
-	RdKGToolDt.state.initialized = true
-	RdKGToolDt.SetEnabled(RdKGToolDt.dtVars.enabled)
+	BeltalowdaDt.state.initialized = true
+	BeltalowdaDt.SetEnabled(BeltalowdaDt.dtVars.enabled)
 end
 
-function RdKGToolDt.SetTlwLocation()
-	RdKGToolDt.controls.TLW:ClearAnchors()
-	if RdKGToolDt.dtVars.location == nil then
-		RdKGToolDt.controls.TLW:SetAnchor(CENTER, GuiRoot, CENTER, -125, -125)
+function BeltalowdaDt.SetTlwLocation()
+	BeltalowdaDt.controls.TLW:ClearAnchors()
+	if BeltalowdaDt.dtVars.location == nil then
+		BeltalowdaDt.controls.TLW:SetAnchor(CENTER, GuiRoot, CENTER, -125, -125)
 	else
-		RdKGToolDt.controls.TLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, RdKGToolDt.dtVars.location.x, RdKGToolDt.dtVars.location.y)
+		BeltalowdaDt.controls.TLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, BeltalowdaDt.dtVars.location.x, BeltalowdaDt.dtVars.location.y)
 	end
 end
 
-function RdKGToolDt.CreateUI()
-	RdKGToolDt.controls.TLW = wm:CreateTopLevelWindow(RdKGToolDt.constants.TLW)
+function BeltalowdaDt.CreateUI()
+	BeltalowdaDt.controls.TLW = wm:CreateTopLevelWindow(BeltalowdaDt.constants.TLW)
 	
-	RdKGToolDt.SetTlwLocation()
+	BeltalowdaDt.SetTlwLocation()
 
 		
-	RdKGToolDt.controls.TLW:SetClampedToScreen(RdKGToolDt.config.isClampedToScreen)
-	RdKGToolDt.controls.TLW:SetHandler("OnMoveStop", RdKGToolDt.SaveWindowLocation)
-	RdKGToolDt.controls.TLW:SetDimensions(RdKGToolDt.state.width, RdKGToolDt.state.height)
+	BeltalowdaDt.controls.TLW:SetClampedToScreen(BeltalowdaDt.config.isClampedToScreen)
+	BeltalowdaDt.controls.TLW:SetHandler("OnMoveStop", BeltalowdaDt.SaveWindowLocation)
+	BeltalowdaDt.controls.TLW:SetDimensions(BeltalowdaDt.state.width, BeltalowdaDt.state.height)
 	
-	RdKGToolDt.controls.TLW.rootControl = wm:CreateControl(nil, RdKGToolDt.controls.TLW, CT_CONTROL)
+	BeltalowdaDt.controls.TLW.rootControl = wm:CreateControl(nil, BeltalowdaDt.controls.TLW, CT_CONTROL)
 	
-	local rootControl = RdKGToolDt.controls.TLW.rootControl
+	local rootControl = BeltalowdaDt.controls.TLW.rootControl
 	
-	rootControl:SetDimensions(RdKGToolDt.state.width, RdKGToolDt.state.height)
-	rootControl:SetAnchor(TOPLEFT, RdKGToolDt.controls.TLW, TOPLEFT, 0, 0)
+	rootControl:SetDimensions(BeltalowdaDt.state.width, BeltalowdaDt.state.height)
+	rootControl:SetAnchor(TOPLEFT, BeltalowdaDt.controls.TLW, TOPLEFT, 0, 0)
 	
 	rootControl.movableBackdrop = wm:CreateControl(nil, rootControl, CT_BACKDROP)
 	
 	rootControl.movableBackdrop:SetAnchor(TOPLEFT, rootControl, TOPLEFT, 0, 0)
-	rootControl.movableBackdrop:SetDimensions(RdKGToolDt.state.width, RdKGToolDt.state.height)
+	rootControl.movableBackdrop:SetDimensions(BeltalowdaDt.state.width, BeltalowdaDt.state.height)
 	
 	rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
 	rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	
-	rootControl.playerBlocks = RdKGToolDt.CreatePlayerBlocks(rootControl, RdKGToolDt.state.width, RdKGToolDt.state.blockHeight)
-	RdKGToolDt.controls.TLW:SetHidden(true)
-	RdKGToolDt.AdjustMode()
-	RdKGToolDt.AdjustSize()
-	RdKGToolDt.AdjustColors()
+	rootControl.playerBlocks = BeltalowdaDt.CreatePlayerBlocks(rootControl, BeltalowdaDt.state.width, BeltalowdaDt.state.blockHeight)
+	BeltalowdaDt.controls.TLW:SetHidden(true)
+	BeltalowdaDt.AdjustMode()
+	BeltalowdaDt.AdjustSize()
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.CreatePlayerBlock(parent, width, blockHeight, font)
+function BeltalowdaDt.CreatePlayerBlock(parent, width, blockHeight, font)
 	local playerBlock = wm:CreateControl(nil, parent, CT_CONTROL)
 	--playerBlock:SetAnchor(TOPLEFT, parent, TOPLEFT, 0, (i - 1) * blockHeight)
 	playerBlock:SetDimensions(width, blockHeight)
@@ -153,13 +153,13 @@ function RdKGToolDt.CreatePlayerBlock(parent, width, blockHeight, font)
 	return playerBlock
 end
 
-function RdKGToolDt.CreatePlayerBlocks(parent, width, blockHeight)
+function BeltalowdaDt.CreatePlayerBlocks(parent, width, blockHeight)
 	local playerBlocks = {}
-	local font = RdKGToolFonts.CreateFontString(RdKGToolFonts.constants.MEDIUM_FONT, RdKGToolFonts.constants.INPUT_KB, blockHeight - 4, RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
-	RdKGToolDt.state.font = font
+	local font = BeltalowdaFonts.CreateFontString(BeltalowdaFonts.constants.MEDIUM_FONT, BeltalowdaFonts.constants.INPUT_KB, blockHeight - 4, BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
+	BeltalowdaDt.state.font = font
 	
 	for i = 1, 24 do
-		playerBlocks[i] = RdKGToolDt.CreatePlayerBlock(parent, width, blockHeight, font)
+		playerBlocks[i] = BeltalowdaDt.CreatePlayerBlock(parent, width, blockHeight, font)
 		playerBlocks[i]:SetAnchor(TOPLEFT, parent, TOPLEFT, 0, (i - 1) * blockHeight)
 		
 	end
@@ -167,7 +167,7 @@ function RdKGToolDt.CreatePlayerBlocks(parent, width, blockHeight)
 	return playerBlocks
 end
 
-function RdKGToolDt.GetDefaults()
+function BeltalowdaDt.GetDefaults()
 	local defaults = {}
 	defaults.enabled = false
 	defaults.pvpOnly = true
@@ -217,25 +217,25 @@ function RdKGToolDt.GetDefaults()
 	defaults.deepFissure2.progressColor.r = 0.0890625
 	defaults.deepFissure2.progressColor.g = 0.0
 	defaults.deepFissure2.progressColor.b = 1.00
-	defaults.size = RdKGToolDt.constants.size.SMALL
-	defaults.mode = RdKGToolDt.constants.MODE_BOTH
+	defaults.size = BeltalowdaDt.constants.size.SMALL
+	defaults.mode = BeltalowdaDt.constants.MODE_BOTH
 	defaults.smoothTransition = true
 	return defaults
 end
 
-function RdKGToolDt.AdjustSize()
-	local sizeIncrease = RdKGToolDt.dtVars.size - RdKGToolDt.constants.size.SMALL
-	local height = (RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].height + (RdKGToolDt.config.sizes[RdKGToolDt.constants.size.BIG].height - RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].height) * sizeIncrease)
-	local width = (RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].width + (RdKGToolDt.config.sizes[RdKGToolDt.constants.size.BIG].width - RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].width) * sizeIncrease)
-	local blockHeight = (RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].blockHeight + (RdKGToolDt.config.sizes[RdKGToolDt.constants.size.BIG].blockHeight - RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].blockHeight) * sizeIncrease)
-	local fontSize = (RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].fontSize + (RdKGToolDt.config.sizes[RdKGToolDt.constants.size.BIG].fontSize - RdKGToolDt.config.sizes[RdKGToolDt.constants.size.SMALL].fontSize) * sizeIncrease)
-	local font = RdKGToolFonts.CreateFontString(RdKGToolFonts.constants.MEDIUM_FONT, RdKGToolFonts.constants.INPUT_KB, fontSize, RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
-	RdKGToolDt.state.width = width
-	RdKGToolDt.state.blockHeight = blockHeight
-	RdKGToolDt.state.height = height
-	RdKGToolDt.state.fontSize = fontSize
-	RdKGToolDt.state.font = font
-	local rootControl = RdKGToolDt.controls.TLW.rootControl
+function BeltalowdaDt.AdjustSize()
+	local sizeIncrease = BeltalowdaDt.dtVars.size - BeltalowdaDt.constants.size.SMALL
+	local height = (BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].height + (BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.BIG].height - BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].height) * sizeIncrease)
+	local width = (BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].width + (BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.BIG].width - BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].width) * sizeIncrease)
+	local blockHeight = (BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].blockHeight + (BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.BIG].blockHeight - BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].blockHeight) * sizeIncrease)
+	local fontSize = (BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].fontSize + (BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.BIG].fontSize - BeltalowdaDt.config.sizes[BeltalowdaDt.constants.size.SMALL].fontSize) * sizeIncrease)
+	local font = BeltalowdaFonts.CreateFontString(BeltalowdaFonts.constants.MEDIUM_FONT, BeltalowdaFonts.constants.INPUT_KB, fontSize, BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THIN)
+	BeltalowdaDt.state.width = width
+	BeltalowdaDt.state.blockHeight = blockHeight
+	BeltalowdaDt.state.height = height
+	BeltalowdaDt.state.fontSize = fontSize
+	BeltalowdaDt.state.font = font
+	local rootControl = BeltalowdaDt.controls.TLW.rootControl
 	local playerBlocks = rootControl.playerBlocks
 	for i = 1, #playerBlocks do
 		playerBlocks[i]:ClearAnchors()
@@ -253,87 +253,87 @@ function RdKGToolDt.AdjustSize()
 		playerBlocks[i].nameLabel:SetFont(font)
 		playerBlocks[i].nameLabel:SetDimensions(width - 50, blockHeight)
 	end
-	RdKGToolDt.controls.TLW:SetDimensions(width, height)
-	RdKGToolDt.controls.TLW.rootControl:SetDimensions(width, height)
-	RdKGToolDt.controls.TLW.rootControl.movableBackdrop:SetDimensions(width, height)
+	BeltalowdaDt.controls.TLW:SetDimensions(width, height)
+	BeltalowdaDt.controls.TLW.rootControl:SetDimensions(width, height)
+	BeltalowdaDt.controls.TLW.rootControl.movableBackdrop:SetDimensions(width, height)
 end
 
-function RdKGToolDt.AdjustMode()
+function BeltalowdaDt.AdjustMode()
 	
 	
 	
-	RdKGToolDt.AdjustColors()
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.AdjustColors()
-	local playerBlocks = RdKGToolDt.controls.TLW.rootControl.playerBlocks
+function BeltalowdaDt.AdjustColors()
+	local playerBlocks = BeltalowdaDt.controls.TLW.rootControl.playerBlocks
 	for i = 1, #playerBlocks do
-		if RdKGToolDt.dtVars.mode == RdKGToolDt.constants.MODE_DETONATION then
-			playerBlocks[i].nameLabel:SetColor(RdKGToolDt.dtVars.detonation.fontColor.r, RdKGToolDt.dtVars.detonation.fontColor.g, RdKGToolDt.dtVars.detonation.fontColor.b)
-			playerBlocks[i].timeLabel:SetColor(RdKGToolDt.dtVars.detonation.fontColor.r, RdKGToolDt.dtVars.detonation.fontColor.g, RdKGToolDt.dtVars.detonation.fontColor.b)
-			playerBlocks[i].progress:SetColor(RdKGToolDt.dtVars.detonation.progressColor.r, RdKGToolDt.dtVars.detonation.progressColor.g, RdKGToolDt.dtVars.detonation.progressColor.b)
+		if BeltalowdaDt.dtVars.mode == BeltalowdaDt.constants.MODE_DETONATION then
+			playerBlocks[i].nameLabel:SetColor(BeltalowdaDt.dtVars.detonation.fontColor.r, BeltalowdaDt.dtVars.detonation.fontColor.g, BeltalowdaDt.dtVars.detonation.fontColor.b)
+			playerBlocks[i].timeLabel:SetColor(BeltalowdaDt.dtVars.detonation.fontColor.r, BeltalowdaDt.dtVars.detonation.fontColor.g, BeltalowdaDt.dtVars.detonation.fontColor.b)
+			playerBlocks[i].progress:SetColor(BeltalowdaDt.dtVars.detonation.progressColor.r, BeltalowdaDt.dtVars.detonation.progressColor.g, BeltalowdaDt.dtVars.detonation.progressColor.b)
 		end
 	end
 end
 
-function RdKGToolDt.SetEnabled(value)
-	if RdKGToolDt.state.initialized == true and value ~= nil then
-		RdKGToolDt.dtVars.enabled = value
+function BeltalowdaDt.SetEnabled(value)
+	if BeltalowdaDt.state.initialized == true and value ~= nil then
+		BeltalowdaDt.dtVars.enabled = value
 		if value == true then
-			if RdKGToolDt.state.registredConsumers == false then
+			if BeltalowdaDt.state.registredConsumers == false then
 				
-				EVENT_MANAGER:RegisterForEvent(RdKGToolDt.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolDt.OnPlayerActivated)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaDt.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaDt.OnPlayerActivated)
 				
 			end
-			RdKGToolDt.state.registredConsumers = true
+			BeltalowdaDt.state.registredConsumers = true
 		else
-			if RdKGToolDt.state.registredConsumers == true then
+			if BeltalowdaDt.state.registredConsumers == true then
 				
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolDt.callbackName, EVENT_PLAYER_ACTIVATED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaDt.callbackName, EVENT_PLAYER_ACTIVATED)
 				
 			end
-			RdKGToolDt.state.registredConsumers = false
+			BeltalowdaDt.state.registredConsumers = false
 		end
-		RdKGToolDt.OnPlayerActivated()
+		BeltalowdaDt.OnPlayerActivated()
 	end
 end
 
-function RdKGToolDt.SetControlVisibility()
-	local enabled = RdKGToolDt.dtVars.enabled
-	local pvpOnly = RdKGToolDt.dtVars.pvpOnly
+function BeltalowdaDt.SetControlVisibility()
+	local enabled = BeltalowdaDt.dtVars.enabled
+	local pvpOnly = BeltalowdaDt.dtVars.pvpOnly
 	local setHidden = true
 	if enabled ~= nil and pvpOnly ~= nil then
 
-		if enabled == true and (pvpOnly == false or (pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
+		if enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 			setHidden = false
 		end
 	end
 	if setHidden == false then
-		if RdKGToolDt.state.foreground == false then
-			RdKGToolDt.controls.TLW:SetHidden(RdKGToolDt.state.activeLayerIndex > 2)
+		if BeltalowdaDt.state.foreground == false then
+			BeltalowdaDt.controls.TLW:SetHidden(BeltalowdaDt.state.activeLayerIndex > 2)
 		else
-			RdKGToolDt.controls.TLW:SetHidden(false)
+			BeltalowdaDt.controls.TLW:SetHidden(false)
 		end
 	else
-		RdKGToolDt.controls.TLW:SetHidden(setHidden)
+		BeltalowdaDt.controls.TLW:SetHidden(setHidden)
 	end
 end
 
-function RdKGToolDt.SetPositionLocked(value)
-	RdKGToolDt.dtVars.positionLocked = value
-	RdKGToolDt.controls.TLW:SetMovable(not value)
-	RdKGToolDt.controls.TLW:SetMouseEnabled(not value)
+function BeltalowdaDt.SetPositionLocked(value)
+	BeltalowdaDt.dtVars.positionLocked = value
+	BeltalowdaDt.controls.TLW:SetMovable(not value)
+	BeltalowdaDt.controls.TLW:SetMouseEnabled(not value)
 	
 	if value == true then
-		RdKGToolDt.controls.TLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
-		RdKGToolDt.controls.TLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+		BeltalowdaDt.controls.TLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
+		BeltalowdaDt.controls.TLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	else
-		RdKGToolDt.controls.TLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
-		RdKGToolDt.controls.TLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+		BeltalowdaDt.controls.TLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
+		BeltalowdaDt.controls.TLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	end
 end
 
-function RdKGToolDt.ComparePlayersByDetonationUptime(playerA, playerB)
+function BeltalowdaDt.ComparePlayersByDetonationUptime(playerA, playerB)
 	if playerA.buffs.specialInformation.proximityDetonation.remaining < playerB.buffs.specialInformation.proximityDetonation.remaining  then
 		return false
 	elseif playerA.buffs.specialInformation.proximityDetonation.remaining > playerB.buffs.specialInformation.proximityDetonation.remaining  then
@@ -343,7 +343,7 @@ function RdKGToolDt.ComparePlayersByDetonationUptime(playerA, playerB)
 	end
 end
 
-function RdKGToolDt.ComparePlayersByShalkUptime(playerA, playerB)
+function BeltalowdaDt.ComparePlayersByShalkUptime(playerA, playerB)
 	local remainingA = nil
 	local remainingB = nil
 	if playerA.buffs.specialInformation.subterraneanAssault.active == true then
@@ -365,7 +365,7 @@ function RdKGToolDt.ComparePlayersByShalkUptime(playerA, playerB)
 	end
 end
 
-function RdKGToolDt.ComparePlayersByDetonationShalkUptime(playerA, playerB)
+function BeltalowdaDt.ComparePlayersByDetonationShalkUptime(playerA, playerB)
 	if playerA.remaining < playerB.remaining then
 		return false
 	elseif playerA.remaining > playerB.remaining then
@@ -379,7 +379,7 @@ function RdKGToolDt.ComparePlayersByDetonationShalkUptime(playerA, playerB)
 	end
 end
 
-function RdKGToolDt.GetSortedDetonationPlayerList(players)
+function BeltalowdaDt.GetSortedDetonationPlayerList(players)
 	local detosOnly = {}
 	local timeStamp = GetGameTimeMilliseconds() / 1000
 	for i = 1, #players do
@@ -388,19 +388,19 @@ function RdKGToolDt.GetSortedDetonationPlayerList(players)
 			table.insert(detosOnly, players[i])
 		end
 	end
-	table.sort(detosOnly, RdKGToolDt.ComparePlayersByDetonationUptime)
+	table.sort(detosOnly, BeltalowdaDt.ComparePlayersByDetonationUptime)
 	return detosOnly
 end
 
-function RdKGToolDt.GetSortedList(players)
+function BeltalowdaDt.GetSortedList(players)
 	local displayItems = {}
 	local timeStamp = GetGameTimeMilliseconds() / 1000
-	if RdKGToolDt.dtVars.mode == RdKGToolDt.constants.MODE_BOTH then
+	if BeltalowdaDt.dtVars.mode == BeltalowdaDt.constants.MODE_BOTH then
 		local localPlayers = {}
 		for i = 1, #players do
 			if players[i] ~= nil and players[i].buffs ~= nil and players[i].buffs.specialInformation ~= nil and players[i].buffs.specialInformation.proximityDetonation ~= nil and players[i].buffs.specialInformation.proximityDetonation.active == true then
 				local localPlayer = {}
-				localPlayer.buff = RdKGToolDt.constants.TYPE_DETONATION
+				localPlayer.buff = BeltalowdaDt.constants.TYPE_DETONATION
 				localPlayer.remaining = players[i].buffs.specialInformation.proximityDetonation.ending - timeStamp
 				localPlayer.name =  players[i].name
 				localPlayer.started = players[i].buffs.specialInformation.proximityDetonation.started
@@ -409,7 +409,7 @@ function RdKGToolDt.GetSortedList(players)
 			end
 			if players[i] ~= nil and players[i].buffs ~= nil and players[i].buffs.specialInformation ~= nil and players[i].buffs.specialInformation.subterraneanAssault ~= nil and players[i].buffs.specialInformation.subterraneanAssault.active == true then
 				local localPlayer = {}
-				localPlayer.buff = RdKGToolDt.constants.TYPE_SUBTERRANEAN_ASSAULT
+				localPlayer.buff = BeltalowdaDt.constants.TYPE_SUBTERRANEAN_ASSAULT
 				localPlayer.remaining = players[i].buffs.specialInformation.subterraneanAssault.ending - timeStamp
 				localPlayer.name =  players[i].name
 				localPlayer.started = players[i].buffs.specialInformation.subterraneanAssault.started
@@ -419,7 +419,7 @@ function RdKGToolDt.GetSortedList(players)
 				--d("assault")
 			elseif players[i] ~= nil and players[i].buffs ~= nil and players[i].buffs.specialInformation ~= nil and players[i].buffs.specialInformation.deepFissure ~= nil and players[i].buffs.specialInformation.deepFissure.active == true then
 				local localPlayer = {}
-				localPlayer.buff = RdKGToolDt.constants.TYPE_DEEP_FRISSURE
+				localPlayer.buff = BeltalowdaDt.constants.TYPE_DEEP_FRISSURE
 				localPlayer.remaining = players[i].buffs.specialInformation.deepFissure.ending - timeStamp
 				localPlayer.name =  players[i].name
 				localPlayer.started = players[i].buffs.specialInformation.deepFissure.started
@@ -429,16 +429,16 @@ function RdKGToolDt.GetSortedList(players)
 				--d("deep")
 			end
 		end
-		table.sort(displayItems, RdKGToolDt.ComparePlayersByDetonationShalkUptime)
-	elseif RdKGToolDt.dtVars.mode == RdKGToolDt.constants.MODE_DETONATION then
+		table.sort(displayItems, BeltalowdaDt.ComparePlayersByDetonationShalkUptime)
+	elseif BeltalowdaDt.dtVars.mode == BeltalowdaDt.constants.MODE_DETONATION then
 		for i = 1, #players do
 			if players[i] ~= nil and players[i].buffs ~= nil and players[i].buffs.specialInformation ~= nil and players[i].buffs.specialInformation.proximityDetonation ~= nil and players[i].buffs.specialInformation.proximityDetonation.active == true then
 				players[i].buffs.specialInformation.proximityDetonation.remaining = players[i].buffs.specialInformation.proximityDetonation.ending - timeStamp
 				table.insert(displayItems, players[i])
 			end
 		end
-		table.sort(displayItems, RdKGToolDt.ComparePlayersByDetonationUptime)
-	elseif RdKGToolDt.dtVars.mode == RdKGToolDt.constants.MODE_SHALK then
+		table.sort(displayItems, BeltalowdaDt.ComparePlayersByDetonationUptime)
+	elseif BeltalowdaDt.dtVars.mode == BeltalowdaDt.constants.MODE_SHALK then
 		for i = 1, #players do
 			if players[i] ~= nil and players[i].buffs ~= nil and players[i].buffs.specialInformation ~= nil and players[i].buffs.specialInformation.subterraneanAssault ~= nil and players[i].buffs.specialInformation.subterraneanAssault.active == true then
 				players[i].buffs.specialInformation.subterraneanAssault.remaining = players[i].buffs.specialInformation.subterraneanAssault.ending - timeStamp
@@ -448,120 +448,120 @@ function RdKGToolDt.GetSortedList(players)
 				table.insert(displayItems, players[i])
 			end
 		end
-		table.sort(displayItems, RdKGToolDt.ComparePlayersByShalkUptime)
+		table.sort(displayItems, BeltalowdaDt.ComparePlayersByShalkUptime)
 	end
 	return displayItems
 end
 
 --callbacks
-function RdKGToolDt.OnProfileChanged(currentProfile)
+function BeltalowdaDt.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolDt.dtVars = currentProfile.group.dt
-		if RdKGToolDt.state.initialized == true then
-			RdKGToolDt.SetControlVisibility()
-			RdKGToolDt.AdjustMode()
-			RdKGToolDt.AdjustSize()
-			RdKGToolDt.AdjustColors()
-			RdKGToolDt.SetPositionLocked(RdKGToolDt.dtVars.positionLocked)
-			RdKGToolDt.SetTlwLocation()
+		BeltalowdaDt.dtVars = currentProfile.group.dt
+		if BeltalowdaDt.state.initialized == true then
+			BeltalowdaDt.SetControlVisibility()
+			BeltalowdaDt.AdjustMode()
+			BeltalowdaDt.AdjustSize()
+			BeltalowdaDt.AdjustColors()
+			BeltalowdaDt.SetPositionLocked(BeltalowdaDt.dtVars.positionLocked)
+			BeltalowdaDt.SetTlwLocation()
 		end
-		RdKGToolDt.SetEnabled(RdKGToolDt.dtVars.enabled)
+		BeltalowdaDt.SetEnabled(BeltalowdaDt.dtVars.enabled)
 		
 	end
 end
 
-function RdKGToolDt.SaveWindowLocation()
-	if RdKGToolDt.dtVars.positionLocked == false then
-		RdKGToolDt.dtVars.location = RdKGToolDt.dtVars.location or {}
-		RdKGToolDt.dtVars.location.x = RdKGToolDt.controls.TLW:GetLeft()
-		RdKGToolDt.dtVars.location.y = RdKGToolDt.controls.TLW:GetTop()
+function BeltalowdaDt.SaveWindowLocation()
+	if BeltalowdaDt.dtVars.positionLocked == false then
+		BeltalowdaDt.dtVars.location = BeltalowdaDt.dtVars.location or {}
+		BeltalowdaDt.dtVars.location.x = BeltalowdaDt.controls.TLW:GetLeft()
+		BeltalowdaDt.dtVars.location.y = BeltalowdaDt.controls.TLW:GetTop()
 	end
 end
 
-function RdKGToolDt.OnPlayerActivated(eventCode, initial)
-	--d(RdKGToolDt.dtVars.enabled)
-	if RdKGToolDt.dtVars.enabled == true and (RdKGToolDt.dtVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true or RdKGToolDt.dtVars.pvpOnly == false) then
+function BeltalowdaDt.OnPlayerActivated(eventCode, initial)
+	--d(BeltalowdaDt.dtVars.enabled)
+	if BeltalowdaDt.dtVars.enabled == true and (BeltalowdaDt.dtVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true or BeltalowdaDt.dtVars.pvpOnly == false) then
 		--d("register")
-		if RdKGToolDt.state.registredActiveConsumers == false then
-			EVENT_MANAGER:RegisterForEvent(RdKGToolDt.callbackName, EVENT_ACTION_LAYER_POPPED, RdKGToolDt.SetForegroundVisibility)
-			EVENT_MANAGER:RegisterForEvent(RdKGToolDt.callbackName, EVENT_ACTION_LAYER_PUSHED, RdKGToolDt.SetForegroundVisibility)
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolDt.callbackName, RdKGToolDt.config.updateInterval, RdKGToolDt.UiLoop)
-			RdKGToolUtilGroup.AddFeature(RdKGToolDt.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_BUFFS, RdKGToolDt.config.updateInterval)
-			RdKGToolDt.state.registredActiveConsumers = true
+		if BeltalowdaDt.state.registredActiveConsumers == false then
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaDt.callbackName, EVENT_ACTION_LAYER_POPPED, BeltalowdaDt.SetForegroundVisibility)
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaDt.callbackName, EVENT_ACTION_LAYER_PUSHED, BeltalowdaDt.SetForegroundVisibility)
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaDt.callbackName, BeltalowdaDt.config.updateInterval, BeltalowdaDt.UiLoop)
+			BeltalowdaUtilGroup.AddFeature(BeltalowdaDt.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_BUFFS, BeltalowdaDt.config.updateInterval)
+			BeltalowdaDt.state.registredActiveConsumers = true
 		end
 	else
 		--d("unregister")
-		if RdKGToolDt.state.registredActiveConsumers == true then
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolDt.callbackName, EVENT_ACTION_LAYER_POPPED)
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolDt.callbackName, EVENT_ACTION_LAYER_PUSHED)
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolDt.callbackName)
-			RdKGToolUtilGroup.RemoveFeature(RdKGToolDt.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_BUFFS)
-			RdKGToolDt.state.registredActiveConsumers = false
+		if BeltalowdaDt.state.registredActiveConsumers == true then
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaDt.callbackName, EVENT_ACTION_LAYER_POPPED)
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaDt.callbackName, EVENT_ACTION_LAYER_PUSHED)
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaDt.callbackName)
+			BeltalowdaUtilGroup.RemoveFeature(BeltalowdaDt.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_BUFFS)
+			BeltalowdaDt.state.registredActiveConsumers = false
 		end
 	end
-	RdKGToolDt.SetControlVisibility()
+	BeltalowdaDt.SetControlVisibility()
 end
 
-function RdKGToolDt.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
+function BeltalowdaDt.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
 	if eventCode == EVENT_ACTION_LAYER_POPPED then
-		RdKGToolDt.state.foreground = true
+		BeltalowdaDt.state.foreground = true
 	elseif eventCode == EVENT_ACTION_LAYER_PUSHED then
-		RdKGToolDt.state.foreground = false
+		BeltalowdaDt.state.foreground = false
 	end
 	--hack?
-	RdKGToolDt.state.activeLayerIndex = activeLayerIndex
+	BeltalowdaDt.state.activeLayerIndex = activeLayerIndex
 	
-	RdKGToolDt.SetControlVisibility()
+	BeltalowdaDt.SetControlVisibility()
 end
 
-function RdKGToolDt.UiLoop()
+function BeltalowdaDt.UiLoop()
 	--d("dt")
-	if RdKGToolDt.dtVars.pvpOnly == false or (RdKGToolDt.dtVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea()) then
-		local players = RdKGToolUtilGroup.GetGroupInformation()
+	if BeltalowdaDt.dtVars.pvpOnly == false or (BeltalowdaDt.dtVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea()) then
+		local players = BeltalowdaUtilGroup.GetGroupInformation()
 		--d("dt")
 		if players ~= nil then
-			--players = RdKGToolDt.GetSortedDetonationPlayerList(players)
-			players = RdKGToolDt.GetSortedList(players)
-			local playerBlocks = RdKGToolDt.controls.TLW.rootControl.playerBlocks
-			if RdKGToolDt.dtVars.mode == RdKGToolDt.constants.MODE_BOTH then
+			--players = BeltalowdaDt.GetSortedDetonationPlayerList(players)
+			players = BeltalowdaDt.GetSortedList(players)
+			local playerBlocks = BeltalowdaDt.controls.TLW.rootControl.playerBlocks
+			if BeltalowdaDt.dtVars.mode == BeltalowdaDt.constants.MODE_BOTH then
 				for i = 1, #players do
 					local timespan = players[i].remaining
 					local percent = 0.0
 					if playerBlocks[i] == nil then
-						playerBlocks[i] = RdKGToolDt.CreatePlayerBlock(RdKGToolDt.controls.TLW.rootControl, RdKGToolDt.state.width, RdKGToolDt.state.blockHeight, RdKGToolDt.state.font)
-						playerBlocks[i]:SetAnchor(TOPLEFT, RdKGToolDt.controls.TLW.rootControl, TOPLEFT, 0, (i - 1) * RdKGToolDt.state.blockHeight)
+						playerBlocks[i] = BeltalowdaDt.CreatePlayerBlock(BeltalowdaDt.controls.TLW.rootControl, BeltalowdaDt.state.width, BeltalowdaDt.state.blockHeight, BeltalowdaDt.state.font)
+						playerBlocks[i]:SetAnchor(TOPLEFT, BeltalowdaDt.controls.TLW.rootControl, TOPLEFT, 0, (i - 1) * BeltalowdaDt.state.blockHeight)
 					end
 					if timespan < 0 then
 						timespan = 0
 					end
-					if players[i].buff == RdKGToolDt.constants.TYPE_DETONATION then
-						playerBlocks[i].timeLabel:SetColor(RdKGToolDt.dtVars.detonation.fontColor.r, RdKGToolDt.dtVars.detonation.fontColor.g, RdKGToolDt.dtVars.detonation.fontColor.b)
-						playerBlocks[i].nameLabel:SetColor(RdKGToolDt.dtVars.detonation.fontColor.r, RdKGToolDt.dtVars.detonation.fontColor.g, RdKGToolDt.dtVars.detonation.fontColor.b)
-						playerBlocks[i].progress:SetColor(RdKGToolDt.dtVars.detonation.progressColor.r, RdKGToolDt.dtVars.detonation.progressColor.g, RdKGToolDt.dtVars.detonation.progressColor.b)
+					if players[i].buff == BeltalowdaDt.constants.TYPE_DETONATION then
+						playerBlocks[i].timeLabel:SetColor(BeltalowdaDt.dtVars.detonation.fontColor.r, BeltalowdaDt.dtVars.detonation.fontColor.g, BeltalowdaDt.dtVars.detonation.fontColor.b)
+						playerBlocks[i].nameLabel:SetColor(BeltalowdaDt.dtVars.detonation.fontColor.r, BeltalowdaDt.dtVars.detonation.fontColor.g, BeltalowdaDt.dtVars.detonation.fontColor.b)
+						playerBlocks[i].progress:SetColor(BeltalowdaDt.dtVars.detonation.progressColor.r, BeltalowdaDt.dtVars.detonation.progressColor.g, BeltalowdaDt.dtVars.detonation.progressColor.b)
 						percent = players[i].remaining / (players[i].ending - players[i].started) * 100
-					elseif players[i].buff == RdKGToolDt.constants.TYPE_SUBTERRANEAN_ASSAULT then
+					elseif players[i].buff == BeltalowdaDt.constants.TYPE_SUBTERRANEAN_ASSAULT then
 						if players[i].waveTwo == false then
-							playerBlocks[i].timeLabel:SetColor(RdKGToolDt.dtVars.subterraneanAssault.fontColor.r, RdKGToolDt.dtVars.subterraneanAssault.fontColor.g, RdKGToolDt.dtVars.subterraneanAssault.fontColor.b)
-							playerBlocks[i].nameLabel:SetColor(RdKGToolDt.dtVars.subterraneanAssault.fontColor.r, RdKGToolDt.dtVars.subterraneanAssault.fontColor.g, RdKGToolDt.dtVars.subterraneanAssault.fontColor.b)
-							playerBlocks[i].progress:SetColor(RdKGToolDt.dtVars.subterraneanAssault.progressColor.r, RdKGToolDt.dtVars.subterraneanAssault.progressColor.g, RdKGToolDt.dtVars.subterraneanAssault.progressColor.b)
+							playerBlocks[i].timeLabel:SetColor(BeltalowdaDt.dtVars.subterraneanAssault.fontColor.r, BeltalowdaDt.dtVars.subterraneanAssault.fontColor.g, BeltalowdaDt.dtVars.subterraneanAssault.fontColor.b)
+							playerBlocks[i].nameLabel:SetColor(BeltalowdaDt.dtVars.subterraneanAssault.fontColor.r, BeltalowdaDt.dtVars.subterraneanAssault.fontColor.g, BeltalowdaDt.dtVars.subterraneanAssault.fontColor.b)
+							playerBlocks[i].progress:SetColor(BeltalowdaDt.dtVars.subterraneanAssault.progressColor.r, BeltalowdaDt.dtVars.subterraneanAssault.progressColor.g, BeltalowdaDt.dtVars.subterraneanAssault.progressColor.b)
 							--d(players[i].remaining)
 						else
-							playerBlocks[i].timeLabel:SetColor(RdKGToolDt.dtVars.subterraneanAssault2.fontColor.r, RdKGToolDt.dtVars.subterraneanAssault2.fontColor.g, RdKGToolDt.dtVars.subterraneanAssault2.fontColor.b)
-							playerBlocks[i].nameLabel:SetColor(RdKGToolDt.dtVars.subterraneanAssault2.fontColor.r, RdKGToolDt.dtVars.subterraneanAssault2.fontColor.g, RdKGToolDt.dtVars.subterraneanAssault2.fontColor.b)
-							playerBlocks[i].progress:SetColor(RdKGToolDt.dtVars.subterraneanAssault2.progressColor.r, RdKGToolDt.dtVars.subterraneanAssault2.progressColor.g, RdKGToolDt.dtVars.subterraneanAssault2.progressColor.b)
+							playerBlocks[i].timeLabel:SetColor(BeltalowdaDt.dtVars.subterraneanAssault2.fontColor.r, BeltalowdaDt.dtVars.subterraneanAssault2.fontColor.g, BeltalowdaDt.dtVars.subterraneanAssault2.fontColor.b)
+							playerBlocks[i].nameLabel:SetColor(BeltalowdaDt.dtVars.subterraneanAssault2.fontColor.r, BeltalowdaDt.dtVars.subterraneanAssault2.fontColor.g, BeltalowdaDt.dtVars.subterraneanAssault2.fontColor.b)
+							playerBlocks[i].progress:SetColor(BeltalowdaDt.dtVars.subterraneanAssault2.progressColor.r, BeltalowdaDt.dtVars.subterraneanAssault2.progressColor.g, BeltalowdaDt.dtVars.subterraneanAssault2.progressColor.b)
 						end
 						percent = players[i].remaining / (players[i].ending - players[i].started + 5) * 100
 						--d("assault")
-					elseif players[i].buff == RdKGToolDt.constants.TYPE_DEEP_FRISSURE then
+					elseif players[i].buff == BeltalowdaDt.constants.TYPE_DEEP_FRISSURE then
 						if players[i].waveTwo == false then
-							playerBlocks[i].timeLabel:SetColor(RdKGToolDt.dtVars.deepFissure.fontColor.r, RdKGToolDt.dtVars.deepFissure.fontColor.g, RdKGToolDt.dtVars.deepFissure.fontColor.b)
-							playerBlocks[i].nameLabel:SetColor(RdKGToolDt.dtVars.deepFissure.fontColor.r, RdKGToolDt.dtVars.deepFissure.fontColor.g, RdKGToolDt.dtVars.deepFissure.fontColor.b)
-							playerBlocks[i].progress:SetColor(RdKGToolDt.dtVars.deepFissure.progressColor.r, RdKGToolDt.dtVars.deepFissure.progressColor.g, RdKGToolDt.dtVars.deepFissure.progressColor.b)
+							playerBlocks[i].timeLabel:SetColor(BeltalowdaDt.dtVars.deepFissure.fontColor.r, BeltalowdaDt.dtVars.deepFissure.fontColor.g, BeltalowdaDt.dtVars.deepFissure.fontColor.b)
+							playerBlocks[i].nameLabel:SetColor(BeltalowdaDt.dtVars.deepFissure.fontColor.r, BeltalowdaDt.dtVars.deepFissure.fontColor.g, BeltalowdaDt.dtVars.deepFissure.fontColor.b)
+							playerBlocks[i].progress:SetColor(BeltalowdaDt.dtVars.deepFissure.progressColor.r, BeltalowdaDt.dtVars.deepFissure.progressColor.g, BeltalowdaDt.dtVars.deepFissure.progressColor.b)
 							percent = players[i].remaining / (players[i].ending - players[i].started + 5) * 100
 						else
-							playerBlocks[i].timeLabel:SetColor(RdKGToolDt.dtVars.deepFissure2.fontColor.r, RdKGToolDt.dtVars.deepFissure2.fontColor.g, RdKGToolDt.dtVars.deepFissure2.fontColor.b)
-							playerBlocks[i].nameLabel:SetColor(RdKGToolDt.dtVars.deepFissure2.fontColor.r, RdKGToolDt.dtVars.deepFissure2.fontColor.g, RdKGToolDt.dtVars.deepFissure2.fontColor.b)
-							playerBlocks[i].progress:SetColor(RdKGToolDt.dtVars.deepFissure2.progressColor.r, RdKGToolDt.dtVars.deepFissure2.progressColor.g, RdKGToolDt.dtVars.deepFissure2.progressColor.b)
+							playerBlocks[i].timeLabel:SetColor(BeltalowdaDt.dtVars.deepFissure2.fontColor.r, BeltalowdaDt.dtVars.deepFissure2.fontColor.g, BeltalowdaDt.dtVars.deepFissure2.fontColor.b)
+							playerBlocks[i].nameLabel:SetColor(BeltalowdaDt.dtVars.deepFissure2.fontColor.r, BeltalowdaDt.dtVars.deepFissure2.fontColor.g, BeltalowdaDt.dtVars.deepFissure2.fontColor.b)
+							playerBlocks[i].progress:SetColor(BeltalowdaDt.dtVars.deepFissure2.progressColor.r, BeltalowdaDt.dtVars.deepFissure2.progressColor.g, BeltalowdaDt.dtVars.deepFissure2.progressColor.b)
 							percent = players[i].remaining / (players[i].ending - players[i].started + 2) * 100
 						end
 						
@@ -570,14 +570,14 @@ function RdKGToolDt.UiLoop()
 					playerBlocks[i]:SetHidden(false)
 					playerBlocks[i].timeLabel:SetText(string.format("%.1f", timespan))
 					playerBlocks[i].nameLabel:SetText(players[i].name)
-					ZO_StatusBar_SmoothTransition(playerBlocks[i].progress, percent, 100, not RdKGToolDt.dtVars.smoothTransition)
+					ZO_StatusBar_SmoothTransition(playerBlocks[i].progress, percent, 100, not BeltalowdaDt.dtVars.smoothTransition)
 				end
-			elseif RdKGToolDt.dtVars.mode == RdKGToolDt.constants.MODE_DETONATION then
+			elseif BeltalowdaDt.dtVars.mode == BeltalowdaDt.constants.MODE_DETONATION then
 				for i = 1, #players do
 					local timespan = players[i].buffs.specialInformation.proximityDetonation.remaining
 					if playerBlocks[i] == nil then
-						playerBlocks[i] = RdKGToolDt.CreatePlayerBlock(RdKGToolDt.controls.TLW.rootControl, RdKGToolDt.state.width, RdKGToolDt.state.blockHeight, RdKGToolDt.state.font)
-						playerBlocks[i]:SetAnchor(TOPLEFT, RdKGToolDt.controls.TLW.rootControl, TOPLEFT, 0, (i - 1) * RdKGToolDt.state.blockHeight)
+						playerBlocks[i] = BeltalowdaDt.CreatePlayerBlock(BeltalowdaDt.controls.TLW.rootControl, BeltalowdaDt.state.width, BeltalowdaDt.state.blockHeight, BeltalowdaDt.state.font)
+						playerBlocks[i]:SetAnchor(TOPLEFT, BeltalowdaDt.controls.TLW.rootControl, TOPLEFT, 0, (i - 1) * BeltalowdaDt.state.blockHeight)
 					end
 					if timespan < 0 then
 						timespan = 0
@@ -586,28 +586,28 @@ function RdKGToolDt.UiLoop()
 					playerBlocks[i]:SetHidden(false)
 					playerBlocks[i].timeLabel:SetText(string.format("%.1f", timespan))
 					playerBlocks[i].nameLabel:SetText(players[i].name)
-					ZO_StatusBar_SmoothTransition(playerBlocks[i].progress, players[i].buffs.specialInformation.proximityDetonation.remaining / (players[i].buffs.specialInformation.proximityDetonation.ending - players[i].buffs.specialInformation.proximityDetonation.started) * 100, 100, not RdKGToolDt.dtVars.smoothTransition)
+					ZO_StatusBar_SmoothTransition(playerBlocks[i].progress, players[i].buffs.specialInformation.proximityDetonation.remaining / (players[i].buffs.specialInformation.proximityDetonation.ending - players[i].buffs.specialInformation.proximityDetonation.started) * 100, 100, not BeltalowdaDt.dtVars.smoothTransition)
 				end
-			elseif RdKGToolDt.dtVars.mode == RdKGToolDt.constants.MODE_SHALK then
+			elseif BeltalowdaDt.dtVars.mode == BeltalowdaDt.constants.MODE_SHALK then
 				for i = 1, #players do
 					local timespan = 0
 					if playerBlocks[i] == nil then
-						playerBlocks[i] = RdKGToolDt.CreatePlayerBlock(RdKGToolDt.controls.TLW.rootControl, RdKGToolDt.state.width, RdKGToolDt.state.blockHeight, RdKGToolDt.state.font)
-						playerBlocks[i]:SetAnchor(TOPLEFT, RdKGToolDt.controls.TLW.rootControl, TOPLEFT, 0, (i - 1) * RdKGToolDt.state.blockHeight)
+						playerBlocks[i] = BeltalowdaDt.CreatePlayerBlock(BeltalowdaDt.controls.TLW.rootControl, BeltalowdaDt.state.width, BeltalowdaDt.state.blockHeight, BeltalowdaDt.state.font)
+						playerBlocks[i]:SetAnchor(TOPLEFT, BeltalowdaDt.controls.TLW.rootControl, TOPLEFT, 0, (i - 1) * BeltalowdaDt.state.blockHeight)
 					end
 					if players[i].buffs.specialInformation.subterraneanAssault.active == true then
 						timespan = players[i].buffs.specialInformation.subterraneanAssault.remaining
-						playerBlocks[i].timeLabel:SetColor(RdKGToolDt.dtVars.subterraneanAssault.fontColor.r, RdKGToolDt.dtVars.subterraneanAssault.fontColor.g, RdKGToolDt.dtVars.subterraneanAssault.fontColor.b)
-						playerBlocks[i].nameLabel:SetColor(RdKGToolDt.dtVars.subterraneanAssault.fontColor.r, RdKGToolDt.dtVars.subterraneanAssault.fontColor.g, RdKGToolDt.dtVars.subterraneanAssault.fontColor.b)
-						playerBlocks[i].progress:SetColor(RdKGToolDt.dtVars.subterraneanAssault.progressColor.r, RdKGToolDt.dtVars.subterraneanAssault.progressColor.g, RdKGToolDt.dtVars.subterraneanAssault.progressColor.b)
-						ZO_StatusBar_SmoothTransition(playerBlocks[i].progress, players[i].buffs.specialInformation.subterraneanAssault.remaining / (players[i].buffs.specialInformation.subterraneanAssault.ending - players[i].buffs.specialInformation.subterraneanAssault.started) * 100, 100, not RdKGToolDt.dtVars.smoothTransition)
+						playerBlocks[i].timeLabel:SetColor(BeltalowdaDt.dtVars.subterraneanAssault.fontColor.r, BeltalowdaDt.dtVars.subterraneanAssault.fontColor.g, BeltalowdaDt.dtVars.subterraneanAssault.fontColor.b)
+						playerBlocks[i].nameLabel:SetColor(BeltalowdaDt.dtVars.subterraneanAssault.fontColor.r, BeltalowdaDt.dtVars.subterraneanAssault.fontColor.g, BeltalowdaDt.dtVars.subterraneanAssault.fontColor.b)
+						playerBlocks[i].progress:SetColor(BeltalowdaDt.dtVars.subterraneanAssault.progressColor.r, BeltalowdaDt.dtVars.subterraneanAssault.progressColor.g, BeltalowdaDt.dtVars.subterraneanAssault.progressColor.b)
+						ZO_StatusBar_SmoothTransition(playerBlocks[i].progress, players[i].buffs.specialInformation.subterraneanAssault.remaining / (players[i].buffs.specialInformation.subterraneanAssault.ending - players[i].buffs.specialInformation.subterraneanAssault.started) * 100, 100, not BeltalowdaDt.dtVars.smoothTransition)
 						--playerBlocks[i].progress:SetValue(players[i].buffs.specialInformation.subterraneanAssault.remaining / (players[i].buffs.specialInformation.subterraneanAssault.ending - players[i].buffs.specialInformation.subterraneanAssault.started) * 100)
 					elseif players[i].buffs.specialInformation.deepFissure.active == true then
 						timespan = players[i].buffs.specialInformation.deepFissure.remaining
-						playerBlocks[i].timeLabel:SetColor(RdKGToolDt.dtVars.deepFissure.fontColor.r, RdKGToolDt.dtVars.deepFissure.fontColor.g, RdKGToolDt.dtVars.deepFissure.fontColor.b)
-						playerBlocks[i].nameLabel:SetColor(RdKGToolDt.dtVars.deepFissure.fontColor.r, RdKGToolDt.dtVars.deepFissure.fontColor.g, RdKGToolDt.dtVars.deepFissure.fontColor.b)
-						playerBlocks[i].progress:SetColor(RdKGToolDt.dtVars.deepFissure.progressColor.r, RdKGToolDt.dtVars.deepFissure.progressColor.g, RdKGToolDt.dtVars.deepFissure.progressColor.b)
-						ZO_StatusBar_SmoothTransition(playerBlocks[i].progress, players[i].buffs.specialInformation.deepFissure.remaining / (players[i].buffs.specialInformation.deepFissure.ending - players[i].buffs.specialInformation.deepFissure.started) * 100, 100, not RdKGToolDt.dtVars.smoothTransition)
+						playerBlocks[i].timeLabel:SetColor(BeltalowdaDt.dtVars.deepFissure.fontColor.r, BeltalowdaDt.dtVars.deepFissure.fontColor.g, BeltalowdaDt.dtVars.deepFissure.fontColor.b)
+						playerBlocks[i].nameLabel:SetColor(BeltalowdaDt.dtVars.deepFissure.fontColor.r, BeltalowdaDt.dtVars.deepFissure.fontColor.g, BeltalowdaDt.dtVars.deepFissure.fontColor.b)
+						playerBlocks[i].progress:SetColor(BeltalowdaDt.dtVars.deepFissure.progressColor.r, BeltalowdaDt.dtVars.deepFissure.progressColor.g, BeltalowdaDt.dtVars.deepFissure.progressColor.b)
+						ZO_StatusBar_SmoothTransition(playerBlocks[i].progress, players[i].buffs.specialInformation.deepFissure.remaining / (players[i].buffs.specialInformation.deepFissure.ending - players[i].buffs.specialInformation.deepFissure.started) * 100, 100, not BeltalowdaDt.dtVars.smoothTransition)
 					end
 					if timespan < 0 then
 						timespan = 0
@@ -627,124 +627,124 @@ function RdKGToolDt.UiLoop()
 end
 
 --menu interaction
-function RdKGToolDt.GetMenu()
+function BeltalowdaDt.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.DT_HEADER,
+			name = BeltalowdaMenu.constants.DT_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.DT_ENABLED,
-					getFunc = RdKGToolDt.GetDtEnabled,
-					setFunc = RdKGToolDt.SetDtEnabled
+					name = BeltalowdaMenu.constants.DT_ENABLED,
+					getFunc = BeltalowdaDt.GetDtEnabled,
+					setFunc = BeltalowdaDt.SetDtEnabled
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.DT_POSITION_FIXED,
-					getFunc = RdKGToolDt.GetDtPositionLocked,
-					setFunc = RdKGToolDt.SetDtPositionLocked
+					name = BeltalowdaMenu.constants.DT_POSITION_FIXED,
+					getFunc = BeltalowdaDt.GetDtPositionLocked,
+					setFunc = BeltalowdaDt.SetDtPositionLocked
 				},
 				[3] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.DT_PVP_ONLY,
-					getFunc = RdKGToolDt.GetDtPvpOnly,
-					setFunc = RdKGToolDt.SetDtPvpOnly
+					name = BeltalowdaMenu.constants.DT_PVP_ONLY,
+					getFunc = BeltalowdaDt.GetDtPvpOnly,
+					setFunc = BeltalowdaDt.SetDtPvpOnly
 				},
 				[4] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.DT_MODE,
-					choices = RdKGToolDt.GetDtAvailableModes(),
-					getFunc = RdKGToolDt.GetDtSelectedMode,
-					setFunc = RdKGToolDt.SetDtSelectedMode,
+					name = BeltalowdaMenu.constants.DT_MODE,
+					choices = BeltalowdaDt.GetDtAvailableModes(),
+					getFunc = BeltalowdaDt.GetDtSelectedMode,
+					setFunc = BeltalowdaDt.SetDtSelectedMode,
 					width = "full"
 				},
 				[5] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.DT_SIZE,
+					name = BeltalowdaMenu.constants.DT_SIZE,
 					min = 1.0,
 					max = 2.0,
 					step = 0.01,
-					getFunc = RdKGToolDt.GetDtSelectedSize,
-					setFunc = RdKGToolDt.SetDtSelectedSize,
+					getFunc = BeltalowdaDt.GetDtSelectedSize,
+					setFunc = BeltalowdaDt.SetDtSelectedSize,
 					width = "full",
 					decimals = 2,
 					default = 1.0
 				},
 				[6] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.DT_SMOOTH_TRANSITION,
-					getFunc = RdKGToolDt.GetDtSmoothTransition,
-					setFunc = RdKGToolDt.SetDtSmoothTransition
+					name = BeltalowdaMenu.constants.DT_SMOOTH_TRANSITION,
+					getFunc = BeltalowdaDt.GetDtSmoothTransition,
+					setFunc = BeltalowdaDt.SetDtSmoothTransition
 				},
 				[7] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DT_FONT_COLOR_DETONATION,
-					getFunc = RdKGToolDt.GetDtDetonationFontColor,
-					setFunc = RdKGToolDt.SetDtDetonationFontColor,
+					name = BeltalowdaMenu.constants.DT_FONT_COLOR_DETONATION,
+					getFunc = BeltalowdaDt.GetDtDetonationFontColor,
+					setFunc = BeltalowdaDt.SetDtDetonationFontColor,
 					width = "full"
 				},
 				[8] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DT_PROGRESS_COLOR_DETONATION,
-					getFunc = RdKGToolDt.GetDtDetonationProgressColor,
-					setFunc = RdKGToolDt.SetDtDetonationProgressColor,
+					name = BeltalowdaMenu.constants.DT_PROGRESS_COLOR_DETONATION,
+					getFunc = BeltalowdaDt.GetDtDetonationProgressColor,
+					setFunc = BeltalowdaDt.SetDtDetonationProgressColor,
 					width = "full"
 				},
 				[9] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DT_FONT_COLOR_SUBTERRANEAN_ASSAULT,
-					getFunc = RdKGToolDt.GetDtSubterraneanAssaultFontColor,
-					setFunc = RdKGToolDt.SetDtSubterraneanAssaultFontColor,
+					name = BeltalowdaMenu.constants.DT_FONT_COLOR_SUBTERRANEAN_ASSAULT,
+					getFunc = BeltalowdaDt.GetDtSubterraneanAssaultFontColor,
+					setFunc = BeltalowdaDt.SetDtSubterraneanAssaultFontColor,
 					width = "full"
 				},
 				[10] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DT_PROGRESS_COLOR_SUBTERRANEAN_ASSAULT,
-					getFunc = RdKGToolDt.GetDtSubterraneanAssaultProgressColor,
-					setFunc = RdKGToolDt.SetDtSubterraneanAssaultProgressColor,
+					name = BeltalowdaMenu.constants.DT_PROGRESS_COLOR_SUBTERRANEAN_ASSAULT,
+					getFunc = BeltalowdaDt.GetDtSubterraneanAssaultProgressColor,
+					setFunc = BeltalowdaDt.SetDtSubterraneanAssaultProgressColor,
 					width = "full"
 				},
 				[11] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DT_FONT_COLOR_SUBTERRANEAN_ASSAULT2,
-					getFunc = RdKGToolDt.GetDtSubterraneanAssault2FontColor,
-					setFunc = RdKGToolDt.SetDtSubterraneanAssault2FontColor,
+					name = BeltalowdaMenu.constants.DT_FONT_COLOR_SUBTERRANEAN_ASSAULT2,
+					getFunc = BeltalowdaDt.GetDtSubterraneanAssault2FontColor,
+					setFunc = BeltalowdaDt.SetDtSubterraneanAssault2FontColor,
 					width = "full"
 				},
 				[12] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DT_PROGRESS_COLOR_SUBTERRANEAN_ASSAULT2,
-					getFunc = RdKGToolDt.GetDtSubterraneanAssault2ProgressColor,
-					setFunc = RdKGToolDt.SetDtSubterraneanAssault2ProgressColor,
+					name = BeltalowdaMenu.constants.DT_PROGRESS_COLOR_SUBTERRANEAN_ASSAULT2,
+					getFunc = BeltalowdaDt.GetDtSubterraneanAssault2ProgressColor,
+					setFunc = BeltalowdaDt.SetDtSubterraneanAssault2ProgressColor,
 					width = "full"
 				},
 				[13] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DT_FONT_COLOR_DEEP_FISSURE,
-					getFunc = RdKGToolDt.GetDtDeepFissureFontColor,
-					setFunc = RdKGToolDt.SetDtDeepFissureFontColor,
+					name = BeltalowdaMenu.constants.DT_FONT_COLOR_DEEP_FISSURE,
+					getFunc = BeltalowdaDt.GetDtDeepFissureFontColor,
+					setFunc = BeltalowdaDt.SetDtDeepFissureFontColor,
 					width = "full"
 				},
 				[14] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DT_PROGRESS_COLOR_DEEP_FISSURE,
-					getFunc = RdKGToolDt.GetDtDeepFissureProgressColor,
-					setFunc = RdKGToolDt.SetDtDeepFissureProgressColor,
+					name = BeltalowdaMenu.constants.DT_PROGRESS_COLOR_DEEP_FISSURE,
+					getFunc = BeltalowdaDt.GetDtDeepFissureProgressColor,
+					setFunc = BeltalowdaDt.SetDtDeepFissureProgressColor,
 					width = "full"
 				},
 				[15] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DT_FONT_COLOR_DEEP_FISSURE2,
-					getFunc = RdKGToolDt.GetDtDeepFissure2FontColor,
-					setFunc = RdKGToolDt.SetDtDeepFissure2FontColor,
+					name = BeltalowdaMenu.constants.DT_FONT_COLOR_DEEP_FISSURE2,
+					getFunc = BeltalowdaDt.GetDtDeepFissure2FontColor,
+					setFunc = BeltalowdaDt.SetDtDeepFissure2FontColor,
 					width = "full"
 				},
 				[16] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.DT_PROGRESS_COLOR_DEEP_FISSURE2,
-					getFunc = RdKGToolDt.GetDtDeepFissure2ProgressColor,
-					setFunc = RdKGToolDt.SetDtDeepFissure2ProgressColor,
+					name = BeltalowdaMenu.constants.DT_PROGRESS_COLOR_DEEP_FISSURE2,
+					getFunc = BeltalowdaDt.GetDtDeepFissure2ProgressColor,
+					setFunc = BeltalowdaDt.SetDtDeepFissure2ProgressColor,
 					width = "full"
 				}
 			}
@@ -753,155 +753,155 @@ function RdKGToolDt.GetMenu()
 	return menu
 end
 
-function RdKGToolDt.GetDtEnabled()
-	return RdKGToolDt.dtVars.enabled
+function BeltalowdaDt.GetDtEnabled()
+	return BeltalowdaDt.dtVars.enabled
 end
 
-function RdKGToolDt.SetDtEnabled(value)
-	RdKGToolDt.SetEnabled(value)
+function BeltalowdaDt.SetDtEnabled(value)
+	BeltalowdaDt.SetEnabled(value)
 end
 
-function RdKGToolDt.GetDtPositionLocked()
-	return RdKGToolDt.dtVars.positionLocked
+function BeltalowdaDt.GetDtPositionLocked()
+	return BeltalowdaDt.dtVars.positionLocked
 end
 
-function RdKGToolDt.SetDtPositionLocked(value)
-	RdKGToolDt.SetPositionLocked(value)
+function BeltalowdaDt.SetDtPositionLocked(value)
+	BeltalowdaDt.SetPositionLocked(value)
 end
 
-function RdKGToolDt.GetDtPvpOnly()
-	return RdKGToolDt.dtVars.pvpOnly
+function BeltalowdaDt.GetDtPvpOnly()
+	return BeltalowdaDt.dtVars.pvpOnly
 end
 
-function RdKGToolDt.SetDtPvpOnly(value)
-	RdKGToolDt.dtVars.pvpOnly = value
-	RdKGToolDt.SetEnabled(RdKGToolDt.dtVars.enabled)
+function BeltalowdaDt.SetDtPvpOnly(value)
+	BeltalowdaDt.dtVars.pvpOnly = value
+	BeltalowdaDt.SetEnabled(BeltalowdaDt.dtVars.enabled)
 end
 
-function RdKGToolDt.GetDtAvailableModes()
-	return RdKGToolDt.constants.modes
+function BeltalowdaDt.GetDtAvailableModes()
+	return BeltalowdaDt.constants.modes
 end
 
-function RdKGToolDt.GetDtSelectedMode()
-	return RdKGToolDt.constants.modes[RdKGToolDt.dtVars.mode]
+function BeltalowdaDt.GetDtSelectedMode()
+	return BeltalowdaDt.constants.modes[BeltalowdaDt.dtVars.mode]
 end
 
-function RdKGToolDt.SetDtSelectedMode(value)
+function BeltalowdaDt.SetDtSelectedMode(value)
 	if value ~= nil then
-		for i = 1, #RdKGToolDt.constants.modes do
-			if RdKGToolDt.constants.modes[i] == value then
-				RdKGToolDt.dtVars.mode = i
-				RdKGToolDt.AdjustMode()
+		for i = 1, #BeltalowdaDt.constants.modes do
+			if BeltalowdaDt.constants.modes[i] == value then
+				BeltalowdaDt.dtVars.mode = i
+				BeltalowdaDt.AdjustMode()
 			end
 		end
 	end
 end
 
-function RdKGToolDt.GetDtSelectedSize()
-	return RdKGToolDt.dtVars.size
+function BeltalowdaDt.GetDtSelectedSize()
+	return BeltalowdaDt.dtVars.size
 end
 
-function RdKGToolDt.SetDtSelectedSize(value)
-	if value ~= nil and value >= RdKGToolDt.constants.size.SMALL and value <= RdKGToolDt.constants.size.BIG then
-		RdKGToolDt.dtVars.size = value
-		RdKGToolDt.AdjustSize()
+function BeltalowdaDt.SetDtSelectedSize(value)
+	if value ~= nil and value >= BeltalowdaDt.constants.size.SMALL and value <= BeltalowdaDt.constants.size.BIG then
+		BeltalowdaDt.dtVars.size = value
+		BeltalowdaDt.AdjustSize()
 	end
 end
 
-function RdKGToolDt.GetDtSmoothTransition()
-	return RdKGToolDt.dtVars.smoothTransition
+function BeltalowdaDt.GetDtSmoothTransition()
+	return BeltalowdaDt.dtVars.smoothTransition
 end
 
-function RdKGToolDt.SetDtSmoothTransition(value)
-	RdKGToolDt.dtVars.smoothTransition = value
+function BeltalowdaDt.SetDtSmoothTransition(value)
+	BeltalowdaDt.dtVars.smoothTransition = value
 end
 
-function RdKGToolDt.GetDtDetonationFontColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDt.dtVars.detonation.fontColor)
+function BeltalowdaDt.GetDtDetonationFontColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDt.dtVars.detonation.fontColor)
 end
 
-function RdKGToolDt.SetDtDetonationFontColor(r, g, b)
-	RdKGToolDt.dtVars.detonation.fontColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDt.AdjustColors()
+function BeltalowdaDt.SetDtDetonationFontColor(r, g, b)
+	BeltalowdaDt.dtVars.detonation.fontColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.GetDtDetonationProgressColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDt.dtVars.detonation.progressColor)
+function BeltalowdaDt.GetDtDetonationProgressColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDt.dtVars.detonation.progressColor)
 end
 
-function RdKGToolDt.SetDtDetonationProgressColor(r, g, b)
-	RdKGToolDt.dtVars.detonation.progressColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDt.AdjustColors()
+function BeltalowdaDt.SetDtDetonationProgressColor(r, g, b)
+	BeltalowdaDt.dtVars.detonation.progressColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.GetDtSubterraneanAssaultFontColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDt.dtVars.subterraneanAssault.fontColor)
+function BeltalowdaDt.GetDtSubterraneanAssaultFontColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDt.dtVars.subterraneanAssault.fontColor)
 end
 
-function RdKGToolDt.SetDtSubterraneanAssaultFontColor(r, g, b)
-	RdKGToolDt.dtVars.subterraneanAssault.fontColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDt.AdjustColors()
+function BeltalowdaDt.SetDtSubterraneanAssaultFontColor(r, g, b)
+	BeltalowdaDt.dtVars.subterraneanAssault.fontColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.GetDtSubterraneanAssaultProgressColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDt.dtVars.subterraneanAssault.progressColor)
+function BeltalowdaDt.GetDtSubterraneanAssaultProgressColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDt.dtVars.subterraneanAssault.progressColor)
 end
 
-function RdKGToolDt.SetDtSubterraneanAssaultProgressColor(r, g, b)
-	RdKGToolDt.dtVars.subterraneanAssault.progressColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDt.AdjustColors()
+function BeltalowdaDt.SetDtSubterraneanAssaultProgressColor(r, g, b)
+	BeltalowdaDt.dtVars.subterraneanAssault.progressColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.GetDtSubterraneanAssault2FontColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDt.dtVars.subterraneanAssault2.fontColor)
+function BeltalowdaDt.GetDtSubterraneanAssault2FontColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDt.dtVars.subterraneanAssault2.fontColor)
 end
 
-function RdKGToolDt.SetDtSubterraneanAssault2FontColor(r, g, b)
-	RdKGToolDt.dtVars.subterraneanAssault2.fontColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDt.AdjustColors()
+function BeltalowdaDt.SetDtSubterraneanAssault2FontColor(r, g, b)
+	BeltalowdaDt.dtVars.subterraneanAssault2.fontColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.GetDtSubterraneanAssault2ProgressColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDt.dtVars.subterraneanAssault2.progressColor)
+function BeltalowdaDt.GetDtSubterraneanAssault2ProgressColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDt.dtVars.subterraneanAssault2.progressColor)
 end
 
-function RdKGToolDt.SetDtSubterraneanAssault2ProgressColor(r, g, b)
-	RdKGToolDt.dtVars.subterraneanAssault2.progressColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDt.AdjustColors()
+function BeltalowdaDt.SetDtSubterraneanAssault2ProgressColor(r, g, b)
+	BeltalowdaDt.dtVars.subterraneanAssault2.progressColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.GetDtDeepFissureFontColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDt.dtVars.deepFissure.fontColor)
+function BeltalowdaDt.GetDtDeepFissureFontColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDt.dtVars.deepFissure.fontColor)
 end
 
-function RdKGToolDt.SetDtDeepFissureFontColor(r, g, b)
-	RdKGToolDt.dtVars.deepFissure.fontColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDt.AdjustColors()
+function BeltalowdaDt.SetDtDeepFissureFontColor(r, g, b)
+	BeltalowdaDt.dtVars.deepFissure.fontColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.GetDtDeepFissureProgressColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDt.dtVars.deepFissure.progressColor)
+function BeltalowdaDt.GetDtDeepFissureProgressColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDt.dtVars.deepFissure.progressColor)
 end
 
-function RdKGToolDt.SetDtDeepFissureProgressColor(r, g, b)
-	RdKGToolDt.dtVars.deepFissure.progressColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDt.AdjustColors()
+function BeltalowdaDt.SetDtDeepFissureProgressColor(r, g, b)
+	BeltalowdaDt.dtVars.deepFissure.progressColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.GetDtDeepFissure2FontColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDt.dtVars.deepFissure2.fontColor)
+function BeltalowdaDt.GetDtDeepFissure2FontColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDt.dtVars.deepFissure2.fontColor)
 end
 
-function RdKGToolDt.SetDtDeepFissure2FontColor(r, g, b)
-	RdKGToolDt.dtVars.deepFissure2.fontColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDt.AdjustColors()
+function BeltalowdaDt.SetDtDeepFissure2FontColor(r, g, b)
+	BeltalowdaDt.dtVars.deepFissure2.fontColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDt.AdjustColors()
 end
 
-function RdKGToolDt.GetDtDeepFissure2ProgressColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolDt.dtVars.deepFissure2.progressColor)
+function BeltalowdaDt.GetDtDeepFissure2ProgressColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaDt.dtVars.deepFissure2.progressColor)
 end
 
-function RdKGToolDt.SetDtDeepFissure2ProgressColor(r, g, b)
-	RdKGToolDt.dtVars.deepFissure2.progressColor = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolDt.AdjustColors()
+function BeltalowdaDt.SetDtDeepFissure2ProgressColor(r, g, b)
+	BeltalowdaDt.dtVars.deepFissure2.progressColor = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaDt.AdjustColors()
 end

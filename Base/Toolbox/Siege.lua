@@ -1,24 +1,24 @@
--- RdK Group Tool Siege
+-- Beltalowda Siege
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGTool.toolbox = RdKGTool.toolbox or {}
-local RdKGToolTB = RdKGTool.toolbox
-RdKGToolTB.siege = RdKGToolTB.siege or {}
-local RdKGToolSiege = RdKGToolTB.siege
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+Beltalowda.toolbox = Beltalowda.toolbox or {}
+local BeltalowdaTB = Beltalowda.toolbox
+BeltalowdaTB.siege = BeltalowdaTB.siege or {}
+local BeltalowdaSiege = BeltalowdaTB.siege
 
-RdKGToolSiege.constants = RdKGToolSiege.constants or {}
+BeltalowdaSiege.constants = BeltalowdaSiege.constants or {}
 
-function RdKGToolSiege.Initialize()
-	ZO_CreateStringId("SI_BINDING_NAME_RDKGTOOL_TOGGLE_SIEGE_CAMERA", RdKGToolSiege.constants.TOGGLE_SIEGE)
+function BeltalowdaSiege.Initialize()
+	ZO_CreateStringId("SI_BINDING_NAME_RDKGTOOL_TOGGLE_SIEGE_CAMERA", BeltalowdaSiege.constants.TOGGLE_SIEGE)
 end
 
-function RdKGToolSiege.GetDefaults()
+function BeltalowdaSiege.GetDefaults()
 	return nil
 end
 
-function RdKGToolSiege.ToggleCamera()
+function BeltalowdaSiege.ToggleCamera()
 	local siegeWeaponCamera = GetSetting(SETTING_TYPE_CAMERA, CAMERA_SETTING_THIRD_PERSON_SIEGE_WEAPONRY)
 	if siegeWeaponCamera == "1" then
 		siegeWeaponCamera = "0"
@@ -30,6 +30,6 @@ function RdKGToolSiege.ToggleCamera()
 end
 
 --menu interactions
-function RdKGToolSiege.GetMenu()
+function BeltalowdaSiege.GetMenu()
 	return nil
 end

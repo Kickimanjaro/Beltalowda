@@ -1,36 +1,36 @@
--- RdK Group Tool Alliance Color
+-- Beltalowda Alliance Color
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.allianceColor = RdKGToolUtil.allianceColor or {}
-local RdKGToolAC = RdKGToolUtil.allianceColor
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGToolUtil.math = RdKGToolUtil.math or {}
-local RdKGToolMath = RdKGToolUtil.math
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.allianceColor = BeltalowdaUtil.allianceColor or {}
+local BeltalowdaAC = BeltalowdaUtil.allianceColor
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+BeltalowdaUtil.math = BeltalowdaUtil.math or {}
+local BeltalowdaMath = BeltalowdaUtil.math
 
-RdKGToolAC.callbackName = RdKGTool.addonName .. "UtilAllianceColor"
+BeltalowdaAC.callbackName = Beltalowda.addonName .. "UtilAllianceColor"
 
-RdKGToolAC.config = {}
+BeltalowdaAC.config = {}
 
-RdKGToolAC.state = {}
-RdKGToolAC.state.initialized = false
-RdKGToolAC.state.adColor = "FFFFFF"
-RdKGToolAC.state.epColor = "FFFFFF"
-RdKGToolAC.state.dcColor = "FFFFFF"
-RdKGToolAC.state.noAllianceColor = "FFFFFF"
+BeltalowdaAC.state = {}
+BeltalowdaAC.state.initialized = false
+BeltalowdaAC.state.adColor = "FFFFFF"
+BeltalowdaAC.state.epColor = "FFFFFF"
+BeltalowdaAC.state.dcColor = "FFFFFF"
+BeltalowdaAC.state.noAllianceColor = "FFFFFF"
 
-RdKGToolAC.constants = RdKGToolAC.constants or {}
+BeltalowdaAC.constants = BeltalowdaAC.constants or {}
 
-function RdKGToolAC.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolAC.callbackName, RdKGToolAC.OnProfileChanged)
+function BeltalowdaAC.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaAC.callbackName, BeltalowdaAC.OnProfileChanged)
 	
-	RdKGToolAC.UpdateColors()
+	BeltalowdaAC.UpdateColors()
 end
 
-function RdKGToolAC.GetDefaults()
+function BeltalowdaAC.GetDefaults()
 	local defaults = {}
 	defaults.ad = {}
 	defaults.ad.r = 0.734375
@@ -51,93 +51,93 @@ function RdKGToolAC.GetDefaults()
 	return defaults
 end
 
-function RdKGToolAC.UpdateColors()
-	RdKGToolAC.state.adColor = RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.ad.r)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.ad.g)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.ad.b))
-	RdKGToolAC.state.epColor = RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.ep.r)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.ep.g)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.ep.b))
-	RdKGToolAC.state.dcColor = RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.dc.r)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.dc.g)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.dc.b))
-	RdKGToolAC.state.noAllianceColor = RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.noAlliance.r)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.noAlliance.g)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolAC.acVars.noAlliance.b))
+function BeltalowdaAC.UpdateColors()
+	BeltalowdaAC.state.adColor = BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.ad.r)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.ad.g)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.ad.b))
+	BeltalowdaAC.state.epColor = BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.ep.r)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.ep.g)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.ep.b))
+	BeltalowdaAC.state.dcColor = BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.dc.r)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.dc.g)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.dc.b))
+	BeltalowdaAC.state.noAllianceColor = BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.noAlliance.r)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.noAlliance.g)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaAC.acVars.noAlliance.b))
 end
 
-function RdKGToolAC.GetColorForAlliance(alliance)
+function BeltalowdaAC.GetColorForAlliance(alliance)
 	if alliance == ALLIANCE_ALDMERI_DOMINION then
-		return RdKGToolAC.acVars.ad
+		return BeltalowdaAC.acVars.ad
 	elseif alliance == ALLIANCE_EBONHEART_PACT then
-		return RdKGToolAC.acVars.ep
+		return BeltalowdaAC.acVars.ep
 	elseif alliance == ALLIANCE_DAGGERFALL_COVENANT then
-		return RdKGToolAC.acVars.dc
+		return BeltalowdaAC.acVars.dc
 	else
-		return RdKGToolAC.acVars.noAlliance
+		return BeltalowdaAC.acVars.noAlliance
 	end
 end
 
-function RdKGToolAC.GetHexColorForAlliance(alliance)
+function BeltalowdaAC.GetHexColorForAlliance(alliance)
 	if alliance == ALLIANCE_ALDMERI_DOMINION then
-		return RdKGToolAC.state.adColor
+		return BeltalowdaAC.state.adColor
 	elseif alliance == ALLIANCE_EBONHEART_PACT then
-		return RdKGToolAC.state.epColor
+		return BeltalowdaAC.state.epColor
 	elseif alliance == ALLIANCE_DAGGERFALL_COVENANT then
-		return RdKGToolAC.state.dcColor
+		return BeltalowdaAC.state.dcColor
 	else
-		return RdKGToolAC.state.noAllianceColor
+		return BeltalowdaAC.state.noAllianceColor
 	end
 end
 
-function RdKGToolAC.GetNoAllianceColor()
-	return RdKGToolAC.acVars.noAlliance
+function BeltalowdaAC.GetNoAllianceColor()
+	return BeltalowdaAC.acVars.noAlliance
 end
 
-function RdKGToolAC.GetNoAllianceHexColor()
-	return RdKGToolAC.state.noAllianceColor
+function BeltalowdaAC.GetNoAllianceHexColor()
+	return BeltalowdaAC.state.noAllianceColor
 end
 
-function RdKGToolAC.DyeAllianceString(message, alliance)
+function BeltalowdaAC.DyeAllianceString(message, alliance)
 	if message ~= nil and alliance ~= nil then
-		return string.format("|c%s%s|r", RdKGToolAC.GetHexColorForAlliance(alliance), message)
+		return string.format("|c%s%s|r", BeltalowdaAC.GetHexColorForAlliance(alliance), message)
 	end
 	return nil
 end
 
 --callbacks
-function RdKGToolAC.OnProfileChanged(currentProfile)
+function BeltalowdaAC.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolAC.acVars = currentProfile.util.allianceColor
-		RdKGToolAC.UpdateColors()
+		BeltalowdaAC.acVars = currentProfile.util.allianceColor
+		BeltalowdaAC.UpdateColors()
 	end
 end
 
 --menu interaction
-function RdKGToolAC.GetMenu()
+function BeltalowdaAC.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.AC_HEADER,
+			name = BeltalowdaMenu.constants.AC_HEADER,
 			controls = {
 				[1] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.AC_DC_COLOR,
-					getFunc = RdKGToolAC.GetAcDCColor,
-					setFunc = RdKGToolAC.SetAcDCColor,
+					name = BeltalowdaMenu.constants.AC_DC_COLOR,
+					getFunc = BeltalowdaAC.GetAcDCColor,
+					setFunc = BeltalowdaAC.SetAcDCColor,
 					width = "full"
 				},
 				[2] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.AC_EP_COLOR,
-					getFunc = RdKGToolAC.GetAcEPColor,
-					setFunc = RdKGToolAC.SetAcEPColor,
+					name = BeltalowdaMenu.constants.AC_EP_COLOR,
+					getFunc = BeltalowdaAC.GetAcEPColor,
+					setFunc = BeltalowdaAC.SetAcEPColor,
 					width = "full"
 				},
 				[3] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.AC_AD_COLOR,
-					getFunc = RdKGToolAC.GetAcADColor,
-					setFunc = RdKGToolAC.SetAcADColor,
+					name = BeltalowdaMenu.constants.AC_AD_COLOR,
+					getFunc = BeltalowdaAC.GetAcADColor,
+					setFunc = BeltalowdaAC.SetAcADColor,
 					width = "full"
 				},
 				[4] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.AC_NO_ALLIANCE_COLOR,
-					getFunc = RdKGToolAC.GetAcNoAllianceColor,
-					setFunc = RdKGToolAC.SetAcNoAllianceColor,
+					name = BeltalowdaMenu.constants.AC_NO_ALLIANCE_COLOR,
+					getFunc = BeltalowdaAC.GetAcNoAllianceColor,
+					setFunc = BeltalowdaAC.SetAcNoAllianceColor,
 					width = "full"
 				}
 			}
@@ -146,38 +146,38 @@ function RdKGToolAC.GetMenu()
 	return menu
 end
 
-function RdKGToolAC.GetAcADColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolAC.acVars.ad)
+function BeltalowdaAC.GetAcADColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaAC.acVars.ad)
 end
 
-function RdKGToolAC.SetAcADColor(r, g, b)
-	RdKGToolAC.acVars.ad = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolAC.UpdateColors()
+function BeltalowdaAC.SetAcADColor(r, g, b)
+	BeltalowdaAC.acVars.ad = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaAC.UpdateColors()
 end
 
-function RdKGToolAC.GetAcEPColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolAC.acVars.ep)
+function BeltalowdaAC.GetAcEPColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaAC.acVars.ep)
 end
 
-function RdKGToolAC.SetAcEPColor(r, g, b)
-	RdKGToolAC.acVars.ep = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolAC.UpdateColors()
+function BeltalowdaAC.SetAcEPColor(r, g, b)
+	BeltalowdaAC.acVars.ep = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaAC.UpdateColors()
 end
 
-function RdKGToolAC.GetAcDCColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolAC.acVars.dc)
+function BeltalowdaAC.GetAcDCColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaAC.acVars.dc)
 end
 
-function RdKGToolAC.SetAcDCColor(r, g, b)
-	RdKGToolAC.acVars.dc = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolAC.UpdateColors()
+function BeltalowdaAC.SetAcDCColor(r, g, b)
+	BeltalowdaAC.acVars.dc = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaAC.UpdateColors()
 end
 
-function RdKGToolAC.GetAcNoAllianceColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolAC.acVars.noAlliance)
+function BeltalowdaAC.GetAcNoAllianceColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaAC.acVars.noAlliance)
 end
 
-function RdKGToolAC.SetAcNoAllianceColor(r, g, b)
-	RdKGToolAC.acVars.noAlliance = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolAC.UpdateColors()
+function BeltalowdaAC.SetAcNoAllianceColor(r, g, b)
+	BeltalowdaAC.acVars.noAlliance = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaAC.UpdateColors()
 end

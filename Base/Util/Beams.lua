@@ -1,121 +1,121 @@
--- RdK Group Tool Util Beams
+-- Beltalowda Util Beams
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.beams = RdKGToolUtil.beams or {}
-local RdKGToolBeams = RdKGToolUtil.beams
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.beams = BeltalowdaUtil.beams or {}
+local BeltalowdaBeams = BeltalowdaUtil.beams
 
-RdKGToolBeams.constants = {}
-RdKGToolBeams.constants.beams = {}
-RdKGToolBeams.constants.beams.BEAM_1 = 1
-RdKGToolBeams.constants.beams.BEAM_2 = 2
-RdKGToolBeams.constants.beams.BEAM_3 = 3
-RdKGToolBeams.constants.beams.BEAM_4 = 4
-RdKGToolBeams.constants.beams.BEAM_5 = 5
-RdKGToolBeams.constants.beams.BEAM_6 = 6
-RdKGToolBeams.constants.beams.BEAM_7 = 7
-RdKGToolBeams.constants.beams.BEAM_8 = 8
-RdKGToolBeams.constants.beams.BEAM_9 = 9
-RdKGToolBeams.constants.beams.BEAM_10 = 10
-RdKGToolBeams.constants.BEAM = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_1] = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_1].texture = "RdKGroupTool/Art/3DObjects/Beam1.dds"
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_1].usesDepthBuffer = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_1].ignoreSize = false
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_1].height = 256
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_1].width = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_1].heightOffset = 0
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_2] = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_2].texture = "RdKGroupTool/Art/3DObjects/Beam2.dds"
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_2].usesDepthBuffer = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_2].ignoreSize = false
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_2].height = 256
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_2].width = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_2].heightOffset = 0
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_3] = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_3].texture = "RdKGroupTool/Art/3DObjects/Beam3.dds"
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_3].usesDepthBuffer = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_3].ignoreSize = false
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_3].height = 256
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_3].width = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_3].heightOffset = 0
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_4] = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_4].texture = "RdKGroupTool/Art/3DObjects/Beam4.dds"
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_4].usesDepthBuffer = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_4].ignoreSize = false
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_4].height = 256
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_4].width = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_4].heightOffset = 0
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_5] = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_5].texture = "RdKGroupTool/Art/3DObjects/Circle1.dds"
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_5].usesDepthBuffer = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_5].ignoreSize = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_5].height = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_5].width = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_5].heightOffset = 4
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_6] = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_6].texture = "RdKGroupTool/Art/3DObjects/Circle1.dds"
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_6].usesDepthBuffer = false
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_6].ignoreSize = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_6].height = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_6].width = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_6].heightOffset = 4
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_7] = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_7].texture = "RdKGroupTool/Art/3DObjects/Circle2.dds"
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_7].usesDepthBuffer = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_7].ignoreSize = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_7].height = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_7].width = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_7].heightOffset = 4
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_8] = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_8].texture = "RdKGroupTool/Art/3DObjects/Circle2.dds"
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_8].usesDepthBuffer = false
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_8].ignoreSize = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_8].height = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_8].width = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_8].heightOffset = 4
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_9] = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_9].texture = "RdKGroupTool/Art/3DObjects/Arrows1.dds"
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_9].usesDepthBuffer = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_9].ignoreSize = false
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_9].height = 128
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_9].width = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_9].heightOffset = -2
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_10] = {}
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_10].texture = "RdKGroupTool/Art/3DObjects/Arrows2.dds"
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_10].usesDepthBuffer = true
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_10].ignoreSize = false
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_10].height = 128
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_10].width = 1
-RdKGToolBeams.constants.BEAM[RdKGToolBeams.constants.beams.BEAM_10].heightOffset = -2
+BeltalowdaBeams.constants = {}
+BeltalowdaBeams.constants.beams = {}
+BeltalowdaBeams.constants.beams.BEAM_1 = 1
+BeltalowdaBeams.constants.beams.BEAM_2 = 2
+BeltalowdaBeams.constants.beams.BEAM_3 = 3
+BeltalowdaBeams.constants.beams.BEAM_4 = 4
+BeltalowdaBeams.constants.beams.BEAM_5 = 5
+BeltalowdaBeams.constants.beams.BEAM_6 = 6
+BeltalowdaBeams.constants.beams.BEAM_7 = 7
+BeltalowdaBeams.constants.beams.BEAM_8 = 8
+BeltalowdaBeams.constants.beams.BEAM_9 = 9
+BeltalowdaBeams.constants.beams.BEAM_10 = 10
+BeltalowdaBeams.constants.BEAM = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_1] = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_1].texture = "Beltalowda/Art/3DObjects/Beam1.dds"
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_1].usesDepthBuffer = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_1].ignoreSize = false
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_1].height = 256
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_1].width = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_1].heightOffset = 0
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_2] = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_2].texture = "Beltalowda/Art/3DObjects/Beam2.dds"
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_2].usesDepthBuffer = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_2].ignoreSize = false
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_2].height = 256
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_2].width = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_2].heightOffset = 0
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_3] = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_3].texture = "Beltalowda/Art/3DObjects/Beam3.dds"
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_3].usesDepthBuffer = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_3].ignoreSize = false
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_3].height = 256
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_3].width = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_3].heightOffset = 0
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_4] = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_4].texture = "Beltalowda/Art/3DObjects/Beam4.dds"
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_4].usesDepthBuffer = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_4].ignoreSize = false
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_4].height = 256
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_4].width = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_4].heightOffset = 0
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_5] = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_5].texture = "Beltalowda/Art/3DObjects/Circle1.dds"
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_5].usesDepthBuffer = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_5].ignoreSize = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_5].height = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_5].width = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_5].heightOffset = 4
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_6] = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_6].texture = "Beltalowda/Art/3DObjects/Circle1.dds"
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_6].usesDepthBuffer = false
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_6].ignoreSize = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_6].height = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_6].width = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_6].heightOffset = 4
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_7] = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_7].texture = "Beltalowda/Art/3DObjects/Circle2.dds"
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_7].usesDepthBuffer = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_7].ignoreSize = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_7].height = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_7].width = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_7].heightOffset = 4
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_8] = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_8].texture = "Beltalowda/Art/3DObjects/Circle2.dds"
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_8].usesDepthBuffer = false
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_8].ignoreSize = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_8].height = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_8].width = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_8].heightOffset = 4
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_9] = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_9].texture = "Beltalowda/Art/3DObjects/Arrows1.dds"
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_9].usesDepthBuffer = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_9].ignoreSize = false
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_9].height = 128
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_9].width = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_9].heightOffset = -2
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_10] = {}
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_10].texture = "Beltalowda/Art/3DObjects/Arrows2.dds"
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_10].usesDepthBuffer = true
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_10].ignoreSize = false
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_10].height = 128
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_10].width = 1
+BeltalowdaBeams.constants.BEAM[BeltalowdaBeams.constants.beams.BEAM_10].heightOffset = -2
 
-function RdKGToolBeams.GetBeamByBeamId(beamId)
-	return RdKGToolBeams.constants.BEAM[beamId]
+function BeltalowdaBeams.GetBeamByBeamId(beamId)
+	return BeltalowdaBeams.constants.BEAM[beamId]
 end
 
-function RdKGToolBeams.GetBeamIds()
-	return RdKGToolBeams.constants.beams
+function BeltalowdaBeams.GetBeamIds()
+	return BeltalowdaBeams.constants.beams
 end
 
-function RdKGToolBeams.GetBeams()
-	return RdKGToolBeams.constants.BEAM
+function BeltalowdaBeams.GetBeams()
+	return BeltalowdaBeams.constants.BEAM
 end
 
-function RdKGToolBeams.GetBeamNames()
+function BeltalowdaBeams.GetBeamNames()
 	local beams = {}
-	for i = 1, #RdKGToolBeams.constants.BEAM do
-		beams[i] = RdKGToolBeams.constants.BEAM[i].name
+	for i = 1, #BeltalowdaBeams.constants.BEAM do
+		beams[i] = BeltalowdaBeams.constants.BEAM[i].name
 	end
 	return beams
 end
 
-function RdKGToolBeams.GetBeamIdByName(name)
+function BeltalowdaBeams.GetBeamIdByName(name)
 	local index = 0
 	if name ~= nil then
-		for i = 1, #RdKGToolBeams.constants.BEAM do
-			if RdKGToolBeams.constants.BEAM[i].name == name then
+		for i = 1, #BeltalowdaBeams.constants.BEAM do
+			if BeltalowdaBeams.constants.BEAM[i].name == name then
 				index = i
 				break
 			end

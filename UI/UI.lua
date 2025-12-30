@@ -1,15 +1,15 @@
--- RdK Group Tool UI
+-- Beltalowda UI
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.ui = RdKGTool.ui or {}
+Beltalowda = Beltalowda or {}
+Beltalowda.ui = Beltalowda.ui or {}
 
-local RdKGToolUI = RdKGTool.ui
+local BeltalowdaUI = Beltalowda.ui
 
-function RdKGToolUI.Initialize()
+function BeltalowdaUI.Initialize()
 
 end
 
-function RdKGToolUI.GetDefaults()
+function BeltalowdaUI.GetDefaults()
 	return nil
 end

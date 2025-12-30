@@ -1,83 +1,83 @@
--- RdK Group Tool Group
+-- Beltalowda Group
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
+Beltalowda = Beltalowda or {}
 
-RdKGTool.group = RdKGTool.group or {}
+Beltalowda.group = Beltalowda.group or {}
 
-local RdKGToolGroup = RdKGTool.group
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
+local BeltalowdaGroup = Beltalowda.group
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
 
 
-function RdKGToolGroup.Initialize()
-	RdKGToolGroup.crown.Initialize()
-	RdKGToolGroup.ai.Initialize()
-	RdKGToolGroup.ftcv.Initialize()
-	RdKGToolGroup.ftcw.Initialize()
-	RdKGToolGroup.ftca.Initialize()
-	RdKGToolGroup.ftcb.Initialize()
-	RdKGToolGroup.dbo.Initialize()
-	RdKGToolGroup.rt.Initialize()
-	RdKGToolGroup.ro.Initialize()
-	RdKGToolGroup.hdm.Initialize()
-	RdKGToolGroup.po.Initialize()
-	RdKGToolGroup.dt.Initialize()
-	RdKGToolGroup.gb.Initialize()
-	RdKGToolGroup.isdp.Initialize()
+function BeltalowdaGroup.Initialize()
+	BeltalowdaGroup.crown.Initialize()
+	BeltalowdaGroup.ai.Initialize()
+	BeltalowdaGroup.ftcv.Initialize()
+	BeltalowdaGroup.ftcw.Initialize()
+	BeltalowdaGroup.ftca.Initialize()
+	BeltalowdaGroup.ftcb.Initialize()
+	BeltalowdaGroup.dbo.Initialize()
+	BeltalowdaGroup.rt.Initialize()
+	BeltalowdaGroup.ro.Initialize()
+	BeltalowdaGroup.hdm.Initialize()
+	BeltalowdaGroup.po.Initialize()
+	BeltalowdaGroup.dt.Initialize()
+	BeltalowdaGroup.gb.Initialize()
+	BeltalowdaGroup.isdp.Initialize()
 end
 
-function RdKGToolGroup.SlashCmd(param)
+function BeltalowdaGroup.SlashCmd(param)
 	if param ~= nil then
 		if param[1] == "ai" then
 			table.remove(param,1)
-			RdKGToolGroup.ai.SlashCmd(param)
+			BeltalowdaGroup.ai.SlashCmd(param)
 		elseif param[1] == "hdm" then
-			RdKGToolGroup.hdm.SlashCmd(param)
+			BeltalowdaGroup.hdm.SlashCmd(param)
 		end
 	end
 end
 
-function RdKGToolGroup.GetDefaults()
+function BeltalowdaGroup.GetDefaults()
 	local defaults = {}
-	defaults.crown = RdKGToolGroup.crown.GetDefaults()
-	defaults.ai = RdKGToolGroup.ai.GetDefaults()
-	defaults.ftcv = RdKGToolGroup.ftcv.GetDefaults()
-	defaults.ftcw = RdKGToolGroup.ftcw.GetDefaults()
-	defaults.ftca = RdKGToolGroup.ftca.GetDefaults()
-	defaults.ftcb = RdKGToolGroup.ftcb.GetDefaults()
-	defaults.dbo = RdKGToolGroup.dbo.GetDefaults()
-	defaults.rt = RdKGToolGroup.rt.GetDefaults()
-	defaults.ro = RdKGToolGroup.ro.GetDefaults()
-	defaults.hdm = RdKGToolGroup.hdm.GetDefaults()
-	defaults.po = RdKGToolGroup.po.GetDefaults()
-	defaults.dt = RdKGToolGroup.dt.GetDefaults()
-	defaults.gb = RdKGToolGroup.gb.GetDefaults()
-	defaults.isdp = RdKGToolGroup.isdp.GetDefaults()
+	defaults.crown = BeltalowdaGroup.crown.GetDefaults()
+	defaults.ai = BeltalowdaGroup.ai.GetDefaults()
+	defaults.ftcv = BeltalowdaGroup.ftcv.GetDefaults()
+	defaults.ftcw = BeltalowdaGroup.ftcw.GetDefaults()
+	defaults.ftca = BeltalowdaGroup.ftca.GetDefaults()
+	defaults.ftcb = BeltalowdaGroup.ftcb.GetDefaults()
+	defaults.dbo = BeltalowdaGroup.dbo.GetDefaults()
+	defaults.rt = BeltalowdaGroup.rt.GetDefaults()
+	defaults.ro = BeltalowdaGroup.ro.GetDefaults()
+	defaults.hdm = BeltalowdaGroup.hdm.GetDefaults()
+	defaults.po = BeltalowdaGroup.po.GetDefaults()
+	defaults.dt = BeltalowdaGroup.dt.GetDefaults()
+	defaults.gb = BeltalowdaGroup.gb.GetDefaults()
+	defaults.isdp = BeltalowdaGroup.isdp.GetDefaults()
 	return defaults
 end
 
-function RdKGToolGroup.GetMenu()
+function BeltalowdaGroup.GetMenu()
 	local menu = {
 		[1] = {
 			type = "header",
-			name = RdKGToolMenu.constants.GROUP_HEADER,
+			name = BeltalowdaMenu.constants.GROUP_HEADER,
 			width = "full",
 		}
 	}
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.crown.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.ai.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.ftcv.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.ftcw.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.ftca.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.ftcb.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.dbo.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.rt.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.ro.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.hdm.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.po.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.dt.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.gb.GetMenu())
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.isdp.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.crown.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ai.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftcv.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftcw.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftca.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftcb.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.dbo.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.rt.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ro.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.hdm.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.po.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.dt.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.gb.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.isdp.GetMenu())
 	return menu
 end

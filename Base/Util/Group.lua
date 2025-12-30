@@ -1,4 +1,4 @@
--- RdK Group Tool Util Group
+-- Beltalowda Util Group
 -- By @s0rdrak (PC / EU)
 
 --local lib3d = LibStub("Lib3D2")
@@ -7,176 +7,176 @@ local libPB = LibPotionBuff
 --local libFDB = LibStub("LibFoodDrinkBuff")
 local libFDB = LIB_FOOD_DRINK_BUFF
 
-RdKGTool = RdKGTool or {}
+Beltalowda = Beltalowda or {}
 
-RdKGTool.util = RdKGTool.util or {}
-RdKGTool.util.group = RdKGTool.util.group or {}
-RdKGTool.util.ui = RdKGTool.util.ui or {}
-RdKGTool.util.networking = RdKGTool.util.networking or {}
-RdKGTool.util.ultimates = RdKGTool.util.ultimates or {}
-RdKGTool.util.equipment = RdKGTool.util.equipment  or {}
-RdKGTool.util.cp = RdKGTool.util.cp  or {}
-RdKGTool.util.sb = RdKGTool.util.sb  or {}
-RdKGTool.util.math = RdKGTool.util.math or {}
-RdKGTool.util.playerLink = RdKGTool.util.playerLink or {}
-RdKGTool.util.chatSystem = RdKGTool.util.chatSystem or {}
-RdKGTool.util.versioning = RdKGTool.util.versioning or {}
-RdKGTool.util.roster = RdKGTool.util.roster or {}
-RdKGTool.menu = RdKGTool.menu or {}
-
-
-local RdKGToolUtil = RdKGTool.util
-local RdKGToolGroup = RdKGToolUtil.group
-local RdKGToolUI = RdKGToolUtil.ui
-local RdKGToolUltimates = RdKGToolUtil.ultimates
-local RdKGToolNetworking = RdKGToolUtil.networking
-local RdKGToolEquip = RdKGToolUtil.equipment
-local RdKGToolCP = RdKGToolUtil.cp
-local RdKGToolSB = RdKGToolUtil.sb
-local RdKGToolMath = RdKGToolUtil.math
-local RdKGToolPL = RdKGToolUtil.playerLink
-local RdKGToolChat = RdKGToolUtil.chatSystem
-local RdKGToolVersioning = RdKGToolUtil.versioning
-local RdKGToolMenu = RdKGTool.menu
-local RdKGToolRoster = RdKGToolUtil.roster
-
-RdKGToolGroup.features = {}
-RdKGToolGroup.features.FEATURE_GROUP_LEADER_DISTANCE = 1
-RdKGToolGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE = 2
-RdKGToolGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE = 3
-RdKGToolGroup.features.FEATURE_GROUP_BUFFS = 4
-RdKGToolGroup.features.FEATURE_GROUP_RESOURCES = 5
-RdKGToolGroup.features.FEATURE_GROUP_HP_DMG = 6
-RdKGToolGroup.features.FEATURE_GROUP_VERSIONING = 7
-RdKGToolGroup.features.FEATURE_GROUP_COORDINATES = 8
-RdKGToolGroup.features.FEATURE_GROUP_DEAD_STATE = 9
-RdKGToolGroup.features.FEATURE_GROUP_NONE = 10
-RdKGToolGroup.features.FEATURE_GROUP_SYNERGY = 11
-
-RdKGToolGroup.features.state = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_DISTANCE] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_DISTANCE].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_DISTANCE].callbackName = RdKGTool.addonName .. "UtilGroupLeaderUpdate"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_DISTANCE].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE].callbackName = RdKGTool.addonName .. "UtilGroupPlayerToMemberDistance"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE].callbackName = RdKGTool.addonName .. "UtilGroupLeaderToPlayerDistance"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_BUFFS] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_BUFFS].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_BUFFS].callbackName = RdKGTool.addonName .. "UtilGroupBuffs"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_BUFFS].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_RESOURCES] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_RESOURCES].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_RESOURCES].callbackName = RdKGTool.addonName .. "UtilGroupResources"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_RESOURCES].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_RESOURCES].activeCustomFeature = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_HP_DMG] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_HP_DMG].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_HP_DMG].callbackName = RdKGTool.addonName .. "UtilGroupHpDmg"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_HP_DMG].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_HP_DMG].activeCustomFeature = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_VERSIONING] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_VERSIONING].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_VERSIONING].callbackName = RdKGTool.addonName .. "UtilGroupVersioning"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_VERSIONING].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_VERSIONING].activeCustomFeature = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_COORDINATES] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_COORDINATES].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_COORDINATES].callbackName = RdKGTool.addonName .. "UtilGroupCoordinates"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_COORDINATES].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_DEAD_STATE] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_DEAD_STATE].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_DEAD_STATE].callbackName = RdKGTool.addonName .. "UtilGroupDeadState"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_DEAD_STATE].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_NONE] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_NONE].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_NONE].callbackName = RdKGTool.addonName .. "UtilGroupNone"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_NONE].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_SYNERGY] = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_SYNERGY].consumers = {}
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_SYNERGY].callbackName = RdKGTool.addonName .. "UtilGroupSynergy"
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_SYNERGY].activeCallback = false
-RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_SYNERGY].activeCustomFeature = false
+Beltalowda.util = Beltalowda.util or {}
+Beltalowda.util.group = Beltalowda.util.group or {}
+Beltalowda.util.ui = Beltalowda.util.ui or {}
+Beltalowda.util.networking = Beltalowda.util.networking or {}
+Beltalowda.util.ultimates = Beltalowda.util.ultimates or {}
+Beltalowda.util.equipment = Beltalowda.util.equipment  or {}
+Beltalowda.util.cp = Beltalowda.util.cp  or {}
+Beltalowda.util.sb = Beltalowda.util.sb  or {}
+Beltalowda.util.math = Beltalowda.util.math or {}
+Beltalowda.util.playerLink = Beltalowda.util.playerLink or {}
+Beltalowda.util.chatSystem = Beltalowda.util.chatSystem or {}
+Beltalowda.util.versioning = Beltalowda.util.versioning or {}
+Beltalowda.util.roster = Beltalowda.util.roster or {}
+Beltalowda.menu = Beltalowda.menu or {}
 
 
-RdKGToolGroup.features.stackCount = 0
+local BeltalowdaUtil = Beltalowda.util
+local BeltalowdaGroup = BeltalowdaUtil.group
+local BeltalowdaUI = BeltalowdaUtil.ui
+local BeltalowdaUltimates = BeltalowdaUtil.ultimates
+local BeltalowdaNetworking = BeltalowdaUtil.networking
+local BeltalowdaEquip = BeltalowdaUtil.equipment
+local BeltalowdaCP = BeltalowdaUtil.cp
+local BeltalowdaSB = BeltalowdaUtil.sb
+local BeltalowdaMath = BeltalowdaUtil.math
+local BeltalowdaPL = BeltalowdaUtil.playerLink
+local BeltalowdaChat = BeltalowdaUtil.chatSystem
+local BeltalowdaVersioning = BeltalowdaUtil.versioning
+local BeltalowdaMenu = Beltalowda.menu
+local BeltalowdaRoster = BeltalowdaUtil.roster
 
-RdKGToolGroup.constants = {}
-RdKGToolGroup.constants.BY_CHAR_NAME = 1
-RdKGToolGroup.constants.BY_DISPLAY_NAME = 2
-RdKGToolGroup.constants.displayTypes = {}
-RdKGToolGroup.constants.COMBAT_TIMEOUT = 30000
-RdKGToolGroup.constants.PREFIX = "Group"
-RdKGToolGroup.constants.potionTypes = {}
-RdKGToolGroup.constants.potionTypes.CRAFTED = 1
-RdKGToolGroup.constants.potionTypes.CROWN = 2
-RdKGToolGroup.constants.potionTypes.NON_CRAFTED = 3
-RdKGToolGroup.constants.potionTypes.ALLIANCE = 4
+BeltalowdaGroup.features = {}
+BeltalowdaGroup.features.FEATURE_GROUP_LEADER_DISTANCE = 1
+BeltalowdaGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE = 2
+BeltalowdaGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE = 3
+BeltalowdaGroup.features.FEATURE_GROUP_BUFFS = 4
+BeltalowdaGroup.features.FEATURE_GROUP_RESOURCES = 5
+BeltalowdaGroup.features.FEATURE_GROUP_HP_DMG = 6
+BeltalowdaGroup.features.FEATURE_GROUP_VERSIONING = 7
+BeltalowdaGroup.features.FEATURE_GROUP_COORDINATES = 8
+BeltalowdaGroup.features.FEATURE_GROUP_DEAD_STATE = 9
+BeltalowdaGroup.features.FEATURE_GROUP_NONE = 10
+BeltalowdaGroup.features.FEATURE_GROUP_SYNERGY = 11
 
-RdKGToolGroup.constants.roles = {}
-RdKGToolGroup.constants.roles.ROLE_RAPID = 1
-RdKGToolGroup.constants.roles.ROLE_PURGE = 2
-RdKGToolGroup.constants.roles.ROLE_HEAL = 3
-RdKGToolGroup.constants.roles.ROLE_DD = 4
-RdKGToolGroup.constants.roles.ROLE_SYNERGY = 5
-RdKGToolGroup.constants.roles.ROLE_CC = 6
-RdKGToolGroup.constants.roles.ROLE_SUPPORT = 7
-RdKGToolGroup.constants.roles.ROLE_PLACEHOLDER = 8
-RdKGToolGroup.constants.roles.ROLE_APPLICANT = 9
+BeltalowdaGroup.features.state = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_DISTANCE] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_DISTANCE].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_DISTANCE].callbackName = Beltalowda.addonName .. "UtilGroupLeaderUpdate"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_DISTANCE].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE].callbackName = Beltalowda.addonName .. "UtilGroupPlayerToMemberDistance"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE].callbackName = Beltalowda.addonName .. "UtilGroupLeaderToPlayerDistance"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_BUFFS] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_BUFFS].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_BUFFS].callbackName = Beltalowda.addonName .. "UtilGroupBuffs"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_BUFFS].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_RESOURCES] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_RESOURCES].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_RESOURCES].callbackName = Beltalowda.addonName .. "UtilGroupResources"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_RESOURCES].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_RESOURCES].activeCustomFeature = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_HP_DMG] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_HP_DMG].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_HP_DMG].callbackName = Beltalowda.addonName .. "UtilGroupHpDmg"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_HP_DMG].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_HP_DMG].activeCustomFeature = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_VERSIONING] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_VERSIONING].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_VERSIONING].callbackName = Beltalowda.addonName .. "UtilGroupVersioning"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_VERSIONING].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_VERSIONING].activeCustomFeature = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_COORDINATES] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_COORDINATES].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_COORDINATES].callbackName = Beltalowda.addonName .. "UtilGroupCoordinates"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_COORDINATES].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_DEAD_STATE] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_DEAD_STATE].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_DEAD_STATE].callbackName = Beltalowda.addonName .. "UtilGroupDeadState"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_DEAD_STATE].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_NONE] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_NONE].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_NONE].callbackName = Beltalowda.addonName .. "UtilGroupNone"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_NONE].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_SYNERGY] = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_SYNERGY].consumers = {}
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_SYNERGY].callbackName = Beltalowda.addonName .. "UtilGroupSynergy"
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_SYNERGY].activeCallback = false
+BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_SYNERGY].activeCustomFeature = false
 
-RdKGToolGroup.state = {}
-RdKGToolGroup.state.leader = {}
-RdKGToolGroup.state.lastCombatTimestamp = 0
-RdKGToolGroup.state.versionCheckCallback = nil
-RdKGToolGroup.state.groupChangedConsumers = {}
-RdKGToolGroup.state.ultimatesChangedConsumers = {}
-RdKGToolGroup.state.adminInformationChangedConsumers = {}
-RdKGToolGroup.state.lastLeader = nil
-RdKGToolGroup.state.crBgTpHealBuffs = nil
-RdKGToolGroup.state.hdmAutoClear = true
 
-RdKGToolGroup.callbackName = RdKGTool.addonName .. "UtilGroup"
+BeltalowdaGroup.features.stackCount = 0
 
-RdKGToolGroup.config = RdKGToolGroup.config or {}
-RdKGToolGroup.config.combatUpdateInterval = 250
+BeltalowdaGroup.constants = {}
+BeltalowdaGroup.constants.BY_CHAR_NAME = 1
+BeltalowdaGroup.constants.BY_DISPLAY_NAME = 2
+BeltalowdaGroup.constants.displayTypes = {}
+BeltalowdaGroup.constants.COMBAT_TIMEOUT = 30000
+BeltalowdaGroup.constants.PREFIX = "Group"
+BeltalowdaGroup.constants.potionTypes = {}
+BeltalowdaGroup.constants.potionTypes.CRAFTED = 1
+BeltalowdaGroup.constants.potionTypes.CROWN = 2
+BeltalowdaGroup.constants.potionTypes.NON_CRAFTED = 3
+BeltalowdaGroup.constants.potionTypes.ALLIANCE = 4
+
+BeltalowdaGroup.constants.roles = {}
+BeltalowdaGroup.constants.roles.ROLE_RAPID = 1
+BeltalowdaGroup.constants.roles.ROLE_PURGE = 2
+BeltalowdaGroup.constants.roles.ROLE_HEAL = 3
+BeltalowdaGroup.constants.roles.ROLE_DD = 4
+BeltalowdaGroup.constants.roles.ROLE_SYNERGY = 5
+BeltalowdaGroup.constants.roles.ROLE_CC = 6
+BeltalowdaGroup.constants.roles.ROLE_SUPPORT = 7
+BeltalowdaGroup.constants.roles.ROLE_PLACEHOLDER = 8
+BeltalowdaGroup.constants.roles.ROLE_APPLICANT = 9
+
+BeltalowdaGroup.state = {}
+BeltalowdaGroup.state.leader = {}
+BeltalowdaGroup.state.lastCombatTimestamp = 0
+BeltalowdaGroup.state.versionCheckCallback = nil
+BeltalowdaGroup.state.groupChangedConsumers = {}
+BeltalowdaGroup.state.ultimatesChangedConsumers = {}
+BeltalowdaGroup.state.adminInformationChangedConsumers = {}
+BeltalowdaGroup.state.lastLeader = nil
+BeltalowdaGroup.state.crBgTpHealBuffs = nil
+BeltalowdaGroup.state.hdmAutoClear = true
+
+BeltalowdaGroup.callbackName = Beltalowda.addonName .. "UtilGroup"
+
+BeltalowdaGroup.config = BeltalowdaGroup.config or {}
+BeltalowdaGroup.config.combatUpdateInterval = 250
 
 
 --abilities
-RdKGToolGroup.abilityIds = {}
+BeltalowdaGroup.abilityIds = {}
 --[[
-RdKGToolGroup.abilityIds.rapidManeuver = {
+BeltalowdaGroup.abilityIds.rapidManeuver = {
 	[1] = 61736-- 101161,
 }
-RdKGToolGroup.abilityIds.chargingManeuverMajor = {
+BeltalowdaGroup.abilityIds.chargingManeuverMajor = {
 	[1] = 61736 -- 101178
 }
-RdKGToolGroup.abilityIds.chargingManeuverMinor = {
+BeltalowdaGroup.abilityIds.chargingManeuverMinor = {
 	[1] = 61735 -- 40219
 }
-RdKGToolGroup.abilityIds.retreatingManeuver = {
+BeltalowdaGroup.abilityIds.retreatingManeuver = {
 	[1] = 61736 -- 101169,--/script d(GetAbilityDescription(101169))
 }
 ]]
-RdKGToolGroup.abilityIds.majorExpedition = {
+BeltalowdaGroup.abilityIds.majorExpedition = {
 	[1] = 61736
 }
-RdKGToolGroup.abilityIds.minorExpedition = {
+BeltalowdaGroup.abilityIds.minorExpedition = {
 	[1] = 61735
 }
 --Likely not woking anymore due to ZOS changing IDs (~U30, adjusted in 2.0.33)
-RdKGToolGroup.abilityIds.immovablePot = {
+BeltalowdaGroup.abilityIds.immovablePot = {
 	[1] = 45239, -- U30+, should not work anymore
 	[2] = 72930, -- U30+, should not work anymore
 	[3] = 86698, -- U30+, should not work anymore
 	[4] = 72930  -- U30+, Only on alliance pots - wtf
 }
 -- Not working anymore due to ZOS changing IDs (~U30, adjusted in 2.0.33)
-RdKGToolGroup.abilityIds.alliancePot = {
+BeltalowdaGroup.abilityIds.alliancePot = {
 	[72935] = true,
 	[72936] = true,
 	[72928] = true,
@@ -185,7 +185,7 @@ RdKGToolGroup.abilityIds.alliancePot = {
 	[72933] = true
 }
 -- Temporary (2.0.33) Fix for broken LibPotionBuff library (ZOS fault: Changing IDs)
-RdKGToolGroup.abilityIds.isPotion = {
+BeltalowdaGroup.abilityIds.isPotion = {
 --Positive
 	[61698] = true, --"Major Fortitude",
 	[61707] = true, --"Major Intellect",
@@ -226,58 +226,58 @@ RdKGToolGroup.abilityIds.isPotion = {
 	[79717] = true, -- "Minor Vulnerability",
 }
 
-RdKGToolGroup.abilityIds.proximityDetonation = {
+BeltalowdaGroup.abilityIds.proximityDetonation = {
 	[61500] = true
 }
 
 -- 146919
-RdKGToolGroup.abilityIds.subterraneanAssault = {
+BeltalowdaGroup.abilityIds.subterraneanAssault = {
 	[86019] = true
 	
 }
-RdKGToolGroup.abilityIds.subterraneanAssaultWaveTwo = {
+BeltalowdaGroup.abilityIds.subterraneanAssaultWaveTwo = {
 	[146919] = true
 }
 
-RdKGToolGroup.abilityIds.deepFissure = {
+BeltalowdaGroup.abilityIds.deepFissure = {
 	[86015] = true
 }
 
-RdKGToolGroup.abilityIds.deepFissureWaveTwo = {
+BeltalowdaGroup.abilityIds.deepFissureWaveTwo = {
 	[178028] = true
 }
 --public functions
 
-function RdKGToolGroup.Initialize()	
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_DISTANCE].callback = RdKGToolGroup.OnUpdateLeader
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE].callback = RdKGToolGroup.OnUpdatePlayerDistance
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE].callback = RdKGToolGroup.OnUpdateLeaderDistance
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_BUFFS].callback = RdKGToolGroup.OnUpdateBuff
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_RESOURCES].callback = nil
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_HP_DMG].callback = nil
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_VERSIONING].callback = nil
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_COORDINATES].callback = RdKGToolGroup.OnUpdateCoordinates
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_DEAD_STATE].callback = RdKGToolGroup.OnUpdateDeadState
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_NONE].callback = nil
-	RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_SYNERGY].callback = nil
+function BeltalowdaGroup.Initialize()	
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_DISTANCE].callback = BeltalowdaGroup.OnUpdateLeader
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE].callback = BeltalowdaGroup.OnUpdatePlayerDistance
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_TO_MEMBER_DISTANCE].callback = BeltalowdaGroup.OnUpdateLeaderDistance
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_BUFFS].callback = BeltalowdaGroup.OnUpdateBuff
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_RESOURCES].callback = nil
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_HP_DMG].callback = nil
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_VERSIONING].callback = nil
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_COORDINATES].callback = BeltalowdaGroup.OnUpdateCoordinates
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_DEAD_STATE].callback = BeltalowdaGroup.OnUpdateDeadState
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_NONE].callback = nil
+	BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_SYNERGY].callback = nil
 	
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolGroup.callbackName, RdKGToolGroup.OnProfileChanged)
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaGroup.callbackName, BeltalowdaGroup.OnProfileChanged)
 end
 
-function RdKGToolGroup.GetDefaults()
+function BeltalowdaGroup.GetDefaults()
 	local defaults = {}
-	defaults.displayType = RdKGToolGroup.constants.BY_CHAR_NAME
+	defaults.displayType = BeltalowdaGroup.constants.BY_CHAR_NAME
 	return defaults
 end
 
-function RdKGToolGroup.GetDisplayType()
-	return RdKGToolGroup.groupVars.displayType
+function BeltalowdaGroup.GetDisplayType()
+	return BeltalowdaGroup.groupVars.displayType
 end
 
-function RdKGToolGroup.AddFeature(consumerName, featureName, interval)
+function BeltalowdaGroup.AddFeature(consumerName, featureName, interval)
 	if consumerName ~= nil and featureName ~= nil then
-		if RdKGToolGroup.IsValidFeature(featureName) == true then
-			local feature = RdKGToolGroup.features.state[featureName]
+		if BeltalowdaGroup.IsValidFeature(featureName) == true then
+			local feature = BeltalowdaGroup.features.state[featureName]
 			local consumers = feature.consumers
 			local callbackName = feature.callbackName
 			local callbackFunction = feature.callback
@@ -290,9 +290,9 @@ function RdKGToolGroup.AddFeature(consumerName, featureName, interval)
 				end
 			end
 			if entryExists == false then
-				RdKGToolGroup.features.stackCount = RdKGToolGroup.features.stackCount + 1
-				if RdKGToolGroup.features.stackCount == 1 then
-					RdKGToolGroup.EnableGroup()
+				BeltalowdaGroup.features.stackCount = BeltalowdaGroup.features.stackCount + 1
+				if BeltalowdaGroup.features.stackCount == 1 then
+					BeltalowdaGroup.EnableGroup()
 				end
 				
 				local entry = {}
@@ -328,7 +328,7 @@ function RdKGToolGroup.AddFeature(consumerName, featureName, interval)
 				end
 				--d("reached this part 3")
 				table.insert(consumers, entry)
-				RdKGToolGroup.AddCustomFeature(featureName)
+				BeltalowdaGroup.AddCustomFeature(featureName)
 			end
 				
 			
@@ -336,10 +336,10 @@ function RdKGToolGroup.AddFeature(consumerName, featureName, interval)
 	end
 end
 
-function RdKGToolGroup.RemoveFeature(consumerName, featureName)
+function BeltalowdaGroup.RemoveFeature(consumerName, featureName)
 	if consumerName ~= nil and featureName ~= nil then
-		if RdKGToolGroup.IsValidFeature(featureName) == true then
-			local feature = RdKGToolGroup.features.state[featureName]
+		if BeltalowdaGroup.IsValidFeature(featureName) == true then
+			local feature = BeltalowdaGroup.features.state[featureName]
 			local consumers = feature.consumers
 			local callbackName = feature.callbackName
 			local callbackFunction = feature.callback
@@ -350,7 +350,7 @@ function RdKGToolGroup.RemoveFeature(consumerName, featureName)
 					local isMainConsumer = consumers[i].isMainConsumer
 					local interval = consumers[i].interval
 					table.remove(consumers, i)
-					RdKGToolGroup.features.stackCount = RdKGToolGroup.features.stackCount - 1
+					BeltalowdaGroup.features.stackCount = BeltalowdaGroup.features.stackCount - 1
 					if callbackName ~= nil and callbackFunction ~= nil then
 						local isListening = true
 						if #consumers == 0 then
@@ -375,88 +375,88 @@ function RdKGToolGroup.RemoveFeature(consumerName, featureName)
 							end
 						end
 					end
-					RdKGToolGroup.RemoveCustomFeature(featureName)
+					BeltalowdaGroup.RemoveCustomFeature(featureName)
 					break
 				end
 			end
 
-			if RdKGToolGroup.features.stackCount == 0 then
-				RdKGToolGroup.DisableGroup()
+			if BeltalowdaGroup.features.stackCount == 0 then
+				BeltalowdaGroup.DisableGroup()
 			end
 		end
 	end
 end
 
-function RdKGToolGroup.AddCustomFeature(featureName)
+function BeltalowdaGroup.AddCustomFeature(featureName)
 	--d("AddCustomFeature: " .. featureName)
-	if RdKGToolGroup.features.state[featureName].activeCustomFeature == false then
-		if featureName == RdKGToolGroup.features.FEATURE_GROUP_RESOURCES then 
-			RdKGToolNetworking.AddRawMessageHandler(RdKGToolGroup.features.state[featureName].callbackName, RdKGToolGroup.HandleRawResourceNetworkMessage)
-		elseif featureName == RdKGToolGroup.features.FEATURE_GROUP_HP_DMG then 
-			RdKGToolNetworking.AddRawMessageHandler(RdKGToolGroup.features.state[featureName].callbackName, RdKGToolGroup.HandleRawHpDmgNetworkMessage)
-			--EVENT_MANAGER:RegisterForEvent(RdKGToolGroup.features.state[featureName].callbackName, EVENT_POWER_UPDATE, RdKGToolGroup.OnPowerUpdate)
-		elseif featureName == RdKGToolGroup.features.FEATURE_GROUP_VERSIONING then 
-			RdKGToolNetworking.AddRawMessageHandler(RdKGToolGroup.features.state[featureName].callbackName, RdKGToolGroup.HandleRawVersionNetworkMessage)
-		elseif featureName == RdKGToolGroup.features.FEATURE_GROUP_SYNERGY then
-			RdKGToolNetworking.AddRawMessageHandler(RdKGToolGroup.features.state[featureName].callbackName, RdKGToolGroup.HandleRawSynergyNetworkMessage)
+	if BeltalowdaGroup.features.state[featureName].activeCustomFeature == false then
+		if featureName == BeltalowdaGroup.features.FEATURE_GROUP_RESOURCES then 
+			BeltalowdaNetworking.AddRawMessageHandler(BeltalowdaGroup.features.state[featureName].callbackName, BeltalowdaGroup.HandleRawResourceNetworkMessage)
+		elseif featureName == BeltalowdaGroup.features.FEATURE_GROUP_HP_DMG then 
+			BeltalowdaNetworking.AddRawMessageHandler(BeltalowdaGroup.features.state[featureName].callbackName, BeltalowdaGroup.HandleRawHpDmgNetworkMessage)
+			--EVENT_MANAGER:RegisterForEvent(BeltalowdaGroup.features.state[featureName].callbackName, EVENT_POWER_UPDATE, BeltalowdaGroup.OnPowerUpdate)
+		elseif featureName == BeltalowdaGroup.features.FEATURE_GROUP_VERSIONING then 
+			BeltalowdaNetworking.AddRawMessageHandler(BeltalowdaGroup.features.state[featureName].callbackName, BeltalowdaGroup.HandleRawVersionNetworkMessage)
+		elseif featureName == BeltalowdaGroup.features.FEATURE_GROUP_SYNERGY then
+			BeltalowdaNetworking.AddRawMessageHandler(BeltalowdaGroup.features.state[featureName].callbackName, BeltalowdaGroup.HandleRawSynergyNetworkMessage)
 		end
-		RdKGToolGroup.features.state[featureName].activeCustomFeature = true
+		BeltalowdaGroup.features.state[featureName].activeCustomFeature = true
 	end
 end
 
-function RdKGToolGroup.RemoveCustomFeature(featureName)
+function BeltalowdaGroup.RemoveCustomFeature(featureName)
 	--d("RemoveCustomFeature: " .. featureName)
-	if RdKGToolGroup.features.state[featureName].activeCustomFeature == true then
-		if featureName == RdKGToolGroup.features.FEATURE_GROUP_RESOURCES or
-		   featureName == RdKGToolGroup.features.FEATURE_GROUP_HP_DMG or
-		   featureName == RdKGToolGroup.features.FEATURE_GROUP_VERSIONING or 
-		   featureName == RdKGToolGroup.features.FEATURE_GROUP_SYNERGY then
-			RdKGToolNetworking.RemoveRawMessageHandler(RdKGToolGroup.features.state[featureName].callbackName)
+	if BeltalowdaGroup.features.state[featureName].activeCustomFeature == true then
+		if featureName == BeltalowdaGroup.features.FEATURE_GROUP_RESOURCES or
+		   featureName == BeltalowdaGroup.features.FEATURE_GROUP_HP_DMG or
+		   featureName == BeltalowdaGroup.features.FEATURE_GROUP_VERSIONING or 
+		   featureName == BeltalowdaGroup.features.FEATURE_GROUP_SYNERGY then
+			BeltalowdaNetworking.RemoveRawMessageHandler(BeltalowdaGroup.features.state[featureName].callbackName)
 		end
-		if featureName == RdKGToolGroup.features.FEATURE_GROUP_HP_DMG then
-			--EVENT_MANAGER:UnregisterForEvent(RdKGToolGroup.features.state[featureName].callbackName, EVENT_POWER_UPDATE)
+		if featureName == BeltalowdaGroup.features.FEATURE_GROUP_HP_DMG then
+			--EVENT_MANAGER:UnregisterForEvent(BeltalowdaGroup.features.state[featureName].callbackName, EVENT_POWER_UPDATE)
 		end
-		RdKGToolGroup.features.state[featureName].activeCustomFeature = false
+		BeltalowdaGroup.features.state[featureName].activeCustomFeature = false
 	end
 end
 
-function RdKGToolGroup.IsValidFeature(featureName)
+function BeltalowdaGroup.IsValidFeature(featureName)
 	local status = false
-	if RdKGToolGroup.features.state[featureName] ~= nil then
+	if BeltalowdaGroup.features.state[featureName] ~= nil then
 		status = true
 	end
 	return status
 end
 
-function RdKGToolGroup.GetLeaderDistance()
-	if RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_DISTANCE].activeCallback == true then
-		return RdKGToolGroup.state.leader.leaderDistance
+function BeltalowdaGroup.GetLeaderDistance()
+	if BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_DISTANCE].activeCallback == true then
+		return BeltalowdaGroup.state.leader.leaderDistance
 	else
 		return nil
 	end
 end
 
-function RdKGToolGroup.GetLeaderRotation()
-	if RdKGToolGroup.features.state[RdKGToolGroup.features.FEATURE_GROUP_LEADER_DISTANCE].activeCallback == true then
-		return RdKGToolGroup.state.leader.leaderRotation
+function BeltalowdaGroup.GetLeaderRotation()
+	if BeltalowdaGroup.features.state[BeltalowdaGroup.features.FEATURE_GROUP_LEADER_DISTANCE].activeCallback == true then
+		return BeltalowdaGroup.state.leader.leaderRotation
 	else
 		return nil
 	end
 end
 
 
-function RdKGToolGroup.GetGroupInformation()
-	if RdKGToolGroup.features.stackCount > 0 then
-		return RdKGToolGroup.state.players
+function BeltalowdaGroup.GetGroupInformation()
+	if BeltalowdaGroup.features.stackCount > 0 then
+		return BeltalowdaGroup.state.players
 	else
 		return nil
 	end
 end
 
-function RdKGToolGroup.IsGroupInCombat()
+function BeltalowdaGroup.IsGroupInCombat()
 	local inCombat = IsUnitInCombat("player")
-	if RdKGToolGroup.features.stackCount > 0 and inCombat == false then
-		local players = RdKGToolGroup.state.players
+	if BeltalowdaGroup.features.stackCount > 0 and inCombat == false then
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if IsUnitInCombat(players[i].unitTag) == true then
@@ -471,12 +471,12 @@ function RdKGToolGroup.IsGroupInCombat()
 	return inCombat
 end
 
-function RdKGToolGroup.IsUnitGroupLeader(unitTag)
+function BeltalowdaGroup.IsUnitGroupLeader(unitTag)
 	if unitTag == "player" then
-		return RdKGToolGroup.IsPlayerGroupLeader()
+		return BeltalowdaGroup.IsPlayerGroupLeader()
 	else
 		local isLeader = false
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].unitTag == unitTag and players[i].isLeader == true then
@@ -489,9 +489,9 @@ function RdKGToolGroup.IsUnitGroupLeader(unitTag)
 	end
 end
 
-function RdKGToolGroup.IsPlayerGroupLeader()
+function BeltalowdaGroup.IsPlayerGroupLeader()
 	local isLeader = false
-	local players = RdKGToolGroup.state.players
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil and #players > 1 then
 		for i = 1, #players do
 			if players[i].charName == GetUnitName("player") and players[i].displayName == GetUnitDisplayName("player") and players[i].isLeader == true then
@@ -502,9 +502,9 @@ function RdKGToolGroup.IsPlayerGroupLeader()
 	return isLeader
 end
 
-function RdKGToolGroup.GetPlayerUnitTag()
+function BeltalowdaGroup.GetPlayerUnitTag()
 	local playerTag = "player"
-	local players = RdKGToolGroup.state.players
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			if players[i].charName == GetUnitName("player") and players[i].displayName == GetUnitDisplayName("player") then
@@ -516,9 +516,9 @@ function RdKGToolGroup.GetPlayerUnitTag()
 	return playerTag
 end
 
-function RdKGToolGroup.GetGroupLeaderUnitTag()
+function BeltalowdaGroup.GetGroupLeaderUnitTag()
 	local leaderTag = nil
-	local players = RdKGToolGroup.state.players
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			if players[i].isLeader == true then
@@ -530,8 +530,8 @@ function RdKGToolGroup.GetGroupLeaderUnitTag()
 	return leaderTag
 end
 
-function RdKGToolGroup.UpdateMemberResources(unitTag, ultiId, ultiPercent, magickaPercent, stamPercent)
-	local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.UpdateMemberResources(unitTag, ultiId, ultiPercent, magickaPercent, stamPercent)
+	local players = BeltalowdaGroup.state.players
 
 	if players ~= nil then
 		for i = 1, #players do
@@ -539,19 +539,19 @@ function RdKGToolGroup.UpdateMemberResources(unitTag, ultiId, ultiPercent, magic
 			if players[i].unitTag == unitTag then
 				local debuffs = {}
 				
-				local ultimate = RdKGToolMath.DecodeBitArrayHelper(ultiPercent)
-				local magicka = RdKGToolMath.DecodeBitArrayHelper(magickaPercent)
-				local stamina = RdKGToolMath.DecodeBitArrayHelper(stamPercent)
+				local ultimate = BeltalowdaMath.DecodeBitArrayHelper(ultiPercent)
+				local magicka = BeltalowdaMath.DecodeBitArrayHelper(magickaPercent)
+				local stamina = BeltalowdaMath.DecodeBitArrayHelper(stamPercent)
 				debuffs[1] = ultimate[8]
 				debuffs[2] = magicka[8]
 				debuffs[3] = stamina[8]
 				ultimate[8] = 0
 				magicka[8] = 0
 				stamina[8] = 0
-				ultimate = RdKGToolMath.EncodeBitArrayHelper(ultimate, 0)
-				magicka = RdKGToolMath.EncodeBitArrayHelper(magicka, 0)
-				stamina = RdKGToolMath.EncodeBitArrayHelper(stamina, 0)
-				debuffs = RdKGToolMath.EncodeBitArrayHelper(debuffs, 0)
+				ultimate = BeltalowdaMath.EncodeBitArrayHelper(ultimate, 0)
+				magicka = BeltalowdaMath.EncodeBitArrayHelper(magicka, 0)
+				stamina = BeltalowdaMath.EncodeBitArrayHelper(stamina, 0)
+				debuffs = BeltalowdaMath.EncodeBitArrayHelper(debuffs, 0)
 				--d("debuffs ulti: " .. debuffs)
 				--d("Group")
 				--d(debuffs)
@@ -562,7 +562,7 @@ function RdKGToolGroup.UpdateMemberResources(unitTag, ultiId, ultiPercent, magic
 				players[i].resources = players[i].resources or {}
 				players[i].resources.ultimateId = ultiId
 				if ultiId ~= players[i].resources.previousUltimateId then
-					RdKGToolGroup.NotifyUltimatesChangedCallbacks()
+					BeltalowdaGroup.NotifyUltimatesChangedCallbacks()
 				end
 				players[i].resources.previousUltimateId = ultiId
 				players[i].resources.ultimatePercent = ultimate
@@ -575,18 +575,18 @@ function RdKGToolGroup.UpdateMemberResources(unitTag, ultiId, ultiPercent, magic
 	end
 end
 
-function RdKGToolGroup.UpdateMemberDamage(unitTag, damage)
+function BeltalowdaGroup.UpdateMemberDamage(unitTag, damage)
 	if unitTag ~= nil and damage ~= nil then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].unitTag == unitTag then
-					local temp = RdKGToolMath.Int24ToArray(damage)
+					local temp = BeltalowdaMath.Int24ToArray(damage)
 					local debuffs = {}
 					debuffs[1] = temp[22]
 					debuffs[2] = temp[23]
 					debuffs[3] = temp[24]
-					debuffs = RdKGToolMath.EncodeBitArrayHelper(debuffs, 0)
+					debuffs = BeltalowdaMath.EncodeBitArrayHelper(debuffs, 0)
 					--d("debuffs damage: " .. debuffs)
 					if players[i].buffs ~= nil and players[i].isPlayer == false then
 						--d(debuffs)
@@ -595,7 +595,7 @@ function RdKGToolGroup.UpdateMemberDamage(unitTag, damage)
 					temp[22] = 0
 					temp[23] = 0
 					temp[24] = 0
-					temp = RdKGToolMath.ArrayToInt24(temp)
+					temp = BeltalowdaMath.ArrayToInt24(temp)
 					players[i].meter.damage = players[i].meter.damage + temp
 					break
 				end
@@ -604,18 +604,18 @@ function RdKGToolGroup.UpdateMemberDamage(unitTag, damage)
 	end
 end
 
-function RdKGToolGroup.UpdateMemberHealing(unitTag, healing)
+function BeltalowdaGroup.UpdateMemberHealing(unitTag, healing)
 	if unitTag ~= nil and healing ~= nil then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].unitTag == unitTag then
-					local temp = RdKGToolMath.Int24ToArray(healing)
+					local temp = BeltalowdaMath.Int24ToArray(healing)
 					local debuffs = {}
 					debuffs[1] = temp[22]
 					debuffs[2] = temp[23]
 					debuffs[3] = temp[24]
-					debuffs = RdKGToolMath.EncodeBitArrayHelper(debuffs, 0)
+					debuffs = BeltalowdaMath.EncodeBitArrayHelper(debuffs, 0)
 					--d("debuffs healing: " .. debuffs)
 					if players[i].buffs ~= nil and players[i].isPlayer == false then
 						--d(debuffs)
@@ -624,7 +624,7 @@ function RdKGToolGroup.UpdateMemberHealing(unitTag, healing)
 					temp[22] = 0
 					temp[23] = 0
 					temp[24] = 0
-					temp = RdKGToolMath.ArrayToInt24(temp)
+					temp = BeltalowdaMath.ArrayToInt24(temp)
 					players[i].meter.healing = players[i].meter.healing + temp
 					break
 				end
@@ -633,17 +633,17 @@ function RdKGToolGroup.UpdateMemberHealing(unitTag, healing)
 	end
 end
 
-function RdKGToolGroup.UpdateMemberVersionInformation(unitTag, versionInformation)
+function BeltalowdaGroup.UpdateMemberVersionInformation(unitTag, versionInformation)
 	if unitTag ~= nil and versionInformation ~= nil then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].unitTag == unitTag then
 					players[i].clientVersion.major = versionInformation.major
 					players[i].clientVersion.minor = versionInformation.minor
 					players[i].clientVersion.revision = versionInformation.revision
-					if RdKGToolGroup.state.versionCheckCallback ~= nil and type(RdKGToolGroup.state.versionCheckCallback) == "function" then
-						RdKGToolGroup.state.versionCheckCallback(players[i])
+					if BeltalowdaGroup.state.versionCheckCallback ~= nil and type(BeltalowdaGroup.state.versionCheckCallback) == "function" then
+						BeltalowdaGroup.state.versionCheckCallback(players[i])
 					end
 					break
 				end
@@ -652,9 +652,9 @@ function RdKGToolGroup.UpdateMemberVersionInformation(unitTag, versionInformatio
 	end
 end
 
-function RdKGToolGroup.UpdateMemberSynergy(unitTag, synergyId, delay)
+function BeltalowdaGroup.UpdateMemberSynergy(unitTag, synergyId, delay)
 	if unitTag ~= nil and synergyId ~= nil and delay ~= nil then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].unitTag == unitTag then
@@ -666,9 +666,9 @@ function RdKGToolGroup.UpdateMemberSynergy(unitTag, synergyId, delay)
 	end
 end
 
-function RdKGToolGroup.UpdateDebuffs(unitTag, numDebuffs)
+function BeltalowdaGroup.UpdateDebuffs(unitTag, numDebuffs)
 	if unitTag ~= nil and numDebuffs ~= nil then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].unitTag == unitTag then
@@ -684,42 +684,42 @@ function RdKGToolGroup.UpdateDebuffs(unitTag, numDebuffs)
 	end
 end
 
-function RdKGToolGroup.GetAdjustedNameFromUnitTag(unitTag)
+function BeltalowdaGroup.GetAdjustedNameFromUnitTag(unitTag)
 	local name = nil
 	if unitTag ~= nil then
-		if RdKGToolGroup.groupVars.displayType == RdKGToolGroup.constants.BY_CHAR_NAME then
+		if BeltalowdaGroup.groupVars.displayType == BeltalowdaGroup.constants.BY_CHAR_NAME then
 			name = GetUnitName(unitTag)
-		elseif RdKGToolGroup.groupVars.displayType == RdKGToolGroup.constants.BY_DISPLAY_NAME then
+		elseif BeltalowdaGroup.groupVars.displayType == BeltalowdaGroup.constants.BY_DISPLAY_NAME then
 			name = string.sub(GetUnitDisplayName(unitTag), 2)
 		end
 	end
 	return name
 end
 
-function RdKGToolGroup.GetNameLinkFromDisplayCharName(fromName, fromDisplayName)
-	local displayType = RdKGToolGroup.GetDisplayType()
+function BeltalowdaGroup.GetNameLinkFromDisplayCharName(fromName, fromDisplayName)
+	local displayType = BeltalowdaGroup.GetDisplayType()
 	local link = ""
-	if displayType == RdKGToolGroup.constants.BY_CHAR_NAME and fromName:sub(1,1) ~= "@" then
+	if displayType == BeltalowdaGroup.constants.BY_CHAR_NAME and fromName:sub(1,1) ~= "@" then
 		fromName = zo_strformat("<<1>>", fromName)
-		link = RdKGToolPL.CreateCharNameLink(fromName, fromName, false)
+		link = BeltalowdaPL.CreateCharNameLink(fromName, fromName, false)
 	else
-		link = RdKGToolPL.CreateDisplayNameLink(fromDisplayName, fromDisplayName, false)
+		link = BeltalowdaPL.CreateDisplayNameLink(fromDisplayName, fromDisplayName, false)
 	end
 	if link == "" then
-		RdKGToolChat.SendChatMessage("Invalid FromName in GetNameLinkFromDisplayCharName", RdKGToolGroup.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_DEBUG)
+		BeltalowdaChat.SendChatMessage("Invalid FromName in GetNameLinkFromDisplayCharName", BeltalowdaGroup.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_DEBUG)
 	end
 	return link
 end
 
-function RdKGToolGroup.GetNameFromDisplayCharName(fromName, fromDisplayName)
-	local displayType = RdKGToolGroup.GetDisplayType()
+function BeltalowdaGroup.GetNameFromDisplayCharName(fromName, fromDisplayName)
+	local displayType = BeltalowdaGroup.GetDisplayType()
 	local name = ""
 	if fromName == nil then
 		return fromDisplayName
 	elseif fromDisplayName == nil then
 		return fromName
 	end
-	if displayType == RdKGToolGroup.constants.BY_CHAR_NAME and fromName:sub(1,1) ~= "@" then
+	if displayType == BeltalowdaGroup.constants.BY_CHAR_NAME and fromName:sub(1,1) ~= "@" then
 		name = fromName
 	else
 		name = fromDisplayName
@@ -727,10 +727,10 @@ function RdKGToolGroup.GetNameFromDisplayCharName(fromName, fromDisplayName)
 	return name
 end
 
-function RdKGToolGroup.IsCharNameInGroup(charName)
+function BeltalowdaGroup.IsCharNameInGroup(charName)
 	local inGroup = false
 	if charName ~= nil then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].charName == charName then
@@ -743,10 +743,10 @@ function RdKGToolGroup.IsCharNameInGroup(charName)
 	return inGroup
 end
 
-function RdKGToolGroup.GetUnitTagFromCharName(charName)
+function BeltalowdaGroup.GetUnitTagFromCharName(charName)
 	local unitTag = nil
 	if charName ~= nil then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].charName == charName then
@@ -759,10 +759,10 @@ function RdKGToolGroup.GetUnitTagFromCharName(charName)
 	return unitTag
 end
 
-function RdKGToolGroup.GetUnitTagFromRawCharName(charName)
+function BeltalowdaGroup.GetUnitTagFromRawCharName(charName)
 	local unitTag = nil
 	if charName ~= nil then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].rawName == charName then
@@ -775,10 +775,10 @@ function RdKGToolGroup.GetUnitTagFromRawCharName(charName)
 	return unitTag
 end
 
-function RdKGToolGroup.GetUnitFromRawCharName(charName)
+function BeltalowdaGroup.GetUnitFromRawCharName(charName)
 	local player = nil
 	if charName ~= nil then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].rawName == charName then
@@ -791,12 +791,12 @@ function RdKGToolGroup.GetUnitFromRawCharName(charName)
 	return player
 end
 
-function RdKGToolGroup.AdjustBgGroup()
-	if IsActiveWorldBattleground() and RdKGToolGroup.state.lastLeader ~= nil then
-		local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.AdjustBgGroup()
+	if IsActiveWorldBattleground() and BeltalowdaGroup.state.lastLeader ~= nil then
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
-				if players[i].name == RdKGToolGroup.state.lastLeader.name and players[i].displayName == RdKGToolGroup.state.lastLeader.displayName then
+				if players[i].name == BeltalowdaGroup.state.lastLeader.name and players[i].displayName == BeltalowdaGroup.state.lastLeader.displayName then
 					players[i].isLeader = true
 				else
 					players[i].isLeader = false
@@ -806,9 +806,9 @@ function RdKGToolGroup.AdjustBgGroup()
 	end
 end
 
-function RdKGToolGroup.SetBgCrown(charName, displayName)
+function BeltalowdaGroup.SetBgCrown(charName, displayName)
 	if IsActiveWorldBattleground() then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].charName == charName and players[i].displayName == displayName then
@@ -821,9 +821,9 @@ function RdKGToolGroup.SetBgCrown(charName, displayName)
 	end
 end
 
-function RdKGToolGroup.RemoveBgCrown(charName, displayName)
+function BeltalowdaGroup.RemoveBgCrown(charName, displayName)
 	if IsActiveWorldBattleground() then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].charName == charName and players[i].displayName == displayName then
@@ -834,8 +834,8 @@ function RdKGToolGroup.RemoveBgCrown(charName, displayName)
 	end
 end
 
-function RdKGToolGroup.SetRole(charName, displayName, role)
-	local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.SetRole(charName, displayName, role)
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			if players[i].charName == charName and players[i].displayName == displayName then
@@ -846,16 +846,16 @@ function RdKGToolGroup.SetRole(charName, displayName, role)
 	end
 end
 
-function RdKGToolGroup.SetVersionCheckCallback(checkFunction)
-	RdKGToolGroup.state.versionCheckCallback = checkFunction
+function BeltalowdaGroup.SetVersionCheckCallback(checkFunction)
+	BeltalowdaGroup.state.versionCheckCallback = checkFunction
 end
 
 
-function RdKGToolGroup.AddAdminInformationChangedCallback(name, callback)
+function BeltalowdaGroup.AddAdminInformationChangedCallback(name, callback)
 	if name ~= nil and callback ~= nil then
 		local entryPresent = false
-		for i = 1, #RdKGToolGroup.state.adminInformationChangedConsumers do
-			if RdKGToolGroup.state.adminInformationChangedConsumers[i] ~= nil and RdKGToolGroup.state.adminInformationChangedConsumers[i].name == name then
+		for i = 1, #BeltalowdaGroup.state.adminInformationChangedConsumers do
+			if BeltalowdaGroup.state.adminInformationChangedConsumers[i] ~= nil and BeltalowdaGroup.state.adminInformationChangedConsumers[i].name == name then
 				entryPresent = true
 				break
 			end
@@ -864,35 +864,35 @@ function RdKGToolGroup.AddAdminInformationChangedCallback(name, callback)
 			local entry = {}
 			entry.callback = callback
 			entry.name = name
-			table.insert(RdKGToolGroup.state.adminInformationChangedConsumers, entry)
+			table.insert(BeltalowdaGroup.state.adminInformationChangedConsumers, entry)
 		end
 	end
 end
 
-function RdKGToolGroup.RemoveAdminInformationChangedCallback(name)
+function BeltalowdaGroup.RemoveAdminInformationChangedCallback(name)
 	if name ~= nil then
-		for i = 1, #RdKGToolGroup.state.adminInformationChangedConsumers do
-			if RdKGToolGroup.state.adminInformationChangedConsumers[i] ~= nil and RdKGToolGroup.state.adminInformationChangedConsumers[i].name == name then
-				table.remove(RdKGToolGroup.state.adminInformationChangedConsumers, i)
+		for i = 1, #BeltalowdaGroup.state.adminInformationChangedConsumers do
+			if BeltalowdaGroup.state.adminInformationChangedConsumers[i] ~= nil and BeltalowdaGroup.state.adminInformationChangedConsumers[i].name == name then
+				table.remove(BeltalowdaGroup.state.adminInformationChangedConsumers, i)
 				break
 			end
 		end
 	end
 end
 
-function RdKGToolGroup.NotifyAdminInformationChangedCallbacks(unitTag)
-	for i = 1, #RdKGToolGroup.state.adminInformationChangedConsumers do
-		if RdKGToolGroup.state.adminInformationChangedConsumers[i] ~= nil and RdKGToolGroup.state.adminInformationChangedConsumers[i].callback ~= nil and type(RdKGToolGroup.state.adminInformationChangedConsumers[i].callback) == "function" then
-			RdKGToolGroup.state.adminInformationChangedConsumers[i].callback(unitTag)
+function BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(unitTag)
+	for i = 1, #BeltalowdaGroup.state.adminInformationChangedConsumers do
+		if BeltalowdaGroup.state.adminInformationChangedConsumers[i] ~= nil and BeltalowdaGroup.state.adminInformationChangedConsumers[i].callback ~= nil and type(BeltalowdaGroup.state.adminInformationChangedConsumers[i].callback) == "function" then
+			BeltalowdaGroup.state.adminInformationChangedConsumers[i].callback(unitTag)
 		end
 	end
 end
 
-function RdKGToolGroup.AddUltimatesChangedCallback(name, callback)
+function BeltalowdaGroup.AddUltimatesChangedCallback(name, callback)
 	if name ~= nil and callback ~= nil then
 		local entryPresent = false
-		for i = 1, #RdKGToolGroup.state.ultimatesChangedConsumers do
-			if RdKGToolGroup.state.ultimatesChangedConsumers[i] ~= nil and RdKGToolGroup.state.ultimatesChangedConsumers[i].name == name then
+		for i = 1, #BeltalowdaGroup.state.ultimatesChangedConsumers do
+			if BeltalowdaGroup.state.ultimatesChangedConsumers[i] ~= nil and BeltalowdaGroup.state.ultimatesChangedConsumers[i].name == name then
 				entryPresent = true
 				break
 			end
@@ -901,35 +901,35 @@ function RdKGToolGroup.AddUltimatesChangedCallback(name, callback)
 			local entry = {}
 			entry.callback = callback
 			entry.name = name
-			table.insert(RdKGToolGroup.state.ultimatesChangedConsumers, entry)
+			table.insert(BeltalowdaGroup.state.ultimatesChangedConsumers, entry)
 		end
 	end
 end
 
-function RdKGToolGroup.RemoveUltimatesChangedCallback(name)
+function BeltalowdaGroup.RemoveUltimatesChangedCallback(name)
 	if name ~= nil then
-		for i = 1, #RdKGToolGroup.state.ultimatesChangedConsumers do
-			if RdKGToolGroup.state.ultimatesChangedConsumers[i] ~= nil and RdKGToolGroup.state.ultimatesChangedConsumers[i].name == name then
-				table.remove(RdKGToolGroup.state.ultimatesChangedConsumers, i)
+		for i = 1, #BeltalowdaGroup.state.ultimatesChangedConsumers do
+			if BeltalowdaGroup.state.ultimatesChangedConsumers[i] ~= nil and BeltalowdaGroup.state.ultimatesChangedConsumers[i].name == name then
+				table.remove(BeltalowdaGroup.state.ultimatesChangedConsumers, i)
 				break
 			end
 		end
 	end
 end
 
-function RdKGToolGroup.NotifyUltimatesChangedCallbacks()
-	for i = 1, #RdKGToolGroup.state.ultimatesChangedConsumers do
-		if RdKGToolGroup.state.ultimatesChangedConsumers[i] ~= nil and RdKGToolGroup.state.ultimatesChangedConsumers[i].callback ~= nil and type(RdKGToolGroup.state.groupChangedConsumers[i].callback) == "function" then
-			RdKGToolGroup.state.ultimatesChangedConsumers[i].callback()
+function BeltalowdaGroup.NotifyUltimatesChangedCallbacks()
+	for i = 1, #BeltalowdaGroup.state.ultimatesChangedConsumers do
+		if BeltalowdaGroup.state.ultimatesChangedConsumers[i] ~= nil and BeltalowdaGroup.state.ultimatesChangedConsumers[i].callback ~= nil and type(BeltalowdaGroup.state.groupChangedConsumers[i].callback) == "function" then
+			BeltalowdaGroup.state.ultimatesChangedConsumers[i].callback()
 		end
 	end
 end
 
-function RdKGToolGroup.AddGroupChangedCallback(name, callback)
+function BeltalowdaGroup.AddGroupChangedCallback(name, callback)
 	if name ~= nil and callback ~= nil then
 		local entryPresent = false
-		for i = 1, #RdKGToolGroup.state.groupChangedConsumers do
-			if RdKGToolGroup.state.groupChangedConsumers[i] ~= nil and RdKGToolGroup.state.groupChangedConsumers[i].name == name then
+		for i = 1, #BeltalowdaGroup.state.groupChangedConsumers do
+			if BeltalowdaGroup.state.groupChangedConsumers[i] ~= nil and BeltalowdaGroup.state.groupChangedConsumers[i].name == name then
 				entryPresent = true
 				break
 			end
@@ -938,44 +938,44 @@ function RdKGToolGroup.AddGroupChangedCallback(name, callback)
 			local entry = {}
 			entry.callback = callback
 			entry.name = name
-			table.insert(RdKGToolGroup.state.groupChangedConsumers, entry)
+			table.insert(BeltalowdaGroup.state.groupChangedConsumers, entry)
 		end
 	end
 end
 
-function RdKGToolGroup.RemoveGroupChangedCallback(name)
+function BeltalowdaGroup.RemoveGroupChangedCallback(name)
 	if name ~= nil then
-		for i = 1, #RdKGToolGroup.state.groupChangedConsumers do
-			if RdKGToolGroup.state.groupChangedConsumers[i] ~= nil and RdKGToolGroup.state.groupChangedConsumers[i].name == name then
-				table.remove(RdKGToolGroup.state.groupChangedConsumers, i)
+		for i = 1, #BeltalowdaGroup.state.groupChangedConsumers do
+			if BeltalowdaGroup.state.groupChangedConsumers[i] ~= nil and BeltalowdaGroup.state.groupChangedConsumers[i].name == name then
+				table.remove(BeltalowdaGroup.state.groupChangedConsumers, i)
 				break
 			end
 		end
 	end
 end
 
-function RdKGToolGroup.NotifyGroupChangedCallbacks()
-	for i = 1, #RdKGToolGroup.state.groupChangedConsumers do
-		if RdKGToolGroup.state.groupChangedConsumers[i] ~= nil and RdKGToolGroup.state.groupChangedConsumers[i].callback ~= nil and type(RdKGToolGroup.state.groupChangedConsumers[i].callback) == "function" then
-			RdKGToolGroup.state.groupChangedConsumers[i].callback()
+function BeltalowdaGroup.NotifyGroupChangedCallbacks()
+	for i = 1, #BeltalowdaGroup.state.groupChangedConsumers do
+		if BeltalowdaGroup.state.groupChangedConsumers[i] ~= nil and BeltalowdaGroup.state.groupChangedConsumers[i].callback ~= nil and type(BeltalowdaGroup.state.groupChangedConsumers[i].callback) == "function" then
+			BeltalowdaGroup.state.groupChangedConsumers[i].callback()
 		end
 	end
 end
 
 --internal functions
-function RdKGToolGroup.GetCurrentPlainGroup()
+function BeltalowdaGroup.GetCurrentPlainGroup()
 	local players = {}
-	local unitTags = RdKGToolGroup.GetUnitTags()
+	local unitTags = BeltalowdaGroup.GetUnitTags()
 	for i = 1, #unitTags do
 		players[i] = {}
 		players[i].unitTag = unitTags[i]
-		players[i].name = RdKGToolGroup.GetAdjustedNameFromUnitTag(unitTags[i])
+		players[i].name = BeltalowdaGroup.GetAdjustedNameFromUnitTag(unitTags[i])
 		players[i].charName = GetUnitName(unitTags[i])
 		players[i].rawName = GetRawUnitName(unitTags[i])
 		players[i].displayName = GetUnitDisplayName(unitTags[i])
 		if GetUnitDisplayName(unitTags[i]) == GetUnitDisplayName("player") and GetUnitName(unitTags[i]) == GetUnitName("player") then
 			players[i].isPlayer = true
-			players[i].clientVersion = RdKGToolVersioning.GetVersionArray(RdKGTool.versionString)
+			players[i].clientVersion = BeltalowdaVersioning.GetVersionArray(Beltalowda.versionString)
 		else
 			players[i].isPlayer = false
 			players[i].clientVersion = {}
@@ -1017,15 +1017,15 @@ function RdKGToolGroup.GetCurrentPlainGroup()
 	return players
 end
 
-function RdKGToolGroup.InitializeGroup()
-	RdKGToolGroup.state.players = {}
-	RdKGToolGroup.state.players = RdKGToolGroup.GetCurrentPlainGroup()
+function BeltalowdaGroup.InitializeGroup()
+	BeltalowdaGroup.state.players = {}
+	BeltalowdaGroup.state.players = BeltalowdaGroup.GetCurrentPlainGroup()
 	
 	
 end
 
-function RdKGToolGroup.ClearGroup()
-	local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.ClearGroup()
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			players[i].unitTag = nil
@@ -1073,9 +1073,9 @@ function RdKGToolGroup.ClearGroup()
 	end
 end
 
-function RdKGToolGroup.UpdateGroup()
-	local oldPlayers = RdKGToolGroup.state.players
-	local newPlayers = RdKGToolGroup.GetCurrentPlainGroup()
+function BeltalowdaGroup.UpdateGroup()
+	local oldPlayers = BeltalowdaGroup.state.players
+	local newPlayers = BeltalowdaGroup.GetCurrentPlainGroup()
 	for i = 1, #newPlayers do
 		local newPlayer = newPlayers[i]
 		for j = 1, #oldPlayers do
@@ -1093,38 +1093,38 @@ function RdKGToolGroup.UpdateGroup()
 			end
 		end
 	end
-	RdKGToolGroup.state.players = newPlayers
-	RdKGToolGroup.NotifyGroupChangedCallbacks()
+	BeltalowdaGroup.state.players = newPlayers
+	BeltalowdaGroup.NotifyGroupChangedCallbacks()
 end
 
-function RdKGToolGroup.EnableGroup()
-	RdKGToolGroup.ClearGroup()
-	RdKGToolGroup.InitializeGroup()
-	EVENT_MANAGER:RegisterForEvent(RdKGToolGroup.callbackName, EVENT_GROUP_MEMBER_CONNECTED_STATUS, RdKGToolGroup.GroupMemberOnConnectedStatus)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolGroup.callbackName, EVENT_GROUP_MEMBER_JOINED, RdKGToolGroup.GroupMemberOnJoined)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolGroup.callbackName, EVENT_GROUP_MEMBER_LEFT, RdKGToolGroup.GroupMemberOnLeft)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolGroup.callbackName, EVENT_GROUP_UPDATE, RdKGToolGroup.GroupMemberOnUpdate)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolGroup.callbackName, EVENT_LEADER_UPDATE, RdKGToolGroup.GroupMemberOnLeaderUpdate)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolGroup.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolGroup.GroupMemberOnPlayerActivated)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolGroup.callbackName, EVENT_PLAYER_DEACTIVATED, RdKGToolGroup.GroupMemberOnPlayerDeactivated)
-	EVENT_MANAGER:RegisterForUpdate(RdKGToolGroup.callbackName, RdKGToolGroup.config.combatUpdateInterval, RdKGToolGroup.UpdateStatusLoop)
+function BeltalowdaGroup.EnableGroup()
+	BeltalowdaGroup.ClearGroup()
+	BeltalowdaGroup.InitializeGroup()
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaGroup.callbackName, EVENT_GROUP_MEMBER_CONNECTED_STATUS, BeltalowdaGroup.GroupMemberOnConnectedStatus)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaGroup.callbackName, EVENT_GROUP_MEMBER_JOINED, BeltalowdaGroup.GroupMemberOnJoined)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaGroup.callbackName, EVENT_GROUP_MEMBER_LEFT, BeltalowdaGroup.GroupMemberOnLeft)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaGroup.callbackName, EVENT_GROUP_UPDATE, BeltalowdaGroup.GroupMemberOnUpdate)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaGroup.callbackName, EVENT_LEADER_UPDATE, BeltalowdaGroup.GroupMemberOnLeaderUpdate)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaGroup.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaGroup.GroupMemberOnPlayerActivated)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaGroup.callbackName, EVENT_PLAYER_DEACTIVATED, BeltalowdaGroup.GroupMemberOnPlayerDeactivated)
+	EVENT_MANAGER:RegisterForUpdate(BeltalowdaGroup.callbackName, BeltalowdaGroup.config.combatUpdateInterval, BeltalowdaGroup.UpdateStatusLoop)
 end
 
-function RdKGToolGroup.DisableGroup()
-	EVENT_MANAGER:UnregisterForEvent(RdKGToolGroup.callbackName, EVENT_GROUP_MEMBER_CONNECTED_STATUS)
-	EVENT_MANAGER:UnregisterForEvent(RdKGToolGroup.callbackName, EVENT_GROUP_MEMBER_JOINED)
-	EVENT_MANAGER:UnregisterForEvent(RdKGToolGroup.callbackName, EVENT_GROUP_MEMBER_LEFT)
-	EVENT_MANAGER:UnregisterForEvent(RdKGToolGroup.callbackName, EVENT_GROUP_UPDATE)
-	EVENT_MANAGER:UnregisterForEvent(RdKGToolGroup.callbackName, EVENT_LEADER_UPDATE)
-	EVENT_MANAGER:UnregisterForEvent(RdKGToolGroup.callbackName, EVENT_PLAYER_ACTIVATED)
-	EVENT_MANAGER:UnregisterForEvent(RdKGToolGroup.callbackName, EVENT_PLAYER_DEACTIVATED)
-	EVENT_MANAGER:UnregisterForUpdate(RdKGToolGroup.callbackName)
-	RdKGToolGroup.ClearGroup()
+function BeltalowdaGroup.DisableGroup()
+	EVENT_MANAGER:UnregisterForEvent(BeltalowdaGroup.callbackName, EVENT_GROUP_MEMBER_CONNECTED_STATUS)
+	EVENT_MANAGER:UnregisterForEvent(BeltalowdaGroup.callbackName, EVENT_GROUP_MEMBER_JOINED)
+	EVENT_MANAGER:UnregisterForEvent(BeltalowdaGroup.callbackName, EVENT_GROUP_MEMBER_LEFT)
+	EVENT_MANAGER:UnregisterForEvent(BeltalowdaGroup.callbackName, EVENT_GROUP_UPDATE)
+	EVENT_MANAGER:UnregisterForEvent(BeltalowdaGroup.callbackName, EVENT_LEADER_UPDATE)
+	EVENT_MANAGER:UnregisterForEvent(BeltalowdaGroup.callbackName, EVENT_PLAYER_ACTIVATED)
+	EVENT_MANAGER:UnregisterForEvent(BeltalowdaGroup.callbackName, EVENT_PLAYER_DEACTIVATED)
+	EVENT_MANAGER:UnregisterForUpdate(BeltalowdaGroup.callbackName)
+	BeltalowdaGroup.ClearGroup()
 end
 
 
 
-function RdKGToolGroup.GetUnitTags()
+function BeltalowdaGroup.GetUnitTags()
 	local unitTags = {}
 	local groupSize = GetGroupSize()
 	if groupSize > 0 then
@@ -1137,9 +1137,9 @@ function RdKGToolGroup.GetUnitTags()
 	return unitTags
 end
 
-function RdKGToolGroup.GetUnitTagForPlayer()
+function BeltalowdaGroup.GetUnitTagForPlayer()
 	local unitTag = "player"
-	local players = RdKGToolGroup.state.players
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			if players[i].displayName == GetUnitDisplayName("player") and players[i].charName == GetUnitName("player") then
@@ -1151,7 +1151,7 @@ function RdKGToolGroup.GetUnitTagForPlayer()
 	return unitTag
 end
 
-function RdKGToolGroup.SortBuffLists(list)
+function BeltalowdaGroup.SortBuffLists(list)
 	if list ~= nil then
 		
 		local itemCount = #list
@@ -1171,7 +1171,7 @@ function RdKGToolGroup.SortBuffLists(list)
 	return nil
 end
 
-function RdKGToolGroup.CheckForAbilityActive(buffs, buff, abilityIds, alreadyUp)
+function BeltalowdaGroup.CheckForAbilityActive(buffs, buff, abilityIds, alreadyUp)
 	if alreadyUp == nil then
 		alreadyUp = false
 	end
@@ -1188,7 +1188,7 @@ function RdKGToolGroup.CheckForAbilityActive(buffs, buff, abilityIds, alreadyUp)
 	return abilityPresent
 end
 
-function RdKGToolGroup.CheckForAbility(buffs, buff, abilityIds, alreadyUp)
+function BeltalowdaGroup.CheckForAbility(buffs, buff, abilityIds, alreadyUp)
 	if alreadyUp == nil then
 		alreadyUp = false
 	end
@@ -1205,8 +1205,8 @@ function RdKGToolGroup.CheckForAbility(buffs, buff, abilityIds, alreadyUp)
 	return abilityPresent, identified
 end
 
-function RdKGToolGroup.CheckForPotions(buffs, buff)
-	local isImmovable = RdKGToolGroup.CheckForAbilityActive(buffs, buff, RdKGToolGroup.abilityIds.immovablePot, buffs.specialInformation.potion.immovablePot)
+function BeltalowdaGroup.CheckForPotions(buffs, buff)
+	local isImmovable = BeltalowdaGroup.CheckForAbilityActive(buffs, buff, BeltalowdaGroup.abilityIds.immovablePot, buffs.specialInformation.potion.immovablePot)
 	if buffs.specialInformation.potion.immovablePot == false then
 		buffs.specialInformation.potion.immovablePot = isImmovable
 		if isImmovable == true then
@@ -1223,7 +1223,7 @@ function RdKGToolGroup.CheckForPotions(buffs, buff)
 				buffs.specialInformation.potion.started = buff.started
 			end
 			]]
-			if RdKGToolGroup.abilityIds.isPotion[buff.abilityId] == true then
+			if BeltalowdaGroup.abilityIds.isPotion[buff.abilityId] == true then
 				buffs.specialInformation.potion.started = buff.started
 			end
 		end
@@ -1231,24 +1231,24 @@ function RdKGToolGroup.CheckForPotions(buffs, buff)
 		-- U30+ Change (Temporary Fix)
 		--[[
 		if libPB.IS_CRAFTED_POTION_BUFF[buff.abilityId] == true then
-			buffs.specialInformation.potion.type = RdKGToolGroup.constants.potionTypes.CRAFTED
+			buffs.specialInformation.potion.type = BeltalowdaGroup.constants.potionTypes.CRAFTED
 		elseif libPB.IS_NON_CRAFTED_POTION_BUFF[buff.abilityId] == true then
-			buffs.specialInformation.potion.type = RdKGToolGroup.constants.potionTypes.NON_CRAFTED
+			buffs.specialInformation.potion.type = BeltalowdaGroup.constants.potionTypes.NON_CRAFTED
 		elseif libPB.IS_CROWNSTORE_POTION_BUFF[buff.abilityId] == true then
-			buffs.specialInformation.potion.type = RdKGToolGroup.constants.potionTypes.CROWN
+			buffs.specialInformation.potion.type = BeltalowdaGroup.constants.potionTypes.CROWN
 		end
-		if RdKGToolGroup.abilityIds.alliancePot[buff.abilityId] == true then
-			buffs.specialInformation.potion.type = RdKGToolGroup.constants.potionTypes.ALLIANCE
+		if BeltalowdaGroup.abilityIds.alliancePot[buff.abilityId] == true then
+			buffs.specialInformation.potion.type = BeltalowdaGroup.constants.potionTypes.ALLIANCE
 		end
 		]]
-		if RdKGToolGroup.abilityIds.isPotion[buff.abilityId] == true then
-			buffs.specialInformation.potion.type = RdKGToolGroup.constants.potionTypes.CRAFTED
+		if BeltalowdaGroup.abilityIds.isPotion[buff.abilityId] == true then
+			buffs.specialInformation.potion.type = BeltalowdaGroup.constants.potionTypes.CRAFTED
 		end
 	end
 	
 end
 
-function RdKGToolGroup.CheckForFoodDrinks(buffs, buff)
+function BeltalowdaGroup.CheckForFoodDrinks(buffs, buff)
 	buffs.specialInformation.foodDrink = buffs.specialInformation.foodDrink or {}
 	--d(buff.abilityId)
 	--d(libFDB)
@@ -1264,8 +1264,8 @@ function RdKGToolGroup.CheckForFoodDrinks(buffs, buff)
 	end
 end
 
-function RdKGToolGroup.AdjustRapidValues(buffs, buff, abilityIds, rapidMorph)
-	local active, identified = RdKGToolGroup.CheckForAbility(buffs, buff, abilityIds, rapidMorph.active)
+function BeltalowdaGroup.AdjustRapidValues(buffs, buff, abilityIds, rapidMorph)
+	local active, identified = BeltalowdaGroup.CheckForAbility(buffs, buff, abilityIds, rapidMorph.active)
 	if rapidMorph.active == false and identified == true then
 		--d(buff.abilityId)
 		rapidMorph.active = active
@@ -1276,35 +1276,35 @@ function RdKGToolGroup.AdjustRapidValues(buffs, buff, abilityIds, rapidMorph)
 	end
 end
 
-function RdKGToolGroup.CheckForRapid(buffs, buff)
+function BeltalowdaGroup.CheckForRapid(buffs, buff)
 	--[[
-	RdKGToolGroup.AdjustRapidValues(buffs, buff, RdKGToolGroup.abilityIds.rapidManeuver, buffs.specialInformation.rapidManeuverOn)
-	RdKGToolGroup.AdjustRapidValues(buffs, buff, RdKGToolGroup.abilityIds.chargingManeuverMajor, buffs.specialInformation.chargingManeuverMajorOn)
-	RdKGToolGroup.AdjustRapidValues(buffs, buff, RdKGToolGroup.abilityIds.chargingManeuverMinor, buffs.specialInformation.chargingManeuverMinorOn)
-	RdKGToolGroup.AdjustRapidValues(buffs, buff, RdKGToolGroup.abilityIds.retreatingManeuver, buffs.specialInformation.retreatingManeuverOn)
+	BeltalowdaGroup.AdjustRapidValues(buffs, buff, BeltalowdaGroup.abilityIds.rapidManeuver, buffs.specialInformation.rapidManeuverOn)
+	BeltalowdaGroup.AdjustRapidValues(buffs, buff, BeltalowdaGroup.abilityIds.chargingManeuverMajor, buffs.specialInformation.chargingManeuverMajorOn)
+	BeltalowdaGroup.AdjustRapidValues(buffs, buff, BeltalowdaGroup.abilityIds.chargingManeuverMinor, buffs.specialInformation.chargingManeuverMinorOn)
+	BeltalowdaGroup.AdjustRapidValues(buffs, buff, BeltalowdaGroup.abilityIds.retreatingManeuver, buffs.specialInformation.retreatingManeuverOn)
 	]]
-	RdKGToolGroup.AdjustRapidValues(buffs, buff, RdKGToolGroup.abilityIds.majorExpedition, buffs.specialInformation.majorExpeditionOn)
-	RdKGToolGroup.AdjustRapidValues(buffs, buff, RdKGToolGroup.abilityIds.minorExpedition, buffs.specialInformation.minorExpeditionOn)
+	BeltalowdaGroup.AdjustRapidValues(buffs, buff, BeltalowdaGroup.abilityIds.majorExpedition, buffs.specialInformation.majorExpeditionOn)
+	BeltalowdaGroup.AdjustRapidValues(buffs, buff, BeltalowdaGroup.abilityIds.minorExpedition, buffs.specialInformation.minorExpeditionOn)
 end
 
-function RdKGToolGroup.CheckForShalk(buffs, buff)
-	if RdKGToolGroup.abilityIds.subterraneanAssault[buff.abilityId] == true then
+function BeltalowdaGroup.CheckForShalk(buffs, buff)
+	if BeltalowdaGroup.abilityIds.subterraneanAssault[buff.abilityId] == true then
 		buffs.specialInformation.subterraneanAssault.active = true
 		buffs.specialInformation.subterraneanAssault.started = buff.started
 		buffs.specialInformation.subterraneanAssault.ending = buff.ending
 		buffs.specialInformation.subterraneanAssault.waveTwo = false
 		--d(buff.started)
-	elseif RdKGToolGroup.abilityIds.subterraneanAssaultWaveTwo[buff.abilityId] == true then
+	elseif BeltalowdaGroup.abilityIds.subterraneanAssaultWaveTwo[buff.abilityId] == true then
 		buffs.specialInformation.subterraneanAssault.active = true
 		buffs.specialInformation.subterraneanAssault.started = buff.started
 		buffs.specialInformation.subterraneanAssault.ending = buff.ending
 		buffs.specialInformation.subterraneanAssault.waveTwo = true
-	elseif RdKGToolGroup.abilityIds.deepFissure[buff.abilityId] == true then
+	elseif BeltalowdaGroup.abilityIds.deepFissure[buff.abilityId] == true then
 		buffs.specialInformation.deepFissure.active = true
 		buffs.specialInformation.deepFissure.started = buff.started
 		buffs.specialInformation.deepFissure.ending = buff.ending
 		buffs.specialInformation.deepFissure.waveTwo = false
-	elseif RdKGToolGroup.abilityIds.deepFissureWaveTwo[buff.abilityId] == true then
+	elseif BeltalowdaGroup.abilityIds.deepFissureWaveTwo[buff.abilityId] == true then
 		buffs.specialInformation.deepFissure.active = true
 		buffs.specialInformation.deepFissure.started = buff.started
 		buffs.specialInformation.deepFissure.ending = buff.ending
@@ -1313,24 +1313,24 @@ function RdKGToolGroup.CheckForShalk(buffs, buff)
 	
 end
 
-function RdKGToolGroup.CheckForProximityDetonation(buffs, buff)
-	if RdKGToolGroup.abilityIds.proximityDetonation[buff.abilityId] == true then
+function BeltalowdaGroup.CheckForProximityDetonation(buffs, buff)
+	if BeltalowdaGroup.abilityIds.proximityDetonation[buff.abilityId] == true then
 		buffs.specialInformation.proximityDetonation.active = true
 		buffs.specialInformation.proximityDetonation.started = buff.started
 		buffs.specialInformation.proximityDetonation.ending = buff.ending
 	end
 end
 
-function RdKGToolGroup.RunSpecialChecks(buffs, buff)
-	RdKGToolGroup.CheckForRapid(buffs, buff)
-	RdKGToolGroup.CheckForPotions(buffs, buff)
-	RdKGToolGroup.CheckForFoodDrinks(buffs, buff)
-	RdKGToolGroup.CheckForProximityDetonation(buffs, buff)
-	RdKGToolGroup.CheckForShalk(buffs, buff)
+function BeltalowdaGroup.RunSpecialChecks(buffs, buff)
+	BeltalowdaGroup.CheckForRapid(buffs, buff)
+	BeltalowdaGroup.CheckForPotions(buffs, buff)
+	BeltalowdaGroup.CheckForFoodDrinks(buffs, buff)
+	BeltalowdaGroup.CheckForProximityDetonation(buffs, buff)
+	BeltalowdaGroup.CheckForShalk(buffs, buff)
 end
 
-function RdKGToolGroup.GetLeaderUnitTag()
-	local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.GetLeaderUnitTag()
+	local players = BeltalowdaGroup.state.players
 	local unitTag = "player"
 	if players ~= nil then
 		for i = 1, #players do
@@ -1343,9 +1343,9 @@ function RdKGToolGroup.GetLeaderUnitTag()
 	return unitTag
 end
 
-function RdKGToolGroup.GetLeaderUnit()
+function BeltalowdaGroup.GetLeaderUnit()
 	local entry = nil
-	local players = RdKGToolGroup.state.players
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			if players[i].isLeader == true then
@@ -1357,9 +1357,9 @@ function RdKGToolGroup.GetLeaderUnit()
 	return entry
 end
 
-function RdKGToolGroup.CalculateGroupDistances(unitTag, field)
+function BeltalowdaGroup.CalculateGroupDistances(unitTag, field)
 	if unitTag ~= nil and field ~= nil then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		local x, y = nil, nil
 		local playerX, playerY = nil, nil
 		if lib3d:IsValidZone() then
@@ -1392,18 +1392,18 @@ function RdKGToolGroup.CalculateGroupDistances(unitTag, field)
 	end
 end
 
-function RdKGToolGroup.UpdateDisplayNames()
-	local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.UpdateDisplayNames()
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
-			players[i].name = RdKGToolGroup.GetAdjustedNameFromUnitTag(players[i].unitTag)
+			players[i].name = BeltalowdaGroup.GetAdjustedNameFromUnitTag(players[i].unitTag)
 		end
 	end
-	RdKGToolGroup.NotifyGroupChangedCallbacks()
+	BeltalowdaGroup.NotifyGroupChangedCallbacks()
 end
 
-function RdKGToolGroup.ClearDamageHealingMeter()
-	local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.ClearDamageHealingMeter()
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			players[i].meter.damage = 0
@@ -1412,9 +1412,9 @@ function RdKGToolGroup.ClearDamageHealingMeter()
 	end
 end
 
-function RdKGToolGroup.GetPlayerByUnitTag(unitTag)
+function BeltalowdaGroup.GetPlayerByUnitTag(unitTag)
 	local player = nil
-	local players = RdKGToolGroup.state.players
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			if players[i].unitTag == unitTag then
@@ -1426,7 +1426,7 @@ function RdKGToolGroup.GetPlayerByUnitTag(unitTag)
 	return player
 end
 
-function RdKGToolGroup.SetCrBgTpHealBuffs(buffs)
+function BeltalowdaGroup.SetCrBgTpHealBuffs(buffs)
 	local newBuffs = {}
 	if buffs ~= nil then
 		for i = 1, #buffs do
@@ -1435,12 +1435,12 @@ function RdKGToolGroup.SetCrBgTpHealBuffs(buffs)
 			end
 		end
 	end
-	RdKGToolGroup.state.crBgTpHealBuffs = newBuffs
+	BeltalowdaGroup.state.crBgTpHealBuffs = newBuffs
 end
 
-function RdKGToolGroup.CheckCrBgTpHealBuff(buffs, buff)
+function BeltalowdaGroup.CheckCrBgTpHealBuff(buffs, buff)
 	--buff.name, buff.started, buff.ending, buff.slot, buff.stackCount, buff.iconFilename, buff.buffType, buff.effectType, buff.abilityType, buff.statusEffectType, buff.abilityId, buff.canClickOff, buff.castByPlayer
-	local item = RdKGToolGroup.state.crBgTpHealBuffs[buff.abilityId]
+	local item = BeltalowdaGroup.state.crBgTpHealBuffs[buff.abilityId]
 	if item ~= nil then
 		
 		buffs.specialInformation.crBgTpHealBuffs[item] = buffs.specialInformation.crBgTpHealBuffs[item] or {}
@@ -1455,12 +1455,12 @@ function RdKGToolGroup.CheckCrBgTpHealBuff(buffs, buff)
 end
 
 --Admin Functionality
-function RdKGToolGroup.SetAdminMundusInformation(index)
-	local player = RdKGToolGroup.state.players[index]
+function BeltalowdaGroup.SetAdminMundusInformation(index)
+	local player = BeltalowdaGroup.state.players[index]
 	if player ~= nil then
 		player.admin = player.admin or {}
 		player.admin.mundus = player.admin.mundus or {}
-		local filter = RdKGTool.admin.constants.config.MUNDUS_FILTER
+		local filter = Beltalowda.admin.constants.config.MUNDUS_FILTER
 		local buffs = GetNumBuffs(player.unitTag)
 		local stoneIndex = 1
 		player.admin.mundus.stone1 = "-"
@@ -1475,154 +1475,154 @@ function RdKGToolGroup.SetAdminMundusInformation(index)
 	end
 end
 
-function RdKGToolGroup.RetrieveAdminMundusInformation(index)
+function BeltalowdaGroup.RetrieveAdminMundusInformation(index)
 	--d(index)
-	if index ~= nil and index >= 1 and index <= 24 and #RdKGToolGroup.state.players >= index then
-		RdKGToolGroup.SetAdminMundusInformation(index)
+	if index ~= nil and index >= 1 and index <= 24 and #BeltalowdaGroup.state.players >= index then
+		BeltalowdaGroup.SetAdminMundusInformation(index)
 	elseif index ~= nil and (index == 25 or index == 0) then
-		for i = 1, #RdKGToolGroup.state.players do
-			RdKGToolGroup.SetAdminMundusInformation(i)
+		for i = 1, #BeltalowdaGroup.state.players do
+			BeltalowdaGroup.SetAdminMundusInformation(i)
 		end
 	end
-	if RdKGToolGroup.state.players[index] ~= nil then
-		RdKGToolGroup.NotifyAdminInformationChangedCallbacks(RdKGToolGroup.state.players[index].unitTag)
+	if BeltalowdaGroup.state.players[index] ~= nil then
+		BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(BeltalowdaGroup.state.players[index].unitTag)
 	end
 end
 
 --Admin Networking
-function RdKGToolGroup.HandleAdminAoeResponse(message)
-	local player = RdKGToolGroup.GetPlayerByUnitTag(message.pingTag)
+function BeltalowdaGroup.HandleAdminAoeResponse(message)
+	local player = BeltalowdaGroup.GetPlayerByUnitTag(message.pingTag)
 	if player ~= nil then
-		local bitfield = RdKGToolMath.DecodeBitArrayHelper(message.b3)
+		local bitfield = BeltalowdaMath.DecodeBitArrayHelper(message.b3)
 		player.admin = player.admin or {}
 		player.admin.client = player.admin.client or {}
 		player.admin.client.aoe = {}
-		player.admin.client.aoe.tellsEnabled = RdKGToolMath.BitToBoolean(bitfield[7])
-		player.admin.client.aoe.customColorEnabled = RdKGToolMath.BitToBoolean(bitfield[8])
+		player.admin.client.aoe.tellsEnabled = BeltalowdaMath.BitToBoolean(bitfield[7])
+		player.admin.client.aoe.customColorEnabled = BeltalowdaMath.BitToBoolean(bitfield[8])
 		bitfield[7] = 0
 		bitfield[8] = 0
-		player.admin.client.aoe.friendlyBrightness = RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)
+		player.admin.client.aoe.friendlyBrightness = BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)
 		player.admin.client.aoe.enemyBrightness = message.b2
 		
-		RdKGToolGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
+		BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
 	end
 end
 
-function RdKGToolGroup.HandleAdminSoundResponse(message)
-	local player = RdKGToolGroup.GetPlayerByUnitTag(message.pingTag)
+function BeltalowdaGroup.HandleAdminSoundResponse(message)
+	local player = BeltalowdaGroup.GetPlayerByUnitTag(message.pingTag)
 	if player ~= nil then
-		local bitfield = RdKGToolMath.DecodeBitArrayHelper(message.b1)
+		local bitfield = BeltalowdaMath.DecodeBitArrayHelper(message.b1)
 		player.admin = player.admin or {}
 		player.admin.client = player.admin.client or {}
 		player.admin.client.sound = {}
-		player.admin.client.sound.soundEnabled = RdKGToolMath.BitToBoolean(bitfield[8])
+		player.admin.client.sound.soundEnabled = BeltalowdaMath.BitToBoolean(bitfield[8])
 		bitfield[8] = 0
-		player.admin.client.sound.audioVolume = RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)
+		player.admin.client.sound.audioVolume = BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)
 		player.admin.client.sound.uiVolume = message.b2
 		player.admin.client.sound.sfxVolume = message.b3
 		
-		RdKGToolGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
+		BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
 	end
 end
 
-function RdKGToolGroup.HandleAdminGraphicsResponse(message)
-	local player = RdKGToolGroup.GetPlayerByUnitTag(message.pingTag)
+function BeltalowdaGroup.HandleAdminGraphicsResponse(message)
+	local player = BeltalowdaGroup.GetPlayerByUnitTag(message.pingTag)
 	if player ~= nil then
-		local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
-		local messageIdentifier = RdKGToolMath.EncodeBitArrayHelper(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(3), 3, 22, 1),0)
+		local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+		local messageIdentifier = BeltalowdaMath.EncodeBitArrayHelper(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(3), 3, 22, 1),0)
 		player.admin = player.admin or {}
 		player.admin.client = player.admin.client or {}
 		player.admin.client.graphics = player.admin.client.graphics or {}
 		--d(message)
-		if messageIdentifier == RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_1 then
-			RdKGToolGroup.HandleAdminGraphicsMessage1(player, message, bitfield)
-		elseif messageIdentifier == RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_2 then
-			RdKGToolGroup.HandleAdminGraphicsMessage2(player, message, bitfield)
-		elseif messageIdentifier == RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_3 then
-			RdKGToolGroup.HandleAdminGraphicsMessage3(player, message, bitfield)
-		elseif messageIdentifier == RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_4 then
-			RdKGToolGroup.HandleAdminGraphicsMessage4(player, message, bitfield)
+		if messageIdentifier == BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_1 then
+			BeltalowdaGroup.HandleAdminGraphicsMessage1(player, message, bitfield)
+		elseif messageIdentifier == BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_2 then
+			BeltalowdaGroup.HandleAdminGraphicsMessage2(player, message, bitfield)
+		elseif messageIdentifier == BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_3 then
+			BeltalowdaGroup.HandleAdminGraphicsMessage3(player, message, bitfield)
+		elseif messageIdentifier == BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_4 then
+			BeltalowdaGroup.HandleAdminGraphicsMessage4(player, message, bitfield)
 		end
-		RdKGToolGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
+		BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
 	end
 end
 
-function RdKGToolGroup.HandleAdminGraphicsMessage1(player, message, bitfield)
+function BeltalowdaGroup.HandleAdminGraphicsMessage1(player, message, bitfield)
 	local graphics = player.admin.client.graphics
 	
-	graphics.windowMode = RdKGToolMath.EncodeBitArrayHelper(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(2), 2, 19, 1), 0)
-	graphics.vsync = RdKGToolMath.BitToBoolean(bitfield[21])
+	graphics.windowMode = BeltalowdaMath.EncodeBitArrayHelper(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(2), 2, 19, 1), 0)
+	graphics.vsync = BeltalowdaMath.BitToBoolean(bitfield[21])
 	
-	graphics.resWidth = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 18, 1, 1))
+	graphics.resWidth = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 18, 1, 1))
 	--d("-----")
 	--d(bitfield)
 end
 
-function RdKGToolGroup.HandleAdminGraphicsMessage2(player, message, bitfield)
+function BeltalowdaGroup.HandleAdminGraphicsMessage2(player, message, bitfield)
 	local graphics = player.admin.client.graphics
 	
-	graphics.antiAliasing = RdKGToolMath.BitToBoolean(bitfield[19])
-	graphics.ambient = RdKGToolMath.BitToBoolean(bitfield[20])
-	graphics.bloom = RdKGToolMath.BitToBoolean(bitfield[21])
+	graphics.antiAliasing = BeltalowdaMath.BitToBoolean(bitfield[19])
+	graphics.ambient = BeltalowdaMath.BitToBoolean(bitfield[20])
+	graphics.bloom = BeltalowdaMath.BitToBoolean(bitfield[21])
 	
-	graphics.resHeight = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 18, 1, 1))
+	graphics.resHeight = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 18, 1, 1))
 
 end
 
-function RdKGToolGroup.HandleAdminGraphicsMessage3(player, message, bitfield)
+function BeltalowdaGroup.HandleAdminGraphicsMessage3(player, message, bitfield)
 	local graphics = player.admin.client.graphics
 	
-	graphics.depthOfField = RdKGToolMath.BitToBoolean(bitfield[19])
-	graphics.distortion = RdKGToolMath.BitToBoolean(bitfield[20])
-	graphics.sunlight = RdKGToolMath.BitToBoolean(bitfield[21])
+	graphics.depthOfField = BeltalowdaMath.BitToBoolean(bitfield[19])
+	graphics.distortion = BeltalowdaMath.BitToBoolean(bitfield[20])
+	graphics.sunlight = BeltalowdaMath.BitToBoolean(bitfield[21])
 	
-	graphics.particleMaximum = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 11, 1, 1)) + 768
-	graphics.particleSupressDistance = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 7, 12, 1))
+	graphics.particleMaximum = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 11, 1, 1)) + 768
+	graphics.particleSupressDistance = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 7, 12, 1))
 
 end
 
-function RdKGToolGroup.HandleAdminGraphicsMessage4(player, message, bitfield)
+function BeltalowdaGroup.HandleAdminGraphicsMessage4(player, message, bitfield)
 	local graphics = player.admin.client.graphics
 	
-	graphics.allyEffects = RdKGToolMath.BitToBoolean(bitfield[18])
+	graphics.allyEffects = BeltalowdaMath.BitToBoolean(bitfield[18])
 	
-	graphics.viewDistance = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 7, 1, 1))
-	graphics.reflectionQuality = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 2, 8, 1))
-	graphics.shadowQuality = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 3, 10, 1))
-	graphics.reflectionQuality = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 2, 13, 1))
-	graphics.graphicPresets = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 3, 15, 1))
-	graphics.subsamplingQuality = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 2, 19, 1))
+	graphics.viewDistance = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 7, 1, 1))
+	graphics.reflectionQuality = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 2, 8, 1))
+	graphics.shadowQuality = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 3, 10, 1))
+	graphics.reflectionQuality = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 2, 13, 1))
+	graphics.graphicPresets = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 3, 15, 1))
+	graphics.subsamplingQuality = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 2, 19, 1))
 end
 
-function RdKGToolGroup.HandleAdminAddonResponse(message)
-	local player = RdKGToolGroup.GetPlayerByUnitTag(message.pingTag)
+function BeltalowdaGroup.HandleAdminAddonResponse(message)
+	local player = BeltalowdaGroup.GetPlayerByUnitTag(message.pingTag)
 	if player ~= nil then
-		if message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_1 then
-			RdKGToolGroup.HandleAdminAddon1Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_2 then
-			RdKGToolGroup.HandleAdminAddon2Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_3 then
-			RdKGToolGroup.HandleAdminAddon3Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_4 then
-			RdKGToolGroup.HandleAdminAddon4Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_5 then
-			RdKGToolGroup.HandleAdminAddon5Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_6 then
-			RdKGToolGroup.HandleAdminAddon6Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_7 then
-			RdKGToolGroup.HandleAdminAddon7Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_8 then
-			RdKGToolGroup.HandleAdminAddon8Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_9 then
-			RdKGToolGroup.HandleAdminAddon9Response(player, message)
+		if message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_1 then
+			BeltalowdaGroup.HandleAdminAddon1Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_2 then
+			BeltalowdaGroup.HandleAdminAddon2Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_3 then
+			BeltalowdaGroup.HandleAdminAddon3Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_4 then
+			BeltalowdaGroup.HandleAdminAddon4Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_5 then
+			BeltalowdaGroup.HandleAdminAddon5Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_6 then
+			BeltalowdaGroup.HandleAdminAddon6Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_7 then
+			BeltalowdaGroup.HandleAdminAddon7Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_8 then
+			BeltalowdaGroup.HandleAdminAddon8Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_9 then
+			BeltalowdaGroup.HandleAdminAddon9Response(player, message)
 		end
-		RdKGToolGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
+		BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
 	end
 end
 
-function RdKGToolGroup.HandleAdminAddon1Response(player, message)
+function BeltalowdaGroup.HandleAdminAddon1Response(player, message)
 	--Crown / debuff overview / rapid tracker / health, damage overview / potion overview
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
 	--d(bitfield)
 	player.admin = player.admin or {}
 	player.admin.addon = player.admin.addon or {}
@@ -1633,63 +1633,63 @@ function RdKGToolGroup.HandleAdminAddon1Response(player, message)
 	player.admin.addon.po = {}
 	
 	--crown
-	player.admin.addon.crown.enabled = RdKGToolMath.BitToBoolean(bitfield[24])
+	player.admin.addon.crown.enabled = BeltalowdaMath.BitToBoolean(bitfield[24])
 	
-	local tempField = RdKGToolMath.CreateEmptyBitfield(24)
-	tempField = RdKGToolMath.CopyBitfieldRange(bitfield, tempField, 10, 9, 1)
-	player.admin.addon.crown.size = RdKGToolMath.ArrayToInt24(tempField)
+	local tempField = BeltalowdaMath.CreateEmptyBitfield(24)
+	tempField = BeltalowdaMath.CopyBitfieldRange(bitfield, tempField, 10, 9, 1)
+	player.admin.addon.crown.size = BeltalowdaMath.ArrayToInt24(tempField)
 	
-	tempField = RdKGToolMath.CreateEmptyBitfield(24)
-	tempField = RdKGToolMath.CopyBitfieldRange(bitfield, tempField, 5, 19, 1)
-	player.admin.addon.crown.selectedCrown = RdKGToolMath.ArrayToInt24(tempField)
+	tempField = BeltalowdaMath.CreateEmptyBitfield(24)
+	tempField = BeltalowdaMath.CopyBitfieldRange(bitfield, tempField, 5, 19, 1)
+	player.admin.addon.crown.selectedCrown = BeltalowdaMath.ArrayToInt24(tempField)
 	
 	--hdm
-	player.admin.addon.hdm.windowEnabled = RdKGToolMath.BitToBoolean(bitfield[3])
-	player.admin.addon.hdm.enabled = RdKGToolMath.BitToBoolean(bitfield[4])
+	player.admin.addon.hdm.windowEnabled = BeltalowdaMath.BitToBoolean(bitfield[3])
+	player.admin.addon.hdm.enabled = BeltalowdaMath.BitToBoolean(bitfield[4])
 	
-	tempField = RdKGToolMath.CreateEmptyBitfield(24)
-	tempField = RdKGToolMath.CopyBitfieldRange(bitfield, tempField, 2, 1, 1)
-	player.admin.addon.hdm.viewMode = RdKGToolMath.EncodeBitArrayHelper(tempField, 0)
+	tempField = BeltalowdaMath.CreateEmptyBitfield(24)
+	tempField = BeltalowdaMath.CopyBitfieldRange(bitfield, tempField, 2, 1, 1)
+	player.admin.addon.hdm.viewMode = BeltalowdaMath.EncodeBitArrayHelper(tempField, 0)
 	
 	--dbo, rt, po
-	player.admin.addon.dbo.enabled = RdKGToolMath.BitToBoolean(bitfield[5])
-	player.admin.addon.rt.enabled = RdKGToolMath.BitToBoolean(bitfield[6])
-	player.admin.addon.po.soundEnabled = RdKGToolMath.BitToBoolean(bitfield[7])
-	player.admin.addon.po.enabled = RdKGToolMath.BitToBoolean(bitfield[8])
+	player.admin.addon.dbo.enabled = BeltalowdaMath.BitToBoolean(bitfield[5])
+	player.admin.addon.rt.enabled = BeltalowdaMath.BitToBoolean(bitfield[6])
+	player.admin.addon.po.soundEnabled = BeltalowdaMath.BitToBoolean(bitfield[7])
+	player.admin.addon.po.enabled = BeltalowdaMath.BitToBoolean(bitfield[8])
 	
 	
 end
 
-function RdKGToolGroup.HandleAdminAddon2Response(player, message)
+function BeltalowdaGroup.HandleAdminAddon2Response(player, message)
 	--ftcv [pt.1]
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
 	player.admin = player.admin or {}
 	player.admin.addon = player.admin.addon or {}
 	player.admin.addon.ftcv = player.admin.addon.ftcv or {}
 	
-	player.admin.addon.ftcv.enabled = RdKGToolMath.BitToBoolean(bitfield[8])
+	player.admin.addon.ftcv.enabled = BeltalowdaMath.BitToBoolean(bitfield[8])
 	
-	local tempField = RdKGToolMath.CreateEmptyBitfield(24)
-	tempField = RdKGToolMath.CopyBitfieldRange(bitfield, tempField, 7, 9, 1)
-	player.admin.addon.ftcv.sizeClose = RdKGToolMath.EncodeBitArrayHelper(tempField, 0)
+	local tempField = BeltalowdaMath.CreateEmptyBitfield(24)
+	tempField = BeltalowdaMath.CopyBitfieldRange(bitfield, tempField, 7, 9, 1)
+	player.admin.addon.ftcv.sizeClose = BeltalowdaMath.EncodeBitArrayHelper(tempField, 0)
 	
-	tempField = RdKGToolMath.CreateEmptyBitfield(24)
-	tempField = RdKGToolMath.CopyBitfieldRange(bitfield, tempField, 7, 1, 1)
-	player.admin.addon.ftcv.sizeFar = RdKGToolMath.EncodeBitArrayHelper(tempField, 0)
+	tempField = BeltalowdaMath.CreateEmptyBitfield(24)
+	tempField = BeltalowdaMath.CopyBitfieldRange(bitfield, tempField, 7, 1, 1)
+	player.admin.addon.ftcv.sizeFar = BeltalowdaMath.EncodeBitArrayHelper(tempField, 0)
 	
-	tempField = RdKGToolMath.CreateEmptyBitfield(24)
-	tempField = RdKGToolMath.CopyBitfieldRange(bitfield, tempField, 3, 22, 1)
-	player.admin.addon.ftcv.minDistance = RdKGToolMath.EncodeBitArrayHelper(tempField, 0)
+	tempField = BeltalowdaMath.CreateEmptyBitfield(24)
+	tempField = BeltalowdaMath.CopyBitfieldRange(bitfield, tempField, 3, 22, 1)
+	player.admin.addon.ftcv.minDistance = BeltalowdaMath.EncodeBitArrayHelper(tempField, 0)
 	
-	tempField = RdKGToolMath.CreateEmptyBitfield(24)
-	tempField = RdKGToolMath.CopyBitfieldRange(bitfield, tempField, 5, 17, 1)
-	player.admin.addon.ftcv.maxDistance = RdKGToolMath.EncodeBitArrayHelper(tempField, 0)
+	tempField = BeltalowdaMath.CreateEmptyBitfield(24)
+	tempField = BeltalowdaMath.CopyBitfieldRange(bitfield, tempField, 5, 17, 1)
+	player.admin.addon.ftcv.maxDistance = BeltalowdaMath.EncodeBitArrayHelper(tempField, 0)
 	
 end
 
-function RdKGToolGroup.HandleAdminAddon3Response(player, message)
+function BeltalowdaGroup.HandleAdminAddon3Response(player, message)
 	--ftcv [pt.2] / ftcw
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b3, message.b2, message.b1)
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b3, message.b2, message.b1)
 	player.admin = player.admin or {}
 	player.admin.addon = player.admin.addon or {}
 	player.admin.addon.ftcv = player.admin.addon.ftcv or {}
@@ -1698,51 +1698,51 @@ function RdKGToolGroup.HandleAdminAddon3Response(player, message)
 	player.admin.addon.ftcv.opacityClose = message.b2
 	
 	player.admin.addon.ftcw = {}
-	player.admin.addon.ftcw.enabled = RdKGToolMath.BitToBoolean(bitfield[8])
-	player.admin.addon.ftcw.distanceEnabled = RdKGToolMath.BitToBoolean(bitfield[7])
-	player.admin.addon.ftcw.warningsEnabled = RdKGToolMath.BitToBoolean(bitfield[6])
+	player.admin.addon.ftcw.enabled = BeltalowdaMath.BitToBoolean(bitfield[8])
+	player.admin.addon.ftcw.distanceEnabled = BeltalowdaMath.BitToBoolean(bitfield[7])
+	player.admin.addon.ftcw.warningsEnabled = BeltalowdaMath.BitToBoolean(bitfield[6])
 	
 	bitfield[6] = 0
 	bitfield[7] = 0
 	bitfield[8] = 0
 	
-	player.admin.addon.ftcw.maxDistance = RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)	
+	player.admin.addon.ftcw.maxDistance = BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)	
 end
 
-function RdKGToolGroup.HandleAdminAddon4Response(player, message)
+function BeltalowdaGroup.HandleAdminAddon4Response(player, message)
 	--ftca
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b3, message.b2, message.b1)
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b3, message.b2, message.b1)
 	player.admin = player.admin or {}
 	player.admin.addon = player.admin.addon or {}
 	player.admin.addon.ftca = {}
 	
 	player.admin.addon.ftca.maxDistance = message.b1
 	player.admin.addon.ftca.threshold = message.b2
-	player.admin.addon.ftca.enabled = RdKGToolMath.BitToBoolean(bitfield[8])
+	player.admin.addon.ftca.enabled = BeltalowdaMath.BitToBoolean(bitfield[8])
 	
 	bitfield[8] = 0
-	player.admin.addon.ftca.interval = RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)
+	player.admin.addon.ftca.interval = BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)
 end
 
-function RdKGToolGroup.HandleAdminAddon5Response(player, message)
+function BeltalowdaGroup.HandleAdminAddon5Response(player, message)
 	--ressource overview pt.1
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b3, message.b2, message.b1)
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b3, message.b2, message.b1)
 	player.admin = player.admin or {}
 	player.admin.addon = player.admin.addon or {}
 	player.admin.addon.ro = player.admin.addon.ro or {}
 	
-	player.admin.addon.ro.enabled = RdKGToolMath.BitToBoolean(bitfield[1])
-	player.admin.addon.ro.ultimateOverviewEnabled = RdKGToolMath.BitToBoolean(bitfield[2])
-	player.admin.addon.ro.clientUltimateEnabled = RdKGToolMath.BitToBoolean(bitfield[3])
-	player.admin.addon.ro.groupUltimatesEnabled = RdKGToolMath.BitToBoolean(bitfield[4])
-	player.admin.addon.ro.showSoftResources = RdKGToolMath.BitToBoolean(bitfield[5])
-	player.admin.addon.ro.soundEnabled = RdKGToolMath.BitToBoolean(bitfield[6])
+	player.admin.addon.ro.enabled = BeltalowdaMath.BitToBoolean(bitfield[1])
+	player.admin.addon.ro.ultimateOverviewEnabled = BeltalowdaMath.BitToBoolean(bitfield[2])
+	player.admin.addon.ro.clientUltimateEnabled = BeltalowdaMath.BitToBoolean(bitfield[3])
+	player.admin.addon.ro.groupUltimatesEnabled = BeltalowdaMath.BitToBoolean(bitfield[4])
+	player.admin.addon.ro.showSoftResources = BeltalowdaMath.BitToBoolean(bitfield[5])
+	player.admin.addon.ro.soundEnabled = BeltalowdaMath.BitToBoolean(bitfield[6])
 
 	player.admin.addon.ro.groupSizeDestro = message.b1
 	player.admin.addon.ro.groupSizeStorm = message.b2
 end
 
-function RdKGToolGroup.HandleAdminAddon6Response(player, message)
+function BeltalowdaGroup.HandleAdminAddon6Response(player, message)
 	--ressource overview pt.2
 	player.admin = player.admin or {}
 	player.admin.addon = player.admin.addon or {}
@@ -1753,9 +1753,9 @@ function RdKGToolGroup.HandleAdminAddon6Response(player, message)
 	player.admin.addon.ro.maxDistance = message.b3
 end
 
-function RdKGToolGroup.HandleAdminAddon7Response(player, message)
+function BeltalowdaGroup.HandleAdminAddon7Response(player, message)
 	--yacs, bft, kc, recharger, sm
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
 	player.admin = player.admin or {}
 	player.admin.addon = player.admin.addon or {}
 	player.admin.addon.yacs = {}
@@ -1773,37 +1773,37 @@ function RdKGToolGroup.HandleAdminAddon7Response(player, message)
 	player.admin.addon.sp = {}
 	player.admin.addon.so = {}
 	
-	player.admin.addon.bft.soundEnabled = RdKGToolMath.BitToBoolean(bitfield[7])
-	player.admin.addon.bft.enabled = RdKGToolMath.BitToBoolean(bitfield[8])
+	player.admin.addon.bft.soundEnabled = BeltalowdaMath.BitToBoolean(bitfield[7])
+	player.admin.addon.bft.enabled = BeltalowdaMath.BitToBoolean(bitfield[8])
 	
 	bitfield[7] = 0
 	bitfield[8] = 0
-	player.admin.addon.bft.size = RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)
+	player.admin.addon.bft.size = BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)
 	
-	player.admin.addon.yacs.enabled = RdKGToolMath.BitToBoolean(bitfield[9])
-	player.admin.addon.yacs.pvpEnabled = RdKGToolMath.BitToBoolean(bitfield[10])
-	player.admin.addon.yacs.combatEnabled = RdKGToolMath.BitToBoolean(bitfield[11])
-	player.admin.addon.kc.enabled = RdKGToolMath.BitToBoolean(bitfield[12])
-	player.admin.addon.recharger.enabled = RdKGToolMath.BitToBoolean(bitfield[13])
-	player.admin.addon.sm.enabled = RdKGToolMath.BitToBoolean(bitfield[14])
-	player.admin.addon.dt.enabled = RdKGToolMath.BitToBoolean(bitfield[15])
-	player.admin.addon.cl.enabled = RdKGToolMath.BitToBoolean(bitfield[16])
-	player.admin.addon.cs.enabled = RdKGToolMath.BitToBoolean(bitfield[17])
-	player.admin.addon.gb.enabled = RdKGToolMath.BitToBoolean(bitfield[18])
-	player.admin.addon.isdp.enabled = RdKGToolMath.BitToBoolean(bitfield[19])
-	player.admin.addon.respawner.enabled = RdKGToolMath.BitToBoolean(bitfield[20])
-	player.admin.addon.camp.enabled = RdKGToolMath.BitToBoolean(bitfield[21])
-	player.admin.addon.sp.enabled = RdKGToolMath.BitToBoolean(bitfield[22])
+	player.admin.addon.yacs.enabled = BeltalowdaMath.BitToBoolean(bitfield[9])
+	player.admin.addon.yacs.pvpEnabled = BeltalowdaMath.BitToBoolean(bitfield[10])
+	player.admin.addon.yacs.combatEnabled = BeltalowdaMath.BitToBoolean(bitfield[11])
+	player.admin.addon.kc.enabled = BeltalowdaMath.BitToBoolean(bitfield[12])
+	player.admin.addon.recharger.enabled = BeltalowdaMath.BitToBoolean(bitfield[13])
+	player.admin.addon.sm.enabled = BeltalowdaMath.BitToBoolean(bitfield[14])
+	player.admin.addon.dt.enabled = BeltalowdaMath.BitToBoolean(bitfield[15])
+	player.admin.addon.cl.enabled = BeltalowdaMath.BitToBoolean(bitfield[16])
+	player.admin.addon.cs.enabled = BeltalowdaMath.BitToBoolean(bitfield[17])
+	player.admin.addon.gb.enabled = BeltalowdaMath.BitToBoolean(bitfield[18])
+	player.admin.addon.isdp.enabled = BeltalowdaMath.BitToBoolean(bitfield[19])
+	player.admin.addon.respawner.enabled = BeltalowdaMath.BitToBoolean(bitfield[20])
+	player.admin.addon.camp.enabled = BeltalowdaMath.BitToBoolean(bitfield[21])
+	player.admin.addon.sp.enabled = BeltalowdaMath.BitToBoolean(bitfield[22])
 	player.admin.addon.sp.mode = bitfield[23] + 1
-	player.admin.addon.so.enabled = RdKGToolMath.BitToBoolean(bitfield[24])
+	player.admin.addon.so.enabled = BeltalowdaMath.BitToBoolean(bitfield[24])
 end
 
-function RdKGToolGroup.HandleAdminAddon8Response(player, message)
+function BeltalowdaGroup.HandleAdminAddon8Response(player, message)
 	local messagePrefix = message.b1
 	--d(messagePrefix)
-	if messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_1 then
+	if messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_1 then
 		--MESSAGE_1: ftcb / ra /caj
-		local bitfield = RdKGToolMath.DecodeBitArrayHelper(message.b3)
+		local bitfield = BeltalowdaMath.DecodeBitArrayHelper(message.b3)
 		player.admin = player.admin or {}
 		player.admin.addon = player.admin.addon or {}
 		player.admin.addon.ftcb = {}
@@ -1811,16 +1811,16 @@ function RdKGToolGroup.HandleAdminAddon8Response(player, message)
 		player.admin.addon.caj = {}
 		
 		player.admin.addon.ftcb.alpha = message.b2
-		player.admin.addon.ftcb.enabled = RdKGToolMath.BitToBoolean(bitfield[8])
-		player.admin.addon.caj.enabled = RdKGToolMath.BitToBoolean(bitfield[7])
-		player.admin.addon.ra.allowOverride = RdKGToolMath.BitToBoolean(bitfield[6])
-		player.admin.addon.ra.enabled = RdKGToolMath.BitToBoolean(bitfield[5])
+		player.admin.addon.ftcb.enabled = BeltalowdaMath.BitToBoolean(bitfield[8])
+		player.admin.addon.caj.enabled = BeltalowdaMath.BitToBoolean(bitfield[7])
+		player.admin.addon.ra.allowOverride = BeltalowdaMath.BitToBoolean(bitfield[6])
+		player.admin.addon.ra.enabled = BeltalowdaMath.BitToBoolean(bitfield[5])
 		bitfield[8] = 0
 		bitfield[7] = 0
 		bitfield[6] = 0
 		bitfield[5] = 0
-		player.admin.addon.ftcb.selectedBeam = RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)
-	elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_2 then
+		player.admin.addon.ftcb.selectedBeam = BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)
+	elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_2 then
 		--MESSAGE_2: crBgTp, sc, ro
 		player.admin = player.admin or {}
 		player.admin.addon = player.admin.addon or {}
@@ -1828,11 +1828,11 @@ function RdKGToolGroup.HandleAdminAddon8Response(player, message)
 		player.admin.addon.sc = {}
 		player.admin.addon.ro = player.admin.addon.ro or {}
 		
-		local bitfield = RdKGToolMath.DecodeBitArrayHelper(message.b2)
+		local bitfield = BeltalowdaMath.DecodeBitArrayHelper(message.b2)
 		
-		player.admin.addon.crBgTp.enabled = RdKGToolMath.BitToBoolean(bitfield[1])
-		player.admin.addon.sc.enabled = RdKGToolMath.BitToBoolean(bitfield[2])
-		player.admin.addon.ro.groupsEnabled = RdKGToolMath.BitToBoolean(bitfield[8])
+		player.admin.addon.crBgTp.enabled = BeltalowdaMath.BitToBoolean(bitfield[1])
+		player.admin.addon.sc.enabled = BeltalowdaMath.BitToBoolean(bitfield[2])
+		player.admin.addon.ro.groupsEnabled = BeltalowdaMath.BitToBoolean(bitfield[8])
 		bitfield[1] = bitfield[3]
 		bitfield[2] = bitfield[4]
 		bitfield[3] = bitfield[5]
@@ -1841,23 +1841,23 @@ function RdKGToolGroup.HandleAdminAddon8Response(player, message)
 		bitfield[6] = 0
 		bitfield[7] = 0
 		bitfield[8] = 0
-		player.admin.addon.ro.groupSizeNegateOffensive = RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)
+		player.admin.addon.ro.groupSizeNegateOffensive = BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)
 		
-		bitfield = RdKGToolMath.DecodeBitArrayHelper(message.b3)
+		bitfield = BeltalowdaMath.DecodeBitArrayHelper(message.b3)
 		bitfield[6] = 0
 		bitfield[7] = 0
 		bitfield[8] = 0
-		player.admin.addon.ro.groupSizeNegateCounter = RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)
+		player.admin.addon.ro.groupSizeNegateCounter = BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)
 		
-	elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_3 then
+	elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_3 then
 		--MESSAGE_3: ro
 		player.admin = player.admin or {}
 		player.admin.addon = player.admin.addon or {}
 		player.admin.addon.ro = player.admin.addon.ro or {}
 		player.admin.addon.so = player.admin.addon.so or {}
 		
-		local bitfield = RdKGToolMath.DecodeBitArrayHelper(message.b2)
-		local bitfield2 = RdKGToolMath.DecodeBitArrayHelper(message.b2)
+		local bitfield = BeltalowdaMath.DecodeBitArrayHelper(message.b2)
+		local bitfield2 = BeltalowdaMath.DecodeBitArrayHelper(message.b2)
 		bitfield2[1] = bitfield2[6]
 		bitfield2[2] = bitfield2[7]
 		bitfield2[3] = bitfield2[8]
@@ -1869,11 +1869,11 @@ function RdKGToolGroup.HandleAdminAddon8Response(player, message)
 		bitfield[6] = 0
 		bitfield[7] = 0
 		bitfield[8] = 0
-		player.admin.addon.ro.groupSizeNorthernStorm = RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)
-		player.admin.addon.so.displayMode = RdKGToolMath.EncodeBitArrayHelper(bitfield2, 0) + 1
+		player.admin.addon.ro.groupSizeNorthernStorm = BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)
+		player.admin.addon.so.displayMode = BeltalowdaMath.EncodeBitArrayHelper(bitfield2, 0) + 1
 		
-		bitfield = RdKGToolMath.DecodeBitArrayHelper(message.b3)
-		bitfield2 = RdKGToolMath.DecodeBitArrayHelper(message.b3)
+		bitfield = BeltalowdaMath.DecodeBitArrayHelper(message.b3)
+		bitfield2 = BeltalowdaMath.DecodeBitArrayHelper(message.b3)
 		bitfield2[1] = bitfield2[6]
 		bitfield2[2] = bitfield2[7]
 		bitfield2[3] = bitfield2[8]
@@ -1885,106 +1885,106 @@ function RdKGToolGroup.HandleAdminAddon8Response(player, message)
 		bitfield[6] = 0
 		bitfield[7] = 0
 		bitfield[8] = 0
-		player.admin.addon.ro.groupSizePermafrost = RdKGToolMath.EncodeBitArrayHelper(bitfield, 0)
-		player.admin.addon.so.tableMode = RdKGToolMath.EncodeBitArrayHelper(bitfield2, 0) + 1
-	elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_4 then
+		player.admin.addon.ro.groupSizePermafrost = BeltalowdaMath.EncodeBitArrayHelper(bitfield, 0)
+		player.admin.addon.so.tableMode = BeltalowdaMath.EncodeBitArrayHelper(bitfield2, 0) + 1
+	elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_4 then
 		--MESSAGE_4: sp
 		player.admin = player.admin or {}
 		player.admin.addon = player.admin.addon or {}
 		player.admin.addon.sp = player.admin.addon.sp or {}
 	
 	
-		local bitfield = RdKGToolMath.DecodeBitArrayHelper(message.b2)
-		player.admin.addon.sp.preventCombustionShards = RdKGToolMath.BitToBoolean(bitfield[1])
-		player.admin.addon.sp.preventTalons = RdKGToolMath.BitToBoolean(bitfield[2])
-		player.admin.addon.sp.preventNova = RdKGToolMath.BitToBoolean(bitfield[3])
-		player.admin.addon.sp.preventAltar = RdKGToolMath.BitToBoolean(bitfield[4])
-		player.admin.addon.sp.preventStandard = RdKGToolMath.BitToBoolean(bitfield[5])
-		player.admin.addon.sp.preventRitual = RdKGToolMath.BitToBoolean(bitfield[6])
-		player.admin.addon.sp.preventBoneShield = RdKGToolMath.BitToBoolean(bitfield[7])
-		player.admin.addon.sp.preventConduit = RdKGToolMath.BitToBoolean(bitfield[8])		
+		local bitfield = BeltalowdaMath.DecodeBitArrayHelper(message.b2)
+		player.admin.addon.sp.preventCombustionShards = BeltalowdaMath.BitToBoolean(bitfield[1])
+		player.admin.addon.sp.preventTalons = BeltalowdaMath.BitToBoolean(bitfield[2])
+		player.admin.addon.sp.preventNova = BeltalowdaMath.BitToBoolean(bitfield[3])
+		player.admin.addon.sp.preventAltar = BeltalowdaMath.BitToBoolean(bitfield[4])
+		player.admin.addon.sp.preventStandard = BeltalowdaMath.BitToBoolean(bitfield[5])
+		player.admin.addon.sp.preventRitual = BeltalowdaMath.BitToBoolean(bitfield[6])
+		player.admin.addon.sp.preventBoneShield = BeltalowdaMath.BitToBoolean(bitfield[7])
+		player.admin.addon.sp.preventConduit = BeltalowdaMath.BitToBoolean(bitfield[8])		
 		
-		bitfield = RdKGToolMath.DecodeBitArrayHelper(message.b3)
-		player.admin.addon.sp.preventAtronach = RdKGToolMath.BitToBoolean(bitfield[1])
-		player.admin.addon.sp.preventTrappingWebs = RdKGToolMath.BitToBoolean(bitfield[2])
-		player.admin.addon.sp.preventRadiate = RdKGToolMath.BitToBoolean(bitfield[3])
-		player.admin.addon.sp.preventConsumingDarkness = RdKGToolMath.BitToBoolean(bitfield[4])
-		player.admin.addon.sp.preventSoulLeech = RdKGToolMath.BitToBoolean(bitfield[5])
-		player.admin.addon.sp.preventHealingSeed = RdKGToolMath.BitToBoolean(bitfield[6])
-		player.admin.addon.sp.preventGraveRobber = RdKGToolMath.BitToBoolean(bitfield[7])
-		player.admin.addon.sp.preventPureAgony = RdKGToolMath.BitToBoolean(bitfield[8])
+		bitfield = BeltalowdaMath.DecodeBitArrayHelper(message.b3)
+		player.admin.addon.sp.preventAtronach = BeltalowdaMath.BitToBoolean(bitfield[1])
+		player.admin.addon.sp.preventTrappingWebs = BeltalowdaMath.BitToBoolean(bitfield[2])
+		player.admin.addon.sp.preventRadiate = BeltalowdaMath.BitToBoolean(bitfield[3])
+		player.admin.addon.sp.preventConsumingDarkness = BeltalowdaMath.BitToBoolean(bitfield[4])
+		player.admin.addon.sp.preventSoulLeech = BeltalowdaMath.BitToBoolean(bitfield[5])
+		player.admin.addon.sp.preventHealingSeed = BeltalowdaMath.BitToBoolean(bitfield[6])
+		player.admin.addon.sp.preventGraveRobber = BeltalowdaMath.BitToBoolean(bitfield[7])
+		player.admin.addon.sp.preventPureAgony = BeltalowdaMath.BitToBoolean(bitfield[8])
 		
 	end
 end
 
-function RdKGToolGroup.HandleAdminAddon9Response(player, message)
+function BeltalowdaGroup.HandleAdminAddon9Response(player, message)
 	--
 end
 
-function RdKGToolGroup.HandleAdminChampionInformationResponse(message)
-	local player = RdKGToolGroup.GetPlayerByUnitTag(message.pingTag)
+function BeltalowdaGroup.HandleAdminChampionInformationResponse(message)
+	local player = BeltalowdaGroup.GetPlayerByUnitTag(message.pingTag)
 	if player ~= nil then
 		player.admin = player.admin or {}
 		player.admin.cp = player.admin.cp or {}
 		--d(message)
-		player.admin.cp[RdKGToolCP.GetCPNameFromMessagePrefix(message.b1, 1)] = message.b2
-		player.admin.cp[RdKGToolCP.GetCPNameFromMessagePrefix(message.b1, 2)] = message.b3
-		RdKGToolGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
+		player.admin.cp[BeltalowdaCP.GetCPNameFromMessagePrefix(message.b1, 1)] = message.b2
+		player.admin.cp[BeltalowdaCP.GetCPNameFromMessagePrefix(message.b1, 2)] = message.b3
+		BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
 	end
 end
 
-function RdKGToolGroup.HandleAdminStatsResponse(message)
-	local player = RdKGToolGroup.GetPlayerByUnitTag(message.pingTag)
+function BeltalowdaGroup.HandleAdminStatsResponse(message)
+	local player = BeltalowdaGroup.GetPlayerByUnitTag(message.pingTag)
 	--d("received")
 	--d(message)
 	if player ~= nil then
 		player.admin = player.admin or {}
 		player.admin.stats = player.admin.stats or {}
 		
-		local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
-		local messagePrefix = RdKGToolMath.EncodeBitArrayHelper(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(4), 4, 21, 1), 0)
-		local value = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(20), 20, 1, 1))
+		local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+		local messagePrefix = BeltalowdaMath.EncodeBitArrayHelper(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(4), 4, 21, 1), 0)
+		local value = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(20), 20, 1, 1))
 		
-		if messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_MAGICKA then
+		if messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_MAGICKA then
 			player.admin.stats.magicka = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_HEALTH then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_HEALTH then
 			player.admin.stats.health = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_STAMINA then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_STAMINA then
 			player.admin.stats.stamina = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_MAGICKA_RECOVERY then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_MAGICKA_RECOVERY then
 			player.admin.stats.magickaRecovery = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_HEALTH_RECOVERY then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_HEALTH_RECOVERY then
 			player.admin.stats.healthRecovery = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_STAMINA_RECOVERY then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_STAMINA_RECOVERY then
 			player.admin.stats.staminaRecovery = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_DAMAGE then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_DAMAGE then
 			player.admin.stats.spellDamage = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_WEAPON_DAMAGE then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_WEAPON_DAMAGE then
 			player.admin.stats.weaponDamage = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_PENETRATION then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_PENETRATION then
 			player.admin.stats.spellPenetration = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_WEAPON_PENETRATION then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_WEAPON_PENETRATION then
 			player.admin.stats.weaponPenetration = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_CRITICAL then
-			player.admin.stats.spellCritical = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(10), 10, 1, 1)) / 10
-			player.admin.stats.weaponCritical = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(10), 10, 11, 1)) / 10
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_RESISTANCE then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_CRITICAL then
+			player.admin.stats.spellCritical = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(10), 10, 1, 1)) / 10
+			player.admin.stats.weaponCritical = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(10), 10, 11, 1)) / 10
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_RESISTANCE then
 			player.admin.stats.spellResistance = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_PHYSICAL_RESISTANCE then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_PHYSICAL_RESISTANCE then
 			player.admin.stats.physicalResistance = value
-		elseif messagePrefix == RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_CRITICAL_RESISTANCE then
+		elseif messagePrefix == BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_CRITICAL_RESISTANCE then
 			player.admin.stats.criticalResistance = value
 		end
-		RdKGToolGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
+		BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
 	end
 end
 
-function RdKGToolGroup.HandleAdminSkillsResponse(message)
-	local player = RdKGToolGroup.GetPlayerByUnitTag(message.pingTag)
+function BeltalowdaGroup.HandleAdminSkillsResponse(message)
+	local player = BeltalowdaGroup.GetPlayerByUnitTag(message.pingTag)
 	if player ~= nil then
-		local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
-		local messagePrefix = RdKGToolMath.EncodeBitArrayHelper(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(4), 4, 21, 1), 0)
-		local value = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(20), 20, 1, 1))
+		local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+		local messagePrefix = BeltalowdaMath.EncodeBitArrayHelper(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(4), 4, 21, 1), 0)
+		local value = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(20), 20, 1, 1))
 		
 		--d(message)
 		
@@ -1994,54 +1994,54 @@ function RdKGToolGroup.HandleAdminSkillsResponse(message)
 		player.admin.skills.bars[1] = player.admin.skills.bars[1] or {}
 		player.admin.skills.bars[2] = player.admin.skills.bars[2] or {}
 		
-		if messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_1_SKILL_1 then
+		if messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_1_SKILL_1 then
 			player.admin.skills.bars[1][1] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_1_SKILL_2 then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_1_SKILL_2 then
 			player.admin.skills.bars[1][2] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_1_SKILL_3 then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_1_SKILL_3 then
 			player.admin.skills.bars[1][3] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_1_SKILL_4 then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_1_SKILL_4 then
 			player.admin.skills.bars[1][4] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_1_SKILL_5 then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_1_SKILL_5 then
 			player.admin.skills.bars[1][5] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_1_ULTIMATE then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_1_ULTIMATE then
 			player.admin.skills.bars[1][6] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_2_SKILL_1 then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_2_SKILL_1 then
 			player.admin.skills.bars[2][1] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_2_SKILL_2 then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_2_SKILL_2 then
 			player.admin.skills.bars[2][2] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_2_SKILL_3 then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_2_SKILL_3 then
 			player.admin.skills.bars[2][3] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_2_SKILL_4 then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_2_SKILL_4 then
 			player.admin.skills.bars[2][4] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_2_SKILL_5 then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_2_SKILL_5 then
 			player.admin.skills.bars[2][5] = value
-		elseif messagePrefix == RdKGToolSB.constants.networking.messagePrefix.BAR_2_ULTIMATE then
+		elseif messagePrefix == BeltalowdaSB.constants.networking.messagePrefix.BAR_2_ULTIMATE then
 			player.admin.skills.bars[2][6] = value
 		end
-		RdKGToolGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
+		BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
 	end
 end
 
-function RdKGToolGroup.HandleAdminEquipmentInformationResponse(message)
-	local player = RdKGToolGroup.GetPlayerByUnitTag(message.pingTag)
+function BeltalowdaGroup.HandleAdminEquipmentInformationResponse(message)
+	local player = BeltalowdaGroup.GetPlayerByUnitTag(message.pingTag)
 	if player ~= nil then
-		if message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_1 then
-			RdKGToolGroup.HandleAdminEquipment1Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_2 then
-			RdKGToolGroup.HandleAdminEquipment2Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_3 then
-			RdKGToolGroup.HandleAdminEquipment3Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_4 then
-			RdKGToolGroup.HandleAdminEquipment4Response(player, message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_5 then
-			RdKGToolGroup.HandleAdminEquipment5Response(player, message)
-			RdKGToolGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
+		if message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_1 then
+			BeltalowdaGroup.HandleAdminEquipment1Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_2 then
+			BeltalowdaGroup.HandleAdminEquipment2Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_3 then
+			BeltalowdaGroup.HandleAdminEquipment3Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_4 then
+			BeltalowdaGroup.HandleAdminEquipment4Response(player, message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_5 then
+			BeltalowdaGroup.HandleAdminEquipment5Response(player, message)
+			BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
 		end
 	end
 end
 
-function RdKGToolGroup.CreateItemLink(messagePrefix, player)
+function BeltalowdaGroup.CreateItemLink(messagePrefix, player)
 	local item = player.admin.equipment[messagePrefix]
 	if item ~= nil and item.itemId ~= nil and item.itemId ~= 0 then
 		--d("everthing is fine so far")
@@ -2051,24 +2051,24 @@ function RdKGToolGroup.CreateItemLink(messagePrefix, player)
 		   item.message4received == true and
 		   item.message5received == true then
 			--d("okay, let's create the link")
-			item.link = RdKGToolEquip.CreateItemLink(item.itemId, item.itemQuality, item.itemLevel, item.enchantmentId, item.enchantmentQuality, item.enchantmentLevel, item.transmutationId, nil, item.styleId, nil, nil, nil, 0)
+			item.link = BeltalowdaEquip.CreateItemLink(item.itemId, item.itemQuality, item.itemLevel, item.enchantmentId, item.enchantmentQuality, item.enchantmentLevel, item.transmutationId, nil, item.styleId, nil, nil, nil, 0)
 		end
 	end
 end
 
-function RdKGToolGroup.HandleAdminEquipment1Response(player, message)
+function BeltalowdaGroup.HandleAdminEquipment1Response(player, message)
 	--Equipment 1: itemId
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
-	local messagePrefix = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 4, 21, 1))
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+	local messagePrefix = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 4, 21, 1))
 	--d(messagePrefix)
 	--d(type(messagePrefix))
-	local equipmentName = RdKGToolEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
+	local equipmentName = BeltalowdaEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
 	--d(equipmentName)
 	bitfield[24] = 0
 	bitfield[23] = 0
 	bitfield[22] = 0
 	bitfield[21] = 0
-	local value = RdKGToolMath.ArrayToInt24(bitfield)
+	local value = BeltalowdaMath.ArrayToInt24(bitfield)
 	player.admin = player.admin or {}
 	player.admin.equipment = player.admin.equipment or {}
 	if equipmentName ~= nil then
@@ -2080,18 +2080,18 @@ function RdKGToolGroup.HandleAdminEquipment1Response(player, message)
 		player.admin.equipment[equipmentName].message4received = false
 		player.admin.equipment[equipmentName].message5received = false
 	end
-	RdKGToolGroup.CreateItemLink(equipmentName, player)
+	BeltalowdaGroup.CreateItemLink(equipmentName, player)
 end
 
-function RdKGToolGroup.HandleAdminEquipment2Response(player, message)
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
-	local messagePrefix = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 4, 21, 1))
-	local equipmentName = RdKGToolEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
+function BeltalowdaGroup.HandleAdminEquipment2Response(player, message)
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+	local messagePrefix = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 4, 21, 1))
+	local equipmentName = BeltalowdaEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
 	bitfield[24] = 0
 	bitfield[23] = 0
 	bitfield[22] = 0
 	bitfield[21] = 0
-	local value = RdKGToolMath.ArrayToInt24(bitfield)
+	local value = BeltalowdaMath.ArrayToInt24(bitfield)
 	player.admin = player.admin or {}
 	player.admin.equipment = player.admin.equipment or {}
 	if equipmentName ~= nil then
@@ -2099,19 +2099,19 @@ function RdKGToolGroup.HandleAdminEquipment2Response(player, message)
 		player.admin.equipment[equipmentName].enchantmentId = value
 		player.admin.equipment[equipmentName].message2received = true
 	end
-	RdKGToolGroup.CreateItemLink(equipmentName, player)
+	BeltalowdaGroup.CreateItemLink(equipmentName, player)
 end
 
-function RdKGToolGroup.HandleAdminEquipment3Response(player, message)
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
-	local messagePrefix = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 4, 21, 1))
-	local equipmentName = RdKGToolEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
+function BeltalowdaGroup.HandleAdminEquipment3Response(player, message)
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+	local messagePrefix = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 4, 21, 1))
+	local equipmentName = BeltalowdaEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
 	bitfield[24] = 0
 	bitfield[23] = 0
 	bitfield[22] = 0
 	bitfield[21] = 0
-	local value1 = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 10, 1, 1))
-	local value2 = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 10, 11, 1))
+	local value1 = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 10, 1, 1))
+	local value2 = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 10, 11, 1))
 	player.admin = player.admin or {}
 	player.admin.equipment = player.admin.equipment or {}
 	if equipmentName ~= nil then
@@ -2120,19 +2120,19 @@ function RdKGToolGroup.HandleAdminEquipment3Response(player, message)
 		player.admin.equipment[equipmentName].enchantmentQuality = value2
 		player.admin.equipment[equipmentName].message3received = true
 	end
-	RdKGToolGroup.CreateItemLink(equipmentName, player)
+	BeltalowdaGroup.CreateItemLink(equipmentName, player)
 end
 
-function RdKGToolGroup.HandleAdminEquipment4Response(player, message)
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
-	local messagePrefix = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 4, 21, 1))
-	local equipmentName = RdKGToolEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
+function BeltalowdaGroup.HandleAdminEquipment4Response(player, message)
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+	local messagePrefix = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 4, 21, 1))
+	local equipmentName = BeltalowdaEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
 	bitfield[24] = 0
 	bitfield[23] = 0
 	bitfield[22] = 0
 	bitfield[21] = 0
-	local value1 = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 10, 1, 1))
-	local value2 = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 10, 11, 1))
+	local value1 = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 10, 1, 1))
+	local value2 = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 10, 11, 1))
 	player.admin = player.admin or {}
 	player.admin.equipment = player.admin.equipment or {}
 	if equipmentName ~= nil then
@@ -2141,19 +2141,19 @@ function RdKGToolGroup.HandleAdminEquipment4Response(player, message)
 		player.admin.equipment[equipmentName].enchantmentLevel = value2
 		player.admin.equipment[equipmentName].message4received = true
 	end
-	RdKGToolGroup.CreateItemLink(equipmentName, player)
+	BeltalowdaGroup.CreateItemLink(equipmentName, player)
 end
 
-function RdKGToolGroup.HandleAdminEquipment5Response(player, message)
-	local bitfield = RdKGToolNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
-	local messagePrefix = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 4, 21, 1))
-	local equipmentName = RdKGToolEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
+function BeltalowdaGroup.HandleAdminEquipment5Response(player, message)
+	local bitfield = BeltalowdaNetworking.DecodeMessageFromBitArray(message.b1, message.b2, message.b3)
+	local messagePrefix = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 4, 21, 1))
+	local equipmentName = BeltalowdaEquip.GetEquipmentNameFromMessagePrefix(messagePrefix)
 	bitfield[24] = 0
 	bitfield[23] = 0
 	bitfield[22] = 0
 	bitfield[21] = 0
-	local value1 = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 10, 1, 1))
-	local value2 = RdKGToolMath.ArrayToInt24(RdKGToolMath.CopyBitfieldRange(bitfield, RdKGToolMath.CreateEmptyBitfield(24), 10, 11, 1))
+	local value1 = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 10, 1, 1))
+	local value2 = BeltalowdaMath.ArrayToInt24(BeltalowdaMath.CopyBitfieldRange(bitfield, BeltalowdaMath.CreateEmptyBitfield(24), 10, 11, 1))
 	player.admin = player.admin or {}
 	player.admin.equipment = player.admin.equipment or {}
 	if equipmentName ~= nil then
@@ -2162,19 +2162,19 @@ function RdKGToolGroup.HandleAdminEquipment5Response(player, message)
 		player.admin.equipment[equipmentName].styleId = value2
 		player.admin.equipment[equipmentName].message5received = true
 	end
-	RdKGToolGroup.CreateItemLink(equipmentName, player)
+	BeltalowdaGroup.CreateItemLink(equipmentName, player)
 end
 
 --callbacks (group)
-function RdKGToolGroup.OnProfileChanged(currentProfile)
+function BeltalowdaGroup.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolGroup.groupVars = currentProfile.util.group
-		RdKGToolGroup.UpdateDisplayNames()
+		BeltalowdaGroup.groupVars = currentProfile.util.group
+		BeltalowdaGroup.UpdateDisplayNames()
 	end
 end
 
-function RdKGToolGroup.GroupMemberOnConnectedStatus(eventCode, unitTag, isOnline)
-	local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.GroupMemberOnConnectedStatus(eventCode, unitTag, isOnline)
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			if players[i].unitTag == unitTag then
@@ -2184,23 +2184,23 @@ function RdKGToolGroup.GroupMemberOnConnectedStatus(eventCode, unitTag, isOnline
 	end
 end
 
-function RdKGToolGroup.GroupMemberOnJoined(eventCode, memberName)
-	RdKGToolGroup.UpdateGroup()
-	RdKGToolGroup.AdjustBgGroup()
+function BeltalowdaGroup.GroupMemberOnJoined(eventCode, memberName)
+	BeltalowdaGroup.UpdateGroup()
+	BeltalowdaGroup.AdjustBgGroup()
 end
 
-function RdKGToolGroup.GroupMemberOnLeft(eventCode, memberCharacterName, reason, isLocalPlayer, isLeader, memberDisplayName, actionRequiredVote)
-	RdKGToolGroup.UpdateGroup()
-	RdKGToolGroup.AdjustBgGroup()
+function BeltalowdaGroup.GroupMemberOnLeft(eventCode, memberCharacterName, reason, isLocalPlayer, isLeader, memberDisplayName, actionRequiredVote)
+	BeltalowdaGroup.UpdateGroup()
+	BeltalowdaGroup.AdjustBgGroup()
 end
 
-function RdKGToolGroup.GroupMemberOnUpdate(eventCode)
-	RdKGToolGroup.UpdateGroup()
-	RdKGToolGroup.AdjustBgGroup()
+function BeltalowdaGroup.GroupMemberOnUpdate(eventCode)
+	BeltalowdaGroup.UpdateGroup()
+	BeltalowdaGroup.AdjustBgGroup()
 end
 
-function RdKGToolGroup.GroupMemberOnLeaderUpdate(eventCode, leaderTag)
-	local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.GroupMemberOnLeaderUpdate(eventCode, leaderTag)
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			players[i].isLeader = false
@@ -2209,24 +2209,24 @@ function RdKGToolGroup.GroupMemberOnLeaderUpdate(eventCode, leaderTag)
 			end
 		end
 	end
-	RdKGToolGroup.AdjustBgGroup()
+	BeltalowdaGroup.AdjustBgGroup()
 end
 
-function RdKGToolGroup.GroupMemberOnPlayerActivated(eventCode, initial)
-	RdKGToolGroup.UpdateGroup()
-	RdKGToolGroup.AdjustBgGroup()
+function BeltalowdaGroup.GroupMemberOnPlayerActivated(eventCode, initial)
+	BeltalowdaGroup.UpdateGroup()
+	BeltalowdaGroup.AdjustBgGroup()
 end
 
-function RdKGToolGroup.GroupMemberOnPlayerDeactivated(eventCode)
+function BeltalowdaGroup.GroupMemberOnPlayerDeactivated(eventCode)
 	if GetGroupSize() > 1 then
-		RdKGToolGroup.state.lastLeader = RdKGToolGroup.GetLeaderUnit()
+		BeltalowdaGroup.state.lastLeader = BeltalowdaGroup.GetLeaderUnit()
 	else
-		RdKGToolGroup.state.lastLeader = nil
+		BeltalowdaGroup.state.lastLeader = nil
 	end
 end
 
-function RdKGToolGroup.UpdateStatusLoop()
-	local players =  RdKGToolGroup.state.players
+function BeltalowdaGroup.UpdateStatusLoop()
+	local players =  BeltalowdaGroup.state.players
 	local isInCombat = false
 	if players ~= nil then
 		for i = 1, #players do
@@ -2238,33 +2238,33 @@ function RdKGToolGroup.UpdateStatusLoop()
 		end
 	end
 	if isInCombat == true then
-		RdKGToolGroup.state.lastCombatTimestamp = GetGameTimeMilliseconds()
+		BeltalowdaGroup.state.lastCombatTimestamp = GetGameTimeMilliseconds()
 	else
-		if RdKGToolGroup.IsHdmAutoClearEnabled() == true and GetGameTimeMilliseconds() > RdKGToolGroup.state.lastCombatTimestamp + RdKGToolGroup.constants.COMBAT_TIMEOUT then
-			RdKGToolGroup.ClearDamageHealingMeter()
+		if BeltalowdaGroup.IsHdmAutoClearEnabled() == true and GetGameTimeMilliseconds() > BeltalowdaGroup.state.lastCombatTimestamp + BeltalowdaGroup.constants.COMBAT_TIMEOUT then
+			BeltalowdaGroup.ClearDamageHealingMeter()
 		end
 	end
 end
 
-function RdKGToolGroup.IsHdmAutoClearEnabled()
-	return RdKGToolGroup.state.hdmAutoClear
+function BeltalowdaGroup.IsHdmAutoClearEnabled()
+	return BeltalowdaGroup.state.hdmAutoClear
 end
 
-function RdKGToolGroup.SetHdmAutoClearEnabled(value)
-	RdKGToolGroup.state.hdmAutoClear = value
+function BeltalowdaGroup.SetHdmAutoClearEnabled(value)
+	BeltalowdaGroup.state.hdmAutoClear = value
 end
 
 --callbacks
-function RdKGToolGroup.OnUpdatePlayerDistance()
-	RdKGToolGroup.CalculateGroupDistances("player", "fromPlayer")
+function BeltalowdaGroup.OnUpdatePlayerDistance()
+	BeltalowdaGroup.CalculateGroupDistances("player", "fromPlayer")
 end
 
-function RdKGToolGroup.OnUpdateLeaderDistance()
-	RdKGToolGroup.CalculateGroupDistances(RdKGToolGroup.GetLeaderUnitTag(), "fromLeader")
+function BeltalowdaGroup.OnUpdateLeaderDistance()
+	BeltalowdaGroup.CalculateGroupDistances(BeltalowdaGroup.GetLeaderUnitTag(), "fromLeader")
 end
 
-function RdKGToolGroup.OnUpdateBuff()
-	local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.OnUpdateBuff()
+	local players = BeltalowdaGroup.state.players
 	local currentTime = GetGameTimeMilliseconds() / 1000
 	for i = 1, #players do
 		local buffs = players[i].buffs
@@ -2330,7 +2330,7 @@ function RdKGToolGroup.OnUpdateBuff()
 				table.insert(buffs.all, buff)
 				if buff.effectType == BUFF_EFFECT_TYPE_BUFF then
 					table.insert(buffs.buffs, buff)
-					RdKGToolGroup.RunSpecialChecks(buffs, buff)
+					BeltalowdaGroup.RunSpecialChecks(buffs, buff)
 				elseif buff.effectType == BUFF_EFFECT_TYPE_DEBUFF then
 					if --[[buff.statusEffectType ~= STATUS_EFFECT_TYPE_ENVIRONMENT and]] buff.statusEffectType ~= STATUS_EFFECT_TYPE_SILENCE then
 						table.insert(buffs.debuffsPurgable, buff)
@@ -2344,8 +2344,8 @@ function RdKGToolGroup.OnUpdateBuff()
 					end
 					table.insert(buffs.debuffs, buff)
 				end
-				if RdKGToolGroup.state.crBgTpHealBuffs ~= nil and players[i].isPlayer == true then
-					RdKGToolGroup.CheckCrBgTpHealBuff(buffs, buff)
+				if BeltalowdaGroup.state.crBgTpHealBuffs ~= nil and players[i].isPlayer == true then
+					BeltalowdaGroup.CheckCrBgTpHealBuff(buffs, buff)
 				end
 			end
 		end
@@ -2356,8 +2356,8 @@ function RdKGToolGroup.OnUpdateBuff()
 	end
 end
 
-function RdKGToolGroup.OnUpdateDeadState()
-	local players = RdKGToolGroup.state.players
+function BeltalowdaGroup.OnUpdateDeadState()
+	local players = BeltalowdaGroup.state.players
 	if players ~= nil then
 		for i = 1, #players do
 			local player = players[i]
@@ -2369,9 +2369,9 @@ function RdKGToolGroup.OnUpdateDeadState()
 	end
 end
 
-function RdKGToolGroup.OnUpdateCoordinates()
+function BeltalowdaGroup.OnUpdateCoordinates()
 	if lib3d:IsValidZone() then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				local playerX, playerY = GetMapPlayerPosition(players[i].unitTag)
@@ -2393,9 +2393,9 @@ function RdKGToolGroup.OnUpdateCoordinates()
 	end
 end
 
-function RdKGToolGroup.OnUpdateLeader()
-	if lib3d:IsValidZone() and IsUnitGrouped("player") == true and RdKGToolGroup.IsPlayerGroupLeader() == false then
-		local leaderLocX, leaderLocY = GetMapPlayerPosition(RdKGToolGroup.GetGroupLeaderUnitTag())
+function BeltalowdaGroup.OnUpdateLeader()
+	if lib3d:IsValidZone() and IsUnitGrouped("player") == true and BeltalowdaGroup.IsPlayerGroupLeader() == false then
+		local leaderLocX, leaderLocY = GetMapPlayerPosition(BeltalowdaGroup.GetGroupLeaderUnitTag())
 		local playerLocX, playerLocY = GetMapPlayerPosition("player")
 		if leaderLocX ~= nil and leaderLocY ~= nil and leaderLocX ~= 0 and leaderLocY ~= 0 and 
 		   playerLocX ~= nil and playerLocY ~= nil and playerLocX ~= 0 and playerLocY ~= 0 then
@@ -2407,97 +2407,97 @@ function RdKGToolGroup.OnUpdateLeader()
 				local distanceLocY = playerLocY - leaderLocY
 				local distanceX = playerX - leaderX
 				local distanceY = playerY - leaderY
-				RdKGToolGroup.state.leader.leaderDistance = math.sqrt((distanceX * distanceX) + (distanceY * distanceY))
-				local cameraHeading = RdKGToolUI.NormalizeAngle(GetPlayerCameraHeading())
-				RdKGToolGroup.state.leader.leaderRotation = (math.pi * 2) - RdKGToolUI.NormalizeAngle(cameraHeading - math.atan2( distanceLocX, distanceLocY ))
+				BeltalowdaGroup.state.leader.leaderDistance = math.sqrt((distanceX * distanceX) + (distanceY * distanceY))
+				local cameraHeading = BeltalowdaUI.NormalizeAngle(GetPlayerCameraHeading())
+				BeltalowdaGroup.state.leader.leaderRotation = (math.pi * 2) - BeltalowdaUI.NormalizeAngle(cameraHeading - math.atan2( distanceLocX, distanceLocY ))
 			end
 		else
-			RdKGToolGroup.state.leader.leaderDistance = nil
-			RdKGToolGroup.state.leader.leaderRotation = nil
+			BeltalowdaGroup.state.leader.leaderDistance = nil
+			BeltalowdaGroup.state.leader.leaderRotation = nil
 		end
 	end
 end
 
-function RdKGToolGroup.HandleRawAdminNetworkMessage(message)
-	if message ~= nil and RdKGToolRoster.IsGuildOfficerOf(GetUnitDisplayName(message.pingTag), GetUnitDisplayName("player")) then
+function BeltalowdaGroup.HandleRawAdminNetworkMessage(message)
+	if message ~= nil and BeltalowdaRoster.IsGuildOfficerOf(GetUnitDisplayName(message.pingTag), GetUnitDisplayName("player")) then
 		
 		--d("received: " .. message.b0)
-		if message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_AOE then
-			RdKGToolGroup.HandleAdminAoeResponse(message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_SOUND then
-			RdKGToolGroup.HandleAdminSoundResponse(message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_GRAPHICS then
-			RdKGToolGroup.HandleAdminGraphicsResponse(message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_1 or 
-			   message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_2 or 
-			   message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_3 or 
-			   message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_4 or 
-			   message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_5 or 
-			   message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_6 or 
-			   message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_7 or 
-			   message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_8 or 
-			   message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_9 then
-			RdKGToolGroup.HandleAdminAddonResponse(message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CHAMPION_INFORMATION then
-			RdKGToolGroup.HandleAdminChampionInformationResponse(message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_STATS_INFORMATION then
-			RdKGToolGroup.HandleAdminStatsResponse(message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_SKILLS_INFORMATION then
-			RdKGToolGroup.HandleAdminSkillsResponse(message)
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_1 or
-		       message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_2 or
-		       message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_3 or
-		       message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_4 or
-		       message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_5 then
-			RdKGToolGroup.HandleAdminEquipmentInformationResponse(message)
+		if message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_AOE then
+			BeltalowdaGroup.HandleAdminAoeResponse(message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_SOUND then
+			BeltalowdaGroup.HandleAdminSoundResponse(message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_GRAPHICS then
+			BeltalowdaGroup.HandleAdminGraphicsResponse(message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_1 or 
+			   message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_2 or 
+			   message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_3 or 
+			   message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_4 or 
+			   message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_5 or 
+			   message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_6 or 
+			   message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_7 or 
+			   message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_8 or 
+			   message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_9 then
+			BeltalowdaGroup.HandleAdminAddonResponse(message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CHAMPION_INFORMATION then
+			BeltalowdaGroup.HandleAdminChampionInformationResponse(message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_STATS_INFORMATION then
+			BeltalowdaGroup.HandleAdminStatsResponse(message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_SKILLS_INFORMATION then
+			BeltalowdaGroup.HandleAdminSkillsResponse(message)
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_1 or
+		       message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_2 or
+		       message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_3 or
+		       message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_4 or
+		       message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_5 then
+			BeltalowdaGroup.HandleAdminEquipmentInformationResponse(message)
 		end		
 	end
 end
 
-function RdKGToolGroup.HandleRawResourceNetworkMessage(message)
+function BeltalowdaGroup.HandleRawResourceNetworkMessage(message)
 	--d(message)
-	if message ~= nil and message.b0 ~= nil and message.b0 >= 1 and message.b0 <= #RdKGToolUltimates.ultimates then
+	if message ~= nil and message.b0 ~= nil and message.b0 >= 1 and message.b0 <= #BeltalowdaUltimates.ultimates then
 		--d("ulti message received")
-		RdKGToolGroup.UpdateMemberResources(message.pingTag, message.b0, message.b1, message.b2, message.b3)
+		BeltalowdaGroup.UpdateMemberResources(message.pingTag, message.b0, message.b1, message.b2, message.b3)
 	end
 end
 
-function RdKGToolGroup.HandleRawHpDmgNetworkMessage(message)
+function BeltalowdaGroup.HandleRawHpDmgNetworkMessage(message)
 	--d(message)
-	if message ~= nil and message.b0 ~= nil and (message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_HP or message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_DMG) then
-		if message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_DMG then
-			RdKGToolGroup.UpdateMemberDamage(message.pingTag, RdKGToolNetworking.DecodeInt24(message.b1, message.b2, message.b3))
-		elseif message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_HP then
-			RdKGToolGroup.UpdateMemberHealing(message.pingTag, RdKGToolNetworking.DecodeInt24(message.b1, message.b2, message.b3))
+	if message ~= nil and message.b0 ~= nil and (message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_HP or message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_DMG) then
+		if message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_DMG then
+			BeltalowdaGroup.UpdateMemberDamage(message.pingTag, BeltalowdaNetworking.DecodeInt24(message.b1, message.b2, message.b3))
+		elseif message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_HP then
+			BeltalowdaGroup.UpdateMemberHealing(message.pingTag, BeltalowdaNetworking.DecodeInt24(message.b1, message.b2, message.b3))
 		end
 	end
 end
 
-function RdKGToolGroup.HandleRawVersionNetworkMessage(message)
+function BeltalowdaGroup.HandleRawVersionNetworkMessage(message)
 	--d(message)
-	if message ~= nil and message.b0 ~= nil and message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_VERSION_INFORMATION then
+	if message ~= nil and message.b0 ~= nil and message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_VERSION_INFORMATION then
 		--d(message)
 		local unitTag = message.pingTag
 		if unitTag == "player" then
-			unitTag = RdKGToolGroup.GetUnitTagForPlayer()
+			unitTag = BeltalowdaGroup.GetUnitTagForPlayer()
 		end
 		--d(unitTag)
-		RdKGToolGroup.UpdateMemberVersionInformation(unitTag, {major = message.b1, minor = message.b2, revision = message.b3})
-		RdKGToolGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
+		BeltalowdaGroup.UpdateMemberVersionInformation(unitTag, {major = message.b1, minor = message.b2, revision = message.b3})
+		BeltalowdaGroup.NotifyAdminInformationChangedCallbacks(message.pingTag)
 	end
 end
 
-function RdKGToolGroup.HandleRawSynergyNetworkMessage(message)
-	if message ~= nil and message.b0 ~= nil and message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_SYNERGY then
-		RdKGToolChat.SendChatMessage("Synergy Message Received: " .. message.b1 .. " - " .. message.b2, RdKGToolGroup.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_DEBUG)
-		RdKGToolGroup.UpdateMemberSynergy(message.pingTag, message.b1, message.b2)
-		RdKGToolGroup.UpdateDebuffs(message.pingTag, message.b3)
+function BeltalowdaGroup.HandleRawSynergyNetworkMessage(message)
+	if message ~= nil and message.b0 ~= nil and message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_SYNERGY then
+		BeltalowdaChat.SendChatMessage("Synergy Message Received: " .. message.b1 .. " - " .. message.b2, BeltalowdaGroup.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_DEBUG)
+		BeltalowdaGroup.UpdateMemberSynergy(message.pingTag, message.b1, message.b2)
+		BeltalowdaGroup.UpdateDebuffs(message.pingTag, message.b3)
 	end
 end
 
-function RdKGToolGroup.OnPowerUpdate(eventCode, unitTag, powerIndex, powerType, powerValue, powerMax, powerEffectiveMax)
+function BeltalowdaGroup.OnPowerUpdate(eventCode, unitTag, powerIndex, powerType, powerValue, powerMax, powerEffectiveMax)
 	if eventCode == EVENT_POWER_UPDATE and unitTag ~= nil and powerType == POWERTYPE_HEALTH then
-		local players = RdKGToolGroup.state.players
+		local players = BeltalowdaGroup.state.players
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].unitTag == unitTag then
@@ -2512,18 +2512,18 @@ function RdKGToolGroup.OnPowerUpdate(eventCode, unitTag, powerIndex, powerType, 
 end
 
 --menu interaction
-function RdKGToolGroup.GetMenu()
+function BeltalowdaGroup.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.UTIL_GROUP_HEADER,
+			name = BeltalowdaMenu.constants.UTIL_GROUP_HEADER,
 			controls = {
 				[1] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.UTIL_GROUP_DISPLAY_TYPE,
-					choices = RdKGToolGroup.GetUtilGroupDisplayTypes(),
-					getFunc = RdKGToolGroup.GetUtilGroupDisplayType,
-					setFunc = RdKGToolGroup.SetUtilGroupDisplayType
+					name = BeltalowdaMenu.constants.UTIL_GROUP_DISPLAY_TYPE,
+					choices = BeltalowdaGroup.GetUtilGroupDisplayTypes(),
+					getFunc = BeltalowdaGroup.GetUtilGroupDisplayType,
+					setFunc = BeltalowdaGroup.SetUtilGroupDisplayType
 				},
 			}
 		},
@@ -2531,20 +2531,20 @@ function RdKGToolGroup.GetMenu()
 	return menu
 end
 
-function RdKGToolGroup.GetUtilGroupDisplayTypes()
-	return RdKGToolGroup.constants.displayTypes
+function BeltalowdaGroup.GetUtilGroupDisplayTypes()
+	return BeltalowdaGroup.constants.displayTypes
 end
 
-function RdKGToolGroup.GetUtilGroupDisplayType()
-	return RdKGToolGroup.constants.displayTypes[RdKGToolGroup.groupVars.displayType]
+function BeltalowdaGroup.GetUtilGroupDisplayType()
+	return BeltalowdaGroup.constants.displayTypes[BeltalowdaGroup.groupVars.displayType]
 end
 	
-function RdKGToolGroup.SetUtilGroupDisplayType(value)
+function BeltalowdaGroup.SetUtilGroupDisplayType(value)
 	if value ~= nil then
-		for i = 1, #RdKGToolGroup.constants.displayTypes do
-			if RdKGToolGroup.constants.displayTypes[i] == value then
-				RdKGToolGroup.groupVars.displayType = i
-				RdKGToolGroup.UpdateDisplayNames()
+		for i = 1, #BeltalowdaGroup.constants.displayTypes do
+			if BeltalowdaGroup.constants.displayTypes[i] == value then
+				BeltalowdaGroup.groupVars.displayType = i
+				BeltalowdaGroup.UpdateDisplayNames()
 				break
 			end
 		end

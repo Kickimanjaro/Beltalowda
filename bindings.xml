@@ -1,67 +1,67 @@
 <Bindings>
 	
-	<!--<Layer name="|cFF8174RdK Group Tool">-->
+	<!--<Layer name="|cFF8174Beltalowda">-->
 	<Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
-		<Category name="|c4592FFRdK Group Tool: Auto Invite">
-			<Action name="RDKGTOOL_TOGGLE_AI">
-                <Down>RdKGTool.group.ai.OnKeyBinding()</Down>
+		<Category name="|c4592FFBeltalowda: Auto Invite">
+			<Action name="BELTALOWDA_TOGGLE_AI">
+                <Down>Beltalowda.group.ai.OnKeyBinding()</Down>
             </Action>
 		</Category>
-		<Category name="|c4592FFRdK Group Tool: Resource Overview">
-            <Action name="RDKGTOOL_RESOURCEOVERVIEW_BOOM">
-                <Down>RdKGTool.group.ro.OnBoomKeyBinding()</Down>
+		<Category name="|c4592FFBeltalowda: Resource Overview">
+            <Action name="BELTALOWDA_RESOURCEOVERVIEW_BOOM">
+                <Down>Beltalowda.group.ro.OnBoomKeyBinding()</Down>
             </Action>
         </Category>
-		<Category name="|c4592FFRdK Group Tool: Yet another Compass">
-            <Action name="RDKGTOOL_YETANOTHERCOMPASS_OPEN">
-                <Down>RdKGTool.compass.yacs.OnKeyBinding()</Down>
+		<Category name="|c4592FFBeltalowda: Yet another Compass">
+            <Action name="BELTALOWDA_YETANOTHERCOMPASS_OPEN">
+                <Down>Beltalowda.compass.yacs.OnKeyBinding()</Down>
             </Action>
         </Category>
-		<Category name="|c4592FFRdK Group Tool: Synergy Prevention">
-            <Action name="RDKGTOOL_SP_TOGGLE">
-                <Down>RdKGTool.toolbox.sp.OnKeyBinding()</Down>
+		<Category name="|c4592FFBeltalowda: Synergy Prevention">
+            <Action name="BELTALOWDA_SP_TOGGLE">
+                <Down>Beltalowda.toolbox.sp.OnKeyBinding()</Down>
             </Action>
         </Category>
-		<Category name="|c4592FFRdK Group Tool: Admin">
-            <Action name="RDKGTOOL_ADMIN_OPEN">
-                <Down>RdKGTool.admin.OnKeyBinding()</Down>
+		<Category name="|c4592FFBeltalowda: Admin">
+            <Action name="BELTALOWDA_ADMIN_OPEN">
+                <Down>Beltalowda.admin.OnKeyBinding()</Down>
             </Action>
         </Category>
-		<Category name="|c4592FFRdK Group Tool: Configuration Ex / Im">
-            <Action name="RDKGTOOL_CONFIG_OPEN">
-                <Down>RdKGTool.cfg.OnKeyBinding()</Down>
+		<Category name="|c4592FFBeltalowda: Configuration Ex / Im">
+            <Action name="BELTALOWDA_CONFIG_OPEN">
+                <Down>Beltalowda.cfg.OnKeyBinding()</Down>
             </Action>
         </Category>
-		<Category name="|c4592FFRdK Group Tool: Healing Damage Meter">
-            <Action name="RDKGTOOL_HDM_RESET_METER">
-                <Down>RdKGTool.group.hdm.OnKeyBinding()</Down>
+		<Category name="|c4592FFBeltalowda: Healing Damage Meter">
+            <Action name="BELTALOWDA_HDM_RESET_METER">
+                <Down>Beltalowda.group.hdm.OnKeyBinding()</Down>
             </Action>
         </Category>
 	</Layer>
-	<Layer name="|c4592FFRdK Group Tool: Death">
+	<Layer name="|c4592FFBeltalowda: Death">
 		<Category name="">
-			<Action name="RDKGTOOL_DEATH_CAMP">
-				<Down>RdKGTool.toolbox.respawner.KeybindingPlaceholder()</Down>
+			<Action name="BELTALOWDA_DEATH_CAMP">
+				<Down>Beltalowda.toolbox.respawner.KeybindingPlaceholder()</Down>
 			</Action>
-			<Action name="RDKGTOOL_DEATH_KEEP">
-				<Down>RdKGTool.toolbox.respawner.KeybindingPlaceholder()</Down>
+			<Action name="BELTALOWDA_DEATH_KEEP">
+				<Down>Beltalowda.toolbox.respawner.KeybindingPlaceholder()</Down>
 			</Action>
 		</Category>
 	</Layer>
 	<Layer name="SI_KEYBINDINGS_LAYER_SIEGE">
 		<Category name="">
-			<Action name="RDKGTOOL_TOGGLE_SIEGE_CAMERA">
-				<Down>RdKGTool.toolbox.siege.ToggleCamera()</Down>
+			<Action name="BELTALOWDA_TOGGLE_SIEGE_CAMERA">
+				<Down>Beltalowda.toolbox.siege.ToggleCamera()</Down>
 			</Action>
 		</Category>
 	</Layer>
 	<Layer name="Death">
 		<Category>
-			<Action name="RDKGTOOL_DEATH_RESPAWN_CAMP" hideAction="true" inheritsBindFrom="RDKGTOOL_DEATH_CAMP" rebindable="false">
-                <Down>RdKGTool.toolbox.respawner.RespawnAtCamp()</Down>
+			<Action name="BELTALOWDA_DEATH_RESPAWN_CAMP" hideAction="true" inheritsBindFrom="BELTALOWDA_DEATH_CAMP" rebindable="false">
+                <Down>Beltalowda.toolbox.respawner.RespawnAtCamp()</Down>
             </Action>
-			<Action name="RDKGTOOL_DEATH_RESPAWN_KEEP" hideAction="true" inheritsBindFrom="RDKGTOOL_DEATH_KEEP" rebindable="false">
-                <Down>RdKGTool.toolbox.respawner.RespawnAtKeep()</Down>
+			<Action name="BELTALOWDA_DEATH_RESPAWN_KEEP" hideAction="true" inheritsBindFrom="BELTALOWDA_DEATH_KEEP" rebindable="false">
+                <Down>Beltalowda.toolbox.respawner.RespawnAtKeep()</Down>
             </Action>
 		</Category>
 	</Layer>

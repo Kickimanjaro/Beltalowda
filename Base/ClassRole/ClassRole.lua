@@ -1,31 +1,31 @@
--- RdK Group Tool Class Role
+-- Beltalowda Class Role
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.classRole = RdKGTool.classRole or {}
-local RdKGToolCR = RdKGTool.classRole
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
+Beltalowda = Beltalowda or {}
+Beltalowda.classRole = Beltalowda.classRole or {}
+local BeltalowdaCR = Beltalowda.classRole
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
 
-function RdKGToolCR.Initialize()
-	RdKGToolCR.bg.tpHeal.Initialize()
+function BeltalowdaCR.Initialize()
+	BeltalowdaCR.bg.tpHeal.Initialize()
 end
 
-function RdKGToolCR.GetMenu()
+function BeltalowdaCR.GetMenu()
 	local menu = {
 		[1] = {
 			type = "header",
-			name = RdKGToolMenu.constants.CR_HEADER,
+			name = BeltalowdaMenu.constants.CR_HEADER,
 			width = "full",
 		}
 	}
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolCR.bg.tpHeal.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaCR.bg.tpHeal.GetMenu())
 	return menu
 end
 
-function RdKGToolCR.GetDefaults()
+function BeltalowdaCR.GetDefaults()
 	local defaults = {}
 	defaults.bg = {}
-	defaults.bg.tpHeal = RdKGToolCR.bg.tpHeal.GetDefaults()
+	defaults.bg.tpHeal = BeltalowdaCR.bg.tpHeal.GetDefaults()
 	return defaults
 end

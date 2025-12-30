@@ -1,71 +1,72 @@
--- RdK Group Tool Menu
--- By @s0rdrak (PC / EU)
+-- Beltalowda Menu
+-- By @Kickimanjaro
+-- Based on RdK Group Tool Menu by @s0rdrak (PC / EU)
 
 --local LAM = LibStub("LibAddonMenu-2.0")
 local LAM = LibAddonMenu2
 
-local RdKGTool = _G['RdKGTool']
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.profile = RdKGTool.profile or {}
-local RdKGToolProfile = RdKGTool.profile
-RdKGTool.group = RdKGTool.group or {}
-local RdKGToolGroup = RdKGTool.group
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGTool.compass = RdKGTool.compass or {}
-local RdKGToolCompass = RdKGTool.compass
-RdKGTool.toolbox = RdKGTool.toolbox or {}
-local RdKGToolToolbox = RdKGTool.toolbox
-RdKGTool.classRole = RdKGTool.classRole or {}
-local RdKGToolCR = RdKGTool.classRole
-RdKGTool.addOnIntegration = RdKGTool.addOnIntegration or {}
-local RdKGToolAoi = RdKGTool.addOnIntegration
-RdKGToolAoi.mpa = RdKGToolAoi.mpa or {}
-local RdKGToolMpa = RdKGToolAoi.mpa
-RdKGTool.admin = RdKGTool.admin or {}
-local RdKGToolAdmin = RdKGTool.admin
-RdKGTool.cfg = RdKGTool.cfg or {}
-local RdKGToolConfig = RdKGTool.cfg
-RdKGToolUtil.chatSystem = RdKGToolUtil.chatSystem or {}
-local RdKGToolChat = RdKGToolUtil.chatSystem
+local Beltalowda = _G['Beltalowda']
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.profile = Beltalowda.profile or {}
+local BeltalowdaProfile = Beltalowda.profile
+Beltalowda.group = Beltalowda.group or {}
+local BeltalowdaGroup = Beltalowda.group
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+Beltalowda.compass = Beltalowda.compass or {}
+local BeltalowdaCompass = Beltalowda.compass
+Beltalowda.toolbox = Beltalowda.toolbox or {}
+local BeltalowdaToolbox = Beltalowda.toolbox
+Beltalowda.classRole = Beltalowda.classRole or {}
+local BeltalowdaCR = Beltalowda.classRole
+Beltalowda.addOnIntegration = Beltalowda.addOnIntegration or {}
+local BeltalowdaAoi = Beltalowda.addOnIntegration
+BeltalowdaAoi.mpa = BeltalowdaAoi.mpa or {}
+local BeltalowdaMpa = BeltalowdaAoi.mpa
+Beltalowda.admin = Beltalowda.admin or {}
+local BeltalowdaAdmin = Beltalowda.admin
+Beltalowda.cfg = Beltalowda.cfg or {}
+local BeltalowdaConfig = Beltalowda.cfg
+BeltalowdaUtil.chatSystem = BeltalowdaUtil.chatSystem or {}
+local BeltalowdaChat = BeltalowdaUtil.chatSystem
 
 local wm = GetWindowManager()
 
-RdKGToolMenu.lam = {}
-RdKGToolMenu.lam.panel = nil
-RdKGToolMenu.lam.panelData = {}
-RdKGToolMenu.lam.panelData.type = "panel"
-RdKGToolMenu.lam.panelData.name = "|c4592FFRdK Group Tool|r"
-RdKGToolMenu.lam.panelData.displayName = "|c4592FFRdK Group Tool Configuration|r"
-RdKGToolMenu.lam.panelData.author = string.format("|cFF8174%s|r\r\nThanks to: |cFF8174%s|r\r\n", RdKGTool.author, RdKGTool.credits)
-RdKGToolMenu.lam.panelData.version = string.format("|cFF8174%s|r", RdKGTool.versionString)
-RdKGToolMenu.lam.panelData.registerForRefresh = true
-RdKGToolMenu.lam.panelData.registerForDefaults = false
-RdKGToolMenu.constants = RdKGToolMenu.constants or {}
-RdKGToolMenu.constants.PREFIX = "Menu"
+BeltalowdaMenu.lam = {}
+BeltalowdaMenu.lam.panel = nil
+BeltalowdaMenu.lam.panelData = {}
+BeltalowdaMenu.lam.panelData.type = "panel"
+BeltalowdaMenu.lam.panelData.name = "|c4592FFBeltalowda|r"
+BeltalowdaMenu.lam.panelData.displayName = "|c4592FFBeltalowda Configuration|r"
+BeltalowdaMenu.lam.panelData.author = string.format("|cFF8174%s|r\r\nThanks to: |cFF8174%s|r\r\n", Beltalowda.author, Beltalowda.credits)
+BeltalowdaMenu.lam.panelData.version = string.format("|cFF8174%s|r", Beltalowda.versionString)
+BeltalowdaMenu.lam.panelData.registerForRefresh = true
+BeltalowdaMenu.lam.panelData.registerForDefaults = false
+BeltalowdaMenu.constants = BeltalowdaMenu.constants or {}
+BeltalowdaMenu.constants.PREFIX = "Menu"
 
 
-RdKGToolMenu.state = {}
-RdKGToolMenu.state.newProfileName = ""
-RdKGToolMenu.state.positionFixedConsumers = {}
+BeltalowdaMenu.state = {}
+BeltalowdaMenu.state.newProfileName = ""
+BeltalowdaMenu.state.positionFixedConsumers = {}
 
 
 
 --General
-function RdKGToolMenu.Initialize()
+function BeltalowdaMenu.Initialize()
 	--zo_callLater(function()
-		RdKGToolMenu.lam.optionsData = RdKGToolMenu.CreateOptionsData()
-		RdKGToolMenu.lam.panel = LAM:RegisterAddonPanel(RdKGToolMenu.name, RdKGToolMenu.lam.panelData)
-		LAM:RegisterOptionControls(RdKGToolMenu.name, RdKGToolMenu.lam.optionsData)
+		BeltalowdaMenu.lam.optionsData = BeltalowdaMenu.CreateOptionsData()
+		BeltalowdaMenu.lam.panel = LAM:RegisterAddonPanel(BeltalowdaMenu.name, BeltalowdaMenu.lam.panelData)
+		LAM:RegisterOptionControls(BeltalowdaMenu.name, BeltalowdaMenu.lam.optionsData)
 	--end,1)
 end
 
-function RdKGToolMenu.OpenMenu()
-	LAM:OpenToPanel(RdKGToolMenu.lam.panel)
+function BeltalowdaMenu.OpenMenu()
+	LAM:OpenToPanel(BeltalowdaMenu.lam.panel)
 end
 
-function RdKGToolMenu.SetErrorMessage(controlName, errorMessage)
+function BeltalowdaMenu.SetErrorMessage(controlName, errorMessage)
 	local errorDescription = wm:GetControlByName(controlName)
 	--d(errorDescription)
 	--d(errorMessage)
@@ -75,19 +76,19 @@ function RdKGToolMenu.SetErrorMessage(controlName, errorMessage)
 	end
 end
 
-function RdKGToolMenu.UpdateCheckbox(checkbox)
+function BeltalowdaMenu.UpdateCheckbox(checkbox)
 	if checkbox ~= nil and checkbox.data ~= nil then
 		checkbox:UpdateValue()
 	end
 end
 
-function RdKGToolMenu.UpdateControl(control)
+function BeltalowdaMenu.UpdateControl(control)
 	if control ~= nil and control.data ~= nil then
 		control:UpdateValue()
 	end
 end
 
-function RdKGToolMenu.AddMenuEntries(menu, entries)
+function BeltalowdaMenu.AddMenuEntries(menu, entries)
 	if menu ~= nil and entries ~= nil then
 		for i = 1, #entries do
 			table.insert(menu, entries[i])
@@ -95,11 +96,11 @@ function RdKGToolMenu.AddMenuEntries(menu, entries)
 	end
 end
 
-function RdKGToolMenu.CreateOptionsData()
+function BeltalowdaMenu.CreateOptionsData()
 	local menu = {}
 	local tempMenu = {}
 	--profile
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolProfile.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaProfile.GetMenu())
 	--Fixed Components
 	tempMenu = {
 		[1] = {
@@ -108,14 +109,14 @@ function RdKGToolMenu.CreateOptionsData()
 			},
 		[2] = {
 			type = "button",
-			name = RdKGToolMenu.constants.POSITION_FIXED_SET,
-			func = RdKGToolMenu.SetPositionFixed,
+			name = BeltalowdaMenu.constants.POSITION_FIXED_SET,
+			func = BeltalowdaMenu.SetPositionFixed,
 			width = "full"
 		},
 		[3] = {
 			type = "button",
-			name = RdKGToolMenu.constants.POSITION_FIXED_UNSET,
-			func = RdKGToolMenu.UnsetPositionFixed,
+			name = BeltalowdaMenu.constants.POSITION_FIXED_UNSET,
+			func = BeltalowdaMenu.UnsetPositionFixed,
 			width = "full"
 		},
 		[4] = {
@@ -124,135 +125,135 @@ function RdKGToolMenu.CreateOptionsData()
 		},
 		[5] = {
 			type = "button",
-			name = RdKGToolMenu.constants.FEEDBACK,
-			func = RdKGToolMenu.Feedback,
+			name = BeltalowdaMenu.constants.FEEDBACK,
+			func = BeltalowdaMenu.Feedback,
 			width = "full"
 		},
 		[6] = {
 			type = "button",
-			name = RdKGToolMenu.constants.DONATE,
-			func = RdKGToolMenu.DonateFreeAmount,
+			name = BeltalowdaMenu.constants.DONATE,
+			func = BeltalowdaMenu.DonateFreeAmount,
 			width = "full"
 		},
 		[7] = {
 			type = "button",
-			name = RdKGToolMenu.constants.DONATE_5K,
-			func = RdKGToolMenu.Donate5k,
+			name = BeltalowdaMenu.constants.DONATE_5K,
+			func = BeltalowdaMenu.Donate5k,
 			width = "full"
 		},
 		[8] = {
 			type = "button",
-			name = RdKGToolMenu.constants.DONATE_50K,
-			func = RdKGToolMenu.Donate50k,
+			name = BeltalowdaMenu.constants.DONATE_50K,
+			func = BeltalowdaMenu.Donate50k,
 			width = "full"
 		},
 	}
-	RdKGToolMenu.AddMenuEntries(menu, tempMenu)
+	BeltalowdaMenu.AddMenuEntries(menu, tempMenu)
 	--group
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolGroup.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.GetMenu())
 	--compass
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolCompass.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaCompass.GetMenu())
 	--toolbox
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolToolbox.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaToolbox.GetMenu())
 	--util
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolUtil.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaUtil.GetMenu())
 	--classRole
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolCR.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaCR.GetMenu())
 	--addOnIntegration
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolAoi.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaAoi.GetMenu())
 	--Admin
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolAdmin.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaAdmin.GetMenu())
 	--Config
-	RdKGToolMenu.AddMenuEntries(menu, RdKGToolConfig.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaConfig.GetMenu())
 	return menu
 end
 
-function RdKGToolMenu.GetRGBColor(color)
+function BeltalowdaMenu.GetRGBColor(color)
 	return color.r, color.g, color.b
 end
 
-function RdKGToolMenu.GetRGBAColor(color)
+function BeltalowdaMenu.GetRGBAColor(color)
 	return color.r, color.g, color.b, color.a
 end
 
-function RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaMenu.GetColorFromRGB(r, g, b)
 	return {["r"] = r, ["g"] = g, ["b"] = b}
 end
 
-function RdKGToolMenu.GetColorFromRGBA(r, g, b, a)
+function BeltalowdaMenu.GetColorFromRGBA(r, g, b, a)
 	return {["r"] = r, ["g"] = g, ["b"] = b, ["a"] = a}
 end
 
-function RdKGToolMenu.PositionFixedConsumerExists(consumer)
-	for i = 1, #RdKGToolMenu.state.positionFixedConsumers do
-		if RdKGToolMenu.state.positionFixedConsumers[i] == consumer then
+function BeltalowdaMenu.PositionFixedConsumerExists(consumer)
+	for i = 1, #BeltalowdaMenu.state.positionFixedConsumers do
+		if BeltalowdaMenu.state.positionFixedConsumers[i] == consumer then
 			return true
 		end
 	end
 	return false
 end
 
-function RdKGToolMenu.AddPositionFixedConsumer(consumer)
-	if consumer ~= nil and type(consumer) == "function" and RdKGToolMenu.PositionFixedConsumerExists(consumer) == false then
-		table.insert(RdKGToolMenu.state.positionFixedConsumers, consumer)
+function BeltalowdaMenu.AddPositionFixedConsumer(consumer)
+	if consumer ~= nil and type(consumer) == "function" and BeltalowdaMenu.PositionFixedConsumerExists(consumer) == false then
+		table.insert(BeltalowdaMenu.state.positionFixedConsumers, consumer)
 	end
 end
 
-function RdKGToolMenu.RemovePositionFixedConsumer(consumer)
-	if consumer ~= nil and type(consumer) == "function" and RdKGToolMenu.PositionFixedConsumerExists(consumer) == true then
-		for i = 1, #RdKGToolMenu.state.positionFixedConsumers do
-			if RdKGToolMenu.state.positionFixedConsumers[i] == consumer then
-				table.remove(RdKGToolMenu.state.positionFixedConsumers, i)
+function BeltalowdaMenu.RemovePositionFixedConsumer(consumer)
+	if consumer ~= nil and type(consumer) == "function" and BeltalowdaMenu.PositionFixedConsumerExists(consumer) == true then
+		for i = 1, #BeltalowdaMenu.state.positionFixedConsumers do
+			if BeltalowdaMenu.state.positionFixedConsumers[i] == consumer then
+				table.remove(BeltalowdaMenu.state.positionFixedConsumers, i)
 				break
 			end
 		end
 	end
 end
 
-function RdKGToolMenu.Donate(amount)
+function BeltalowdaMenu.Donate(amount)
 	if GetWorldName() == "EU Megaserver" then
 		SCENE_MANAGER:Show('mailSend')
 		zo_callLater(
 			function()
 				ZO_MailSendToField:SetText("@s0rdrak")
-				ZO_MailSendSubjectField:SetText(RdKGToolMenu.constants.DONATE_MAIL_SUBJECT)
+				ZO_MailSendSubjectField:SetText(BeltalowdaMenu.constants.DONATE_MAIL_SUBJECT)
 				QueueMoneyAttachment(amount)
 				ZO_MailSendBodyField:TakeFocus() 
 			end, 
 		200)
 	else
 		CHAT_SYSTEM:Maximize()
-		RdKGToolChat.SendChatMessage(RdKGToolMenu.constants.DONATE_SERVER_ERROR, RdKGToolMenu.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_WARNING)
+		BeltalowdaChat.SendChatMessage(BeltalowdaMenu.constants.DONATE_SERVER_ERROR, BeltalowdaMenu.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
 	end
 end
 --menu interaction
-function RdKGToolMenu.SetPositionFixed()
-	for i = 1, #RdKGToolMenu.state.positionFixedConsumers do
-		RdKGToolMenu.state.positionFixedConsumers[i](true)
+function BeltalowdaMenu.SetPositionFixed()
+	for i = 1, #BeltalowdaMenu.state.positionFixedConsumers do
+		BeltalowdaMenu.state.positionFixedConsumers[i](true)
 	end
 end
 
-function RdKGToolMenu.UnsetPositionFixed()
-	for i = 1, #RdKGToolMenu.state.positionFixedConsumers do
-		RdKGToolMenu.state.positionFixedConsumers[i](false)
+function BeltalowdaMenu.UnsetPositionFixed()
+	for i = 1, #BeltalowdaMenu.state.positionFixedConsumers do
+		BeltalowdaMenu.state.positionFixedConsumers[i](false)
 	end
 end
 
-function RdKGToolMenu.Feedback()
+function BeltalowdaMenu.Feedback()
 	CHAT_SYSTEM:Maximize()
-	RdKGToolChat.SendChatMessage(RdKGToolMenu.constants.FEEDBACK_STRING, RdKGToolMenu.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_WARNING)
+	BeltalowdaChat.SendChatMessage(BeltalowdaMenu.constants.FEEDBACK_STRING, BeltalowdaMenu.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
 end
 
-function RdKGToolMenu.DonateFreeAmount()
-	RdKGToolMenu.Donate(0)
+function BeltalowdaMenu.DonateFreeAmount()
+	BeltalowdaMenu.Donate(0)
 end
 
-function RdKGToolMenu.Donate5k()
-	RdKGToolMenu.Donate(5000)
+function BeltalowdaMenu.Donate5k()
+	BeltalowdaMenu.Donate(5000)
 end
 
-function RdKGToolMenu.Donate50k()
-	RdKGToolMenu.Donate(50000)
+function BeltalowdaMenu.Donate50k()
+	BeltalowdaMenu.Donate(50000)
 end
 --[[
 

@@ -1,118 +1,118 @@
--- RdK Group Tool Respawner
+-- Beltalowda Respawner
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.toolbox = RdKGTool.toolbox or {}
-local RdKGToolTB = RdKGTool.toolbox
-RdKGToolTB.respawner = RdKGToolTB.respawner or {}
-local RdKGToolRespawner = RdKGToolTB.respawner
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolUtilGroup = RdKGToolUtil.group
-RdKGToolUtil.cyrodiil = RdKGToolUtil.cyrodiil or {}
-local RdKGToolCyro = RdKGToolUtil.cyrodiil
+Beltalowda.toolbox = Beltalowda.toolbox or {}
+local BeltalowdaTB = Beltalowda.toolbox
+BeltalowdaTB.respawner = BeltalowdaTB.respawner or {}
+local BeltalowdaRespawner = BeltalowdaTB.respawner
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaUtilGroup = BeltalowdaUtil.group
+BeltalowdaUtil.cyrodiil = BeltalowdaUtil.cyrodiil or {}
+local BeltalowdaCyro = BeltalowdaUtil.cyrodiil
 
-RdKGToolRespawner.constants = RdKGToolRespawner.constants or {}
-RdKGToolRespawner.constants.TLW = "RdKGToolToolboxRespawnerTLW"
-RdKGToolRespawner.constants.KEEP = "RdKGToolToolboxRespawnerKEEP"
-RdKGToolRespawner.constants.CAMP = "RdKGToolToolboxRespawnerCAMP"
+BeltalowdaRespawner.constants = BeltalowdaRespawner.constants or {}
+BeltalowdaRespawner.constants.TLW = "BeltalowdaToolboxRespawnerTLW"
+BeltalowdaRespawner.constants.KEEP = "BeltalowdaToolboxRespawnerKEEP"
+BeltalowdaRespawner.constants.CAMP = "BeltalowdaToolboxRespawnerCAMP"
 
-RdKGToolRespawner.callbackName = RdKGTool.addonName .. "Respawner"
-RdKGToolRespawner.delayCallbackName = RdKGTool.addonName .. "RespawnerDelayInit"
+BeltalowdaRespawner.callbackName = Beltalowda.addonName .. "Respawner"
+BeltalowdaRespawner.delayCallbackName = Beltalowda.addonName .. "RespawnerDelayInit"
 
-RdKGToolRespawner.config = {}
-RdKGToolRespawner.config.initDelay = 100
-RdKGToolRespawner.config.updateInterval = 100
+BeltalowdaRespawner.config = {}
+BeltalowdaRespawner.config.initDelay = 100
+BeltalowdaRespawner.config.updateInterval = 100
 
-RdKGToolRespawner.controls = {}
+BeltalowdaRespawner.controls = {}
 
-RdKGToolRespawner.state = {}
-RdKGToolRespawner.state.initialized = false
-RdKGToolRespawner.state.alreadyEnabled = false
-RdKGToolRespawner.state.updateLoopRunning = false
+BeltalowdaRespawner.state = {}
+BeltalowdaRespawner.state.initialized = false
+BeltalowdaRespawner.state.alreadyEnabled = false
+BeltalowdaRespawner.state.updateLoopRunning = false
 
 local wm = GetWindowManager()
 
-function RdKGToolRespawner.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolRespawner.callbackName, RdKGToolRespawner.OnProfileChanged)
-	ZO_CreateStringId("SI_BINDING_NAME_RDKGTOOL_DEATH_CAMP", RdKGToolRespawner.constants.KEYBINDING_RESPAWN_CAMP)
-	ZO_CreateStringId("SI_BINDING_NAME_RDKGTOOL_DEATH_KEEP", RdKGToolRespawner.constants.KEYBINDING_RESPAWN_KEEP)
-	RdKGToolRespawner.CreateUI()
-	RdKGToolRespawner.state.initialized = true
-	EVENT_MANAGER:RegisterForUpdate(RdKGToolRespawner.delayCallbackName, RdKGToolRespawner.config.initDelay, RdKGToolRespawner.DelayedInit)
+function BeltalowdaRespawner.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaRespawner.callbackName, BeltalowdaRespawner.OnProfileChanged)
+	ZO_CreateStringId("SI_BINDING_NAME_RDKGTOOL_DEATH_CAMP", BeltalowdaRespawner.constants.KEYBINDING_RESPAWN_CAMP)
+	ZO_CreateStringId("SI_BINDING_NAME_RDKGTOOL_DEATH_KEEP", BeltalowdaRespawner.constants.KEYBINDING_RESPAWN_KEEP)
+	BeltalowdaRespawner.CreateUI()
+	BeltalowdaRespawner.state.initialized = true
+	EVENT_MANAGER:RegisterForUpdate(BeltalowdaRespawner.delayCallbackName, BeltalowdaRespawner.config.initDelay, BeltalowdaRespawner.DelayedInit)
 end
 
 --[[
-/script tempHud = ZO_HUDFadeSceneFragment:New(RdKGTool.toolbox.respawner.controls.tlw)
-/script HUD_SCENE:AddFragment(RdKGTool.toolbox.respawner.controls.hudControl)
-/script HUD_UI_SCENE:AddFragment(RdKGTool.toolbox.respawner.controls.hudControl)
-/script RdKGTool.toolbox.respawner.controls.hudControl:Show()
+/script tempHud = ZO_HUDFadeSceneFragment:New(Beltalowda.toolbox.respawner.controls.tlw)
+/script HUD_SCENE:AddFragment(Beltalowda.toolbox.respawner.controls.hudControl)
+/script HUD_UI_SCENE:AddFragment(Beltalowda.toolbox.respawner.controls.hudControl)
+/script Beltalowda.toolbox.respawner.controls.hudControl:Show()
 /script d(getmetatable(ZO_DeathAvA))
 /script d(getmetatable(ZO_DeathAvAButtons))
 /script d(DEATH.types["AvA"].buttons[1]:SetHidden(true))
-/script RdKGTool.toolbox.respawner.controls.rootControl.keep:SetAnchor(TOPLEFT, GuiRoot,TOPLEFT,300,300)
-/script RdKGTool.toolbox.respawner.controls.rootControl:SetAnchor(TOPLEFT, ZO_DeathAvAButtons, TOPLEFT, 0, 0)
+/script Beltalowda.toolbox.respawner.controls.rootControl.keep:SetAnchor(TOPLEFT, GuiRoot,TOPLEFT,300,300)
+/script Beltalowda.toolbox.respawner.controls.rootControl:SetAnchor(TOPLEFT, ZO_DeathAvAButtons, TOPLEFT, 0, 0)
 ]]
-function RdKGToolRespawner.CreateUI()
-	RdKGToolRespawner.controls.tlw = wm:CreateTopLevelWindow(RdKGToolRespawner.constants.TLW)
-	RdKGToolRespawner.controls.tlw:SetHidden(true)
-	RdKGToolRespawner.controls.rootControl = wm:CreateControl(nil, RdKGToolRespawner.controls.tlw, CT_CONTROL)
-	local rootControl = RdKGToolRespawner.controls.rootControl
+function BeltalowdaRespawner.CreateUI()
+	BeltalowdaRespawner.controls.tlw = wm:CreateTopLevelWindow(BeltalowdaRespawner.constants.TLW)
+	BeltalowdaRespawner.controls.tlw:SetHidden(true)
+	BeltalowdaRespawner.controls.rootControl = wm:CreateControl(nil, BeltalowdaRespawner.controls.tlw, CT_CONTROL)
+	local rootControl = BeltalowdaRespawner.controls.rootControl
 	
-	rootControl.keep = wm:CreateControlFromVirtual(RdKGToolRespawner.constants.KEEP, rootControl, "ZO_KeybindButton")
+	rootControl.keep = wm:CreateControlFromVirtual(BeltalowdaRespawner.constants.KEEP, rootControl, "ZO_KeybindButton")
 	rootControl.keep:SetAnchor(TOPLEFT, rootControl, TOPLEFT, 0, 0)
-	rootControl.keep.nameLabel:SetText(RdKGToolRespawner.constants.RESPAWN_KEEP)
+	rootControl.keep.nameLabel:SetText(BeltalowdaRespawner.constants.RESPAWN_KEEP)
 	rootControl.keep:SetKeybind('RDKGTOOL_DEATH_RESPAWN_KEEP')
 	rootControl.keep:SetCallback(function() d("keep") end)
 	
-	rootControl.camp = wm:CreateControlFromVirtual(RdKGToolRespawner.constants.CAMP, rootControl, "ZO_KeybindButton")
+	rootControl.camp = wm:CreateControlFromVirtual(BeltalowdaRespawner.constants.CAMP, rootControl, "ZO_KeybindButton")
 	rootControl.camp:SetAnchor(TOPLEFT, rootControl, TOPRIGHT, 200, 0)
-	rootControl.camp.nameLabel:SetText(RdKGToolRespawner.constants.RESPAWN_CAMP)
+	rootControl.camp.nameLabel:SetText(BeltalowdaRespawner.constants.RESPAWN_CAMP)
 	rootControl.camp:SetKeybind('RDKGTOOL_DEATH_RESPAWN_CAMP')
 	rootControl.camp:SetCallback(function() d("camp") end)
     
 	
 end
 
-function RdKGToolRespawner.GetDefaults()
+function BeltalowdaRespawner.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
 	defaults.restrictedPort = true
 	return defaults
 end
 
-function RdKGToolRespawner.SetEnabled(value)
-	if RdKGToolRespawner.state.initialized == true and value ~= nil then
-		RdKGToolRespawner.reVars.enabled = value
+function BeltalowdaRespawner.SetEnabled(value)
+	if BeltalowdaRespawner.state.initialized == true and value ~= nil then
+		BeltalowdaRespawner.reVars.enabled = value
 		if value == true and IsInCyrodiil() == true then
-			if RdKGToolRespawner.state.alreadyEnabled == false then
-				RdKGToolRespawner.controls.rootControl:SetParent(ZO_DeathAvAButtons)
-				RdKGToolRespawner.controls.rootControl:ClearAnchors()
-				RdKGToolRespawner.controls.rootControl:SetAnchor(TOPLEFT, ZO_DeathAvAButtons, TOPLEFT, -400, 0)
-				RdKGToolRespawner.state.alreadyEnabled = true
-				--EVENT_MANAGER:RegisterForUpdate(RdKGToolRespawner.callbackName, RdKGToolRespawner.config.updateInterval, RdKGToolRespawner.UpdateRespawn)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolRespawner.callbackName, EVENT_PLAYER_DEAD, RdKGToolRespawner.OnPlayerDead)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolRespawner.callbackName, EVENT_PLAYER_ALIVE, RdKGToolRespawner.OnPlayerAlive)
+			if BeltalowdaRespawner.state.alreadyEnabled == false then
+				BeltalowdaRespawner.controls.rootControl:SetParent(ZO_DeathAvAButtons)
+				BeltalowdaRespawner.controls.rootControl:ClearAnchors()
+				BeltalowdaRespawner.controls.rootControl:SetAnchor(TOPLEFT, ZO_DeathAvAButtons, TOPLEFT, -400, 0)
+				BeltalowdaRespawner.state.alreadyEnabled = true
+				--EVENT_MANAGER:RegisterForUpdate(BeltalowdaRespawner.callbackName, BeltalowdaRespawner.config.updateInterval, BeltalowdaRespawner.UpdateRespawn)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaRespawner.callbackName, EVENT_PLAYER_DEAD, BeltalowdaRespawner.OnPlayerDead)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaRespawner.callbackName, EVENT_PLAYER_ALIVE, BeltalowdaRespawner.OnPlayerAlive)
 				if IsUnitDead("player") == true then
-					RdKGToolRespawner.OnPlayerDead()
+					BeltalowdaRespawner.OnPlayerDead()
 				end
 			end
 		else
-			if RdKGToolRespawner.state.alreadyEnabled == true then
-				RdKGToolRespawner.controls.rootControl:SetParent(RdKGToolRespawner.controls.tlw)
-				RdKGToolRespawner.state.alreadyEnabled = false
-				--EVENT_MANAGER:UnregisterForUpdate(RdKGToolRespawner.callbackName)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolRespawner.callbackName, EVENT_PLAYER_DEAD)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolRespawner.callbackName, EVENT_PLAYER_ALIVE)
-				RdKGToolRespawner.DisableUpdateLoop()
+			if BeltalowdaRespawner.state.alreadyEnabled == true then
+				BeltalowdaRespawner.controls.rootControl:SetParent(BeltalowdaRespawner.controls.tlw)
+				BeltalowdaRespawner.state.alreadyEnabled = false
+				--EVENT_MANAGER:UnregisterForUpdate(BeltalowdaRespawner.callbackName)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaRespawner.callbackName, EVENT_PLAYER_DEAD)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaRespawner.callbackName, EVENT_PLAYER_ALIVE)
+				BeltalowdaRespawner.DisableUpdateLoop()
 			end
 		end
 	end
 end
 
-function RdKGToolRespawner.CombineKeepLists(keeps, outposts, villages)
+function BeltalowdaRespawner.CombineKeepLists(keeps, outposts, villages)
 	local keepEntries = {}
 	for key, keep in pairs(keeps) do
 		keepEntries[key] = keep
@@ -126,12 +126,12 @@ function RdKGToolRespawner.CombineKeepLists(keeps, outposts, villages)
 	return keepEntries
 end
 
-function RdKGToolRespawner.RetrieveAllRespawnKeeps()
+function BeltalowdaRespawner.RetrieveAllRespawnKeeps()
 	local keeps = {}
-	RdKGToolCyro.AdjustKeepCoordinates()
-	RdKGToolCyro.AdjustOutpostCoordinates()
-	RdKGToolCyro.AdjustVillageCoordinates()
-	local potentialRespawnKeeps = RdKGToolRespawner.CombineKeepLists(RdKGToolCyro.GetKeeps(), RdKGToolCyro.GetOutposts(), RdKGToolCyro.GetVillages())
+	BeltalowdaCyro.AdjustKeepCoordinates()
+	BeltalowdaCyro.AdjustOutpostCoordinates()
+	BeltalowdaCyro.AdjustVillageCoordinates()
+	local potentialRespawnKeeps = BeltalowdaRespawner.CombineKeepLists(BeltalowdaCyro.GetKeeps(), BeltalowdaCyro.GetOutposts(), BeltalowdaCyro.GetVillages())
 	if potentialRespawnKeeps ~= nil then
 		for key, keep in pairs(potentialRespawnKeeps) do
 			if CanRespawnAtKeep(key) then
@@ -143,12 +143,12 @@ function RdKGToolRespawner.RetrieveAllRespawnKeeps()
 	return keeps
 end
 
-function RdKGToolRespawner.RetrieveNearestKeep()
+function BeltalowdaRespawner.RetrieveNearestKeep()
 	local nearestKeep = nil
-	RdKGToolCyro.AdjustKeepCoordinates()
-	RdKGToolCyro.AdjustOutpostCoordinates()
-	RdKGToolCyro.AdjustVillageCoordinates()
-	local potentialRespawnKeeps = RdKGToolRespawner.CombineKeepLists(RdKGToolCyro.GetKeeps(), RdKGToolCyro.GetOutposts(), RdKGToolCyro.GetVillages())
+	BeltalowdaCyro.AdjustKeepCoordinates()
+	BeltalowdaCyro.AdjustOutpostCoordinates()
+	BeltalowdaCyro.AdjustVillageCoordinates()
+	local potentialRespawnKeeps = BeltalowdaRespawner.CombineKeepLists(BeltalowdaCyro.GetKeeps(), BeltalowdaCyro.GetOutposts(), BeltalowdaCyro.GetVillages())
 	if potentialRespawnKeeps ~= nil then
 		local playerX, playerY = GetMapPlayerPosition("player")
 		for key, keep in pairs(potentialRespawnKeeps) do
@@ -162,7 +162,7 @@ function RdKGToolRespawner.RetrieveNearestKeep()
 	return nearestKeep
 end
 
-function RdKGToolRespawner.RetrieveNearbyCamps()
+function BeltalowdaRespawner.RetrieveNearbyCamps()
 	local camps = {}
 	local numCamps = GetNumForwardCamps(BGQUERY_LOCAL)
 	for i = 1, numCamps do
@@ -176,16 +176,16 @@ function RdKGToolRespawner.RetrieveNearbyCamps()
 	return camps
 end
 
-function RdKGToolRespawner.RespawnAtCamp()
-	if RdKGToolRespawner.reVars.enabled == true and IsInCyrodiil() == true then
+function BeltalowdaRespawner.RespawnAtCamp()
+	if BeltalowdaRespawner.reVars.enabled == true and IsInCyrodiil() == true then
 		--d("respawn at camp")
-		local camps = RdKGToolRespawner.RetrieveNearbyCamps()
+		local camps = BeltalowdaRespawner.RetrieveNearbyCamps()
 		if #camps > 0 then
 			if #camps == 1 then
 				RespawnAtForwardCamp(camps[1].id)
 			else
 				--calculate
-				local leader = RdKGToolUtilGroup.GetLeaderUnit()
+				local leader = BeltalowdaUtilGroup.GetLeaderUnit()
 				if leader ~= nil and leader.coordinates ~= nil and leader.coordinates.localX ~= nil and leader.coordinates.localY ~= nil then
 					local localX = leader.coordinates.localX
 					local localY = leader.coordinates.localY
@@ -209,11 +209,11 @@ function RdKGToolRespawner.RespawnAtCamp()
 	end
 end
 
-function RdKGToolRespawner.RespawnAtKeep()
-	if RdKGToolRespawner.reVars.enabled == true and IsInCyrodiil() == true then
+function BeltalowdaRespawner.RespawnAtKeep()
+	if BeltalowdaRespawner.reVars.enabled == true and IsInCyrodiil() == true then
 		--d("respawn at keep")
-		if RdKGToolRespawner.reVars.restrictedPort == false then
-			local keeps = RdKGToolRespawner.RetrieveAllRespawnKeeps()
+		if BeltalowdaRespawner.reVars.restrictedPort == false then
+			local keeps = BeltalowdaRespawner.RetrieveAllRespawnKeeps()
 			if #keeps > 0 then
 				local playerX, playerY = GetMapPlayerPosition("player")
 				for i = 1, #keeps do
@@ -230,7 +230,7 @@ function RdKGToolRespawner.RespawnAtKeep()
 				RespawnAtKeep(keep.id)
 			end
 		else
-			local keep = RdKGToolRespawner.RetrieveNearestKeep()
+			local keep = BeltalowdaRespawner.RetrieveNearestKeep()
 			if keep ~= nil and CanRespawnAtKeep(keep.id) == true then
 				RespawnAtKeep(keep.id)
 			end
@@ -238,99 +238,99 @@ function RdKGToolRespawner.RespawnAtKeep()
 	end
 end
 
-function RdKGToolRespawner.KeybindingPlaceholder()
+function BeltalowdaRespawner.KeybindingPlaceholder()
 end
 
-function RdKGToolRespawner.EnabledUpdateLoop()
-	if RdKGToolRespawner.state.updateLoopRunning == false then
-		RdKGToolUtilGroup.AddFeature(RdKGToolRespawner.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_COORDINATES, RdKGToolRespawner.config.updateInterval)
-		EVENT_MANAGER:RegisterForUpdate(RdKGToolRespawner.callbackName, RdKGToolRespawner.config.updateInterval, RdKGToolRespawner.UpdateRespawn)
-		RdKGToolRespawner.state.updateLoopRunning = true
+function BeltalowdaRespawner.EnabledUpdateLoop()
+	if BeltalowdaRespawner.state.updateLoopRunning == false then
+		BeltalowdaUtilGroup.AddFeature(BeltalowdaRespawner.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_COORDINATES, BeltalowdaRespawner.config.updateInterval)
+		EVENT_MANAGER:RegisterForUpdate(BeltalowdaRespawner.callbackName, BeltalowdaRespawner.config.updateInterval, BeltalowdaRespawner.UpdateRespawn)
+		BeltalowdaRespawner.state.updateLoopRunning = true
 	end
 end
 
-function RdKGToolRespawner.DisableUpdateLoop()
-	if RdKGToolRespawner.state.updateLoopRunning == true then
-		EVENT_MANAGER:UnregisterForUpdate(RdKGToolRespawner.callbackName)
-		RdKGToolUtilGroup.RemoveFeature(RdKGToolRespawner.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_COORDINATES)
-		RdKGToolRespawner.state.updateLoopRunning = false
+function BeltalowdaRespawner.DisableUpdateLoop()
+	if BeltalowdaRespawner.state.updateLoopRunning == true then
+		EVENT_MANAGER:UnregisterForUpdate(BeltalowdaRespawner.callbackName)
+		BeltalowdaUtilGroup.RemoveFeature(BeltalowdaRespawner.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_COORDINATES)
+		BeltalowdaRespawner.state.updateLoopRunning = false
 	end
 end
 
 --callbacks
-function RdKGToolRespawner.OnProfileChanged(currentProfile)
+function BeltalowdaRespawner.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolRespawner.reVars = currentProfile.toolbox.respawner
-		if RdKGToolRespawner.state.initialized == true then
-			RdKGToolRespawner.SetEnabled(RdKGToolRespawner.reVars.enabled)
+		BeltalowdaRespawner.reVars = currentProfile.toolbox.respawner
+		if BeltalowdaRespawner.state.initialized == true then
+			BeltalowdaRespawner.SetEnabled(BeltalowdaRespawner.reVars.enabled)
 		end
 	end
 end
 
-function RdKGToolRespawner.DelayedInit()
-	EVENT_MANAGER:UnregisterForUpdate(RdKGToolRespawner.delayCallbackName)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolRespawner.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolRespawner.OnPlayerActivated)
-	RdKGToolRespawner.OnPlayerActivated()
+function BeltalowdaRespawner.DelayedInit()
+	EVENT_MANAGER:UnregisterForUpdate(BeltalowdaRespawner.delayCallbackName)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaRespawner.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaRespawner.OnPlayerActivated)
+	BeltalowdaRespawner.OnPlayerActivated()
 end
 
-function RdKGToolRespawner.OnPlayerActivated()
-	RdKGToolRespawner.SetEnabled(RdKGToolRespawner.reVars.enabled)
+function BeltalowdaRespawner.OnPlayerActivated()
+	BeltalowdaRespawner.SetEnabled(BeltalowdaRespawner.reVars.enabled)
 end
 
-function RdKGToolRespawner.OnPlayerDead()
-	RdKGToolRespawner.EnabledUpdateLoop()
+function BeltalowdaRespawner.OnPlayerDead()
+	BeltalowdaRespawner.EnabledUpdateLoop()
 end
 
-function RdKGToolRespawner.OnPlayerAlive()
-	RdKGToolRespawner.DisableUpdateLoop()
+function BeltalowdaRespawner.OnPlayerAlive()
+	BeltalowdaRespawner.DisableUpdateLoop()
 end
 
-function RdKGToolRespawner.UpdateRespawn()
+function BeltalowdaRespawner.UpdateRespawn()
 	--camps
 	--d("update loop")
-	local camps = RdKGToolRespawner.RetrieveNearbyCamps()
+	local camps = BeltalowdaRespawner.RetrieveNearbyCamps()
 	if #camps > 0 then
-		RdKGToolRespawner.controls.rootControl.camp:SetEnabled(true)
+		BeltalowdaRespawner.controls.rootControl.camp:SetEnabled(true)
 	else
-		RdKGToolRespawner.controls.rootControl.camp:SetEnabled(false)
+		BeltalowdaRespawner.controls.rootControl.camp:SetEnabled(false)
 	end
 	
 	--keeps
-	if RdKGToolRespawner.reVars.restrictedPort == false then
-		local keeps = RdKGToolRespawner.RetrieveAllRespawnKeeps()
+	if BeltalowdaRespawner.reVars.restrictedPort == false then
+		local keeps = BeltalowdaRespawner.RetrieveAllRespawnKeeps()
 		if #keeps > 0 then
-			RdKGToolRespawner.controls.rootControl.keep:SetEnabled(true)
+			BeltalowdaRespawner.controls.rootControl.keep:SetEnabled(true)
 		else
-			RdKGToolRespawner.controls.rootControl.keep:SetEnabled(false)
+			BeltalowdaRespawner.controls.rootControl.keep:SetEnabled(false)
 		end
 	else
-		local keep = RdKGToolRespawner.RetrieveNearestKeep()
+		local keep = BeltalowdaRespawner.RetrieveNearestKeep()
 		if keep ~= nil and CanRespawnAtKeep(keep.id) == true then
-			RdKGToolRespawner.controls.rootControl.keep:SetEnabled(true)
+			BeltalowdaRespawner.controls.rootControl.keep:SetEnabled(true)
 		else
-			RdKGToolRespawner.controls.rootControl.keep:SetEnabled(false)
+			BeltalowdaRespawner.controls.rootControl.keep:SetEnabled(false)
 		end
 	end
 end
 
 --menu interactions
-function RdKGToolRespawner.GetMenu()
+function BeltalowdaRespawner.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.RESPAWNER_HEADER,
+			name = BeltalowdaMenu.constants.RESPAWNER_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.RESPAWNER_ENABLED,
-					getFunc = RdKGToolRespawner.GetRespawnerEnabled,
-					setFunc = RdKGToolRespawner.SetRespawnerEnabled
+					name = BeltalowdaMenu.constants.RESPAWNER_ENABLED,
+					getFunc = BeltalowdaRespawner.GetRespawnerEnabled,
+					setFunc = BeltalowdaRespawner.SetRespawnerEnabled
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.RESPAWNER_RESTRICTED_PORT,
-					getFunc = RdKGToolRespawner.GetRespawnerRestrictedPort,
-					setFunc = RdKGToolRespawner.SetRespawnerRestrictedPort
+					name = BeltalowdaMenu.constants.RESPAWNER_RESTRICTED_PORT,
+					getFunc = BeltalowdaRespawner.GetRespawnerRestrictedPort,
+					setFunc = BeltalowdaRespawner.SetRespawnerRestrictedPort
 				}
 			}
 		}
@@ -338,18 +338,18 @@ function RdKGToolRespawner.GetMenu()
 	return menu
 end
 
-function RdKGToolRespawner.GetRespawnerEnabled()
-	return RdKGToolRespawner.reVars.enabled
+function BeltalowdaRespawner.GetRespawnerEnabled()
+	return BeltalowdaRespawner.reVars.enabled
 end
 
-function RdKGToolRespawner.SetRespawnerEnabled(value)
-	RdKGToolRespawner.SetEnabled(value)
+function BeltalowdaRespawner.SetRespawnerEnabled(value)
+	BeltalowdaRespawner.SetEnabled(value)
 end
 
-function RdKGToolRespawner.GetRespawnerRestrictedPort()
-	return RdKGToolRespawner.reVars.restrictedPort
+function BeltalowdaRespawner.GetRespawnerRestrictedPort()
+	return BeltalowdaRespawner.reVars.restrictedPort
 end
 
-function RdKGToolRespawner.SetRespawnerRestrictedPort(value)
-	RdKGToolRespawner.reVars.restrictedPort = value
+function BeltalowdaRespawner.SetRespawnerRestrictedPort(value)
+	BeltalowdaRespawner.reVars.restrictedPort = value
 end

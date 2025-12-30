@@ -1,40 +1,40 @@
--- RdK Group Tool Follow The Crown Audio
+-- Beltalowda Follow The Crown Audio
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.group.ftca = RdKGTool.group.ftca or {}
-local RdKGToolFtca = RdKGTool.group.ftca
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.group = RdKGToolUtil.group
-local RdKGToolGroup = RdKGToolUtil.group
-RdKGToolUtil.sound = RdKGToolUtil.sound or {}
-local RdKGToolSound = RdKGToolUtil.sound
+Beltalowda.group.ftca = Beltalowda.group.ftca or {}
+local BeltalowdaFtca = Beltalowda.group.ftca
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.group = BeltalowdaUtil.group
+local BeltalowdaGroup = BeltalowdaUtil.group
+BeltalowdaUtil.sound = BeltalowdaUtil.sound or {}
+local BeltalowdaSound = BeltalowdaUtil.sound
 
-RdKGToolFtca.constants = RdKGToolFtca.constants or {}
+BeltalowdaFtca.constants = BeltalowdaFtca.constants or {}
 
-RdKGToolFtca.callbackName = RdKGTool.addonName .. "FollowTheCrownAduio"
+BeltalowdaFtca.callbackName = Beltalowda.addonName .. "FollowTheCrownAduio"
 
-RdKGToolFtca.config = {}
-RdKGToolFtca.config.updateInterval = 100
+BeltalowdaFtca.config = {}
+BeltalowdaFtca.config.updateInterval = 100
 
-RdKGToolFtca.state = {}
-RdKGToolFtca.state.initialized = false
-RdKGToolFtca.state.registeredConsumer = false
-RdKGToolFtca.state.lastPlayedSound = nil
-RdKGToolFtca.state.isInRange = true
+BeltalowdaFtca.state = {}
+BeltalowdaFtca.state.initialized = false
+BeltalowdaFtca.state.registeredConsumer = false
+BeltalowdaFtca.state.lastPlayedSound = nil
+BeltalowdaFtca.state.isInRange = true
 
-function RdKGToolFtca.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolFtca.callbackName, RdKGToolFtca.OnProfileChanged)
+function BeltalowdaFtca.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaFtca.callbackName, BeltalowdaFtca.OnProfileChanged)
 	
-	RdKGToolFtca.state.sounds = RdKGToolSound.GetRestrictedSounds()
+	BeltalowdaFtca.state.sounds = BeltalowdaSound.GetRestrictedSounds()
 	
-	RdKGToolFtca.state.initialized = true
-	RdKGToolFtca.SetEnabled(RdKGToolFtca.ftcaVars.enabled)
+	BeltalowdaFtca.state.initialized = true
+	BeltalowdaFtca.SetEnabled(BeltalowdaFtca.ftcaVars.enabled)
 end
 
-function RdKGToolFtca.GetDefaults()
+function BeltalowdaFtca.GetDefaults()
 	local defaults = {}
 	defaults.enabled = false
 	defaults.maxDistance = 10
@@ -47,151 +47,151 @@ function RdKGToolFtca.GetDefaults()
 	return defaults
 end
 
-function RdKGToolFtca.SetEnabled(value)
-	if RdKGToolFtca.state.initialized == true and value ~= nil then
-		RdKGToolFtca.ftcaVars.enabled = value
+function BeltalowdaFtca.SetEnabled(value)
+	if BeltalowdaFtca.state.initialized == true and value ~= nil then
+		BeltalowdaFtca.ftcaVars.enabled = value
 		if value == true then
-			if RdKGToolFtca.state.registeredConsumer == false then
-				RdKGTool.util.group.AddFeature(RdKGToolFtca.callbackName, RdKGTool.util.group.features.FEATURE_GROUP_LEADER_DISTANCE, RdKGToolFtca.config.updateInterval)
-				EVENT_MANAGER:RegisterForUpdate(RdKGToolFtca.callbackName, RdKGToolFtca.config.updateInterval, RdKGToolFtca.OnUpdate)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolFtca.callbackName, EVENT_END_SIEGE_CONTROL, RdKGToolFtca.SiegeEndEvent)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolFtca.callbackName, EVENT_MOUNTED_STATE_CHANGED, RdKGToolFtca.OnMountStateChanged)
-				RdKGToolFtca.state.registeredConsumer = true
+			if BeltalowdaFtca.state.registeredConsumer == false then
+				Beltalowda.util.group.AddFeature(BeltalowdaFtca.callbackName, Beltalowda.util.group.features.FEATURE_GROUP_LEADER_DISTANCE, BeltalowdaFtca.config.updateInterval)
+				EVENT_MANAGER:RegisterForUpdate(BeltalowdaFtca.callbackName, BeltalowdaFtca.config.updateInterval, BeltalowdaFtca.OnUpdate)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaFtca.callbackName, EVENT_END_SIEGE_CONTROL, BeltalowdaFtca.SiegeEndEvent)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaFtca.callbackName, EVENT_MOUNTED_STATE_CHANGED, BeltalowdaFtca.OnMountStateChanged)
+				BeltalowdaFtca.state.registeredConsumer = true
 			end
 		else
-			if RdKGToolFtca.state.registeredConsumer == true then
-				RdKGTool.util.group.RemoveFeature(RdKGToolFtca.callbackName, RdKGTool.util.group.features.FEATURE_GROUP_LEADER_DISTANCE)
-				EVENT_MANAGER:UnregisterForUpdate(RdKGToolFtca.callbackName)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolFtca.callbackName, EVENT_END_SIEGE_CONTROL)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolFtca.callbackName, EVENT_MOUNTED_STATE_CHANGED)
-				RdKGToolFtca.state.registeredConsumer = false
+			if BeltalowdaFtca.state.registeredConsumer == true then
+				Beltalowda.util.group.RemoveFeature(BeltalowdaFtca.callbackName, Beltalowda.util.group.features.FEATURE_GROUP_LEADER_DISTANCE)
+				EVENT_MANAGER:UnregisterForUpdate(BeltalowdaFtca.callbackName)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaFtca.callbackName, EVENT_END_SIEGE_CONTROL)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaFtca.callbackName, EVENT_MOUNTED_STATE_CHANGED)
+				BeltalowdaFtca.state.registeredConsumer = false
 			end
 		end
 	end
 end
 
 --callbacks
-function RdKGToolFtca.OnProfileChanged(currentProfile)
+function BeltalowdaFtca.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		--RdKGToolFtca.SetEnabled(false)
-		RdKGToolFtca.ftcaVars = currentProfile.group.ftca
-		RdKGToolFtca.SetEnabled(RdKGToolFtca.ftcaVars.enabled)
+		--BeltalowdaFtca.SetEnabled(false)
+		BeltalowdaFtca.ftcaVars = currentProfile.group.ftca
+		BeltalowdaFtca.SetEnabled(BeltalowdaFtca.ftcaVars.enabled)
 	end
 end
 
-function RdKGToolFtca.OnUpdate()
-	if IsUnitGrouped("player") == true and RdKGToolGroup.IsPlayerGroupLeader() == false and ( RdKGToolFtca.ftcaVars.pvpOnly == false or (RdKGToolFtca.ftcaVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea())) then
-		local distance = RdKGTool.util.group.GetLeaderDistance()
+function BeltalowdaFtca.OnUpdate()
+	if IsUnitGrouped("player") == true and BeltalowdaGroup.IsPlayerGroupLeader() == false and ( BeltalowdaFtca.ftcaVars.pvpOnly == false or (BeltalowdaFtca.ftcaVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea())) then
+		local distance = Beltalowda.util.group.GetLeaderDistance()
 		if distance ~= nil then
 			--d(IsPlayerControllingSiegeWeapon())
-			if distance > RdKGToolFtca.ftcaVars.maxDistance and distance < RdKGToolFtca.ftcaVars.ignoreDistance then
-				if RdKGToolFtca.state.isInRange == true then
-					RdKGToolFtca.state.lastPlayedSound = GetTimeStamp() + RdKGToolFtca.ftcaVars.threshold - RdKGToolFtca.ftcaVars.interval
+			if distance > BeltalowdaFtca.ftcaVars.maxDistance and distance < BeltalowdaFtca.ftcaVars.ignoreDistance then
+				if BeltalowdaFtca.state.isInRange == true then
+					BeltalowdaFtca.state.lastPlayedSound = GetTimeStamp() + BeltalowdaFtca.ftcaVars.threshold - BeltalowdaFtca.ftcaVars.interval
 				end
-				if RdKGToolFtca.state.lastPlayedSound == nil or (RdKGToolFtca.state.lastPlayedSound ~= nil and RdKGToolFtca.state.lastPlayedSound + RdKGToolFtca.ftcaVars.interval < GetTimeStamp()) then
+				if BeltalowdaFtca.state.lastPlayedSound == nil or (BeltalowdaFtca.state.lastPlayedSound ~= nil and BeltalowdaFtca.state.lastPlayedSound + BeltalowdaFtca.ftcaVars.interval < GetTimeStamp()) then
 					--d(IsPlayerControllingSiegeWeapon())
-					if (RdKGToolFtca.ftcaVars.unmountedOnly == false or (RdKGToolFtca.ftcaVars.unmountedOnly == true and IsMounted() == false)) and IsPlayerControllingSiegeWeapon() == false and IsPlayerEscortingRam() == false and IsUnitDead("player") == false then
-						RdKGToolSound.PlaySoundByName(RdKGToolFtca.ftcaVars.selectedSound)
-						RdKGToolFtca.state.lastPlayedSound = GetTimeStamp() + RdKGToolFtca.ftcaVars.threshold - RdKGToolFtca.ftcaVars.interval
+					if (BeltalowdaFtca.ftcaVars.unmountedOnly == false or (BeltalowdaFtca.ftcaVars.unmountedOnly == true and IsMounted() == false)) and IsPlayerControllingSiegeWeapon() == false and IsPlayerEscortingRam() == false and IsUnitDead("player") == false then
+						BeltalowdaSound.PlaySoundByName(BeltalowdaFtca.ftcaVars.selectedSound)
+						BeltalowdaFtca.state.lastPlayedSound = GetTimeStamp() + BeltalowdaFtca.ftcaVars.threshold - BeltalowdaFtca.ftcaVars.interval
 					else
-						RdKGToolFtca.state.lastPlayedSound = GetTimeStamp() + RdKGToolFtca.ftcaVars.threshold - RdKGToolFtca.ftcaVars.interval
+						BeltalowdaFtca.state.lastPlayedSound = GetTimeStamp() + BeltalowdaFtca.ftcaVars.threshold - BeltalowdaFtca.ftcaVars.interval
 					end
 				end
-				RdKGToolFtca.state.isInRange = false
+				BeltalowdaFtca.state.isInRange = false
 			else
-				RdKGToolFtca.state.isInRange = true
+				BeltalowdaFtca.state.isInRange = true
 			end
 		end
 	end
 end
 
-function RdKGToolFtca.SiegeEndEvent(eventCode)
+function BeltalowdaFtca.SiegeEndEvent(eventCode)
 	if eventCode == EVENT_END_SIEGE_CONTROL then
-		RdKGToolFtca.state.lastPlayedSound = GetTimeStamp() + RdKGToolFtca.ftcaVars.threshold - RdKGToolFtca.ftcaVars.interval
+		BeltalowdaFtca.state.lastPlayedSound = GetTimeStamp() + BeltalowdaFtca.ftcaVars.threshold - BeltalowdaFtca.ftcaVars.interval
 	end
 end
 
-function RdKGToolFtca.OnMountStateChanged(eventCode, mounted)
+function BeltalowdaFtca.OnMountStateChanged(eventCode, mounted)
 	if eventCode == EVENT_MOUNTED_STATE_CHANGED and mounted == false then
-		RdKGToolFtca.state.lastPlayedSound = GetTimeStamp() + RdKGToolFtca.ftcaVars.threshold - RdKGToolFtca.ftcaVars.interval
+		BeltalowdaFtca.state.lastPlayedSound = GetTimeStamp() + BeltalowdaFtca.ftcaVars.threshold - BeltalowdaFtca.ftcaVars.interval
 	end
 end
 
 --menu interaction
-function RdKGToolFtca.GetMenu()
+function BeltalowdaFtca.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.FTCA_HEADER,
+			name = BeltalowdaMenu.constants.FTCA_HEADER,
 			--width = "full",
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCA_ENABLED,
-					getFunc = RdKGToolFtca.GetFtcaEnabled,
-					setFunc = RdKGToolFtca.SetFtcaEnabled,
+					name = BeltalowdaMenu.constants.FTCA_ENABLED,
+					getFunc = BeltalowdaFtca.GetFtcaEnabled,
+					setFunc = BeltalowdaFtca.SetFtcaEnabled,
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCA_PVP_ONLY,
-					getFunc = RdKGToolFtca.GetFtcaPvpOnly,
-					setFunc = RdKGToolFtca.SetFtcaPvpOnly,
+					name = BeltalowdaMenu.constants.FTCA_PVP_ONLY,
+					getFunc = BeltalowdaFtca.GetFtcaPvpOnly,
+					setFunc = BeltalowdaFtca.SetFtcaPvpOnly,
 				},
 				[3] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCA_UNMOUNTED_ONLY,
-					getFunc = RdKGToolFtca.GetFtcaUnmountedOnly,
-					setFunc = RdKGToolFtca.SetFtcaUnmountedOnly,
+					name = BeltalowdaMenu.constants.FTCA_UNMOUNTED_ONLY,
+					getFunc = BeltalowdaFtca.GetFtcaUnmountedOnly,
+					setFunc = BeltalowdaFtca.SetFtcaUnmountedOnly,
 				},
 				[4] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.FTCA_SOUND,
-					choices = RdKGToolFtca.GetFtcaAvailableSounds(),
-					getFunc = RdKGToolFtca.GetFtcaSelectedSound,
-					setFunc = RdKGToolFtca.SetFtcaSelectedSound,
+					name = BeltalowdaMenu.constants.FTCA_SOUND,
+					choices = BeltalowdaFtca.GetFtcaAvailableSounds(),
+					getFunc = BeltalowdaFtca.GetFtcaSelectedSound,
+					setFunc = BeltalowdaFtca.SetFtcaSelectedSound,
 					width = "full"
 				},
 				[5] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.FTCA_DISTANCE,
+					name = BeltalowdaMenu.constants.FTCA_DISTANCE,
 					min = 0,
 					max = 25,
 					step = 1,
-					getFunc = RdKGToolFtca.GetFtcaMaxDistance,
-					setFunc = RdKGToolFtca.SetFtcaMaxDistance,
+					getFunc = BeltalowdaFtca.GetFtcaMaxDistance,
+					setFunc = BeltalowdaFtca.SetFtcaMaxDistance,
 					width = "full",
 					default = 8
 				},
 				[6] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.FTCA_IGNORE_DISTANCE,
+					name = BeltalowdaMenu.constants.FTCA_IGNORE_DISTANCE,
 					min = 100,
 					max = 1000,
 					step = 1,
-					getFunc = RdKGToolFtca.GetFtcaIgnoreDistance,
-					setFunc = RdKGToolFtca.SetFtcaIgnoreDistance,
+					getFunc = BeltalowdaFtca.GetFtcaIgnoreDistance,
+					setFunc = BeltalowdaFtca.SetFtcaIgnoreDistance,
 					width = "full",
 					default = 100
 				},
 				[7] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.FTCA_INTERVAL,
+					name = BeltalowdaMenu.constants.FTCA_INTERVAL,
 					min = 1,
 					max = 10,
 					step = 1,
-					getFunc = RdKGToolFtca.GetFtcaInterval,
-					setFunc = RdKGToolFtca.SetFtcaInterval,
+					getFunc = BeltalowdaFtca.GetFtcaInterval,
+					setFunc = BeltalowdaFtca.SetFtcaInterval,
 					width = "full",
 					default = 1
 				},
 				[8] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.FTCA_THRESHOLD,
+					name = BeltalowdaMenu.constants.FTCA_THRESHOLD,
 					min = 1,
 					max = 25,
 					step = 1,
-					getFunc = RdKGToolFtca.GetFtcaThreshold,
-					setFunc = RdKGToolFtca.SetFtcaThreshold,
+					getFunc = BeltalowdaFtca.GetFtcaThreshold,
+					setFunc = BeltalowdaFtca.SetFtcaThreshold,
 					width = "full",
 					default = 3
 				}
@@ -201,77 +201,77 @@ function RdKGToolFtca.GetMenu()
 	return menu
 end
 
-function RdKGToolFtca.GetFtcaEnabled()
-	return RdKGToolFtca.ftcaVars.enabled
+function BeltalowdaFtca.GetFtcaEnabled()
+	return BeltalowdaFtca.ftcaVars.enabled
 end
 
-function RdKGToolFtca.SetFtcaEnabled(value)
-	RdKGToolFtca.SetEnabled(value)
+function BeltalowdaFtca.SetFtcaEnabled(value)
+	BeltalowdaFtca.SetEnabled(value)
 end
 
-function RdKGToolFtca.GetFtcaPvpOnly()
-	return RdKGToolFtca.ftcaVars.pvpOnly
+function BeltalowdaFtca.GetFtcaPvpOnly()
+	return BeltalowdaFtca.ftcaVars.pvpOnly
 end
 
-function RdKGToolFtca.SetFtcaPvpOnly(value)
-	RdKGToolFtca.ftcaVars.pvpOnly = value
+function BeltalowdaFtca.SetFtcaPvpOnly(value)
+	BeltalowdaFtca.ftcaVars.pvpOnly = value
 end
 
-function RdKGToolFtca.GetFtcaUnmountedOnly()
-	return RdKGToolFtca.ftcaVars.unmountedOnly
+function BeltalowdaFtca.GetFtcaUnmountedOnly()
+	return BeltalowdaFtca.ftcaVars.unmountedOnly
 end
 
-function RdKGToolFtca.SetFtcaUnmountedOnly(value)
-	RdKGToolFtca.ftcaVars.unmountedOnly = value
+function BeltalowdaFtca.SetFtcaUnmountedOnly(value)
+	BeltalowdaFtca.ftcaVars.unmountedOnly = value
 end
 
-function RdKGToolFtca.GetFtcaAvailableSounds()
+function BeltalowdaFtca.GetFtcaAvailableSounds()
 	local sounds = {}
-	for i = 1, #RdKGToolFtca.state.sounds do
-		sounds[i] = RdKGToolFtca.state.sounds[i].name
+	for i = 1, #BeltalowdaFtca.state.sounds do
+		sounds[i] = BeltalowdaFtca.state.sounds[i].name
 	end
 	return sounds
 end
 
-function RdKGToolFtca.GetFtcaSelectedSound()
-	return RdKGToolFtca.ftcaVars.selectedSound
+function BeltalowdaFtca.GetFtcaSelectedSound()
+	return BeltalowdaFtca.ftcaVars.selectedSound
 end
 
-function RdKGToolFtca.SetFtcaSelectedSound(value)
+function BeltalowdaFtca.SetFtcaSelectedSound(value)
 	if value ~= nil then
-		RdKGToolFtca.ftcaVars.selectedSound = value
-		RdKGToolSound.PlaySoundByName(value)
+		BeltalowdaFtca.ftcaVars.selectedSound = value
+		BeltalowdaSound.PlaySoundByName(value)
 	end
 end
 
-function RdKGToolFtca.GetFtcaMaxDistance()
-	return RdKGToolFtca.ftcaVars.maxDistance
+function BeltalowdaFtca.GetFtcaMaxDistance()
+	return BeltalowdaFtca.ftcaVars.maxDistance
 end
 
-function RdKGToolFtca.SetFtcaMaxDistance(value)
-	RdKGToolFtca.ftcaVars.maxDistance = value
+function BeltalowdaFtca.SetFtcaMaxDistance(value)
+	BeltalowdaFtca.ftcaVars.maxDistance = value
 end
 
-function RdKGToolFtca.GetFtcaIgnoreDistance()
-	return RdKGToolFtca.ftcaVars.ignoreDistance
+function BeltalowdaFtca.GetFtcaIgnoreDistance()
+	return BeltalowdaFtca.ftcaVars.ignoreDistance
 end
 
-function RdKGToolFtca.SetFtcaIgnoreDistance(value)
-	RdKGToolFtca.ftcaVars.ignoreDistance = value
+function BeltalowdaFtca.SetFtcaIgnoreDistance(value)
+	BeltalowdaFtca.ftcaVars.ignoreDistance = value
 end
 
-function RdKGToolFtca.GetFtcaInterval()
-	return RdKGToolFtca.ftcaVars.interval
+function BeltalowdaFtca.GetFtcaInterval()
+	return BeltalowdaFtca.ftcaVars.interval
 end
 
-function RdKGToolFtca.SetFtcaInterval(value)
-	RdKGToolFtca.ftcaVars.interval = value
+function BeltalowdaFtca.SetFtcaInterval(value)
+	BeltalowdaFtca.ftcaVars.interval = value
 end
 
-function RdKGToolFtca.GetFtcaThreshold()
-	return RdKGToolFtca.ftcaVars.threshold
+function BeltalowdaFtca.GetFtcaThreshold()
+	return BeltalowdaFtca.ftcaVars.threshold
 end
 
-function RdKGToolFtca.SetFtcaThreshold(value)
-	RdKGToolFtca.ftcaVars.threshold = value
+function BeltalowdaFtca.SetFtcaThreshold(value)
+	BeltalowdaFtca.ftcaVars.threshold = value
 end

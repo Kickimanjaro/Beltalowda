@@ -1,54 +1,54 @@
 -- RdK Group Rapid Tracker
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.group.rt = RdKGTool.group.rt or {}
-local RdKGToolRt = RdKGTool.group.rt
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolGroup = RdKGToolUtil.group
+Beltalowda.group.rt = Beltalowda.group.rt or {}
+local BeltalowdaRt = Beltalowda.group.rt
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaGroup = BeltalowdaUtil.group
 
-RdKGToolRt.constants = RdKGToolRt.constants or {}
-RdKGToolRt.constants.TLW_NAME = "RdKGTool.group.tr.TLW"
+BeltalowdaRt.constants = BeltalowdaRt.constants or {}
+BeltalowdaRt.constants.TLW_NAME = "Beltalowda.group.tr.TLW"
 
-RdKGToolRt.callbackName = RdKGTool.addonName .. "RapidTracker"
+BeltalowdaRt.callbackName = Beltalowda.addonName .. "RapidTracker"
 
-RdKGToolRt.config = {}
-RdKGToolRt.config.updateInterval = 100
-RdKGToolRt.config.isClampedToScreen = true
-RdKGToolRt.config.font = "ZoFontGameSmall"
+BeltalowdaRt.config = {}
+BeltalowdaRt.config.updateInterval = 100
+BeltalowdaRt.config.isClampedToScreen = true
+BeltalowdaRt.config.font = "ZoFontGameSmall"
 
-RdKGToolRt.state = {}
-RdKGToolRt.state.initialized = false
-RdKGToolRt.state.foreground = true
-RdKGToolRt.state.registeredConsumer = false
-RdKGToolRt.state.registredActiveConsumers = false
-RdKGToolRt.state.activeLayerIndex = 1
+BeltalowdaRt.state = {}
+BeltalowdaRt.state.initialized = false
+BeltalowdaRt.state.foreground = true
+BeltalowdaRt.state.registeredConsumer = false
+BeltalowdaRt.state.registredActiveConsumers = false
+BeltalowdaRt.state.activeLayerIndex = 1
 
-RdKGToolRt.controls = {}
+BeltalowdaRt.controls = {}
 
 local wm = WINDOW_MANAGER
 
-function RdKGToolRt.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolRt.callbackName, RdKGToolRt.OnProfileChanged)
+function BeltalowdaRt.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaRt.callbackName, BeltalowdaRt.OnProfileChanged)
 	
-	RdKGToolRt.CreateUI()
+	BeltalowdaRt.CreateUI()
 	
-	RdKGToolMenu.AddPositionFixedConsumer(RdKGToolRt.SetRtPositionLocked)
+	BeltalowdaMenu.AddPositionFixedConsumer(BeltalowdaRt.SetRtPositionLocked)
 	
-	RdKGToolRt.state.initialized = true
-	RdKGToolRt.AdjustColors()
-	RdKGToolRt.SetEnabled(RdKGToolRt.rtVars.enabled)
-	RdKGToolRt.SetMovable(not RdKGToolRt.rtVars.positionLocked)
+	BeltalowdaRt.state.initialized = true
+	BeltalowdaRt.AdjustColors()
+	BeltalowdaRt.SetEnabled(BeltalowdaRt.rtVars.enabled)
+	BeltalowdaRt.SetMovable(not BeltalowdaRt.rtVars.positionLocked)
 
-	--EVENT_MANAGER:RegisterForEvent(RdKGToolRt.callbackName, EVENT_ACTION_LAYER_POPPED, RdKGToolRt.SetVisible)
-	--EVENT_MANAGER:RegisterForEvent(RdKGToolRt.callbackName, EVENT_ACTION_LAYER_PUSHED, RdKGToolRt.SetVisible)
+	--EVENT_MANAGER:RegisterForEvent(BeltalowdaRt.callbackName, EVENT_ACTION_LAYER_POPPED, BeltalowdaRt.SetVisible)
+	--EVENT_MANAGER:RegisterForEvent(BeltalowdaRt.callbackName, EVENT_ACTION_LAYER_PUSHED, BeltalowdaRt.SetVisible)
 
 end
 
-function RdKGToolRt.GetDefaults()
+function BeltalowdaRt.GetDefaults()
 	local defaults = {}
 	defaults.enabled = false
 	defaults.pvponly = true
@@ -77,29 +77,29 @@ function RdKGToolRt.GetDefaults()
 	return defaults
 end
 
-function RdKGToolRt.SetEnabled(value)
-	if RdKGToolRt.state.initialized == true and value ~= nil then
-		RdKGToolRt.rtVars.enabled = value
+function BeltalowdaRt.SetEnabled(value)
+	if BeltalowdaRt.state.initialized == true and value ~= nil then
+		BeltalowdaRt.rtVars.enabled = value
 		if value == true then
-			if RdKGToolRt.state.registeredConsumer == false then
+			if BeltalowdaRt.state.registeredConsumer == false then
 
-				EVENT_MANAGER:RegisterForEvent(RdKGToolRt.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolRt.OnPlayerActivated)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaRt.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaRt.OnPlayerActivated)
 				
-				RdKGToolRt.state.registeredConsumer = true
+				BeltalowdaRt.state.registeredConsumer = true
 			end
 		else
-			if RdKGToolRt.state.registeredConsumer == true then
+			if BeltalowdaRt.state.registeredConsumer == true then
 				
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolRt.callbackName, EVENT_PLAYER_ACTIVATED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaRt.callbackName, EVENT_PLAYER_ACTIVATED)
 				
-				RdKGToolRt.state.registeredConsumer = false
+				BeltalowdaRt.state.registeredConsumer = false
 			end
 		end
-		RdKGToolRt.OnPlayerActivated()
+		BeltalowdaRt.OnPlayerActivated()
 	end
 end
 
-function RdKGToolRt.CreatePlayerControl(parent, offsetHeight, offsetWidth, height, labelWidth, countWidth)
+function BeltalowdaRt.CreatePlayerControl(parent, offsetHeight, offsetWidth, height, labelWidth, countWidth)
 	local playerControl = wm:CreateControl(nil, parent, CT_CONTROL)
 	playerControl:SetAnchor(TOPLEFT, parent, TOPLEFT, offsetWidth, offsetHeight)
 	playerControl:SetDimensions(labelWidth + countWidth, height)
@@ -108,7 +108,7 @@ function RdKGToolRt.CreatePlayerControl(parent, offsetHeight, offsetWidth, heigh
 	playerControl.playerLabel = wm:CreateControl(nil, playerControl, CT_LABEL)
 	playerControl.playerLabel:SetDimensions(labelWidth, height)
 	playerControl.playerLabel:SetAnchor(TOPLEFT, playerControl, TOPLEFT, 0, 0)
-	playerControl.playerLabel:SetFont(RdKGToolRt.config.font)
+	playerControl.playerLabel:SetFont(BeltalowdaRt.config.font)
 	playerControl.playerLabel:SetHorizontalAlignment(TEXT_ALIGN_LEFT) 
 	playerControl.playerLabel:SetText("")
 	
@@ -157,40 +157,40 @@ function RdKGToolRt.CreatePlayerControl(parent, offsetHeight, offsetWidth, heigh
 	return playerControl
 end
 
-function RdKGToolRt.SetTlwLocation()
-	RdKGToolRt.controls.TLW:ClearAnchors()
-	if RdKGToolRt.rtVars.location == nil then
-		RdKGToolRt.controls.TLW:SetAnchor(CENTER, GuiRoot, CENTER, 250, 150)
+function BeltalowdaRt.SetTlwLocation()
+	BeltalowdaRt.controls.TLW:ClearAnchors()
+	if BeltalowdaRt.rtVars.location == nil then
+		BeltalowdaRt.controls.TLW:SetAnchor(CENTER, GuiRoot, CENTER, 250, 150)
 	else
-		RdKGToolRt.controls.TLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, RdKGToolRt.rtVars.location.x, RdKGToolRt.rtVars.location.y)
+		BeltalowdaRt.controls.TLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, BeltalowdaRt.rtVars.location.x, BeltalowdaRt.rtVars.location.y)
 	end
 end
 
-function RdKGToolRt.CreateUI()
+function BeltalowdaRt.CreateUI()
 	local height = 12 * 10 + 11 * 3
 	local width = (2 * 85) + (4 * 20) + 10 + (3 * 2)
-	RdKGToolRt.controls.TLW = wm:CreateTopLevelWindow(RdKGToolRt.constants.TLW_NAME)
+	BeltalowdaRt.controls.TLW = wm:CreateTopLevelWindow(BeltalowdaRt.constants.TLW_NAME)
 	
-	RdKGToolRt.SetTlwLocation()
+	BeltalowdaRt.SetTlwLocation()
 	
 		
-	RdKGToolRt.controls.TLW:SetClampedToScreen(RdKGToolRt.config.isClampedToScreen)
-	RdKGToolRt.controls.TLW:SetDrawLayer(0)
-	RdKGToolRt.controls.TLW:SetDrawLevel(0)
-	RdKGToolRt.controls.TLW:SetHandler("OnMoveStop", RdKGToolRt.SaveWindowLocation)
-	RdKGToolRt.controls.TLW:SetDimensions(width, height)
-	RdKGToolRt.controls.TLW:SetHidden(not RdKGToolRt.rtVars.enabled)
+	BeltalowdaRt.controls.TLW:SetClampedToScreen(BeltalowdaRt.config.isClampedToScreen)
+	BeltalowdaRt.controls.TLW:SetDrawLayer(0)
+	BeltalowdaRt.controls.TLW:SetDrawLevel(0)
+	BeltalowdaRt.controls.TLW:SetHandler("OnMoveStop", BeltalowdaRt.SaveWindowLocation)
+	BeltalowdaRt.controls.TLW:SetDimensions(width, height)
+	BeltalowdaRt.controls.TLW:SetHidden(not BeltalowdaRt.rtVars.enabled)
 	
-	RdKGToolRt.controls.tlwControl = wm:CreateControl(nil, RdKGToolRt.controls.TLW, CT_CONTROL)
-	RdKGToolRt.controls.tlwControl:SetDimensions(width, height)
-	RdKGToolRt.controls.tlwControl:SetAnchor(TOPLEFT, RdKGToolRt.controls.TLW, TOPLEFT, 0, 0)
+	BeltalowdaRt.controls.tlwControl = wm:CreateControl(nil, BeltalowdaRt.controls.TLW, CT_CONTROL)
+	BeltalowdaRt.controls.tlwControl:SetDimensions(width, height)
+	BeltalowdaRt.controls.tlwControl:SetAnchor(TOPLEFT, BeltalowdaRt.controls.TLW, TOPLEFT, 0, 0)
 	
-	RdKGToolRt.controls.tlwControl.movableBackdrop = wm:CreateControl(nil, RdKGToolRt.controls.tlwControl, CT_BACKDROP)
+	BeltalowdaRt.controls.tlwControl.movableBackdrop = wm:CreateControl(nil, BeltalowdaRt.controls.tlwControl, CT_BACKDROP)
 	
-	RdKGToolRt.controls.tlwControl.movableBackdrop:SetAnchor(TOPLEFT, RdKGToolRt.controls.tlwControl, TOPLEFT, 0, 0)
-	RdKGToolRt.controls.tlwControl.movableBackdrop:SetDimensions(width, height)
+	BeltalowdaRt.controls.tlwControl.movableBackdrop:SetAnchor(TOPLEFT, BeltalowdaRt.controls.tlwControl, TOPLEFT, 0, 0)
+	BeltalowdaRt.controls.tlwControl.movableBackdrop:SetDimensions(width, height)
 	
-	RdKGToolRt.controls.tlwControl.playerControls = {}
+	BeltalowdaRt.controls.tlwControl.playerControls = {}
 	
 	for i = 1, 24 do
 		local offset = 0
@@ -201,50 +201,50 @@ function RdKGToolRt.CreateUI()
 		if itemIndex > 11 then
 			itemIndex = itemIndex - 12
 		end
-		RdKGToolRt.controls.tlwControl.playerControls[i] = RdKGToolRt.CreatePlayerControl(RdKGToolRt.controls.tlwControl.movableBackdrop, itemIndex * (10 + 3), offset, 10, 85, 20)
+		BeltalowdaRt.controls.tlwControl.playerControls[i] = BeltalowdaRt.CreatePlayerControl(BeltalowdaRt.controls.tlwControl.movableBackdrop, itemIndex * (10 + 3), offset, 10, 85, 20)
 	end
 end
 
-function RdKGToolRt.AdjustColors()
-	for i = 1, #RdKGToolRt.controls.tlwControl.playerControls do
-		RdKGToolRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetCenterColor(RdKGToolRt.rtVars.colors.rapidOff.r, RdKGToolRt.rtVars.colors.rapidOff.g, RdKGToolRt.rtVars.colors.rapidOff.b)
-		RdKGToolRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetEdgeColor(RdKGToolRt.rtVars.colors.rapidOff.r, RdKGToolRt.rtVars.colors.rapidOff.g, RdKGToolRt.rtVars.colors.rapidOff.b)
-		RdKGToolRt.controls.tlwControl.playerControls[i].minorExpeditionStatus:SetCenterColor(RdKGToolRt.rtVars.colors.rapidOff.r, RdKGToolRt.rtVars.colors.rapidOff.g, RdKGToolRt.rtVars.colors.rapidOff.b)
-		RdKGToolRt.controls.tlwControl.playerControls[i].minorExpeditionStatus:SetEdgeColor(RdKGToolRt.rtVars.colors.rapidOff.r, RdKGToolRt.rtVars.colors.rapidOff.g, RdKGToolRt.rtVars.colors.rapidOff.b)
+function BeltalowdaRt.AdjustColors()
+	for i = 1, #BeltalowdaRt.controls.tlwControl.playerControls do
+		BeltalowdaRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetCenterColor(BeltalowdaRt.rtVars.colors.rapidOff.r, BeltalowdaRt.rtVars.colors.rapidOff.g, BeltalowdaRt.rtVars.colors.rapidOff.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetEdgeColor(BeltalowdaRt.rtVars.colors.rapidOff.r, BeltalowdaRt.rtVars.colors.rapidOff.g, BeltalowdaRt.rtVars.colors.rapidOff.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].minorExpeditionStatus:SetCenterColor(BeltalowdaRt.rtVars.colors.rapidOff.r, BeltalowdaRt.rtVars.colors.rapidOff.g, BeltalowdaRt.rtVars.colors.rapidOff.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].minorExpeditionStatus:SetEdgeColor(BeltalowdaRt.rtVars.colors.rapidOff.r, BeltalowdaRt.rtVars.colors.rapidOff.g, BeltalowdaRt.rtVars.colors.rapidOff.b)
 		--[[
-		RdKGToolRt.controls.tlwControl.playerControls[i].rapidManeuverStatus:SetCenterColor(RdKGToolRt.rtVars.colors.rapidOff.r, RdKGToolRt.rtVars.colors.rapidOff.g, RdKGToolRt.rtVars.colors.rapidOff.b)
-		RdKGToolRt.controls.tlwControl.playerControls[i].rapidManeuverStatus:SetEdgeColor(RdKGToolRt.rtVars.colors.rapidOff.r, RdKGToolRt.rtVars.colors.rapidOff.g, RdKGToolRt.rtVars.colors.rapidOff.b)
-		RdKGToolRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatus:SetCenterColor(RdKGToolRt.rtVars.colors.rapidOff.r, RdKGToolRt.rtVars.colors.rapidOff.g, RdKGToolRt.rtVars.colors.rapidOff.b)
-		RdKGToolRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatus:SetEdgeColor(RdKGToolRt.rtVars.colors.rapidOff.r, RdKGToolRt.rtVars.colors.rapidOff.g, RdKGToolRt.rtVars.colors.rapidOff.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].rapidManeuverStatus:SetCenterColor(BeltalowdaRt.rtVars.colors.rapidOff.r, BeltalowdaRt.rtVars.colors.rapidOff.g, BeltalowdaRt.rtVars.colors.rapidOff.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].rapidManeuverStatus:SetEdgeColor(BeltalowdaRt.rtVars.colors.rapidOff.r, BeltalowdaRt.rtVars.colors.rapidOff.g, BeltalowdaRt.rtVars.colors.rapidOff.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatus:SetCenterColor(BeltalowdaRt.rtVars.colors.rapidOff.r, BeltalowdaRt.rtVars.colors.rapidOff.g, BeltalowdaRt.rtVars.colors.rapidOff.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatus:SetEdgeColor(BeltalowdaRt.rtVars.colors.rapidOff.r, BeltalowdaRt.rtVars.colors.rapidOff.g, BeltalowdaRt.rtVars.colors.rapidOff.b)
 		]]
-		RdKGToolRt.controls.tlwControl.playerControls[i].majorExpeditionStatusbar:SetColor(RdKGToolRt.rtVars.colors.rapidOn.r, RdKGToolRt.rtVars.colors.rapidOn.g, RdKGToolRt.rtVars.colors.rapidOn.b)
-		RdKGToolRt.controls.tlwControl.playerControls[i].minorExpeditionStatusbar:SetColor(RdKGToolRt.rtVars.colors.rapidOn.r, RdKGToolRt.rtVars.colors.rapidOn.g, RdKGToolRt.rtVars.colors.rapidOn.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].majorExpeditionStatusbar:SetColor(BeltalowdaRt.rtVars.colors.rapidOn.r, BeltalowdaRt.rtVars.colors.rapidOn.g, BeltalowdaRt.rtVars.colors.rapidOn.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].minorExpeditionStatusbar:SetColor(BeltalowdaRt.rtVars.colors.rapidOn.r, BeltalowdaRt.rtVars.colors.rapidOn.g, BeltalowdaRt.rtVars.colors.rapidOn.b)
 		--[[
-		RdKGToolRt.controls.tlwControl.playerControls[i].rapidManeuverStatusbar:SetColor(RdKGToolRt.rtVars.colors.rapidOn.r, RdKGToolRt.rtVars.colors.rapidOn.g, RdKGToolRt.rtVars.colors.rapidOn.b)
-		RdKGToolRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatusbar:SetColor(RdKGToolRt.rtVars.colors.rapidOn.r, RdKGToolRt.rtVars.colors.rapidOn.g, RdKGToolRt.rtVars.colors.rapidOn.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].rapidManeuverStatusbar:SetColor(BeltalowdaRt.rtVars.colors.rapidOn.r, BeltalowdaRt.rtVars.colors.rapidOn.g, BeltalowdaRt.rtVars.colors.rapidOn.b)
+		BeltalowdaRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatusbar:SetColor(BeltalowdaRt.rtVars.colors.rapidOn.r, BeltalowdaRt.rtVars.colors.rapidOn.g, BeltalowdaRt.rtVars.colors.rapidOn.b)
 		]]
 	end
 end
 
-function RdKGToolRt.SetMovable(isMovable)
-	RdKGToolRt.rtVars.positionLocked = not isMovable
-	RdKGToolRt.controls.TLW:SetMovable(isMovable)
-	RdKGToolRt.controls.TLW:SetMouseEnabled(isMovable)
-	RdKGToolRt.SetBackdropColors()
+function BeltalowdaRt.SetMovable(isMovable)
+	BeltalowdaRt.rtVars.positionLocked = not isMovable
+	BeltalowdaRt.controls.TLW:SetMovable(isMovable)
+	BeltalowdaRt.controls.TLW:SetMouseEnabled(isMovable)
+	BeltalowdaRt.SetBackdropColors()
 end
 
 
-function RdKGToolRt.SetBackdropColors()
-	if RdKGToolRt.rtVars.positionLocked == false then
-		RdKGToolRt.controls.tlwControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
-		RdKGToolRt.controls.tlwControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+function BeltalowdaRt.SetBackdropColors()
+	if BeltalowdaRt.rtVars.positionLocked == false then
+		BeltalowdaRt.controls.tlwControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
+		BeltalowdaRt.controls.tlwControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	else
-		RdKGToolRt.controls.tlwControl.movableBackdrop:SetCenterColor(0, 0, 0, 0.0)
-		RdKGToolRt.controls.tlwControl.movableBackdrop:SetEdgeColor(0, 0, 0, 0.0)	
+		BeltalowdaRt.controls.tlwControl.movableBackdrop:SetCenterColor(0, 0, 0, 0.0)
+		BeltalowdaRt.controls.tlwControl.movableBackdrop:SetEdgeColor(0, 0, 0, 0.0)	
 	end
 end
 
-function RdKGToolRt.AdjustRapidControl(control, buff, currentTime)
+function BeltalowdaRt.AdjustRapidControl(control, buff, currentTime)
 	
 	if buff.active == true then
 		local uptimeLeft = buff.ending - currentTime
@@ -252,96 +252,96 @@ function RdKGToolRt.AdjustRapidControl(control, buff, currentTime)
 			uptimeLeft = 0
 		end
 		--d(buffUp)
-		--control:SetCenterColor(RdKGToolRt.rtVars.colors.rapidOn.r, RdKGToolRt.rtVars.colors.rapidOn.g, RdKGToolRt.rtVars.colors.rapidOn.b)
-		--control:SetEdgeColor(RdKGToolRt.rtVars.colors.rapidOn.r, RdKGToolRt.rtVars.colors.rapidOn.g, RdKGToolRt.rtVars.colors.rapidOn.b)
+		--control:SetCenterColor(BeltalowdaRt.rtVars.colors.rapidOn.r, BeltalowdaRt.rtVars.colors.rapidOn.g, BeltalowdaRt.rtVars.colors.rapidOn.b)
+		--control:SetEdgeColor(BeltalowdaRt.rtVars.colors.rapidOn.r, BeltalowdaRt.rtVars.colors.rapidOn.g, BeltalowdaRt.rtVars.colors.rapidOn.b)
 		control:SetValue(uptimeLeft / buff.uptime * 100)
 		--d(control:GetValue())
 	else
-		--control:SetCenterColor(RdKGToolRt.rtVars.colors.rapidOff.r, RdKGToolRt.rtVars.colors.rapidOff.g, RdKGToolRt.rtVars.colors.rapidOff.b)
-		--control:SetEdgeColor(RdKGToolRt.rtVars.colors.rapidOff.r, RdKGToolRt.rtVars.colors.rapidOff.g, RdKGToolRt.rtVars.colors.rapidOff.b)
+		--control:SetCenterColor(BeltalowdaRt.rtVars.colors.rapidOff.r, BeltalowdaRt.rtVars.colors.rapidOff.g, BeltalowdaRt.rtVars.colors.rapidOff.b)
+		--control:SetEdgeColor(BeltalowdaRt.rtVars.colors.rapidOff.r, BeltalowdaRt.rtVars.colors.rapidOff.g, BeltalowdaRt.rtVars.colors.rapidOff.b)
 		control:SetValue(0)
 	end
 
 end
 
-function RdKGToolRt.SetControlVisibility()
-	local enabled = RdKGToolRt.rtVars.enabled
-	local pvpOnly = RdKGToolRt.rtVars.pvponly
+function BeltalowdaRt.SetControlVisibility()
+	local enabled = BeltalowdaRt.rtVars.enabled
+	local pvpOnly = BeltalowdaRt.rtVars.pvponly
 	local setHidden = true
 	if enabled ~= nil and pvpOnly ~= nil then
 
-		if enabled == true and (pvpOnly == false or (pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
+		if enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 			setHidden = false
 		end
 	end
 	if setHidden == false then
-		if RdKGToolRt.state.foreground == false then
-			RdKGToolRt.controls.TLW:SetHidden(RdKGToolRt.state.activeLayerIndex > 2)
+		if BeltalowdaRt.state.foreground == false then
+			BeltalowdaRt.controls.TLW:SetHidden(BeltalowdaRt.state.activeLayerIndex > 2)
 		else
-			RdKGToolRt.controls.TLW:SetHidden(false)
+			BeltalowdaRt.controls.TLW:SetHidden(false)
 		end
 	else
-		RdKGToolRt.controls.TLW:SetHidden(setHidden)
+		BeltalowdaRt.controls.TLW:SetHidden(setHidden)
 	end
 end
 
 --callbacks
-function RdKGToolRt.OnProfileChanged(currentProfile)
+function BeltalowdaRt.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolRt.rtVars = currentProfile.group.rt
-		if RdKGToolRt.state.initialized == true then
-			RdKGToolRt.SetMovable(not RdKGToolRt.rtVars.positionLocked)
-			RdKGToolRt.SetTlwLocation()
-			RdKGToolRt.AdjustColors()
+		BeltalowdaRt.rtVars = currentProfile.group.rt
+		if BeltalowdaRt.state.initialized == true then
+			BeltalowdaRt.SetMovable(not BeltalowdaRt.rtVars.positionLocked)
+			BeltalowdaRt.SetTlwLocation()
+			BeltalowdaRt.AdjustColors()
 		end
-		RdKGToolRt.SetEnabled(RdKGToolRt.rtVars.enabled)
+		BeltalowdaRt.SetEnabled(BeltalowdaRt.rtVars.enabled)
 		
 	end
 end
 
-function RdKGToolRt.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
+function BeltalowdaRt.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
 	if eventCode == EVENT_ACTION_LAYER_POPPED then
-		RdKGToolRt.state.foreground = true
+		BeltalowdaRt.state.foreground = true
 	elseif eventCode == EVENT_ACTION_LAYER_PUSHED then
-		RdKGToolRt.state.foreground = false
+		BeltalowdaRt.state.foreground = false
 	end
 	--hack?
-	RdKGToolRt.state.activeLayerIndex = activeLayerIndex
+	BeltalowdaRt.state.activeLayerIndex = activeLayerIndex
 	
-	RdKGToolRt.SetControlVisibility()
+	BeltalowdaRt.SetControlVisibility()
 end
 
-function RdKGToolRt.OnPlayerActivated(eventCode, initial)
-	if RdKGToolRt.rtVars.enabled == true and (RdKGToolRt.rtVars.pvponly == true and RdKGToolUtil.IsInPvPArea() == true or RdKGToolRt.rtVars.pvponly == false) then
-		if RdKGToolRt.state.registredActiveConsumers == false then
-			EVENT_MANAGER:RegisterForEvent(RdKGToolRt.callbackName, EVENT_ACTION_LAYER_POPPED, RdKGToolRt.SetForegroundVisibility)
-			EVENT_MANAGER:RegisterForEvent(RdKGToolRt.callbackName, EVENT_ACTION_LAYER_PUSHED, RdKGToolRt.SetForegroundVisibility)
-			RdKGToolGroup.AddFeature(RdKGToolRt.callbackName, RdKGToolGroup.features.FEATURE_GROUP_BUFFS, RdKGToolRt.config.updateInterval)
-			RdKGToolGroup.AddFeature(RdKGToolRt.callbackName, RdKGToolGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE, RdKGToolRt.config.updateInterval)
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolRt.callbackName, RdKGToolRt.config.updateInterval, RdKGToolRt.OnUpdate)
+function BeltalowdaRt.OnPlayerActivated(eventCode, initial)
+	if BeltalowdaRt.rtVars.enabled == true and (BeltalowdaRt.rtVars.pvponly == true and BeltalowdaUtil.IsInPvPArea() == true or BeltalowdaRt.rtVars.pvponly == false) then
+		if BeltalowdaRt.state.registredActiveConsumers == false then
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaRt.callbackName, EVENT_ACTION_LAYER_POPPED, BeltalowdaRt.SetForegroundVisibility)
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaRt.callbackName, EVENT_ACTION_LAYER_PUSHED, BeltalowdaRt.SetForegroundVisibility)
+			BeltalowdaGroup.AddFeature(BeltalowdaRt.callbackName, BeltalowdaGroup.features.FEATURE_GROUP_BUFFS, BeltalowdaRt.config.updateInterval)
+			BeltalowdaGroup.AddFeature(BeltalowdaRt.callbackName, BeltalowdaGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE, BeltalowdaRt.config.updateInterval)
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaRt.callbackName, BeltalowdaRt.config.updateInterval, BeltalowdaRt.OnUpdate)
 			
-			RdKGToolRt.state.registredActiveConsumers = true
+			BeltalowdaRt.state.registredActiveConsumers = true
 		end
 	else
-		if RdKGToolRt.state.registredActiveConsumers == true then
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolRt.callbackName, EVENT_ACTION_LAYER_POPPED)
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolRt.callbackName, EVENT_ACTION_LAYER_PUSHED)
-			RdKGToolGroup.RemoveFeature(RdKGToolRt.callbackName, RdKGToolGroup.features.FEATURE_GROUP_BUFFS)
-			RdKGToolGroup.RemoveFeature(RdKGToolRt.callbackName, RdKGToolGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE)
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolRt.callbackName)
+		if BeltalowdaRt.state.registredActiveConsumers == true then
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaRt.callbackName, EVENT_ACTION_LAYER_POPPED)
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaRt.callbackName, EVENT_ACTION_LAYER_PUSHED)
+			BeltalowdaGroup.RemoveFeature(BeltalowdaRt.callbackName, BeltalowdaGroup.features.FEATURE_GROUP_BUFFS)
+			BeltalowdaGroup.RemoveFeature(BeltalowdaRt.callbackName, BeltalowdaGroup.features.FEATURE_GROUP_PLAYER_TO_MEMBER_DISTANCE)
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaRt.callbackName)
 			
-			RdKGToolRt.state.registredActiveConsumers = false
+			BeltalowdaRt.state.registredActiveConsumers = false
 		end
 	end
-	RdKGToolRt.SetControlVisibility()
+	BeltalowdaRt.SetControlVisibility()
 end
 
-function RdKGToolRt.OnUpdate()
+function BeltalowdaRt.OnUpdate()
 	
-	if RdKGToolRt.rtVars.enabled then
-		local pvpZone = RdKGToolUtil.IsInPvPArea()
-		if RdKGToolRt.rtVars.pvponly == true and pvpZone == true or RdKGToolRt.rtVars.pvponly == false then
-			local players = RdKGToolGroup.GetGroupInformation()
+	if BeltalowdaRt.rtVars.enabled then
+		local pvpZone = BeltalowdaUtil.IsInPvPArea()
+		if BeltalowdaRt.rtVars.pvponly == true and pvpZone == true or BeltalowdaRt.rtVars.pvponly == false then
+			local players = BeltalowdaGroup.GetGroupInformation()
 			local currentTime = GetGameTimeMilliseconds() / 1000
 			--temp = players
 			if players ~= nil then
@@ -349,11 +349,11 @@ function RdKGToolRt.OnUpdate()
 				for i = 1, #players do
 					local buffs = players[i].buffs
 					if buffs ~= nil and buffs.specialInformation ~= nil then
-						RdKGToolRt.AdjustRapidControl(RdKGToolRt.controls.tlwControl.playerControls[i].majorExpeditionStatusbar, buffs.specialInformation.majorExpeditionOn, currentTime)
-						RdKGToolRt.AdjustRapidControl(RdKGToolRt.controls.tlwControl.playerControls[i].minorExpeditionStatusbar, buffs.specialInformation.minorExpeditionOn, currentTime)
+						BeltalowdaRt.AdjustRapidControl(BeltalowdaRt.controls.tlwControl.playerControls[i].majorExpeditionStatusbar, buffs.specialInformation.majorExpeditionOn, currentTime)
+						BeltalowdaRt.AdjustRapidControl(BeltalowdaRt.controls.tlwControl.playerControls[i].minorExpeditionStatusbar, buffs.specialInformation.minorExpeditionOn, currentTime)
 						--[[
-						RdKGToolRt.AdjustRapidControl(RdKGToolRt.controls.tlwControl.playerControls[i].rapidManeuverStatusbar, buffs.specialInformation.rapidManeuverOn, currentTime)
-						RdKGToolRt.AdjustRapidControl(RdKGToolRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatusbar, buffs.specialInformation.chargingManeuverMinorOn, currentTime)
+						BeltalowdaRt.AdjustRapidControl(BeltalowdaRt.controls.tlwControl.playerControls[i].rapidManeuverStatusbar, buffs.specialInformation.rapidManeuverOn, currentTime)
+						BeltalowdaRt.AdjustRapidControl(BeltalowdaRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatusbar, buffs.specialInformation.chargingManeuverMinorOn, currentTime)
 						]]
 						
 					end
@@ -363,124 +363,124 @@ function RdKGToolRt.OnUpdate()
 						distance = 0
 					end
 					if distance <= 20 then
-						RdKGToolRt.controls.tlwControl.playerControls[i].playerLabel:SetColor(RdKGToolRt.rtVars.colors.inRange.r, RdKGToolRt.rtVars.colors.inRange.g, RdKGToolRt.rtVars.colors.inRange.b)
+						BeltalowdaRt.controls.tlwControl.playerControls[i].playerLabel:SetColor(BeltalowdaRt.rtVars.colors.inRange.r, BeltalowdaRt.rtVars.colors.inRange.g, BeltalowdaRt.rtVars.colors.inRange.b)
 					elseif distance > 20 and distance < 100 then
-						RdKGToolRt.controls.tlwControl.playerControls[i].playerLabel:SetColor(RdKGToolRt.rtVars.colors.notInRange.r, RdKGToolRt.rtVars.colors.notInRange.g, RdKGToolRt.rtVars.colors.notInRange.b)
+						BeltalowdaRt.controls.tlwControl.playerControls[i].playerLabel:SetColor(BeltalowdaRt.rtVars.colors.notInRange.r, BeltalowdaRt.rtVars.colors.notInRange.g, BeltalowdaRt.rtVars.colors.notInRange.b)
 					else
-						RdKGToolRt.controls.tlwControl.playerControls[i].playerLabel:SetColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b)
-						--RdKGToolRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetCenterColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b)
-						--RdKGToolRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetEdgeColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b)
+						BeltalowdaRt.controls.tlwControl.playerControls[i].playerLabel:SetColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b)
+						--BeltalowdaRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetCenterColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b)
+						--BeltalowdaRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetEdgeColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b)
 					end
-					RdKGToolRt.controls.tlwControl.playerControls[i].playerLabel:SetText(players[i].name)
-					RdKGToolRt.controls.tlwControl.playerControls[i]:SetHidden(false)
+					BeltalowdaRt.controls.tlwControl.playerControls[i].playerLabel:SetText(players[i].name)
+					BeltalowdaRt.controls.tlwControl.playerControls[i]:SetHidden(false)
 				end
 				for i = #players + 1, 24 do
-					RdKGToolRt.controls.tlwControl.playerControls[i]:SetHidden(true)
-					RdKGToolRt.controls.tlwControl.playerControls[i].playerLabel:SetText("")
-					--RdKGToolRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetCenterColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b, 0)
-					--RdKGToolRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetEdgeColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b, 0)
-					--RdKGToolRt.controls.tlwControl.playerControls[i].minorExpeditionStatus:SetCenterColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b, 0)
-					--RdKGToolRt.controls.tlwControl.playerControls[i].minorExpeditionStatus:SetEdgeColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b, 0)
-					--RdKGToolRt.controls.tlwControl.playerControls[i].rapidManeuverStatus:SetCenterColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b, 0)
-					--RdKGToolRt.controls.tlwControl.playerControls[i].rapidManeuverStatus:SetEdgeColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b, 0)
-					--RdKGToolRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatus:SetCenterColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b, 0)
-					--RdKGToolRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatus:SetEdgeColor(RdKGToolRt.rtVars.colors.outOfRange.r, RdKGToolRt.rtVars.colors.outOfRange.g, RdKGToolRt.rtVars.colors.outOfRange.b, 0)
+					BeltalowdaRt.controls.tlwControl.playerControls[i]:SetHidden(true)
+					BeltalowdaRt.controls.tlwControl.playerControls[i].playerLabel:SetText("")
+					--BeltalowdaRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetCenterColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b, 0)
+					--BeltalowdaRt.controls.tlwControl.playerControls[i].majorExpeditionStatus:SetEdgeColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b, 0)
+					--BeltalowdaRt.controls.tlwControl.playerControls[i].minorExpeditionStatus:SetCenterColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b, 0)
+					--BeltalowdaRt.controls.tlwControl.playerControls[i].minorExpeditionStatus:SetEdgeColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b, 0)
+					--BeltalowdaRt.controls.tlwControl.playerControls[i].rapidManeuverStatus:SetCenterColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b, 0)
+					--BeltalowdaRt.controls.tlwControl.playerControls[i].rapidManeuverStatus:SetEdgeColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b, 0)
+					--BeltalowdaRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatus:SetCenterColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b, 0)
+					--BeltalowdaRt.controls.tlwControl.playerControls[i].chargingManeuverMinorStatus:SetEdgeColor(BeltalowdaRt.rtVars.colors.outOfRange.r, BeltalowdaRt.rtVars.colors.outOfRange.g, BeltalowdaRt.rtVars.colors.outOfRange.b, 0)
 				end
 				
-				if RdKGToolRt.state.foreground == true then
-					RdKGToolRt.controls.TLW:SetHidden(false)
+				if BeltalowdaRt.state.foreground == true then
+					BeltalowdaRt.controls.TLW:SetHidden(false)
 				end
 			end
 		else
-			RdKGToolRt.controls.TLW:SetHidden(true)
+			BeltalowdaRt.controls.TLW:SetHidden(true)
 		end
 	else
-		RdKGToolRt.controls.TLW:SetHidden(true)
+		BeltalowdaRt.controls.TLW:SetHidden(true)
 	end
 end
 
 --[[
-function RdKGToolRt.SetVisible(eventCode, layerIndex, activeLayerIndex)
-	local pvpZone = RdKGToolUtil.IsInPvPArea()
+function BeltalowdaRt.SetVisible(eventCode, layerIndex, activeLayerIndex)
+	local pvpZone = BeltalowdaUtil.IsInPvPArea()
 	if eventCode == EVENT_ACTION_LAYER_POPPED then
-		RdKGToolRt.state.foreground = true
+		BeltalowdaRt.state.foreground = true
 	elseif eventCode == EVENT_ACTION_LAYER_PUSHED then
-		RdKGToolRt.state.foreground = false
+		BeltalowdaRt.state.foreground = false
 	end
-	if RdKGToolRt.rtVars.enabled == true and (RdKGToolRt.rtVars.pvponly == true and pvpZone == true or RdKGToolRt.rtVars.pvponly == false) then
-		RdKGToolRt.controls.TLW:SetHidden(activeLayerIndex > 2)
+	if BeltalowdaRt.rtVars.enabled == true and (BeltalowdaRt.rtVars.pvponly == true and pvpZone == true or BeltalowdaRt.rtVars.pvponly == false) then
+		BeltalowdaRt.controls.TLW:SetHidden(activeLayerIndex > 2)
 	else
-		RdKGToolRt.controls.TLW:SetHidden(true)
+		BeltalowdaRt.controls.TLW:SetHidden(true)
 	end
 end
 ]]
 
-function RdKGToolRt.SaveWindowLocation()
-	if RdKGToolRt.rtVars.positionLocked == false then
-		RdKGToolRt.rtVars.location = RdKGToolRt.rtVars.location or {}
-		RdKGToolRt.rtVars.location.x = RdKGToolRt.controls.TLW:GetLeft()
-		RdKGToolRt.rtVars.location.y = RdKGToolRt.controls.TLW:GetTop()
+function BeltalowdaRt.SaveWindowLocation()
+	if BeltalowdaRt.rtVars.positionLocked == false then
+		BeltalowdaRt.rtVars.location = BeltalowdaRt.rtVars.location or {}
+		BeltalowdaRt.rtVars.location.x = BeltalowdaRt.controls.TLW:GetLeft()
+		BeltalowdaRt.rtVars.location.y = BeltalowdaRt.controls.TLW:GetTop()
 	end
 end
 
 --menu interaction
-function RdKGToolRt.GetMenu()
+function BeltalowdaRt.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.RT_HEADER,
+			name = BeltalowdaMenu.constants.RT_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.RT_ENABLED,
-					getFunc = RdKGToolRt.GetRtEnabled,
-					setFunc = RdKGToolRt.SetRtEnabled
+					name = BeltalowdaMenu.constants.RT_ENABLED,
+					getFunc = BeltalowdaRt.GetRtEnabled,
+					setFunc = BeltalowdaRt.SetRtEnabled
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.RT_PVP_ONLY,
-					getFunc = RdKGToolRt.GetRtPvpOnly,
-					setFunc = RdKGToolRt.SetRtPvpOnly,
+					name = BeltalowdaMenu.constants.RT_PVP_ONLY,
+					getFunc = BeltalowdaRt.GetRtPvpOnly,
+					setFunc = BeltalowdaRt.SetRtPvpOnly,
 				},
 				[3] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.RT_POSITION_FIXED,
-					getFunc = RdKGToolRt.GetRtPositionLocked,
-					setFunc = RdKGToolRt.SetRtPositionLocked,
+					name = BeltalowdaMenu.constants.RT_POSITION_FIXED,
+					getFunc = BeltalowdaRt.GetRtPositionLocked,
+					setFunc = BeltalowdaRt.SetRtPositionLocked,
 				},
 				[4] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.RT_COLOR_LABEL_IN_RANGE,
-					getFunc = RdKGToolRt.GetRtColorLabelInRange,
-					setFunc = RdKGToolRt.SetRtColorLabelInRange,
+					name = BeltalowdaMenu.constants.RT_COLOR_LABEL_IN_RANGE,
+					getFunc = BeltalowdaRt.GetRtColorLabelInRange,
+					setFunc = BeltalowdaRt.SetRtColorLabelInRange,
 					width = "full"
 				},
 				[5] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.RT_COLOR_LABEL_NOT_IN_RANGE,
-					getFunc = RdKGToolRt.GetRtColorLabelNotInRange,
-					setFunc = RdKGToolRt.SetRtColorLabelNotInRange,
+					name = BeltalowdaMenu.constants.RT_COLOR_LABEL_NOT_IN_RANGE,
+					getFunc = BeltalowdaRt.GetRtColorLabelNotInRange,
+					setFunc = BeltalowdaRt.SetRtColorLabelNotInRange,
 					width = "full"
 				},
 				[6] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.RT_COLOR_LABEL_OUT_OF_RANGE,
-					getFunc = RdKGToolRt.GetRtColorLabelOutOfRange,
-					setFunc = RdKGToolRt.SetRtColorLabelOutOfRange,
+					name = BeltalowdaMenu.constants.RT_COLOR_LABEL_OUT_OF_RANGE,
+					getFunc = BeltalowdaRt.GetRtColorLabelOutOfRange,
+					setFunc = BeltalowdaRt.SetRtColorLabelOutOfRange,
 					width = "full"
 				},
 				[7] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.RT_COLOR_RAPID_ON,
-					getFunc = RdKGToolRt.GetRtColorRapidOn,
-					setFunc = RdKGToolRt.SetRtColorRapidOn,
+					name = BeltalowdaMenu.constants.RT_COLOR_RAPID_ON,
+					getFunc = BeltalowdaRt.GetRtColorRapidOn,
+					setFunc = BeltalowdaRt.SetRtColorRapidOn,
 					width = "full"
 				},
 				[8] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.RT_COLOR_RAPID_OFF,
-					getFunc = RdKGToolRt.GetRtColorRapidOff,
-					setFunc = RdKGToolRt.SetRtColorRapidOff,
+					name = BeltalowdaMenu.constants.RT_COLOR_RAPID_OFF,
+					getFunc = BeltalowdaRt.GetRtColorRapidOff,
+					setFunc = BeltalowdaRt.SetRtColorRapidOff,
 					width = "full"
 				},
 			}		
@@ -489,68 +489,68 @@ function RdKGToolRt.GetMenu()
 	return menu
 end
 
-function RdKGToolRt.GetRtEnabled()
-	return RdKGToolRt.rtVars.enabled
+function BeltalowdaRt.GetRtEnabled()
+	return BeltalowdaRt.rtVars.enabled
 end
 
-function RdKGToolRt.SetRtEnabled(value)
-	RdKGToolRt.SetEnabled(value)
+function BeltalowdaRt.SetRtEnabled(value)
+	BeltalowdaRt.SetEnabled(value)
 end
 
-function RdKGToolRt.GetRtPvpOnly()
-	return RdKGToolRt.rtVars.pvponly
+function BeltalowdaRt.GetRtPvpOnly()
+	return BeltalowdaRt.rtVars.pvponly
 end
 
-function RdKGToolRt.SetRtPvpOnly(value)
-	RdKGToolRt.rtVars.pvponly = value
+function BeltalowdaRt.SetRtPvpOnly(value)
+	BeltalowdaRt.rtVars.pvponly = value
 end
 
-function RdKGToolRt.GetRtPositionLocked()
-	return RdKGToolRt.rtVars.positionLocked
+function BeltalowdaRt.GetRtPositionLocked()
+	return BeltalowdaRt.rtVars.positionLocked
 end
 
-function RdKGToolRt.SetRtPositionLocked(value)
-	RdKGToolRt.SetMovable(not value)
+function BeltalowdaRt.SetRtPositionLocked(value)
+	BeltalowdaRt.SetMovable(not value)
 end
 
-function RdKGToolRt.GetRtColorLabelInRange()
-	return RdKGToolMenu.GetRGBColor(RdKGToolRt.rtVars.colors.inRange)
+function BeltalowdaRt.GetRtColorLabelInRange()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaRt.rtVars.colors.inRange)
 end
 
-function RdKGToolRt.SetRtColorLabelInRange(r, g, b)
-	RdKGToolRt.rtVars.colors.inRange = RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaRt.SetRtColorLabelInRange(r, g, b)
+	BeltalowdaRt.rtVars.colors.inRange = BeltalowdaMenu.GetColorFromRGB(r, g, b)
 end
 
-function RdKGToolRt.GetRtColorLabelNotInRange()
-	return RdKGToolMenu.GetRGBColor(RdKGToolRt.rtVars.colors.notInRange)
+function BeltalowdaRt.GetRtColorLabelNotInRange()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaRt.rtVars.colors.notInRange)
 end
 
-function RdKGToolRt.SetRtColorLabelNotInRange(r, g, b)
-	RdKGToolRt.rtVars.colors.notInRange = RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaRt.SetRtColorLabelNotInRange(r, g, b)
+	BeltalowdaRt.rtVars.colors.notInRange = BeltalowdaMenu.GetColorFromRGB(r, g, b)
 end
 
-function RdKGToolRt.GetRtColorLabelOutOfRange()
-	return RdKGToolMenu.GetRGBColor(RdKGToolRt.rtVars.colors.outOfRange)
+function BeltalowdaRt.GetRtColorLabelOutOfRange()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaRt.rtVars.colors.outOfRange)
 end
 
-function RdKGToolRt.SetRtColorLabelOutOfRange(r, g, b)
-	RdKGToolRt.rtVars.colors.outOfRange = RdKGToolMenu.GetColorFromRGB(r, g, b)
+function BeltalowdaRt.SetRtColorLabelOutOfRange(r, g, b)
+	BeltalowdaRt.rtVars.colors.outOfRange = BeltalowdaMenu.GetColorFromRGB(r, g, b)
 end
 
-function RdKGToolRt.GetRtColorRapidOn()
-	return RdKGToolMenu.GetRGBColor(RdKGToolRt.rtVars.colors.rapidOn)
+function BeltalowdaRt.GetRtColorRapidOn()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaRt.rtVars.colors.rapidOn)
 end
 
-function RdKGToolRt.SetRtColorRapidOn(r, g, b)
-	RdKGToolRt.rtVars.colors.rapidOn = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolRt.AdjustColors()
+function BeltalowdaRt.SetRtColorRapidOn(r, g, b)
+	BeltalowdaRt.rtVars.colors.rapidOn = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaRt.AdjustColors()
 end
 
-function RdKGToolRt.GetRtColorRapidOff()
-	return RdKGToolMenu.GetRGBColor(RdKGToolRt.rtVars.colors.rapidOff)
+function BeltalowdaRt.GetRtColorRapidOff()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaRt.rtVars.colors.rapidOff)
 end
 
-function RdKGToolRt.SetRtColorRapidOff(r, g, b)
-	RdKGToolRt.rtVars.colors.rapidOff = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolRt.AdjustColors()
+function BeltalowdaRt.SetRtColorRapidOff(r, g, b)
+	BeltalowdaRt.rtVars.colors.rapidOff = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaRt.AdjustColors()
 end

@@ -1,84 +1,84 @@
--- RdK Group Tool Campaign Joiner
+-- Beltalowda Campaign Joiner
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.toolbox = RdKGTool.toolbox or {}
-local RdKGToolTB = RdKGTool.toolbox
-RdKGTool.toolbox.caj = RdKGTool.toolbox.caj or {}
-local RdKGToolCaj = RdKGTool.toolbox.caj
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
+Beltalowda.toolbox = Beltalowda.toolbox or {}
+local BeltalowdaTB = Beltalowda.toolbox
+Beltalowda.toolbox.caj = Beltalowda.toolbox.caj or {}
+local BeltalowdaCaj = Beltalowda.toolbox.caj
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
 
-RdKGToolCaj.callbackName = RdKGTool.addonName .. "ToolboxCampaignJoiner"
+BeltalowdaCaj.callbackName = Beltalowda.addonName .. "ToolboxCampaignJoiner"
 
-RdKGToolCaj.constants = {}
+BeltalowdaCaj.constants = {}
 
-RdKGToolCaj.state = {}
-RdKGToolCaj.state.initialized = false
-RdKGToolCaj.state.registredConsumers = false
+BeltalowdaCaj.state = {}
+BeltalowdaCaj.state.initialized = false
+BeltalowdaCaj.state.registredConsumers = false
 
-RdKGToolCaj.config = {}
-RdKGToolCaj.config.joinDelay = 5000
+BeltalowdaCaj.config = {}
+BeltalowdaCaj.config.joinDelay = 5000
 
-function RdKGToolCaj.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolCaj.callbackName, RdKGToolCaj.OnProfileChanged)
+function BeltalowdaCaj.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaCaj.callbackName, BeltalowdaCaj.OnProfileChanged)
 
 	
-	RdKGToolCaj.state.initialized = true
-	RdKGToolCaj.SetEnabled(RdKGToolCaj.cajVars.enabled)
+	BeltalowdaCaj.state.initialized = true
+	BeltalowdaCaj.SetEnabled(BeltalowdaCaj.cajVars.enabled)
 end
 
-function RdKGToolCaj.GetDefaults()
+function BeltalowdaCaj.GetDefaults()
 	local defaults = {}
 	defaults.enabled = false
 	return defaults
 end
 
-function RdKGToolCaj.SetEnabled(value)
-	if RdKGToolCaj.state.initialized == true and value ~= nil then
-		RdKGToolCaj.cajVars.enabled = value
+function BeltalowdaCaj.SetEnabled(value)
+	if BeltalowdaCaj.state.initialized == true and value ~= nil then
+		BeltalowdaCaj.cajVars.enabled = value
 		if value == true then
-			if RdKGToolCaj.state.registredConsumers == false then
-				EVENT_MANAGER:RegisterForEvent(RdKGToolCaj.callbackName, EVENT_CAMPAIGN_QUEUE_STATE_CHANGED, RdKGToolCaj.OnCampaignQueueStateChanged)
+			if BeltalowdaCaj.state.registredConsumers == false then
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaCaj.callbackName, EVENT_CAMPAIGN_QUEUE_STATE_CHANGED, BeltalowdaCaj.OnCampaignQueueStateChanged)
 			end
-			RdKGToolCaj.state.registredConsumers = true
+			BeltalowdaCaj.state.registredConsumers = true
 		else
-			if RdKGToolCaj.state.registredConsumers == true then
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolCaj.callbackName, EVENT_CAMPAIGN_QUEUE_STATE_CHANGED)
+			if BeltalowdaCaj.state.registredConsumers == true then
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaCaj.callbackName, EVENT_CAMPAIGN_QUEUE_STATE_CHANGED)
 			end
-			RdKGToolCaj.state.registredConsumers = false
+			BeltalowdaCaj.state.registredConsumers = false
 		end
 	end
 end
 
 --callbacks
-function RdKGToolCaj.OnProfileChanged(currentProfile)
+function BeltalowdaCaj.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolCaj.cajVars = currentProfile.toolbox.caj
-		if RdKGToolCaj.state.initialized == true then
+		BeltalowdaCaj.cajVars = currentProfile.toolbox.caj
+		if BeltalowdaCaj.state.initialized == true then
 	
 		end
 	end
 end
 
-function RdKGToolCaj.OnCampaignQueueStateChanged(eventId, campaignId, isGroup, state)
+function BeltalowdaCaj.OnCampaignQueueStateChanged(eventId, campaignId, isGroup, state)
 	if state == CAMPAIGN_QUEUE_REQUEST_STATE_CONFIRMING then
-		zo_callLater(function() ConfirmCampaignEntry(campaignId, isGroup, true) end, RdKGToolCaj.config.joinDelay)
+		zo_callLater(function() ConfirmCampaignEntry(campaignId, isGroup, true) end, BeltalowdaCaj.config.joinDelay)
 		
 	end 
 end
 
 --menu interaction
-function RdKGToolCaj.GetMenu()
+function BeltalowdaCaj.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.CAJ_HEADER,
+			name = BeltalowdaMenu.constants.CAJ_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CAJ_ENABLED,
-					getFunc = RdKGToolCaj.GetCajEnabled,
-					setFunc = RdKGToolCaj.SetCajEnabled
+					name = BeltalowdaMenu.constants.CAJ_ENABLED,
+					getFunc = BeltalowdaCaj.GetCajEnabled,
+					setFunc = BeltalowdaCaj.SetCajEnabled
 				}
 			}
 		},
@@ -86,10 +86,10 @@ function RdKGToolCaj.GetMenu()
 	return menu
 end
 
-function RdKGToolCaj.GetCajEnabled()
-	return RdKGToolCaj.cajVars.enabled
+function BeltalowdaCaj.GetCajEnabled()
+	return BeltalowdaCaj.cajVars.enabled
 end
 
-function RdKGToolCaj.SetCajEnabled(value)
-	RdKGToolCaj.SetEnabled(value)
+function BeltalowdaCaj.SetCajEnabled(value)
+	BeltalowdaCaj.SetEnabled(value)
 end

@@ -1,43 +1,43 @@
--- RdK Group Tool Chat System
+-- Beltalowda Chat System
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.chatSystem = RdKGToolUtil.chatSystem or {}
-local RdKGToolChat = RdKGToolUtil.chatSystem
-RdKGToolUtil.math = RdKGToolUtil.math or {}
-local RdKGToolMath = RdKGToolUtil.math
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.chatSystem = BeltalowdaUtil.chatSystem or {}
+local BeltalowdaChat = BeltalowdaUtil.chatSystem
+BeltalowdaUtil.math = BeltalowdaUtil.math or {}
+local BeltalowdaMath = BeltalowdaUtil.math
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
 
-RdKGToolChat.callbackName = RdKGTool.addonName .. "ChatSystem"
+BeltalowdaChat.callbackName = Beltalowda.addonName .. "ChatSystem"
 
-RdKGToolChat.constants = {}
-RdKGToolChat.constants.RDK_PREFIX_WITHOUT_MODULE = "|c%s[RdK]: %s"
-RdKGToolChat.constants.RDK_PREFIX_WITH_MODULE = "|c%s[RdK %s]: %s"
-RdKGToolChat.constants.PREFIX_WITH_MODULE = "|c%s[%s]: %s"
-RdKGToolChat.constants.messageTypes = {}
-RdKGToolChat.constants.messageTypes.MESSAGE_NORMAL = 1
-RdKGToolChat.constants.messageTypes.MESSAGE_WARNING = 2
-RdKGToolChat.constants.messageTypes.MESSAGE_DEBUG = 3
-RdKGToolChat.constants.references = RdKGToolChat.constants.references or {}
-RdKGToolChat.constants.references.CHAT_DROPDOWN_SELECTED_TAB = "CHAT_DROPDOWN_SELECTED_TAB"
+BeltalowdaChat.constants = {}
+BeltalowdaChat.constants.BELTALOWDA_PREFIX_WITHOUT_MODULE = "|c%s[RdK]: %s"
+BeltalowdaChat.constants.BELTALOWDA_PREFIX_WITH_MODULE = "|c%s[RdK %s]: %s"
+BeltalowdaChat.constants.PREFIX_WITH_MODULE = "|c%s[%s]: %s"
+BeltalowdaChat.constants.messageTypes = {}
+BeltalowdaChat.constants.messageTypes.MESSAGE_NORMAL = 1
+BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING = 2
+BeltalowdaChat.constants.messageTypes.MESSAGE_DEBUG = 3
+BeltalowdaChat.constants.references = BeltalowdaChat.constants.references or {}
+BeltalowdaChat.constants.references.CHAT_DROPDOWN_SELECTED_TAB = "CHAT_DROPDOWN_SELECTED_TAB"
 
-RdKGToolChat.state = {}
-RdKGToolChat.state.prefixColor = "FFFFFF"
-RdKGToolChat.state.bodyColor = "FFFFFF"
+BeltalowdaChat.state = {}
+BeltalowdaChat.state.prefixColor = "FFFFFF"
+BeltalowdaChat.state.bodyColor = "FFFFFF"
 
-function RdKGToolChat.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolChat.callbackName, RdKGToolChat.OnProfileChanged)
-	RdKGToolChat.AdjustColors()
+function BeltalowdaChat.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaChat.callbackName, BeltalowdaChat.OnProfileChanged)
+	BeltalowdaChat.AdjustColors()
 end
 
-function RdKGToolChat.GetDefaults()
+function BeltalowdaChat.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
 	defaults.tab = 1
 	defaults.prefixEnabled = true
-	defaults.rdkPrefixEnabled = true
+	defaults.beltalowdaPrefixEnabled = true
 	defaults.showWarnings = true
 	defaults.showDebug = false
 	defaults.showNormal = true
@@ -71,51 +71,51 @@ function RdKGToolChat.GetDefaults()
 	return defaults
 end
 
-function RdKGToolChat.SendChatMessage(message, prefix, messageType, sendMessage)
+function BeltalowdaChat.SendChatMessage(message, prefix, messageType, sendMessage)
 	if messageType == nil then
-		messageType = RdKGToolChat.constants.messageTypes.MESSAGE_NORMAL 
+		messageType = BeltalowdaChat.constants.messageTypes.MESSAGE_NORMAL 
 	end
-	if RdKGToolChat.csVars.enabled == true and (sendMessage == nil or sendMessage == true) and 
-	  (((RdKGToolChat.csVars.showWarnings == true and messageType == RdKGToolChat.constants.messageTypes.MESSAGE_WARNING)) or
-	  ((RdKGToolChat.csVars.showDebug == true and messageType == RdKGToolChat.constants.messageTypes.MESSAGE_DEBUG)) or
-	  ((RdKGToolChat.csVars.showNormal == true and messageType == RdKGToolChat.constants.messageTypes.MESSAGE_NORMAL))) then
-		local messageColor = RdKGToolChat.state.bodyColor
-		local color = RdKGToolChat.csVars.colors.body
-		if messageType == nil or messageType == RdKGToolChat.constants.messageTypes.MESSAGE_NORMAL then
-			messageColor = RdKGToolChat.state.bodyColor
-			color = RdKGToolChat.csVars.colors.body
-		elseif messageType == RdKGToolChat.constants.messageTypes.MESSAGE_WARNING then
-			messageColor = RdKGToolChat.state.warningColor
-			color = RdKGToolChat.csVars.colors.warning
-		elseif messageType == RdKGToolChat.constants.messageTypes.MESSAGE_DEBUG then
-			messageColor = RdKGToolChat.state.debugColor
-			color = RdKGToolChat.csVars.colors.debug
+	if BeltalowdaChat.csVars.enabled == true and (sendMessage == nil or sendMessage == true) and 
+	  (((BeltalowdaChat.csVars.showWarnings == true and messageType == BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)) or
+	  ((BeltalowdaChat.csVars.showDebug == true and messageType == BeltalowdaChat.constants.messageTypes.MESSAGE_DEBUG)) or
+	  ((BeltalowdaChat.csVars.showNormal == true and messageType == BeltalowdaChat.constants.messageTypes.MESSAGE_NORMAL))) then
+		local messageColor = BeltalowdaChat.state.bodyColor
+		local color = BeltalowdaChat.csVars.colors.body
+		if messageType == nil or messageType == BeltalowdaChat.constants.messageTypes.MESSAGE_NORMAL then
+			messageColor = BeltalowdaChat.state.bodyColor
+			color = BeltalowdaChat.csVars.colors.body
+		elseif messageType == BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING then
+			messageColor = BeltalowdaChat.state.warningColor
+			color = BeltalowdaChat.csVars.colors.warning
+		elseif messageType == BeltalowdaChat.constants.messageTypes.MESSAGE_DEBUG then
+			messageColor = BeltalowdaChat.state.debugColor
+			color = BeltalowdaChat.csVars.colors.debug
 		end
 		message = string.format("|c%s%s", messageColor, message)
-		if RdKGToolChat.csVars.prefixEnabled == true then
-			if RdKGToolChat.csVars.rdkPrefixEnabled == true then
+		if BeltalowdaChat.csVars.prefixEnabled == true then
+			if BeltalowdaChat.csVars.beltalowdaPrefixEnabled == true then
 				if prefix ~= nil then
-					message = string.format(RdKGToolChat.constants.RDK_PREFIX_WITH_MODULE, RdKGToolChat.state.prefixColor, prefix, message)
+					message = string.format(BeltalowdaChat.constants.BELTALOWDA_PREFIX_WITH_MODULE, BeltalowdaChat.state.prefixColor, prefix, message)
 				else
-					message = string.format(RdKGToolChat.constants.RDK_PREFIX_WITHOUT_MODULE, RdKGToolChat.state.prefixColor, message)
+					message = string.format(BeltalowdaChat.constants.BELTALOWDA_PREFIX_WITHOUT_MODULE, BeltalowdaChat.state.prefixColor, message)
 				end
 			else
 				if prefix ~= nil then
-					message = string.format(RdKGToolChat.constants.PREFIX_WITH_MODULE, RdKGToolChat.state.prefixColor, prefix, message)
+					message = string.format(BeltalowdaChat.constants.PREFIX_WITH_MODULE, BeltalowdaChat.state.prefixColor, prefix, message)
 				end
 			end
 		end
-		if RdKGToolChat.csVars.addTimestamp == true then
+		if BeltalowdaChat.csVars.addTimestamp == true then
 			local timestamp = GetTimeString()
-			if RdKGToolChat.csVars.hideSeconds == true then
+			if BeltalowdaChat.csVars.hideSeconds == true then
 				local split = {zo_strsplit(":",timestamp)}
 				timestamp = string.format("%s:%s", split[1], split[2])
 			end
-			message = string.format("|c%s[%s]|r%s", RdKGToolChat.state.timestampColor, timestamp, message)
+			message = string.format("|c%s[%s]|r%s", BeltalowdaChat.state.timestampColor, timestamp, message)
 		end
 		if CHAT_SYSTEM ~= nil then
-			if CHAT_SYSTEM.containers[1] ~= nil and CHAT_SYSTEM.containers[1].windows[RdKGToolChat.csVars.tab] ~= nil and CHAT_SYSTEM.containers[1].windows[RdKGToolChat.csVars.tab].buffer ~= nil then
-				CHAT_SYSTEM.containers[1].windows[RdKGToolChat.csVars.tab].buffer:AddMessage(message, color.r, color.g, color.b)
+			if CHAT_SYSTEM.containers[1] ~= nil and CHAT_SYSTEM.containers[1].windows[BeltalowdaChat.csVars.tab] ~= nil and CHAT_SYSTEM.containers[1].windows[BeltalowdaChat.csVars.tab].buffer ~= nil then
+				CHAT_SYSTEM.containers[1].windows[BeltalowdaChat.csVars.tab].buffer:AddMessage(message, color.r, color.g, color.b)
 			else
 				CHAT_SYSTEM:AddMessage(message)
 			end
@@ -125,177 +125,177 @@ function RdKGToolChat.SendChatMessage(message, prefix, messageType, sendMessage)
 	end
 end
 
-function RdKGToolChat.AdjustColors()
-	RdKGToolChat.state.prefixColor = RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.prefix.r)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.prefix.g)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.prefix.b))
-	RdKGToolChat.state.bodyColor = RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.body.r)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.body.g)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.body.b))
-	RdKGToolChat.state.warningColor = RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.warning.r)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.warning.g)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.warning.b))
-	RdKGToolChat.state.debugColor = RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.debug.r)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.debug.g)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.debug.b))
-	RdKGToolChat.state.playerColor = RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.player.r)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.player.g)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.player.b))
-	RdKGToolChat.state.timestampColor = RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.timestamp.r)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.timestamp.g)) .. RdKGToolMath.ByteToHex(RdKGToolMath.FloatingPointToByte(RdKGToolChat.csVars.colors.timestamp.b))
+function BeltalowdaChat.AdjustColors()
+	BeltalowdaChat.state.prefixColor = BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.prefix.r)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.prefix.g)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.prefix.b))
+	BeltalowdaChat.state.bodyColor = BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.body.r)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.body.g)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.body.b))
+	BeltalowdaChat.state.warningColor = BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.warning.r)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.warning.g)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.warning.b))
+	BeltalowdaChat.state.debugColor = BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.debug.r)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.debug.g)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.debug.b))
+	BeltalowdaChat.state.playerColor = BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.player.r)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.player.g)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.player.b))
+	BeltalowdaChat.state.timestampColor = BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.timestamp.r)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.timestamp.g)) .. BeltalowdaMath.ByteToHex(BeltalowdaMath.FloatingPointToByte(BeltalowdaChat.csVars.colors.timestamp.b))
 end
 
-function RdKGToolChat.GetPrefixColor()
-	return RdKGToolChat.csVars.colors.prefix
+function BeltalowdaChat.GetPrefixColor()
+	return BeltalowdaChat.csVars.colors.prefix
 end
 
-function RdKGToolChat.GetBodyPrefixHex()
-	return RdKGToolChat.state.prefixColor
+function BeltalowdaChat.GetBodyPrefixHex()
+	return BeltalowdaChat.state.prefixColor
 end
 
-function RdKGToolChat.GetBodyColor()
-	return RdKGToolChat.csVars.colors.body
+function BeltalowdaChat.GetBodyColor()
+	return BeltalowdaChat.csVars.colors.body
 end
 
-function RdKGToolChat.GetBodyColorHex()
-	return RdKGToolChat.state.bodyColor
+function BeltalowdaChat.GetBodyColorHex()
+	return BeltalowdaChat.state.bodyColor
 end
 
-function RdKGToolChat.GetWarningColor()
-	return RdKGToolChat.csVars.colors.warning
+function BeltalowdaChat.GetWarningColor()
+	return BeltalowdaChat.csVars.colors.warning
 end
 
-function RdKGToolChat.GetWarningColorHex()
-	return RdKGToolChat.state.warningColor
+function BeltalowdaChat.GetWarningColorHex()
+	return BeltalowdaChat.state.warningColor
 end
 
-function RdKGToolChat.GetDebugColor()
-	return RdKGToolChat.csVars.colors.debug
+function BeltalowdaChat.GetDebugColor()
+	return BeltalowdaChat.csVars.colors.debug
 end
 
-function RdKGToolChat.GetDebugColorHex()
-	return RdKGToolChat.state.debugColor
+function BeltalowdaChat.GetDebugColorHex()
+	return BeltalowdaChat.state.debugColor
 end
 
-function RdKGToolChat.GetPlayerColor()
-	return RdKGToolChat.csVars.colors.player
+function BeltalowdaChat.GetPlayerColor()
+	return BeltalowdaChat.csVars.colors.player
 end
 
-function RdKGToolChat.GetPlayerColorHex()
-	return RdKGToolChat.state.playerColor
+function BeltalowdaChat.GetPlayerColorHex()
+	return BeltalowdaChat.state.playerColor
 end
 
 --callbacks
-function RdKGToolChat.OnProfileChanged(currentProfile)
+function BeltalowdaChat.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolChat.csVars = currentProfile.util.chatSystem
-		RdKGToolChat.AdjustColors()
+		BeltalowdaChat.csVars = currentProfile.util.chatSystem
+		BeltalowdaChat.AdjustColors()
 	end
 end
 
-function RdKGToolChat.RefreshMenu()
-	RdKGToolChat.UpdateChatTabs(RdKGToolChat.GetChatAvailableTabs(), RdKGToolChat.GetChatAvailableTabValues())
+function BeltalowdaChat.RefreshMenu()
+	BeltalowdaChat.UpdateChatTabs(BeltalowdaChat.GetChatAvailableTabs(), BeltalowdaChat.GetChatAvailableTabValues())
 end
 
 --menu interaction
-function RdKGToolChat.GetMenu()
+function BeltalowdaChat.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.CHAT_HEADER,
+			name = BeltalowdaMenu.constants.CHAT_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CHAT_ENABLED,
-					getFunc = RdKGToolChat.GetChatEnabled,
-					setFunc = RdKGToolChat.SetChatEnabled
+					name = BeltalowdaMenu.constants.CHAT_ENABLED,
+					getFunc = BeltalowdaChat.GetChatEnabled,
+					setFunc = BeltalowdaChat.SetChatEnabled
 				},
 				[2] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.CHAT_SELECTED_TAB,
-					choices = RdKGToolChat.GetChatAvailableTabs(),
-					choicesValues = RdKGToolChat.GetChatAvailableTabValues(),
-					getFunc = RdKGToolChat.GetChatSelectedTab,
-					setFunc = RdKGToolChat.SetChatSelectedTab,
-					reference = RdKGToolChat.constants.references.CHAT_DROPDOWN_SELECTED_TAB
+					name = BeltalowdaMenu.constants.CHAT_SELECTED_TAB,
+					choices = BeltalowdaChat.GetChatAvailableTabs(),
+					choicesValues = BeltalowdaChat.GetChatAvailableTabValues(),
+					getFunc = BeltalowdaChat.GetChatSelectedTab,
+					setFunc = BeltalowdaChat.SetChatSelectedTab,
+					reference = BeltalowdaChat.constants.references.CHAT_DROPDOWN_SELECTED_TAB
 				},
 				[3] = {
 					type = "button",
-					name = RdKGToolMenu.constants.CHAT_REFRESH,
-					func = RdKGToolChat.RefreshMenu,
+					name = BeltalowdaMenu.constants.CHAT_REFRESH,
+					func = BeltalowdaChat.RefreshMenu,
 					width = "full"
 				},
 				[4] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CHAT_WARNINGS_ONLY,
-					getFunc = RdKGToolChat.GetChatWarningsOnly,
-					setFunc = RdKGToolChat.SetChatWarningsOnly
+					name = BeltalowdaMenu.constants.CHAT_WARNINGS_ONLY,
+					getFunc = BeltalowdaChat.GetChatWarningsOnly,
+					setFunc = BeltalowdaChat.SetChatWarningsOnly
 				},
 				[5] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CHAT_DEBUG_ONLY,
-					getFunc = RdKGToolChat.GetChatDebugOnly,
-					setFunc = RdKGToolChat.SetChatDebugOnly
+					name = BeltalowdaMenu.constants.CHAT_DEBUG_ONLY,
+					getFunc = BeltalowdaChat.GetChatDebugOnly,
+					setFunc = BeltalowdaChat.SetChatDebugOnly
 				},
 				[6] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CHAT_NORMAL_ONLY,
-					getFunc = RdKGToolChat.GetChatNormalOnly,
-					setFunc = RdKGToolChat.SetChatNormalOnly
+					name = BeltalowdaMenu.constants.CHAT_NORMAL_ONLY,
+					getFunc = BeltalowdaChat.GetChatNormalOnly,
+					setFunc = BeltalowdaChat.SetChatNormalOnly
 				},
 				[7] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CHAT_PREFIX_ENABLED,
-					getFunc = RdKGToolChat.GetChatPrefixEnabled,
-					setFunc = RdKGToolChat.SetChatPrefixEnabled
+					name = BeltalowdaMenu.constants.CHAT_PREFIX_ENABLED,
+					getFunc = BeltalowdaChat.GetChatPrefixEnabled,
+					setFunc = BeltalowdaChat.SetChatPrefixEnabled
 				},
 				[8] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CHAT_RDK_PREFIX_ENABLED,
-					getFunc = RdKGToolChat.GetChatRdKPrefixEnabled,
-					setFunc = RdKGToolChat.SetChatRdKPrefixEnabled
+					name = BeltalowdaMenu.constants.CHAT_BELTALOWDA_PREFIX_ENABLED,
+					getFunc = BeltalowdaChat.GetChatBeltalowdaPrefixEnabled,
+					setFunc = BeltalowdaChat.SetChatBeltalowdaPrefixEnabled
 				},
 				[9] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CHAT_COLOR_PREFIX,
-					getFunc = RdKGToolChat.GetChatPrefixColor,
-					setFunc = RdKGToolChat.SetChatPrefixColor,
+					name = BeltalowdaMenu.constants.CHAT_COLOR_PREFIX,
+					getFunc = BeltalowdaChat.GetChatPrefixColor,
+					setFunc = BeltalowdaChat.SetChatPrefixColor,
 					width = "full"
 				},
 				[10] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CHAT_COLOR_BODY,
-					getFunc = RdKGToolChat.GetChatBodyColor,
-					setFunc = RdKGToolChat.SetChatBodyColor,
+					name = BeltalowdaMenu.constants.CHAT_COLOR_BODY,
+					getFunc = BeltalowdaChat.GetChatBodyColor,
+					setFunc = BeltalowdaChat.SetChatBodyColor,
 					width = "full"
 				},
 				[11] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CHAT_COLOR_WARNING,
-					getFunc = RdKGToolChat.GetChatWarningColor,
-					setFunc = RdKGToolChat.SetChatWarningColor,
+					name = BeltalowdaMenu.constants.CHAT_COLOR_WARNING,
+					getFunc = BeltalowdaChat.GetChatWarningColor,
+					setFunc = BeltalowdaChat.SetChatWarningColor,
 					width = "full"
 				},
 				[12] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CHAT_COLOR_DEBUG,
-					getFunc = RdKGToolChat.GetChatDebugColor,
-					setFunc = RdKGToolChat.SetChatDebugColor,
+					name = BeltalowdaMenu.constants.CHAT_COLOR_DEBUG,
+					getFunc = BeltalowdaChat.GetChatDebugColor,
+					setFunc = BeltalowdaChat.SetChatDebugColor,
 					width = "full"
 				},
 				[13] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CHAT_COLOR_PLAYER,
-					getFunc = RdKGToolChat.GetChatPlayerColor,
-					setFunc = RdKGToolChat.SetChatPlayerColor,
+					name = BeltalowdaMenu.constants.CHAT_COLOR_PLAYER,
+					getFunc = BeltalowdaChat.GetChatPlayerColor,
+					setFunc = BeltalowdaChat.SetChatPlayerColor,
 					width = "full"
 				},
 				[14] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CHAT_ADD_TIMESTAMP,
-					getFunc = RdKGToolChat.GetChatAddTimestamp,
-					setFunc = RdKGToolChat.SetChatAddTimestamp
+					name = BeltalowdaMenu.constants.CHAT_ADD_TIMESTAMP,
+					getFunc = BeltalowdaChat.GetChatAddTimestamp,
+					setFunc = BeltalowdaChat.SetChatAddTimestamp
 				},
 				[15] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CHAT_HIDE_SECONDS,
-					getFunc = RdKGToolChat.GetChatHideSeconds,
-					setFunc = RdKGToolChat.SetChatHideSeconds
+					name = BeltalowdaMenu.constants.CHAT_HIDE_SECONDS,
+					getFunc = BeltalowdaChat.GetChatHideSeconds,
+					setFunc = BeltalowdaChat.SetChatHideSeconds
 				},
 				[16] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.CHAT_COLOR_TIMESTAMP,
-					getFunc = RdKGToolChat.GetChatTimestampColor,
-					setFunc = RdKGToolChat.SetChatTimestampColor,
+					name = BeltalowdaMenu.constants.CHAT_COLOR_TIMESTAMP,
+					getFunc = BeltalowdaChat.GetChatTimestampColor,
+					setFunc = BeltalowdaChat.SetChatTimestampColor,
 					width = "full"
 				},
 			}
@@ -304,15 +304,15 @@ function RdKGToolChat.GetMenu()
 	return menu
 end
 
-function RdKGToolChat.GetChatEnabled()
-	return RdKGToolChat.csVars.enabled
+function BeltalowdaChat.GetChatEnabled()
+	return BeltalowdaChat.csVars.enabled
 end
 
-function RdKGToolChat.SetChatEnabled(value)
-	RdKGToolChat.csVars.enabled = value
+function BeltalowdaChat.SetChatEnabled(value)
+	BeltalowdaChat.csVars.enabled = value
 end
 
-function RdKGToolChat.GetChatAvailableTabs()
+function BeltalowdaChat.GetChatAvailableTabs()
 	local tabNames = {}
 	if CHAT_SYSTEM ~= nil and CHAT_SYSTEM.containers ~= nil and CHAT_SYSTEM.containers[1] ~= nil and CHAT_SYSTEM.containers[1].windows ~= nil then
 		for i = 1, #CHAT_SYSTEM.containers[1].windows do
@@ -322,7 +322,7 @@ function RdKGToolChat.GetChatAvailableTabs()
 	return tabNames
 end
 
-function RdKGToolChat.GetChatAvailableTabValues()
+function BeltalowdaChat.GetChatAvailableTabValues()
 	local tabIndexes = {}
 	if CHAT_SYSTEM ~= nil and CHAT_SYSTEM.containers ~= nil and CHAT_SYSTEM.containers[1] ~= nil and CHAT_SYSTEM.containers[1].windows ~= nil then
 		for i = 1, #CHAT_SYSTEM.containers[1].windows do
@@ -332,132 +332,132 @@ function RdKGToolChat.GetChatAvailableTabValues()
 	return tabIndexes
 end
 
-function RdKGToolChat.GetChatSelectedTab()
+function BeltalowdaChat.GetChatSelectedTab()
 	if CHAT_SYSTEM ~= nil and CHAT_SYSTEM.containers ~= nil and CHAT_SYSTEM.containers[1] ~= nil and CHAT_SYSTEM.containers[1].windows ~= nil then
-		return RdKGToolChat.csVars.tab
+		return BeltalowdaChat.csVars.tab
 	else
 		return nil
 	end
 end
 
-function RdKGToolChat.SetChatSelectedTab(value)
+function BeltalowdaChat.SetChatSelectedTab(value)
 	if value ~= nil then
-		RdKGToolChat.csVars.tab = value
+		BeltalowdaChat.csVars.tab = value
 	end
 end
 
-function RdKGToolChat.GetChatWarningsOnly()
-	return RdKGToolChat.csVars.showWarnings
+function BeltalowdaChat.GetChatWarningsOnly()
+	return BeltalowdaChat.csVars.showWarnings
 end
 
-function RdKGToolChat.SetChatWarningsOnly(value)
-	RdKGToolChat.csVars.showWarnings = value
+function BeltalowdaChat.SetChatWarningsOnly(value)
+	BeltalowdaChat.csVars.showWarnings = value
 end
 
-function RdKGToolChat.GetChatDebugOnly()
-	return RdKGToolChat.csVars.showDebug
+function BeltalowdaChat.GetChatDebugOnly()
+	return BeltalowdaChat.csVars.showDebug
 end
 
-function RdKGToolChat.SetChatDebugOnly(value)
-	RdKGToolChat.csVars.showDebug = value
+function BeltalowdaChat.SetChatDebugOnly(value)
+	BeltalowdaChat.csVars.showDebug = value
 end
 
-function RdKGToolChat.GetChatNormalOnly()
-	return RdKGToolChat.csVars.showNormal
+function BeltalowdaChat.GetChatNormalOnly()
+	return BeltalowdaChat.csVars.showNormal
 end
 
-function RdKGToolChat.SetChatNormalOnly(value)
-	RdKGToolChat.csVars.showNormal = value
+function BeltalowdaChat.SetChatNormalOnly(value)
+	BeltalowdaChat.csVars.showNormal = value
 end
 
-function RdKGToolChat.GetChatPrefixEnabled()
-	return RdKGToolChat.csVars.prefixEnabled
+function BeltalowdaChat.GetChatPrefixEnabled()
+	return BeltalowdaChat.csVars.prefixEnabled
 end
 
-function RdKGToolChat.SetChatPrefixEnabled(value)
-	RdKGToolChat.csVars.prefixEnabled = value
+function BeltalowdaChat.SetChatPrefixEnabled(value)
+	BeltalowdaChat.csVars.prefixEnabled = value
 end
 
-function RdKGToolChat.GetChatRdKPrefixEnabled()
-	return RdKGToolChat.csVars.rdkPrefixEnabled
+function BeltalowdaChat.GetChatBeltalowdaPrefixEnabled()
+	return BeltalowdaChat.csVars.beltalowdaPrefixEnabled
 end
 
-function RdKGToolChat.SetChatRdKPrefixEnabled(value)
-	RdKGToolChat.csVars.rdkPrefixEnabled = value
+function BeltalowdaChat.SetChatBeltalowdaPrefixEnabled(value)
+	BeltalowdaChat.csVars.beltalowdaPrefixEnabled = value
 end
 
-function RdKGToolChat.GetChatPrefixColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolChat.csVars.colors.prefix)
+function BeltalowdaChat.GetChatPrefixColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaChat.csVars.colors.prefix)
 end
 
-function RdKGToolChat.SetChatPrefixColor(r, g, b)
-	RdKGToolChat.csVars.colors.prefix = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolChat.AdjustColors()
+function BeltalowdaChat.SetChatPrefixColor(r, g, b)
+	BeltalowdaChat.csVars.colors.prefix = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaChat.AdjustColors()
 end
 
-function RdKGToolChat.GetChatBodyColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolChat.csVars.colors.body)
+function BeltalowdaChat.GetChatBodyColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaChat.csVars.colors.body)
 end
 
-function RdKGToolChat.SetChatBodyColor(r, g, b)
-	RdKGToolChat.csVars.colors.body = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolChat.AdjustColors()
+function BeltalowdaChat.SetChatBodyColor(r, g, b)
+	BeltalowdaChat.csVars.colors.body = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaChat.AdjustColors()
 end
 
-function RdKGToolChat.GetChatWarningColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolChat.csVars.colors.warning)
+function BeltalowdaChat.GetChatWarningColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaChat.csVars.colors.warning)
 end
 
-function RdKGToolChat.SetChatWarningColor(r, g, b)
-	RdKGToolChat.csVars.colors.warning = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolChat.AdjustColors()
+function BeltalowdaChat.SetChatWarningColor(r, g, b)
+	BeltalowdaChat.csVars.colors.warning = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaChat.AdjustColors()
 end
 
-function RdKGToolChat.GetChatDebugColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolChat.csVars.colors.debug)
+function BeltalowdaChat.GetChatDebugColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaChat.csVars.colors.debug)
 end
 
-function RdKGToolChat.SetChatDebugColor(r, g, b)
-	RdKGToolChat.csVars.colors.debug = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolChat.AdjustColors()
+function BeltalowdaChat.SetChatDebugColor(r, g, b)
+	BeltalowdaChat.csVars.colors.debug = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaChat.AdjustColors()
 end
 
-function RdKGToolChat.GetChatPlayerColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolChat.csVars.colors.player)
+function BeltalowdaChat.GetChatPlayerColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaChat.csVars.colors.player)
 end
 
-function RdKGToolChat.SetChatPlayerColor(r, g, b)
-	RdKGToolChat.csVars.colors.player = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolChat.AdjustColors()
+function BeltalowdaChat.SetChatPlayerColor(r, g, b)
+	BeltalowdaChat.csVars.colors.player = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaChat.AdjustColors()
 end
 
-function RdKGToolChat.GetChatAddTimestamp()
-	return RdKGToolChat.csVars.addTimestamp
+function BeltalowdaChat.GetChatAddTimestamp()
+	return BeltalowdaChat.csVars.addTimestamp
 end
 
-function RdKGToolChat.SetChatAddTimestamp(value)
-	RdKGToolChat.csVars.addTimestamp = value
+function BeltalowdaChat.SetChatAddTimestamp(value)
+	BeltalowdaChat.csVars.addTimestamp = value
 end
 
-function RdKGToolChat.GetChatHideSeconds()
-	return RdKGToolChat.csVars.hideSeconds
+function BeltalowdaChat.GetChatHideSeconds()
+	return BeltalowdaChat.csVars.hideSeconds
 end
 
-function RdKGToolChat.SetChatHideSeconds(value)
-	RdKGToolChat.csVars.hideSeconds = value
+function BeltalowdaChat.SetChatHideSeconds(value)
+	BeltalowdaChat.csVars.hideSeconds = value
 end
 
-function RdKGToolChat.GetChatTimestampColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolChat.csVars.colors.timestamp)
+function BeltalowdaChat.GetChatTimestampColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaChat.csVars.colors.timestamp)
 end
 
-function RdKGToolChat.SetChatTimestampColor(r, g, b)
-	RdKGToolChat.csVars.colors.timestamp = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolChat.AdjustColors()
+function BeltalowdaChat.SetChatTimestampColor(r, g, b)
+	BeltalowdaChat.csVars.colors.timestamp = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaChat.AdjustColors()
 end
 
-function RdKGToolChat.UpdateChatTabs(chatNames, chatIndexes)
-	local control = GetWindowManager():GetControlByName(RdKGToolChat.constants.references.CHAT_DROPDOWN_SELECTED_TAB)
+function BeltalowdaChat.UpdateChatTabs(chatNames, chatIndexes)
+	local control = GetWindowManager():GetControlByName(BeltalowdaChat.constants.references.CHAT_DROPDOWN_SELECTED_TAB)
 	if control ~= nil and #chatNames == #chatIndexes then
 		--control.value = chatNames
 		--control.valueChoises = chatIndexes

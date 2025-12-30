@@ -1,37 +1,37 @@
--- RdK Group Tool Recharger
+-- Beltalowda Recharger
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.toolbox.recharger = RdKGTool.toolbox.recharger or {}
-local RdKGToolRecharger = RdKGTool.toolbox.recharger
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
+Beltalowda.toolbox.recharger = Beltalowda.toolbox.recharger or {}
+local BeltalowdaRecharger = Beltalowda.toolbox.recharger
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
 
 
-RdKGToolRecharger.constants = RdKGToolRecharger.constants or {}
+BeltalowdaRecharger.constants = BeltalowdaRecharger.constants or {}
 
-RdKGToolRecharger.callbackName = RdKGTool.addonName .. "Recharger"
+BeltalowdaRecharger.callbackName = Beltalowda.addonName .. "Recharger"
 
-RdKGToolRecharger.config = {}
+BeltalowdaRecharger.config = {}
 
-RdKGToolRecharger.state = {}
-RdKGToolRecharger.state.initialized = false
+BeltalowdaRecharger.state = {}
+BeltalowdaRecharger.state.initialized = false
 
-function RdKGToolRecharger.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolRecharger.callbackName, RdKGToolRecharger.OnProfileChanged)
+function BeltalowdaRecharger.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaRecharger.callbackName, BeltalowdaRecharger.OnProfileChanged)
 	
-	RdKGToolRecharger.state.initialized = true
-	RdKGToolRecharger.SetEnabled(RdKGToolRecharger.rcVars.enabled)
+	BeltalowdaRecharger.state.initialized = true
+	BeltalowdaRecharger.SetEnabled(BeltalowdaRecharger.rcVars.enabled)
 end
 
-function RdKGToolRecharger.GetDefaults()
+function BeltalowdaRecharger.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
 	return defaults
 end
 
-function RdKGToolRecharger.SetEnabled(value)
-	if RdKGToolRecharger.state.initialized == true and value ~= nil then
-		RdKGToolRecharger.rcVars.enabled = value
+function BeltalowdaRecharger.SetEnabled(value)
+	if BeltalowdaRecharger.state.initialized == true and value ~= nil then
+		BeltalowdaRecharger.rcVars.enabled = value
 		if value == true then
 
 		else
@@ -41,10 +41,10 @@ function RdKGToolRecharger.SetEnabled(value)
 end
 
 --callbacks
-function RdKGToolRecharger.OnProfileChanged(currentProfile)
+function BeltalowdaRecharger.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolRecharger.rcVars = currentProfile.toolbox.recharger
-		RdKGToolRecharger.SetEnabled(RdKGToolRecharger.rcVars.enabled)
+		BeltalowdaRecharger.rcVars = currentProfile.toolbox.recharger
+		BeltalowdaRecharger.SetEnabled(BeltalowdaRecharger.rcVars.enabled)
 	end
 end
 

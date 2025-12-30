@@ -1,79 +1,79 @@
--- RdK Group Tool Crown
+-- Beltalowda Crown
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.group.crown = RdKGTool.group.crown or {}
-local RdKGToolCrown = RdKGTool.group.crown
+Beltalowda.group.crown = Beltalowda.group.crown or {}
+local BeltalowdaCrown = Beltalowda.group.crown
 
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.chatSystem = RdKGToolUtil.chatSystem or {}
-local RdKGToolChat = RdKGToolUtil.chatSystem
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.chatSystem = BeltalowdaUtil.chatSystem or {}
+local BeltalowdaChat = BeltalowdaUtil.chatSystem
 
-RdKGToolCrown.callbackName = RdKGTool.addonName .. "Crown"
-RdKGToolCrown.crownVars = nil
+BeltalowdaCrown.callbackName = Beltalowda.addonName .. "Crown"
+BeltalowdaCrown.crownVars = nil
 
-RdKGToolCrown.constants = {}
-RdKGToolCrown.constants.PREFIX = "Crown"
+BeltalowdaCrown.constants = {}
+BeltalowdaCrown.constants.PREFIX = "Crown"
 
-RdKGToolCrown.config = {}
-RdKGToolCrown.config.crowns = {}
-RdKGToolCrown.config.crowns[1] = {}
-RdKGToolCrown.config.crowns[1].dds = "EsoUI/Art/Compass/groupleader.dds"
-RdKGToolCrown.config.crowns[2] = {}
-RdKGToolCrown.config.crowns[2].dds = "RdKGroupTool/Art/Crowns/Pfeilweiss.dds"
-RdKGToolCrown.config.crowns[3] = {}
-RdKGToolCrown.config.crowns[3].dds = "RdKGroupTool/Art/Crowns/Pfeilblau.dds"
-RdKGToolCrown.config.crowns[4] = {}
-RdKGToolCrown.config.crowns[4].dds = "RdKGroupTool/Art/Crowns/Pfeilhellblau.dds"
-RdKGToolCrown.config.crowns[5] = {}
-RdKGToolCrown.config.crowns[5].dds = "RdKGroupTool/Art/Crowns/Pfeilgelb.dds"
-RdKGToolCrown.config.crowns[6] = {}
-RdKGToolCrown.config.crowns[6].dds = "RdKGroupTool/Art/Crowns/Pfeilhellgruen.dds"
-RdKGToolCrown.config.crowns[7] = {}
-RdKGToolCrown.config.crowns[7].dds = "RdKGroupTool/Art/Crowns/Pfeilrot.dds"
-RdKGToolCrown.config.crowns[8] = {}
-RdKGToolCrown.config.crowns[8].dds = "RdKGroupTool/Art/Crowns/Pfeilpink.dds"
-RdKGToolCrown.config.crowns[9] = {}
-RdKGToolCrown.config.crowns[9].dds = "RdKGroupTool/Art/Crowns/Krone.dds"
-RdKGToolCrown.config.crowns[10] = {}
-RdKGToolCrown.config.crowns[10].dds = "RdKGroupTool/Art/Crowns/RdKWhite.dds"
+BeltalowdaCrown.config = {}
+BeltalowdaCrown.config.crowns = {}
+BeltalowdaCrown.config.crowns[1] = {}
+BeltalowdaCrown.config.crowns[1].dds = "EsoUI/Art/Compass/groupleader.dds"
+BeltalowdaCrown.config.crowns[2] = {}
+BeltalowdaCrown.config.crowns[2].dds = "Beltalowda/Art/Crowns/Pfeilweiss.dds"
+BeltalowdaCrown.config.crowns[3] = {}
+BeltalowdaCrown.config.crowns[3].dds = "Beltalowda/Art/Crowns/Pfeilblau.dds"
+BeltalowdaCrown.config.crowns[4] = {}
+BeltalowdaCrown.config.crowns[4].dds = "Beltalowda/Art/Crowns/Pfeilhellblau.dds"
+BeltalowdaCrown.config.crowns[5] = {}
+BeltalowdaCrown.config.crowns[5].dds = "Beltalowda/Art/Crowns/Pfeilgelb.dds"
+BeltalowdaCrown.config.crowns[6] = {}
+BeltalowdaCrown.config.crowns[6].dds = "Beltalowda/Art/Crowns/Pfeilhellgruen.dds"
+BeltalowdaCrown.config.crowns[7] = {}
+BeltalowdaCrown.config.crowns[7].dds = "Beltalowda/Art/Crowns/Pfeilrot.dds"
+BeltalowdaCrown.config.crowns[8] = {}
+BeltalowdaCrown.config.crowns[8].dds = "Beltalowda/Art/Crowns/Pfeilpink.dds"
+BeltalowdaCrown.config.crowns[9] = {}
+BeltalowdaCrown.config.crowns[9].dds = "Beltalowda/Art/Crowns/Krone.dds"
+BeltalowdaCrown.config.crowns[10] = {}
+BeltalowdaCrown.config.crowns[10].dds = "Beltalowda/Art/Crowns/BeltalowdaWhite.dds"
 
-RdKGToolCrown.state = {}
+BeltalowdaCrown.state = {}
 
-function RdKGToolCrown.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolCrown.callbackName, RdKGToolCrown.OnProfileChanged)
+function BeltalowdaCrown.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaCrown.callbackName, BeltalowdaCrown.OnProfileChanged)
 	
 	
-	local bodyText= RdKGToolChat.GetBodyColorHex()
+	local bodyText= BeltalowdaChat.GetBodyColorHex()
 	if QAddon ~= nil and QAddon.name == "PapaCrown" then
-		RdKGToolChat.SendChatMessage(RdKGToolCrown.constants.PAPA_CROWN_DETECTED, RdKGToolCrown.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_WARNING)
+		BeltalowdaChat.SendChatMessage(BeltalowdaCrown.constants.PAPA_CROWN_DETECTED, BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
 		return
 	end
 	if RO ~= nil and RO.name == "SanctsUltimateOrganiser" then
-		RdKGToolChat.SendChatMessage(RdKGToolCrown.constants.SANCTS_ULTIMATE_ORGANIZER_DETECTED, RdKGToolCrown.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_WARNING)
+		BeltalowdaChat.SendChatMessage(BeltalowdaCrown.constants.SANCTS_ULTIMATE_ORGANIZER_DETECTED, BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
 		return
 	end
 	if CrownOfCyrodiil ~= nil and CrownOfCyrodiil.name == "CrownOfCyrodiil" then
-		RdKGToolChat.SendChatMessage(RdKGToolCrown.constants.CROWN_OF_CYRODIIL_DETECTED, RdKGToolCrown.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_WARNING)
+		BeltalowdaChat.SendChatMessage(BeltalowdaCrown.constants.CROWN_OF_CYRODIIL_DETECTED, BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
 		return
 	end
-	if RdKGToolCrown.crownVars.enabled then
-		EVENT_MANAGER:RegisterForEvent(RdKGToolCrown.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolCrown.OnPlayerActivated)
+	if BeltalowdaCrown.crownVars.enabled then
+		EVENT_MANAGER:RegisterForEvent(BeltalowdaCrown.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaCrown.OnPlayerActivated)
 	end
 end
 
 
-function RdKGToolCrown.OnPlayerActivated()
+function BeltalowdaCrown.OnPlayerActivated()
 	--d("OnPlayerActivated")
-	--/script SetFloatingMarkerInfo(MAP_PIN_TYPE_GROUP_LEADER, 64, "RdKGroupTool/Art/Crowns/Pfeilpink.dds")
-	if RdKGToolCrown.crownVars.enabled and (RdKGToolCrown.crownVars.pvponly == false or (RdKGToolCrown.crownVars.pvponly == true and RdKGToolUtil.IsInPvPArea() == true)) then
-		if RdKGToolCrown.crownVars.selectedMode == 1 then
-			if RdKGToolCrown.crownVars.customDDS == true then
-				SetFloatingMarkerInfo(MAP_PIN_TYPE_GROUP_LEADER, RdKGToolCrown.crownVars.size, RdKGToolCrown.crownVars.customDDSPath--[[, "EsoUI/Art/Comapss/groupleader_door.dds"]])
+	--/script SetFloatingMarkerInfo(MAP_PIN_TYPE_GROUP_LEADER, 64, "Beltalowda/Art/Crowns/Pfeilpink.dds")
+	if BeltalowdaCrown.crownVars.enabled and (BeltalowdaCrown.crownVars.pvponly == false or (BeltalowdaCrown.crownVars.pvponly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
+		if BeltalowdaCrown.crownVars.selectedMode == 1 then
+			if BeltalowdaCrown.crownVars.customDDS == true then
+				SetFloatingMarkerInfo(MAP_PIN_TYPE_GROUP_LEADER, BeltalowdaCrown.crownVars.size, BeltalowdaCrown.crownVars.customDDSPath--[[, "EsoUI/Art/Comapss/groupleader_door.dds"]])
 			else
-				SetFloatingMarkerInfo(MAP_PIN_TYPE_GROUP_LEADER, RdKGToolCrown.crownVars.size, RdKGToolCrown.config.crowns[RdKGToolCrown.crownVars.selectedCrown].dds --[[, "EsoUI/Art/Comapss/groupleader_door.dds"]])
+				SetFloatingMarkerInfo(MAP_PIN_TYPE_GROUP_LEADER, BeltalowdaCrown.crownVars.size, BeltalowdaCrown.config.crowns[BeltalowdaCrown.crownVars.selectedCrown].dds --[[, "EsoUI/Art/Comapss/groupleader_door.dds"]])
 			end
 		end
 	else
@@ -81,7 +81,7 @@ function RdKGToolCrown.OnPlayerActivated()
 	end
 end
 
-function RdKGToolCrown.GetDefaults()
+function BeltalowdaCrown.GetDefaults()
 	local defaults = {}
 	defaults.customDDS = false
 	defaults.enabled = false
@@ -89,28 +89,28 @@ function RdKGToolCrown.GetDefaults()
 	defaults.pvponly = false
 	defaults.selectedMode = 1
 	defaults.selectedCrown = 1
-	defaults.customDDSPath = "RdKGroupTool/Art/Crowns/pfeil_pink.dds"
+	defaults.customDDSPath = "Beltalowda/Art/Crowns/pfeil_pink.dds"
 	return defaults
 end
 
-function RdKGToolCrown.SlashCmd(param)
+function BeltalowdaCrown.SlashCmd(param)
 
 end
 
 --profile synchronization
-function RdKGToolCrown.OnProfileChanged(currentProfile)
+function BeltalowdaCrown.OnProfileChanged(currentProfile)
 	--d(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolCrown.crownVars = currentProfile.group.crown
+		BeltalowdaCrown.crownVars = currentProfile.group.crown
 	end
 end
 
 --Menu Interaction
-function RdKGToolCrown.GetMenu()
+function BeltalowdaCrown.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.CROWN_HEADER,
+			name = BeltalowdaMenu.constants.CROWN_HEADER,
 			--width = "full",
 			--requiresReload = true
 			controls = {
@@ -118,49 +118,49 @@ function RdKGToolCrown.GetMenu()
 				[1] = {
 					type = "description",
 					title = nil,
-					text = RdKGToolMenu.constants.CROWN_WARNING,
+					text = BeltalowdaMenu.constants.CROWN_WARNING,
 					width = "full"
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CROWN_CHK_GROUP_CROWN_ENABLED,
-					getFunc = RdKGToolCrown.GetGroupCrownState,
-					setFunc = RdKGToolCrown.SetGroupCrownState,
+					name = BeltalowdaMenu.constants.CROWN_CHK_GROUP_CROWN_ENABLED,
+					getFunc = BeltalowdaCrown.GetGroupCrownState,
+					setFunc = BeltalowdaCrown.SetGroupCrownState,
 					--requiresReload = true
 				},
 				[3] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.CROWN_PVP_ONLY,
-					getFunc = RdKGToolCrown.GetCrownPvpOnly,
-					setFunc = RdKGToolCrown.SetCrownPvpOnly,
+					name = BeltalowdaMenu.constants.CROWN_PVP_ONLY,
+					getFunc = BeltalowdaCrown.GetCrownPvpOnly,
+					setFunc = BeltalowdaCrown.SetCrownPvpOnly,
 					--requiresReload = true
 				},
 				[4] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.CROWN_SELECTED_MODE,
-					choices = RdKGToolCrown.GetAvailableCrownModes(),
-					getFunc = RdKGToolCrown.GetSelectedCrownMode,
-					setFunc = RdKGToolCrown.SetSelectedCrownMode,
+					name = BeltalowdaMenu.constants.CROWN_SELECTED_MODE,
+					choices = BeltalowdaCrown.GetAvailableCrownModes(),
+					getFunc = BeltalowdaCrown.GetSelectedCrownMode,
+					setFunc = BeltalowdaCrown.SetSelectedCrownMode,
 					width = "full",
 					--requiresReload = true
 				},
 				[5] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.CROWN_SELECTED_CROWN,
-					choices = RdKGToolCrown.GetAvailableCrowns(),
-					getFunc = RdKGToolCrown.GetSelectedCrown,
-					setFunc = RdKGToolCrown.SetSelectedCrown,
+					name = BeltalowdaMenu.constants.CROWN_SELECTED_CROWN,
+					choices = BeltalowdaCrown.GetAvailableCrowns(),
+					getFunc = BeltalowdaCrown.GetSelectedCrown,
+					setFunc = BeltalowdaCrown.SetSelectedCrown,
 					width = "full",
 					--requiresReload = true
 				},
 				[6] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.CROWN_SIZE,
+					name = BeltalowdaMenu.constants.CROWN_SIZE,
 					min = 10,
 					max = 512,
 					step = 1,
-					getFunc = RdKGToolCrown.GetCrownSize,
-					setFunc = RdKGToolCrown.SetCrownSize,
+					getFunc = BeltalowdaCrown.GetCrownSize,
+					setFunc = BeltalowdaCrown.SetCrownSize,
 					width = "full",
 					default = 64,
 					--requiresReload = true
@@ -171,86 +171,86 @@ function RdKGToolCrown.GetMenu()
 	return menu
 end
 
-function RdKGToolCrown.GetGroupCrownState()
-	return RdKGToolCrown.crownVars.enabled
+function BeltalowdaCrown.GetGroupCrownState()
+	return BeltalowdaCrown.crownVars.enabled
 end
 
-function RdKGToolCrown.SetGroupCrownState(value)
-	RdKGToolCrown.crownVars.enabled = value
-	RdKGToolCrown.OnPlayerActivated()
+function BeltalowdaCrown.SetGroupCrownState(value)
+	BeltalowdaCrown.crownVars.enabled = value
+	BeltalowdaCrown.OnPlayerActivated()
 end
 
 
-function RdKGToolCrown.GetAvailableCrownModes()
-	local modes = { RdKGTool.menu.constants.CROWN_MODE[1] }
+function BeltalowdaCrown.GetAvailableCrownModes()
+	local modes = { Beltalowda.menu.constants.CROWN_MODE[1] }
 	return modes
 end
 
-function RdKGToolCrown.GetSelectedCrownMode()
-	return RdKGTool.menu.constants.CROWN_MODE[RdKGToolCrown.crownVars.selectedMode]
+function BeltalowdaCrown.GetSelectedCrownMode()
+	return Beltalowda.menu.constants.CROWN_MODE[BeltalowdaCrown.crownVars.selectedMode]
 end
 
-function RdKGToolCrown.SetSelectedCrownMode(value)
-	for i = 1, #RdKGTool.menu.constants.CROWN_MODE do
-		if RdKGTool.menu.constants.CROWN_MODE[i] == value then
-			RdKGToolCrown.crownVars.selectedMode = i
+function BeltalowdaCrown.SetSelectedCrownMode(value)
+	for i = 1, #Beltalowda.menu.constants.CROWN_MODE do
+		if Beltalowda.menu.constants.CROWN_MODE[i] == value then
+			BeltalowdaCrown.crownVars.selectedMode = i
 			break
 		end
 	end
-	RdKGToolCrown.OnPlayerActivated()
+	BeltalowdaCrown.OnPlayerActivated()
 end
 
-function RdKGToolCrown.GetAvailableCrowns()
+function BeltalowdaCrown.GetAvailableCrowns()
 	--ugly bug fix cause through menu entry in libaddonmenu... wtf?
-	if RdKGToolCrown.crownVars == nil then
-		RdKGToolCrown.crownVars = RdKGTool.profile.GetSelectedProfile().group.crown
+	if BeltalowdaCrown.crownVars == nil then
+		BeltalowdaCrown.crownVars = Beltalowda.profile.GetSelectedProfile().group.crown
 	end
-	if RdKGToolCrown.crownVars.selectedMode == 1 then
-		local crowns = { RdKGToolCrown.config.crowns[1].name, 
-						 RdKGToolCrown.config.crowns[2].name,
-						 RdKGToolCrown.config.crowns[3].name,
-						 RdKGToolCrown.config.crowns[4].name,
-						 RdKGToolCrown.config.crowns[5].name,
-						 RdKGToolCrown.config.crowns[6].name,
-						 RdKGToolCrown.config.crowns[7].name,
-						 RdKGToolCrown.config.crowns[8].name,
-						 RdKGToolCrown.config.crowns[9].name,
-						 RdKGToolCrown.config.crowns[10].name
+	if BeltalowdaCrown.crownVars.selectedMode == 1 then
+		local crowns = { BeltalowdaCrown.config.crowns[1].name, 
+						 BeltalowdaCrown.config.crowns[2].name,
+						 BeltalowdaCrown.config.crowns[3].name,
+						 BeltalowdaCrown.config.crowns[4].name,
+						 BeltalowdaCrown.config.crowns[5].name,
+						 BeltalowdaCrown.config.crowns[6].name,
+						 BeltalowdaCrown.config.crowns[7].name,
+						 BeltalowdaCrown.config.crowns[8].name,
+						 BeltalowdaCrown.config.crowns[9].name,
+						 BeltalowdaCrown.config.crowns[10].name
 		}
 		return crowns
 	else
-		RdKGToolChat.SendChatMessage("Invalid Crown Mode", RdKGToolCrown.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_DEBUG)
+		BeltalowdaChat.SendChatMessage("Invalid Crown Mode", BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_DEBUG)
 	end
 end
 
-function RdKGToolCrown.GetSelectedCrown()
-	return RdKGToolCrown.config.crowns[RdKGToolCrown.crownVars.selectedCrown].name
+function BeltalowdaCrown.GetSelectedCrown()
+	return BeltalowdaCrown.config.crowns[BeltalowdaCrown.crownVars.selectedCrown].name
 end
 
-function RdKGToolCrown.SetSelectedCrown(value)
-	for i = 1, #RdKGToolCrown.config.crowns do
-		if RdKGToolCrown.config.crowns[i].name == value then
-			RdKGToolCrown.crownVars.selectedCrown = i
+function BeltalowdaCrown.SetSelectedCrown(value)
+	for i = 1, #BeltalowdaCrown.config.crowns do
+		if BeltalowdaCrown.config.crowns[i].name == value then
+			BeltalowdaCrown.crownVars.selectedCrown = i
 			break
 		end
 	end
-	RdKGToolCrown.OnPlayerActivated()
+	BeltalowdaCrown.OnPlayerActivated()
 end
 
-function RdKGToolCrown.GetCrownSize()
-	return RdKGToolCrown.crownVars.size
+function BeltalowdaCrown.GetCrownSize()
+	return BeltalowdaCrown.crownVars.size
 end
 
-function RdKGToolCrown.SetCrownSize(value)
-	RdKGToolCrown.crownVars.size = value
-	RdKGToolCrown.OnPlayerActivated()
+function BeltalowdaCrown.SetCrownSize(value)
+	BeltalowdaCrown.crownVars.size = value
+	BeltalowdaCrown.OnPlayerActivated()
 end
 
-function RdKGToolCrown.GetCrownPvpOnly()
-	return RdKGToolCrown.crownVars.pvponly
+function BeltalowdaCrown.GetCrownPvpOnly()
+	return BeltalowdaCrown.crownVars.pvponly
 end
 
-function RdKGToolCrown.SetCrownPvpOnly(value)
-	RdKGToolCrown.crownVars.pvponly = value
-	RdKGToolCrown.OnPlayerActivated()
+function BeltalowdaCrown.SetCrownPvpOnly(value)
+	BeltalowdaCrown.crownVars.pvponly = value
+	BeltalowdaCrown.OnPlayerActivated()
 end

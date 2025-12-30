@@ -1,88 +1,88 @@
--- RdK Group Tool Role Assignment
+-- Beltalowda Role Assignment
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.toolbox = RdKGTool.toolbox or {}
-local RdKGToolTB = RdKGTool.toolbox
-RdKGToolTB.ra = RdKGToolTB.ra or {}
-local RdKGToolRa = RdKGToolTB.ra
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolUtilGroup = RdKGToolUtil.group
-RdKGToolUtil.networking = RdKGToolUtil.networking or {}
-local RdKGToolNetworking = RdKGToolUtil.networking
-RdKGToolUtil.chatSystem = RdKGToolUtil.chatSystem or {}
-local RdKGToolChat = RdKGToolUtil.chatSystem
+Beltalowda.toolbox = Beltalowda.toolbox or {}
+local BeltalowdaTB = Beltalowda.toolbox
+BeltalowdaTB.ra = BeltalowdaTB.ra or {}
+local BeltalowdaRa = BeltalowdaTB.ra
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaUtilGroup = BeltalowdaUtil.group
+BeltalowdaUtil.networking = BeltalowdaUtil.networking or {}
+local BeltalowdaNetworking = BeltalowdaUtil.networking
+BeltalowdaUtil.chatSystem = BeltalowdaUtil.chatSystem or {}
+local BeltalowdaChat = BeltalowdaUtil.chatSystem
 
-RdKGToolRa.constants = RdKGToolRa.constants or {}
-RdKGToolRa.constants.PREFIX = "RA"
+BeltalowdaRa.constants = BeltalowdaRa.constants or {}
+BeltalowdaRa.constants.PREFIX = "RA"
 
-RdKGToolRa.callbackName = RdKGTool.addonName .. "RoleAssignment"
+BeltalowdaRa.callbackName = Beltalowda.addonName .. "RoleAssignment"
 
-RdKGToolRa.config = {}
-RdKGToolRa.config.updateInterval = 30000
+BeltalowdaRa.config = {}
+BeltalowdaRa.config.updateInterval = 30000
 
-RdKGToolRa.state = {}
-RdKGToolRa.state.registredConsumers = false
-RdKGToolRa.state.initialized = false
-RdKGToolRa.state.lastMessages = nil
+BeltalowdaRa.state = {}
+BeltalowdaRa.state.registredConsumers = false
+BeltalowdaRa.state.initialized = false
+BeltalowdaRa.state.lastMessages = nil
 
-function RdKGToolRa.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolRa.callbackName, RdKGToolRa.OnProfileChanged)
+function BeltalowdaRa.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaRa.callbackName, BeltalowdaRa.OnProfileChanged)
 
-	RdKGToolRa.state.roles = {}
-	RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_RAPID] = RdKGToolUtilGroup.constants.ROLE_RAPID
-	RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_PURGE] = RdKGToolUtilGroup.constants.ROLE_PURGE
-	RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_HEAL] = RdKGToolUtilGroup.constants.ROLE_HEAL
-	RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_DD] = RdKGToolUtilGroup.constants.ROLE_DD
-	RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_SYNERGY] = RdKGToolUtilGroup.constants.ROLE_SYNERGY
-	RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_CC] = RdKGToolUtilGroup.constants.ROLE_CC
-	RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_SUPPORT] = RdKGToolUtilGroup.constants.ROLE_SUPPORT
-	RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_PLACEHOLDER] = RdKGToolUtilGroup.constants.ROLE_PLACEHOLDER
-	RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_APPLICANT] = RdKGToolUtilGroup.constants.ROLE_APPLICANT
-	RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_APPLICANT + 1] = "-"
+	BeltalowdaRa.state.roles = {}
+	BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_RAPID] = BeltalowdaUtilGroup.constants.ROLE_RAPID
+	BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_PURGE] = BeltalowdaUtilGroup.constants.ROLE_PURGE
+	BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_HEAL] = BeltalowdaUtilGroup.constants.ROLE_HEAL
+	BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_DD] = BeltalowdaUtilGroup.constants.ROLE_DD
+	BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_SYNERGY] = BeltalowdaUtilGroup.constants.ROLE_SYNERGY
+	BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_CC] = BeltalowdaUtilGroup.constants.ROLE_CC
+	BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_SUPPORT] = BeltalowdaUtilGroup.constants.ROLE_SUPPORT
+	BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_PLACEHOLDER] = BeltalowdaUtilGroup.constants.ROLE_PLACEHOLDER
+	BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_APPLICANT] = BeltalowdaUtilGroup.constants.ROLE_APPLICANT
+	BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_APPLICANT + 1] = "-"
 	
-	RdKGToolRa.state.initialized = true
+	BeltalowdaRa.state.initialized = true
 	
-	RdKGToolRa.SetEnabled(RdKGToolRa.raVars.enabled)
+	BeltalowdaRa.SetEnabled(BeltalowdaRa.raVars.enabled)
 end
 
-function RdKGToolRa.GetDefaults()
+function BeltalowdaRa.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
 	defaults.allowOverride = true
 	return defaults
 end
 
-function RdKGToolRa.SetEnabled(value)
-	if RdKGToolRa.state.initialized == true and value ~= nil then
-		RdKGToolRa.raVars.enabled = value
+function BeltalowdaRa.SetEnabled(value)
+	if BeltalowdaRa.state.initialized == true and value ~= nil then
+		BeltalowdaRa.raVars.enabled = value
 		if value == true then
-			RdKGToolRa.AdjustRole()
-			if RdKGToolRa.state.registredConsumers == false then
-				EVENT_MANAGER:RegisterForEvent(RdKGToolRa.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolRa.OnPlayerActivated)
-				EVENT_MANAGER:RegisterForUpdate(RdKGToolRa.callbackName, RdKGToolRa.config.updateInterval, RdKGToolRa.SendRoleLoop)
-				RdKGToolNetworking.AddRawMessageHandler(RdKGToolRa.callbackName, RdKGToolRa.HandleRawNetworkMessage)
+			BeltalowdaRa.AdjustRole()
+			if BeltalowdaRa.state.registredConsumers == false then
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaRa.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaRa.OnPlayerActivated)
+				EVENT_MANAGER:RegisterForUpdate(BeltalowdaRa.callbackName, BeltalowdaRa.config.updateInterval, BeltalowdaRa.SendRoleLoop)
+				BeltalowdaNetworking.AddRawMessageHandler(BeltalowdaRa.callbackName, BeltalowdaRa.HandleRawNetworkMessage)
 			end
-			RdKGToolRa.state.registredConsumers = true
+			BeltalowdaRa.state.registredConsumers = true
 		else
-			if RdKGToolRa.state.registredConsumers == true then
-				RdKGToolNetworking.RemoveRawMessageHandler(RdKGToolRa.callbackName)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolRa.callbackName, EVENT_PLAYER_ACTIVATED)
-				EVENT_MANAGER:UnregisterForUpdate(RdKGToolRa.callbackName)
+			if BeltalowdaRa.state.registredConsumers == true then
+				BeltalowdaNetworking.RemoveRawMessageHandler(BeltalowdaRa.callbackName)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaRa.callbackName, EVENT_PLAYER_ACTIVATED)
+				EVENT_MANAGER:UnregisterForUpdate(BeltalowdaRa.callbackName)
 			end
-			RdKGToolRa.state.registredConsumers = false
+			BeltalowdaRa.state.registredConsumers = false
 		end
-		RdKGToolRa.OnPlayerActivated()
+		BeltalowdaRa.OnPlayerActivated()
 	end
 end
 
-function RdKGToolRa.SetPlayerRole(charName, displayName, role)
-	local leader = RdKGToolUtilGroup.GetLeaderUnit()
+function BeltalowdaRa.SetPlayerRole(charName, displayName, role)
+	local leader = BeltalowdaUtilGroup.GetLeaderUnit()
 	if leader ~= nil and leader.isPlayer == true then
-		local players = RdKGToolUtilGroup.GetGroupInformation()
+		local players = BeltalowdaUtilGroup.GetGroupInformation()
 		if players ~= nil then
 			local index = 0
 			for i = 1, #players do
@@ -93,96 +93,96 @@ function RdKGToolRa.SetPlayerRole(charName, displayName, role)
 			end
 			if index > 0 then
 				local message = {}
-				message.b0 = RdKGToolNetworking.messageTypes.MESSAGE_ID_ROLE
-				message.b1 = RdKGToolNetworking.messageIdentifiers.roleMessage.MESSAGE_ADMIN_SET_ROLE
+				message.b0 = BeltalowdaNetworking.messageTypes.MESSAGE_ID_ROLE
+				message.b1 = BeltalowdaNetworking.messageIdentifiers.roleMessage.MESSAGE_ADMIN_SET_ROLE
 				message.b2 = index
 				message.b3 = role
 				if message.b3 == nil then
 					message.b3 = 0
 				end
 				message.sent = false
-				RdKGToolNetworking.SendMessage(message, RdKGToolNetworking.constants.priorities.MEDIUM)
-				RdKGToolChat.SendChatMessage("Set Role Message Sent: " .. message.b1 .. " - " .. message.b2 .. " - " .. message.b3, RdKGToolRa.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_DEBUG)
+				BeltalowdaNetworking.SendMessage(message, BeltalowdaNetworking.constants.priorities.MEDIUM)
+				BeltalowdaChat.SendChatMessage("Set Role Message Sent: " .. message.b1 .. " - " .. message.b2 .. " - " .. message.b3, BeltalowdaRa.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_DEBUG)
 			end
 		end
 	end
 end
 
-function RdKGToolRa.SendRole()
-	if RdKGToolRa.raVars.enabled == true then
-		local playerUnitTag = RdKGToolUtilGroup.GetUnitTagForPlayer()
+function BeltalowdaRa.SendRole()
+	if BeltalowdaRa.raVars.enabled == true then
+		local playerUnitTag = BeltalowdaUtilGroup.GetUnitTagForPlayer()
 		if playerUnitTag ~= nil then
-			local player = RdKGToolUtilGroup.GetPlayerByUnitTag(playerUnitTag)
+			local player = BeltalowdaUtilGroup.GetPlayerByUnitTag(playerUnitTag)
 			if player ~= nil then
-				if RdKGToolRa.state.lastMessages == nil or RdKGToolRa.state.lastMessages.sent == true then
+				if BeltalowdaRa.state.lastMessages == nil or BeltalowdaRa.state.lastMessages.sent == true then
 					local role = player.role
 					if role == nil then
 						role = 0
 					end
 					local roleName = ""
 					if role == 0 then
-						roleName = RdKGToolRa.state.roles[RdKGToolUtilGroup.constants.roles.ROLE_APPLICANT + 1]
+						roleName = BeltalowdaRa.state.roles[BeltalowdaUtilGroup.constants.roles.ROLE_APPLICANT + 1]
 					else
-						roleName = RdKGToolRa.state.roles[role]
+						roleName = BeltalowdaRa.state.roles[role]
 					end
 					local message = {}
-					message.b0 = RdKGToolNetworking.messageTypes.MESSAGE_ID_ROLE
+					message.b0 = BeltalowdaNetworking.messageTypes.MESSAGE_ID_ROLE
 					message.b1 = role
 					message.b2 = 0
 					message.b3 = 0
 					message.sent = false
-					RdKGToolNetworking.SendMessage(message, RdKGToolNetworking.constants.priorities.MEDIUM)
-					RdKGToolRa.state.lastMessages = message
-					RdKGToolChat.SendChatMessage("Role Message Sent: " .. message.b1 .. " - " .. roleName, RdKGToolRa.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_DEBUG)
+					BeltalowdaNetworking.SendMessage(message, BeltalowdaNetworking.constants.priorities.MEDIUM)
+					BeltalowdaRa.state.lastMessages = message
+					BeltalowdaChat.SendChatMessage("Role Message Sent: " .. message.b1 .. " - " .. roleName, BeltalowdaRa.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_DEBUG)
 				end
 			end
 		end
 	end
 end
 
-function RdKGToolRa.AdjustRole()
-	if RdKGToolRa.raVars.enabled == true then
-		local role = RdKGToolRa.charVars.selectedRole
-		if role == RdKGToolUtilGroup.constants.roles.ROLE_APPLICANT + 1 then
+function BeltalowdaRa.AdjustRole()
+	if BeltalowdaRa.raVars.enabled == true then
+		local role = BeltalowdaRa.charVars.selectedRole
+		if role == BeltalowdaUtilGroup.constants.roles.ROLE_APPLICANT + 1 then
 			role = nil
 		end
-		RdKGToolUtilGroup.SetRole(GetUnitName("player") , GetUnitDisplayName("player"), role)
-		RdKGToolRa.SendRole()
+		BeltalowdaUtilGroup.SetRole(GetUnitName("player") , GetUnitDisplayName("player"), role)
+		BeltalowdaRa.SendRole()
 	end
 end
 
 --callbacks
-function RdKGToolRa.OnProfileChanged(currentProfile)
+function BeltalowdaRa.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolRa.raVars = currentProfile.toolbox.ra
-		local charVars = RdKGTool.profile.GetCharacterVars()
+		BeltalowdaRa.raVars = currentProfile.toolbox.ra
+		local charVars = Beltalowda.profile.GetCharacterVars()
 		charVars.ra = charVars.ra or {}
-		RdKGToolRa.charVars = charVars.ra
-		if RdKGToolRa.state.initialized == true then
-			RdKGToolRa.SetEnabled(RdKGToolRa.raVars.enabled)
+		BeltalowdaRa.charVars = charVars.ra
+		if BeltalowdaRa.state.initialized == true then
+			BeltalowdaRa.SetEnabled(BeltalowdaRa.raVars.enabled)
 		end
 	end
 end
 
-function RdKGToolRa.OnPlayerActivated(eventCode, initial)
-	if RdKGToolRa.raVars.enabled == true then
-		RdKGToolRa.SendRole()
+function BeltalowdaRa.OnPlayerActivated(eventCode, initial)
+	if BeltalowdaRa.raVars.enabled == true then
+		BeltalowdaRa.SendRole()
 	end
 end
 
-function RdKGToolRa.SendRoleLoop()
-	if RdKGToolRa.raVars.enabled == true then
-		if RdKGToolUtilGroup.IsGroupInCombat() == false then
-			RdKGToolRa.SendRole()
+function BeltalowdaRa.SendRoleLoop()
+	if BeltalowdaRa.raVars.enabled == true then
+		if BeltalowdaUtilGroup.IsGroupInCombat() == false then
+			BeltalowdaRa.SendRole()
 		end
 	end
 end
 
-function RdKGToolRa.HandleRawNetworkMessage(message)
-	if message ~= nil and message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_ROLE then
-		RdKGToolChat.SendChatMessage("Role Message Received: " .. message.b1 .. " - " .. message.b2 .. " -- " .. message.b3, RdKGToolRa.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_DEBUG)
-		if RdKGToolRa.raVars.allowOverride == true and message.b1 ~= RdKGToolNetworking.messageIdentifiers.roleMessage.MESSAGE_ADMIN_SET_ROLE then
-			local player = RdKGToolUtilGroup.GetPlayerByUnitTag(message.pingTag)
+function BeltalowdaRa.HandleRawNetworkMessage(message)
+	if message ~= nil and message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_ROLE then
+		BeltalowdaChat.SendChatMessage("Role Message Received: " .. message.b1 .. " - " .. message.b2 .. " -- " .. message.b3, BeltalowdaRa.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_DEBUG)
+		if BeltalowdaRa.raVars.allowOverride == true and message.b1 ~= BeltalowdaNetworking.messageIdentifiers.roleMessage.MESSAGE_ADMIN_SET_ROLE then
+			local player = BeltalowdaUtilGroup.GetPlayerByUnitTag(message.pingTag)
 			if player ~= nil and player.isPlayer == false then
 				player.role = message.b1
 				if player.role == 0 then
@@ -190,9 +190,9 @@ function RdKGToolRa.HandleRawNetworkMessage(message)
 				end
 			end
 		end
-		local sender = RdKGToolUtilGroup.GetPlayerByUnitTag(message.pingTag)
-		if sender ~= nil and sender.isLeader == true and message.b1 == RdKGToolNetworking.messageIdentifiers.roleMessage.MESSAGE_ADMIN_SET_ROLE then
-			local players = RdKGToolUtilGroup.GetGroupInformation()
+		local sender = BeltalowdaUtilGroup.GetPlayerByUnitTag(message.pingTag)
+		if sender ~= nil and sender.isLeader == true and message.b1 == BeltalowdaNetworking.messageIdentifiers.roleMessage.MESSAGE_ADMIN_SET_ROLE then
+			local players = BeltalowdaUtilGroup.GetGroupInformation()
 			if players ~= nil and message.b2 ~= nil and message.b2 >= 1 and message.b2 <= #players then
 				local player = players[message.b2]
 				local role = message.b3
@@ -201,8 +201,8 @@ function RdKGToolRa.HandleRawNetworkMessage(message)
 					player.role = nil
 				end
 				if player.isPlayer == true then
-					if RdKGToolRa.state.lastMessages ~= nil and RdKGToolRa.state.lastMessages.sent == false then
-						local queuedMessage = RdKGToolRa.state.lastMessages
+					if BeltalowdaRa.state.lastMessages ~= nil and BeltalowdaRa.state.lastMessages.sent == false then
+						local queuedMessage = BeltalowdaRa.state.lastMessages
 						queuedMessage.b1 = message.b3
 					end
 				end
@@ -212,30 +212,30 @@ function RdKGToolRa.HandleRawNetworkMessage(message)
 end
 
 --menu interaction
-function RdKGToolRa.GetMenu()
+function BeltalowdaRa.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.RA_HEADER,
+			name = BeltalowdaMenu.constants.RA_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.RA_ENABLED,
-					getFunc = RdKGToolRa.GetRaEnabled,
-					setFunc = RdKGToolRa.SetRaEnabled
+					name = BeltalowdaMenu.constants.RA_ENABLED,
+					getFunc = BeltalowdaRa.GetRaEnabled,
+					setFunc = BeltalowdaRa.SetRaEnabled
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.RA_OVERRIDE_ALLOWED,
-					getFunc = RdKGToolRa.GetRaAllowOverride,
-					setFunc = RdKGToolRa.SetRaAllowOverride
+					name = BeltalowdaMenu.constants.RA_OVERRIDE_ALLOWED,
+					getFunc = BeltalowdaRa.GetRaAllowOverride,
+					setFunc = BeltalowdaRa.SetRaAllowOverride
 				},
 				[3] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.RA_ROLE,
-					choices = RdKGToolRa.GetRaRoles(),
-					getFunc = RdKGToolRa.GetRaRole,
-					setFunc = RdKGToolRa.SetRaRole
+					name = BeltalowdaMenu.constants.RA_ROLE,
+					choices = BeltalowdaRa.GetRaRoles(),
+					getFunc = BeltalowdaRa.GetRaRole,
+					setFunc = BeltalowdaRa.SetRaRole
 				},
 			}
 		},
@@ -243,45 +243,45 @@ function RdKGToolRa.GetMenu()
 	return menu
 end
 
-function RdKGToolRa.GetRaEnabled()
-	return RdKGToolRa.raVars.enabled
+function BeltalowdaRa.GetRaEnabled()
+	return BeltalowdaRa.raVars.enabled
 end
 
-function RdKGToolRa.SetRaEnabled(value)
-	RdKGToolRa.SetEnabled(value)
+function BeltalowdaRa.SetRaEnabled(value)
+	BeltalowdaRa.SetEnabled(value)
 end
 
-function RdKGToolRa.GetRaAllowOverride()
-	return RdKGToolRa.raVars.allowOverride
+function BeltalowdaRa.GetRaAllowOverride()
+	return BeltalowdaRa.raVars.allowOverride
 end
 
-function RdKGToolRa.SetRaAllowOverride(value)
-	RdKGToolRa.raVars.allowOverride = value
+function BeltalowdaRa.SetRaAllowOverride(value)
+	BeltalowdaRa.raVars.allowOverride = value
 end
 
-function RdKGToolRa.GetRaRoles()
-	return RdKGToolRa.state.roles
+function BeltalowdaRa.GetRaRoles()
+	return BeltalowdaRa.state.roles
 end
 
-function RdKGToolRa.GetRaRole()
-	local roles = RdKGToolRa.state.roles
+function BeltalowdaRa.GetRaRole()
+	local roles = BeltalowdaRa.state.roles
 	local selectedRole = "-"
-	if roles[RdKGToolRa.charVars.selectedRole] ~= nil then
-		selectedRole = roles[RdKGToolRa.charVars.selectedRole]
+	if roles[BeltalowdaRa.charVars.selectedRole] ~= nil then
+		selectedRole = roles[BeltalowdaRa.charVars.selectedRole]
 	end
 	return selectedRole
 end
 
-function RdKGToolRa.SetRaRole(value)
-	RdKGToolRa.charVars.selectedRole = nil
+function BeltalowdaRa.SetRaRole(value)
+	BeltalowdaRa.charVars.selectedRole = nil
 	if value ~= nil then
-		local roles = RdKGToolRa.state.roles
+		local roles = BeltalowdaRa.state.roles
 		for i = 1, #roles do
 			if roles[i] == value then
-				RdKGToolRa.charVars.selectedRole = i
+				BeltalowdaRa.charVars.selectedRole = i
 				break
 			end
 		end
 	end
-	RdKGToolRa.AdjustRole()
+	BeltalowdaRa.AdjustRole()
 end

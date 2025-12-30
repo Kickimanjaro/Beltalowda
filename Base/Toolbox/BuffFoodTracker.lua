@@ -1,88 +1,88 @@
--- RdK Group Tool Buff Food Tracker
+-- Beltalowda Buff Food Tracker
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGTool.toolbox = RdKGTool.toolbox or {}
-local RdKGToolTB = RdKGTool.toolbox
-RdKGToolTB.bft = RdKGToolTB.bft or {}
-local RdKGToolBft = RdKGToolTB.bft
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolUtilGroup = RdKGToolUtil.group
-RdKGToolUtil.sound = RdKGToolUtil.sound or {}
-local RdKGToolSound = RdKGToolUtil.sound
-RdKGToolUtil.fonts = RdKGToolUtil.fonts or {}
-local RdKGToolFonts = RdKGToolUtil.fonts
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+Beltalowda.toolbox = Beltalowda.toolbox or {}
+local BeltalowdaTB = Beltalowda.toolbox
+BeltalowdaTB.bft = BeltalowdaTB.bft or {}
+local BeltalowdaBft = BeltalowdaTB.bft
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaUtilGroup = BeltalowdaUtil.group
+BeltalowdaUtil.sound = BeltalowdaUtil.sound or {}
+local BeltalowdaSound = BeltalowdaUtil.sound
+BeltalowdaUtil.fonts = BeltalowdaUtil.fonts or {}
+local BeltalowdaFonts = BeltalowdaUtil.fonts
 
-RdKGToolBft.constants = RdKGToolBft.constants or {}
-RdKGToolBft.constants.TLW_ALERT_MESSAGE = "RdKGTool.group.bft.tlw"
+BeltalowdaBft.constants = BeltalowdaBft.constants or {}
+BeltalowdaBft.constants.TLW_ALERT_MESSAGE = "Beltalowda.group.bft.tlw"
 
-RdKGToolBft.constants.ALERT_INTERVAL = 30000
+BeltalowdaBft.constants.ALERT_INTERVAL = 30000
 
-RdKGToolBft.callbackName = RdKGTool.addonName .. "BuffFoodTracker"
+BeltalowdaBft.callbackName = Beltalowda.addonName .. "BuffFoodTracker"
 
-RdKGToolBft.config = {}
-RdKGToolBft.config.updateInterval = 100
-RdKGToolBft.config.isClampedToScreen = true
-RdKGToolBft.config.ratio = 6.0
+BeltalowdaBft.config = {}
+BeltalowdaBft.config.updateInterval = 100
+BeltalowdaBft.config.isClampedToScreen = true
+BeltalowdaBft.config.ratio = 6.0
 
-RdKGToolBft.state = {}
-RdKGToolBft.state.initialized = false
-RdKGToolBft.state.foreground = true
-RdKGToolBft.state.registredConsumers = false
-RdKGToolBft.state.lastAlert = 0
-RdKGToolBft.state.outOfLoadingScreen = false
-RdKGToolBft.state.registredActiveConsumers = false
-RdKGToolBft.state.activeLayerIndex = 1
+BeltalowdaBft.state = {}
+BeltalowdaBft.state.initialized = false
+BeltalowdaBft.state.foreground = true
+BeltalowdaBft.state.registredConsumers = false
+BeltalowdaBft.state.lastAlert = 0
+BeltalowdaBft.state.outOfLoadingScreen = false
+BeltalowdaBft.state.registredActiveConsumers = false
+BeltalowdaBft.state.activeLayerIndex = 1
 
-RdKGToolBft.controls = {}
+BeltalowdaBft.controls = {}
 
 local wm = WINDOW_MANAGER
 
-function RdKGToolBft.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolBft.callbackName, RdKGToolBft.OnProfileChanged)
+function BeltalowdaBft.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaBft.callbackName, BeltalowdaBft.OnProfileChanged)
 	
-	RdKGToolBft.state.sounds = RdKGToolSound.GetRestrictedSounds()
+	BeltalowdaBft.state.sounds = BeltalowdaSound.GetRestrictedSounds()
 	
-	RdKGToolBft.CreateUI()
+	BeltalowdaBft.CreateUI()
 	
-	RdKGToolMenu.AddPositionFixedConsumer(RdKGToolBft.SetBftPositionLocked)
+	BeltalowdaMenu.AddPositionFixedConsumer(BeltalowdaBft.SetBftPositionLocked)
 	
-	RdKGToolBft.state.initialized = true
-	RdKGToolBft.InitializeControlSettings()
+	BeltalowdaBft.state.initialized = true
+	BeltalowdaBft.InitializeControlSettings()
 end
 
-function RdKGToolBft.InitializeControlSettings()
-	RdKGToolBft.SetEnabled(RdKGToolBft.bftVars.enabled)
-	RdKGToolBft.SetControlVisibility()
-	RdKGToolBft.SetPositionLocked(RdKGToolBft.bftVars.positionLocked)
-	RdKGToolBft.AdjustColors()
-	RdKGToolBft.AdjustSize()
+function BeltalowdaBft.InitializeControlSettings()
+	BeltalowdaBft.SetEnabled(BeltalowdaBft.bftVars.enabled)
+	BeltalowdaBft.SetControlVisibility()
+	BeltalowdaBft.SetPositionLocked(BeltalowdaBft.bftVars.positionLocked)
+	BeltalowdaBft.AdjustColors()
+	BeltalowdaBft.AdjustSize()
 end
 
-function RdKGToolBft.SetTlwLocation()
-	RdKGToolBft.controls.alertTLW:ClearAnchors()
-	if RdKGToolBft.bftVars.location == nil then
-		RdKGToolBft.controls.alertTLW:SetAnchor(CENTER, GuiRoot, CENTER, 450, -450)
+function BeltalowdaBft.SetTlwLocation()
+	BeltalowdaBft.controls.alertTLW:ClearAnchors()
+	if BeltalowdaBft.bftVars.location == nil then
+		BeltalowdaBft.controls.alertTLW:SetAnchor(CENTER, GuiRoot, CENTER, 450, -450)
 	else
-		RdKGToolBft.controls.alertTLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, RdKGToolBft.bftVars.location.x, RdKGToolBft.bftVars.location.y)
+		BeltalowdaBft.controls.alertTLW:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, BeltalowdaBft.bftVars.location.x, BeltalowdaBft.bftVars.location.y)
 	end
 end
 
-function RdKGToolBft.CreateUI()
-	RdKGToolBft.controls.alertTLW = wm:CreateTopLevelWindow(RdKGToolBft.constants.TLW_ALERT_MESSAGE)
+function BeltalowdaBft.CreateUI()
+	BeltalowdaBft.controls.alertTLW = wm:CreateTopLevelWindow(BeltalowdaBft.constants.TLW_ALERT_MESSAGE)
 	
-	RdKGToolBft.SetTlwLocation()
+	BeltalowdaBft.SetTlwLocation()
 	
-	RdKGToolBft.controls.alertTLW:SetClampedToScreen(RdKGToolBft.config.isClampedToScreen)
-	RdKGToolBft.controls.alertTLW:SetHandler("OnMoveStop", RdKGToolBft.SaveWindowLocation)
+	BeltalowdaBft.controls.alertTLW:SetClampedToScreen(BeltalowdaBft.config.isClampedToScreen)
+	BeltalowdaBft.controls.alertTLW:SetHandler("OnMoveStop", BeltalowdaBft.SaveWindowLocation)
 	
-	RdKGToolBft.controls.alertTLW.rootControl = wm:CreateControl(nil, RdKGToolBft.controls.alertTLW, CT_CONTROL)
-	local rootControl = RdKGToolBft.controls.alertTLW.rootControl
+	BeltalowdaBft.controls.alertTLW.rootControl = wm:CreateControl(nil, BeltalowdaBft.controls.alertTLW, CT_CONTROL)
+	local rootControl = BeltalowdaBft.controls.alertTLW.rootControl
 	
-	rootControl:SetAnchor(TOPLEFT, RdKGToolBft.controls.alertTLW, TOPLEFT, 0, 0)
+	rootControl:SetAnchor(TOPLEFT, BeltalowdaBft.controls.alertTLW, TOPLEFT, 0, 0)
 	
 	rootControl.movableBackdrop = wm:CreateControl(nil, rootControl, CT_BACKDROP)
 	
@@ -98,15 +98,15 @@ function RdKGToolBft.CreateUI()
 	
 end
 
-function RdKGToolBft.AdjustSize()
-	RdKGToolBft.controls.alertTLW:SetDimensions(RdKGToolBft.config.ratio * RdKGToolBft.bftVars.size, RdKGToolBft.bftVars.size)
-	RdKGToolBft.controls.alertTLW.rootControl:SetDimensions(RdKGToolBft.config.ratio * RdKGToolBft.bftVars.size, RdKGToolBft.bftVars.size)
-	RdKGToolBft.controls.alertTLW.rootControl.movableBackdrop:SetDimensions(RdKGToolBft.config.ratio * RdKGToolBft.bftVars.size, RdKGToolBft.bftVars.size)
-	RdKGToolBft.controls.alertTLW.rootControl.alertLabel:SetFont(RdKGToolFonts.CreateFontString(RdKGToolFonts.constants.BOLD_FONT, RdKGToolFonts.constants.INPUT_KB, RdKGToolBft.bftVars.size - 6, RdKGToolFonts.constants.WEIGHT_SOFT_SHADOW_THICK))
-	RdKGToolBft.controls.alertTLW.rootControl.alertLabel:SetDimensions(RdKGToolBft.config.ratio * RdKGToolBft.bftVars.size - 3, RdKGToolBft.bftVars.size)
+function BeltalowdaBft.AdjustSize()
+	BeltalowdaBft.controls.alertTLW:SetDimensions(BeltalowdaBft.config.ratio * BeltalowdaBft.bftVars.size, BeltalowdaBft.bftVars.size)
+	BeltalowdaBft.controls.alertTLW.rootControl:SetDimensions(BeltalowdaBft.config.ratio * BeltalowdaBft.bftVars.size, BeltalowdaBft.bftVars.size)
+	BeltalowdaBft.controls.alertTLW.rootControl.movableBackdrop:SetDimensions(BeltalowdaBft.config.ratio * BeltalowdaBft.bftVars.size, BeltalowdaBft.bftVars.size)
+	BeltalowdaBft.controls.alertTLW.rootControl.alertLabel:SetFont(BeltalowdaFonts.CreateFontString(BeltalowdaFonts.constants.BOLD_FONT, BeltalowdaFonts.constants.INPUT_KB, BeltalowdaBft.bftVars.size - 6, BeltalowdaFonts.constants.WEIGHT_SOFT_SHADOW_THICK))
+	BeltalowdaBft.controls.alertTLW.rootControl.alertLabel:SetDimensions(BeltalowdaBft.config.ratio * BeltalowdaBft.bftVars.size - 3, BeltalowdaBft.bftVars.size)
 end
 
-function RdKGToolBft.GetDefaults()
+function BeltalowdaBft.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
 	defaults.pvpOnly = true
@@ -122,153 +122,153 @@ function RdKGToolBft.GetDefaults()
 	return defaults
 end
 
-function RdKGToolBft.SetEnabled(value)
-	if RdKGToolBft.state.initialized == true and value ~= nil then
-		RdKGToolBft.bftVars.enabled = value
+function BeltalowdaBft.SetEnabled(value)
+	if BeltalowdaBft.state.initialized == true and value ~= nil then
+		BeltalowdaBft.bftVars.enabled = value
 		if value == true then
-			if RdKGToolBft.state.registredConsumers == false then
+			if BeltalowdaBft.state.registredConsumers == false then
 				
-				EVENT_MANAGER:RegisterForEvent(RdKGToolBft.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolBft.OnPlayerActivated)
-				EVENT_MANAGER:RegisterForEvent(RdKGToolBft.callbackName, EVENT_PLAYER_DEACTIVATED, RdKGToolBft.OnPlayerDeactivated)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaBft.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaBft.OnPlayerActivated)
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaBft.callbackName, EVENT_PLAYER_DEACTIVATED, BeltalowdaBft.OnPlayerDeactivated)
 				
 			end
-			RdKGToolBft.state.registredConsumers = true
+			BeltalowdaBft.state.registredConsumers = true
 		else
-			if RdKGToolBft.state.registredConsumers == true then
+			if BeltalowdaBft.state.registredConsumers == true then
 				
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolBft.callbackName, EVENT_PLAYER_ACTIVATED)
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolBft.callbackName, EVENT_PLAYER_DEACTIVATED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaBft.callbackName, EVENT_PLAYER_ACTIVATED)
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaBft.callbackName, EVENT_PLAYER_DEACTIVATED)
 				
 			end
-			RdKGToolBft.state.registredConsumers = false
+			BeltalowdaBft.state.registredConsumers = false
 		end
-		RdKGToolBft.OnPlayerActivated()
+		BeltalowdaBft.OnPlayerActivated()
 	end
 end
 
-function RdKGToolBft.SetControlVisibility()
-	local enabled = RdKGToolBft.bftVars.enabled
-	local pvpOnly = RdKGToolBft.bftVars.pvpOnly
+function BeltalowdaBft.SetControlVisibility()
+	local enabled = BeltalowdaBft.bftVars.enabled
+	local pvpOnly = BeltalowdaBft.bftVars.pvpOnly
 	local setHidden = true
 	if enabled ~= nil and pvpOnly ~= nil then
 
-		if enabled == true and (pvpOnly == false or (pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
+		if enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 			setHidden = false
 		end
 	end
 	if setHidden == false then
-		if RdKGToolBft.state.foreground == false then
-			RdKGToolBft.controls.alertTLW:SetHidden(RdKGToolBft.state.activeLayerIndex > 2)
+		if BeltalowdaBft.state.foreground == false then
+			BeltalowdaBft.controls.alertTLW:SetHidden(BeltalowdaBft.state.activeLayerIndex > 2)
 		else
-			RdKGToolBft.controls.alertTLW:SetHidden(false)
+			BeltalowdaBft.controls.alertTLW:SetHidden(false)
 		end
 	else
-		RdKGToolBft.controls.alertTLW:SetHidden(setHidden)
+		BeltalowdaBft.controls.alertTLW:SetHidden(setHidden)
 	end
 end
 
-function RdKGToolBft.SetPositionLocked(value)
-	RdKGToolBft.bftVars.positionLocked = value
-	RdKGToolBft.controls.alertTLW:SetMovable(not value)
-	RdKGToolBft.controls.alertTLW:SetMouseEnabled(not value)
+function BeltalowdaBft.SetPositionLocked(value)
+	BeltalowdaBft.bftVars.positionLocked = value
+	BeltalowdaBft.controls.alertTLW:SetMovable(not value)
+	BeltalowdaBft.controls.alertTLW:SetMouseEnabled(not value)
 	if value == true then
-		RdKGToolBft.controls.alertTLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
-		RdKGToolBft.controls.alertTLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+		BeltalowdaBft.controls.alertTLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.0)
+		BeltalowdaBft.controls.alertTLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	else
-		RdKGToolBft.controls.alertTLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
-		RdKGToolBft.controls.alertTLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
+		BeltalowdaBft.controls.alertTLW.rootControl.movableBackdrop:SetCenterColor(1, 0, 0, 0.5)
+		BeltalowdaBft.controls.alertTLW.rootControl.movableBackdrop:SetEdgeColor(1, 0, 0, 0.0)
 	end
 end
 
-function RdKGToolBft.AdjustColors()
-	local rootControl = RdKGToolBft.controls.alertTLW.rootControl
-	rootControl.alertLabel:SetColor(RdKGToolBft.bftVars.color.r, RdKGToolBft.bftVars.color.g, RdKGToolBft.bftVars.color.b)
+function BeltalowdaBft.AdjustColors()
+	local rootControl = BeltalowdaBft.controls.alertTLW.rootControl
+	rootControl.alertLabel:SetColor(BeltalowdaBft.bftVars.color.r, BeltalowdaBft.bftVars.color.g, BeltalowdaBft.bftVars.color.b)
 end
 
-function RdKGToolBft.PlaySound()
-	if RdKGToolBft.bftVars.soundEnabled == true and RdKGToolBft.bftVars.enabled == true and (RdKGToolBft.bftVars.pvpOnly == false or (RdKGToolBft.bftVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
-		if GetGameTimeMilliseconds() > RdKGToolBft.constants.ALERT_INTERVAL + RdKGToolBft.state.lastAlert and RdKGToolBft.state.outOfLoadingScreen == true then
-			RdKGToolBft.state.lastAlert = GetGameTimeMilliseconds()
-			RdKGToolSound.PlaySoundByName(RdKGToolBft.bftVars.selectedSound)
+function BeltalowdaBft.PlaySound()
+	if BeltalowdaBft.bftVars.soundEnabled == true and BeltalowdaBft.bftVars.enabled == true and (BeltalowdaBft.bftVars.pvpOnly == false or (BeltalowdaBft.bftVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
+		if GetGameTimeMilliseconds() > BeltalowdaBft.constants.ALERT_INTERVAL + BeltalowdaBft.state.lastAlert and BeltalowdaBft.state.outOfLoadingScreen == true then
+			BeltalowdaBft.state.lastAlert = GetGameTimeMilliseconds()
+			BeltalowdaSound.PlaySoundByName(BeltalowdaBft.bftVars.selectedSound)
 		end
 	end
 end
 --callbacks
-function RdKGToolBft.OnProfileChanged(currentProfile)
+function BeltalowdaBft.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolBft.bftVars = currentProfile.toolbox.bft
-		RdKGToolBft.SetEnabled(RdKGToolBft.bftVars.enabled)
-		if RdKGToolBft.state.initialized == true then
-			RdKGToolBft.InitializeControlSettings()
-			RdKGToolBft.SetTlwLocation()
+		BeltalowdaBft.bftVars = currentProfile.toolbox.bft
+		BeltalowdaBft.SetEnabled(BeltalowdaBft.bftVars.enabled)
+		if BeltalowdaBft.state.initialized == true then
+			BeltalowdaBft.InitializeControlSettings()
+			BeltalowdaBft.SetTlwLocation()
 		end
 	end
 end
 
-function RdKGToolBft.SaveWindowLocation()
-	if RdKGToolBft.bftVars.positionLocked == false then
-		RdKGToolBft.bftVars.location = RdKGToolBft.bftVars.location or {}
-		RdKGToolBft.bftVars.location.x = RdKGToolBft.controls.alertTLW:GetLeft()
-		RdKGToolBft.bftVars.location.y = RdKGToolBft.controls.alertTLW:GetTop()
+function BeltalowdaBft.SaveWindowLocation()
+	if BeltalowdaBft.bftVars.positionLocked == false then
+		BeltalowdaBft.bftVars.location = BeltalowdaBft.bftVars.location or {}
+		BeltalowdaBft.bftVars.location.x = BeltalowdaBft.controls.alertTLW:GetLeft()
+		BeltalowdaBft.bftVars.location.y = BeltalowdaBft.controls.alertTLW:GetTop()
 	end
 end
 
-function RdKGToolBft.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
+function BeltalowdaBft.SetForegroundVisibility(eventCode, layerIndex, activeLayerIndex)
 	if eventCode == EVENT_ACTION_LAYER_POPPED then
-		RdKGToolBft.state.foreground = true
+		BeltalowdaBft.state.foreground = true
 	elseif eventCode == EVENT_ACTION_LAYER_PUSHED then
-		RdKGToolBft.state.foreground = false
+		BeltalowdaBft.state.foreground = false
 	end
 	--hack?
-	RdKGToolBft.state.activeLayerIndex = activeLayerIndex
+	BeltalowdaBft.state.activeLayerIndex = activeLayerIndex
 	
-	RdKGToolBft.SetControlVisibility()
+	BeltalowdaBft.SetControlVisibility()
 end
 
-function RdKGToolBft.OnPlayerActivated(eventCode, initial)
-	RdKGToolBft.state.lastAlert = GetGameTimeMilliseconds()
-	RdKGToolBft.state.outOfLoadingScreen = true
-	if RdKGToolBft.bftVars.enabled == true and (RdKGToolBft.bftVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true or RdKGToolBft.bftVars.pvpOnly == false) then
+function BeltalowdaBft.OnPlayerActivated(eventCode, initial)
+	BeltalowdaBft.state.lastAlert = GetGameTimeMilliseconds()
+	BeltalowdaBft.state.outOfLoadingScreen = true
+	if BeltalowdaBft.bftVars.enabled == true and (BeltalowdaBft.bftVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true or BeltalowdaBft.bftVars.pvpOnly == false) then
 		--d("register")
-		if RdKGToolBft.state.registredActiveConsumers == false then
-			EVENT_MANAGER:RegisterForEvent(RdKGToolBft.callbackName, EVENT_ACTION_LAYER_POPPED, RdKGToolBft.SetForegroundVisibility)
-			EVENT_MANAGER:RegisterForEvent(RdKGToolBft.callbackName, EVENT_ACTION_LAYER_PUSHED, RdKGToolBft.SetForegroundVisibility)
+		if BeltalowdaBft.state.registredActiveConsumers == false then
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaBft.callbackName, EVENT_ACTION_LAYER_POPPED, BeltalowdaBft.SetForegroundVisibility)
+			EVENT_MANAGER:RegisterForEvent(BeltalowdaBft.callbackName, EVENT_ACTION_LAYER_PUSHED, BeltalowdaBft.SetForegroundVisibility)
 			
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolBft.callbackName, RdKGToolBft.config.updateInterval, RdKGToolBft.UiLoop)
-			RdKGToolUtilGroup.AddFeature(RdKGToolBft.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_BUFFS, RdKGToolBft.config.updateInterval)
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaBft.callbackName, BeltalowdaBft.config.updateInterval, BeltalowdaBft.UiLoop)
+			BeltalowdaUtilGroup.AddFeature(BeltalowdaBft.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_BUFFS, BeltalowdaBft.config.updateInterval)
 			
-			RdKGToolBft.state.registredActiveConsumers = true
+			BeltalowdaBft.state.registredActiveConsumers = true
 		end
 	else
 		--d("unregister")
-		if RdKGToolBft.state.registredActiveConsumers == true then
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolBft.callbackName, EVENT_ACTION_LAYER_POPPED)
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolBft.callbackName, EVENT_ACTION_LAYER_PUSHED)
+		if BeltalowdaBft.state.registredActiveConsumers == true then
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaBft.callbackName, EVENT_ACTION_LAYER_POPPED)
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaBft.callbackName, EVENT_ACTION_LAYER_PUSHED)
 			
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolBft.callbackName)
-			RdKGToolUtilGroup.RemoveFeature(RdKGToolBft.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_BUFFS)
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaBft.callbackName)
+			BeltalowdaUtilGroup.RemoveFeature(BeltalowdaBft.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_BUFFS)
 				
-			RdKGToolBft.state.registredActiveConsumers = false
+			BeltalowdaBft.state.registredActiveConsumers = false
 		end
 	end
-	RdKGToolBft.SetControlVisibility()
+	BeltalowdaBft.SetControlVisibility()
 end
 
-function RdKGToolBft.OnPlayerDeactivated(eventCode)
-	RdKGToolBft.state.outOfLoadingScreen = false
+function BeltalowdaBft.OnPlayerDeactivated(eventCode)
+	BeltalowdaBft.state.outOfLoadingScreen = false
 end
 
-function RdKGToolBft.UiLoop()
-	if RdKGToolBft.bftVars.enabled == true and (RdKGToolBft.bftVars.pvpOnly == false or (RdKGToolBft.bftVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
-		local players = RdKGToolUtilGroup.GetGroupInformation()
+function BeltalowdaBft.UiLoop()
+	if BeltalowdaBft.bftVars.enabled == true and (BeltalowdaBft.bftVars.pvpOnly == false or (BeltalowdaBft.bftVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
+		local players = BeltalowdaUtilGroup.GetGroupInformation()
 		if players ~= nil then
 			for i = 1, #players do
 				if players[i].displayName == GetUnitDisplayName("player") and players[i].charName == GetUnitName("player") then
-					local label = RdKGToolBft.controls.alertTLW.rootControl.alertLabel
+					local label = BeltalowdaBft.controls.alertTLW.rootControl.alertLabel
 					if players[i].buffs ~= nil and players[i].buffs.specialInformation ~= nil and players[i].buffs.specialInformation.foodDrink ~= nil and 
 					   players[i].buffs.specialInformation.foodDrink.active == true and players[i].buffs.specialInformation.foodDrink.ending ~= nil then
 						local left = players[i].buffs.specialInformation.foodDrink.ending - (GetGameTimeMilliseconds() / 1000)
-						if left > RdKGToolBft.bftVars.warningTimer then
+						if left > BeltalowdaBft.bftVars.warningTimer then
 							label:SetText("")
 						else
 							local minutes = math.floor(left / 60)
@@ -282,13 +282,13 @@ function RdKGToolBft.UiLoop()
 							else
 								left = string.format("%d:%d", minutes, seconds)
 							end
-							label:SetText(string.format(RdKGToolBft.constants.BUFF_FOOD_STRING, left))
+							label:SetText(string.format(BeltalowdaBft.constants.BUFF_FOOD_STRING, left))
 							--d(left)
-							RdKGToolBft.PlaySound()
+							BeltalowdaBft.PlaySound()
 						end
 					else
-						label:SetText(string.format(RdKGToolBft.constants.BUFF_FOOD_STRING, "--:--"))
-						RdKGToolBft.PlaySound()
+						label:SetText(string.format(BeltalowdaBft.constants.BUFF_FOOD_STRING, "--:--"))
+						BeltalowdaBft.PlaySound()
 					end
 					break
 				end
@@ -298,70 +298,70 @@ function RdKGToolBft.UiLoop()
 end
 
 --menu interactions
-function RdKGToolBft.GetMenu()
+function BeltalowdaBft.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.BFT_HEADER,
+			name = BeltalowdaMenu.constants.BFT_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.BFT_ENABLED,
-					getFunc = RdKGToolBft.GetBftEnabled,
-					setFunc = RdKGToolBft.SetBftEnabled
+					name = BeltalowdaMenu.constants.BFT_ENABLED,
+					getFunc = BeltalowdaBft.GetBftEnabled,
+					setFunc = BeltalowdaBft.SetBftEnabled
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.BFT_POSITION_FIXED,
-					getFunc = RdKGToolBft.GetBftPositionLocked,
-					setFunc = RdKGToolBft.SetBftPositionLocked
+					name = BeltalowdaMenu.constants.BFT_POSITION_FIXED,
+					getFunc = BeltalowdaBft.GetBftPositionLocked,
+					setFunc = BeltalowdaBft.SetBftPositionLocked
 				},
 				[3] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.BFT_PVP_ONLY,
-					getFunc = RdKGToolBft.GetBftPvpOnly,
-					setFunc = RdKGToolBft.SetBftPvpOnly
+					name = BeltalowdaMenu.constants.BFT_PVP_ONLY,
+					getFunc = BeltalowdaBft.GetBftPvpOnly,
+					setFunc = BeltalowdaBft.SetBftPvpOnly
 				},
 				[4] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.BFT_COLOR,
-					getFunc = RdKGToolBft.GetBftColor,
-					setFunc = RdKGToolBft.SetBftColor,
+					name = BeltalowdaMenu.constants.BFT_COLOR,
+					getFunc = BeltalowdaBft.GetBftColor,
+					setFunc = BeltalowdaBft.SetBftColor,
 					width = "full"
 				},
 				[5] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.BFT_SIZE,
+					name = BeltalowdaMenu.constants.BFT_SIZE,
 					min = 20,
 					max = 60,
 					step = 1,
-					getFunc = RdKGToolBft.GetBftSize,
-					setFunc = RdKGToolBft.SetBftSize,
+					getFunc = BeltalowdaBft.GetBftSize,
+					setFunc = BeltalowdaBft.SetBftSize,
 					width = "full",
 					default = 60
 				},
 				[6] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.BFT_SOUND_ENABLED,
-					getFunc = RdKGToolBft.GetBftSoundEnabled,
-					setFunc = RdKGToolBft.SetBftSoundEnabled
+					name = BeltalowdaMenu.constants.BFT_SOUND_ENABLED,
+					getFunc = BeltalowdaBft.GetBftSoundEnabled,
+					setFunc = BeltalowdaBft.SetBftSoundEnabled
 				},
 				[7] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.BFT_SELECTED_SOUND,
-					choices = RdKGToolBft.GetBftAvailableSounds(),
-					getFunc = RdKGToolBft.GetBftSelectedSound,
-					setFunc = RdKGToolBft.SetBftSelectedSound,
+					name = BeltalowdaMenu.constants.BFT_SELECTED_SOUND,
+					choices = BeltalowdaBft.GetBftAvailableSounds(),
+					getFunc = BeltalowdaBft.GetBftSelectedSound,
+					setFunc = BeltalowdaBft.SetBftSelectedSound,
 					width = "full"
 				},
 				[8] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.BFT_WARNING_TIMER,
+					name = BeltalowdaMenu.constants.BFT_WARNING_TIMER,
 					min = 1,
 					max = 1800,
 					step = 1,
-					getFunc = RdKGToolBft.GetBftWarningTimer,
-					setFunc = RdKGToolBft.SetBftWarningTimer,
+					getFunc = BeltalowdaBft.GetBftWarningTimer,
+					setFunc = BeltalowdaBft.SetBftWarningTimer,
 					width = "full",
 					default = 600
 				},
@@ -371,80 +371,80 @@ function RdKGToolBft.GetMenu()
 	return menu
 end
 
-function RdKGToolBft.GetBftEnabled()
-	return RdKGToolBft.bftVars.enabled
+function BeltalowdaBft.GetBftEnabled()
+	return BeltalowdaBft.bftVars.enabled
 end
 
-function RdKGToolBft.SetBftEnabled(value)
-	RdKGToolBft.SetEnabled(value)
+function BeltalowdaBft.SetBftEnabled(value)
+	BeltalowdaBft.SetEnabled(value)
 end
 
-function RdKGToolBft.GetBftPositionLocked()
-	return RdKGToolBft.bftVars.positionLocked
+function BeltalowdaBft.GetBftPositionLocked()
+	return BeltalowdaBft.bftVars.positionLocked
 end
 
-function RdKGToolBft.SetBftPositionLocked(value)
-	RdKGToolBft.SetPositionLocked(value)
+function BeltalowdaBft.SetBftPositionLocked(value)
+	BeltalowdaBft.SetPositionLocked(value)
 end
 
-function RdKGToolBft.GetBftPvpOnly()
-	return RdKGToolBft.bftVars.pvpOnly
+function BeltalowdaBft.GetBftPvpOnly()
+	return BeltalowdaBft.bftVars.pvpOnly
 end
 
-function RdKGToolBft.SetBftPvpOnly(value)
-	RdKGToolBft.bftVars.pvpOnly = value
-	RdKGToolBft.SetControlVisibility()
+function BeltalowdaBft.SetBftPvpOnly(value)
+	BeltalowdaBft.bftVars.pvpOnly = value
+	BeltalowdaBft.SetControlVisibility()
 end
 
-function RdKGToolBft.GetBftColor()
-	return RdKGToolMenu.GetRGBColor(RdKGToolBft.bftVars.color)
+function BeltalowdaBft.GetBftColor()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaBft.bftVars.color)
 end
 
-function RdKGToolBft.SetBftColor(r, g, b)
-	RdKGToolBft.bftVars.color = RdKGToolMenu.GetColorFromRGB(r, g, b)
-	RdKGToolBft.controls.alertTLW.rootControl.alertLabel:SetColor(r, g, b, 1)
+function BeltalowdaBft.SetBftColor(r, g, b)
+	BeltalowdaBft.bftVars.color = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaBft.controls.alertTLW.rootControl.alertLabel:SetColor(r, g, b, 1)
 end
 
-function RdKGToolBft.GetBftSize()
-	return RdKGToolBft.bftVars.size
+function BeltalowdaBft.GetBftSize()
+	return BeltalowdaBft.bftVars.size
 end
 
-function RdKGToolBft.SetBftSize(value)
-	RdKGToolBft.bftVars.size = value
-	RdKGToolBft.AdjustSize()
+function BeltalowdaBft.SetBftSize(value)
+	BeltalowdaBft.bftVars.size = value
+	BeltalowdaBft.AdjustSize()
 end
 
-function RdKGToolBft.GetBftSoundEnabled()
-	return RdKGToolBft.bftVars.soundEnabled
+function BeltalowdaBft.GetBftSoundEnabled()
+	return BeltalowdaBft.bftVars.soundEnabled
 end
 
-function RdKGToolBft.SetBftSoundEnabled(value)
-	RdKGToolBft.bftVars.soundEnabled = value
+function BeltalowdaBft.SetBftSoundEnabled(value)
+	BeltalowdaBft.bftVars.soundEnabled = value
 end
 
-function RdKGToolBft.GetBftAvailableSounds()
+function BeltalowdaBft.GetBftAvailableSounds()
 	local sounds = {}
-	for i = 1, #RdKGToolBft.state.sounds do
-		sounds[i] = RdKGToolBft.state.sounds[i].name
+	for i = 1, #BeltalowdaBft.state.sounds do
+		sounds[i] = BeltalowdaBft.state.sounds[i].name
 	end
 	return sounds
 end
 
-function RdKGToolBft.GetBftSelectedSound()
-	return RdKGToolBft.bftVars.selectedSound
+function BeltalowdaBft.GetBftSelectedSound()
+	return BeltalowdaBft.bftVars.selectedSound
 end
 
-function RdKGToolBft.SetBftSelectedSound(value)
+function BeltalowdaBft.SetBftSelectedSound(value)
 	if value ~= nil then
-		RdKGToolBft.bftVars.selectedSound = value
-		RdKGToolSound.PlaySoundByName(value)
+		BeltalowdaBft.bftVars.selectedSound = value
+		BeltalowdaSound.PlaySoundByName(value)
 	end
 end
 
-function RdKGToolBft.GetBftWarningTimer()
-	return RdKGToolBft.bftVars.warningTimer
+function BeltalowdaBft.GetBftWarningTimer()
+	return BeltalowdaBft.bftVars.warningTimer
 end
 
-function RdKGToolBft.SetBftWarningTimer(value)
-	RdKGToolBft.bftVars.warningTimer = value
+function BeltalowdaBft.SetBftWarningTimer(value)
+	BeltalowdaBft.bftVars.warningTimer = value
 end

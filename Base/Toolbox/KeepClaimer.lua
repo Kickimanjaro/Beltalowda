@@ -1,36 +1,36 @@
--- RdK Group Tool Keep Claimer
+-- Beltalowda Keep Claimer
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.toolbox.kc = RdKGTool.toolbox.kc or {}
-local RdKGToolKc = RdKGTool.toolbox.kc
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-local RdKGToolRoster = RdKGToolUtil.roster
+Beltalowda.toolbox.kc = Beltalowda.toolbox.kc or {}
+local BeltalowdaKc = Beltalowda.toolbox.kc
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+local BeltalowdaRoster = BeltalowdaUtil.roster
 
-RdKGToolKc.constants = RdKGToolKc.constants or {}
+BeltalowdaKc.constants = BeltalowdaKc.constants or {}
 
-RdKGToolKc.callbackName = RdKGTool.addonName .. "KeepClaimer"
+BeltalowdaKc.callbackName = Beltalowda.addonName .. "KeepClaimer"
 
-RdKGToolKc.config = {}
-RdKGToolKc.config.updateInterval = 5
+BeltalowdaKc.config = {}
+BeltalowdaKc.config.updateInterval = 5
 
-RdKGToolKc.state = {}
-RdKGToolKc.state.initialized = false
-RdKGToolKc.state.registeredConsumer = false
+BeltalowdaKc.state = {}
+BeltalowdaKc.state.initialized = false
+BeltalowdaKc.state.registeredConsumer = false
 
 
-function RdKGToolKc.Initialize()
-	if RdKGToolRoster.IsRdKMember(GetUnitDisplayName("player")) == true then
-		RdKGTool.profile.AddProfileChangeListener(RdKGToolKc.callbackName, RdKGToolKc.OnProfileChanged)
+function BeltalowdaKc.Initialize()
+	if BeltalowdaRoster.IsBeltalowdaMember(GetUnitDisplayName("player")) == true then
+		Beltalowda.profile.AddProfileChangeListener(BeltalowdaKc.callbackName, BeltalowdaKc.OnProfileChanged)
 		
-		RdKGToolKc.state.initialized = true
-		RdKGToolKc.SetEnabled(RdKGToolKc.kcVars.enabled)
+		BeltalowdaKc.state.initialized = true
+		BeltalowdaKc.SetEnabled(BeltalowdaKc.kcVars.enabled)
 	end
 end
 
-function RdKGToolKc.GetDefaults()
+function BeltalowdaKc.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
 	defaults.claimKeep = true
@@ -45,38 +45,38 @@ function RdKGToolKc.GetDefaults()
 	return defaults
 end
 
-function RdKGToolKc.SetEnabled(value)
-	if RdKGToolKc.state.initialized == true and value ~= nil then
-		RdKGToolKc.kcVars.enabled = value
+function BeltalowdaKc.SetEnabled(value)
+	if BeltalowdaKc.state.initialized == true and value ~= nil then
+		BeltalowdaKc.kcVars.enabled = value
 		if value == true then
-			if RdKGToolKc.state.registeredConsumer == false then
-				EVENT_MANAGER:RegisterForEvent(RdKGToolKc.callbackName, EVENT_START_KEEP_GUILD_CLAIM_INTERACTION, RdKGToolKc.OnStartKeepGuildClaimInteraction)
-				--EVENT_MANAGER:RegisterForEvent(RdKGToolKc.callbackName, EVENT_END_KEEP_GUILD_CLAIM_INTERACTION, RdKGToolKc.OnEndKeepGuildClaimInteraction)
-				RdKGToolKc.state.registeredConsumer = true
+			if BeltalowdaKc.state.registeredConsumer == false then
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaKc.callbackName, EVENT_START_KEEP_GUILD_CLAIM_INTERACTION, BeltalowdaKc.OnStartKeepGuildClaimInteraction)
+				--EVENT_MANAGER:RegisterForEvent(BeltalowdaKc.callbackName, EVENT_END_KEEP_GUILD_CLAIM_INTERACTION, BeltalowdaKc.OnEndKeepGuildClaimInteraction)
+				BeltalowdaKc.state.registeredConsumer = true
 			end
 		else
-			if RdKGToolKc.state.registeredConsumer == true then
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolKc.callbackName, EVENT_START_KEEP_GUILD_CLAIM_INTERACTION)
-				--EVENT_MANAGER:UnregisterForEvent(RdKGToolKc.callbackName, EVENT_END_KEEP_GUILD_CLAIM_INTERACTION)
-				RdKGToolKc.state.registeredConsumer = false
+			if BeltalowdaKc.state.registeredConsumer == true then
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaKc.callbackName, EVENT_START_KEEP_GUILD_CLAIM_INTERACTION)
+				--EVENT_MANAGER:UnregisterForEvent(BeltalowdaKc.callbackName, EVENT_END_KEEP_GUILD_CLAIM_INTERACTION)
+				BeltalowdaKc.state.registeredConsumer = false
 			end
 		end
 	end
 end
 
 --internal functions
-function RdKGToolKc.GetNextClaimingGuildIndex()
+function BeltalowdaKc.GetNextClaimingGuildIndex()
 	local retVal = nil
-	for i = 1, #RdKGToolKc.kcVars.guilds do
-		if RdKGToolKc.kcVars.guilds[i] ~= nil and RdKGToolKc.kcVars.guilds[i] ~= "" and RdKGToolKc.kcVars.guilds[i] ~= "-" then
-			local guildId = RdKGToolRoster.GetGuildIdForName(RdKGToolKc.kcVars.guilds[i])
+	for i = 1, #BeltalowdaKc.kcVars.guilds do
+		if BeltalowdaKc.kcVars.guilds[i] ~= nil and BeltalowdaKc.kcVars.guilds[i] ~= "" and BeltalowdaKc.kcVars.guilds[i] ~= "-" then
+			local guildId = BeltalowdaRoster.GetGuildIdForName(BeltalowdaKc.kcVars.guilds[i])
 			if guildId ~= nil then
 				if DoesGuildHaveClaimedKeep(GetGuildId(guildId)) == false then
 					retVal = guildId
 					break
 				end
 			else
-				RdKGToolKc.kcVars.guilds[i] = ""
+				BeltalowdaKc.kcVars.guilds[i] = ""
 			end			
 		end
 	end
@@ -84,42 +84,42 @@ function RdKGToolKc.GetNextClaimingGuildIndex()
 end
 
 --callbacks
-function RdKGToolKc.OnProfileChanged(currentProfile)
+function BeltalowdaKc.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolKc.kcVars = currentProfile.toolbox.kc
-		RdKGToolKc.SetEnabled(RdKGToolKc.kcVars.enabled)
+		BeltalowdaKc.kcVars = currentProfile.toolbox.kc
+		BeltalowdaKc.SetEnabled(BeltalowdaKc.kcVars.enabled)
 	end
 end
 
 --[[
-function RdKGToolKc.OnEndKeepGuildClaimInteraction(event)
+function BeltalowdaKc.OnEndKeepGuildClaimInteraction(event)
 	if event == EVENT_END_KEEP_GUILD_CLAIM_INTERACTION then
 		--d("dialog left")
 	end
 end
 ]]
 
-function RdKGToolKc.OnUpdate()
-	local guildId = RdKGToolKc.GetNextClaimingGuildIndex()
+function BeltalowdaKc.OnUpdate()
+	local guildId = BeltalowdaKc.GetNextClaimingGuildIndex()
 	if guildId ~= nil and GetGuildClaimInteractionKeepId() ~= 0 and GetGuildId(guildId) ~= nil and GetGuildId(guildId) ~= 0 then
 		
 		local secondsToClaim = GetSecondsUntilKeepClaimAvailable(GetGuildClaimInteractionKeepId(), BGQUERY_LOCAL)
 		if secondsToClaim == 0 then
 			ClaimInteractionKeepForGuild(GetGuildId(guildId))
-			EVENT_MANAGER:UnregisterForEvent(RdKGToolKc.callbackName)
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaKc.callbackName)
 		end
 	else
-		EVENT_MANAGER:UnregisterForEvent(RdKGToolKc.callbackName)
+		EVENT_MANAGER:UnregisterForEvent(BeltalowdaKc.callbackName)
 	end
 end
 
-function RdKGToolKc.OnStartKeepGuildClaimInteraction(event)
+function BeltalowdaKc.OnStartKeepGuildClaimInteraction(event)
 	if event == EVENT_START_KEEP_GUILD_CLAIM_INTERACTION then
 		--d("event fired")
 		local keepType = GetKeepType(GetGuildClaimInteractionKeepId())
-		if (keepType == KEEPTYPE_KEEP and RdKGToolKc.kcVars.claimKeep == true) or (keepType == KEEPTYPE_OUTPOST and RdKGToolKc.kcVars.claimOutpost == true) or (keepType == KEEPTYPE_RESOURCE and RdKGToolKc.kcVars.claimResource == true) then
+		if (keepType == KEEPTYPE_KEEP and BeltalowdaKc.kcVars.claimKeep == true) or (keepType == KEEPTYPE_OUTPOST and BeltalowdaKc.kcVars.claimOutpost == true) or (keepType == KEEPTYPE_RESOURCE and BeltalowdaKc.kcVars.claimResource == true) then
 			--d("claim claim claim:P")
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolKc.callbackName, RdKGToolKc.config.updateInterval, RdKGToolKc.OnUpdate)
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaKc.callbackName, BeltalowdaKc.config.updateInterval, BeltalowdaKc.OnUpdate)
 		end
 		--GetGuildClaimedKeep(number guildLuaId) : number claimedKeepId, number claimedKeepCampaignId
 		--DoesGuildHaveClaimedKeep(number guildLuaId) : boolean hasClaimedKeep
@@ -157,71 +157,71 @@ function RdKGToolKc.OnStartKeepGuildClaimInteraction(event)
 end
 
 --menu interaction
-function RdKGToolKc.GetMenu()
-	if RdKGToolRoster.IsRdKMember(GetUnitDisplayName("player")) == true then
+function BeltalowdaKc.GetMenu()
+	if BeltalowdaRoster.IsBeltalowdaMember(GetUnitDisplayName("player")) == true then
 		local menu = {
 			[1] = {
 				type = "submenu",
-				name = RdKGToolMenu.constants.KC_HEADER,
+				name = BeltalowdaMenu.constants.KC_HEADER,
 				controls = {
 					[1] = {
 						type = "checkbox",
-						name = RdKGToolMenu.constants.KC_ENABLED,
-						getFunc = RdKGToolKc.GetKcEnabled,
-						setFunc = RdKGToolKc.SetKcEnabled
+						name = BeltalowdaMenu.constants.KC_ENABLED,
+						getFunc = BeltalowdaKc.GetKcEnabled,
+						setFunc = BeltalowdaKc.SetKcEnabled
 					},
 					[2] = {
 						type = "checkbox",
-						name = RdKGToolMenu.constants.KC_CLAIM_KEEPS,
-						getFunc = RdKGToolKc.GetKcClaimKeeps,
-						setFunc = RdKGToolKc.SetKcClaimKeeps
+						name = BeltalowdaMenu.constants.KC_CLAIM_KEEPS,
+						getFunc = BeltalowdaKc.GetKcClaimKeeps,
+						setFunc = BeltalowdaKc.SetKcClaimKeeps
 					},
 					[3] = {
 						type = "checkbox",
-						name = RdKGToolMenu.constants.KC_CLAIM_OUTPOSTS,
-						getFunc = RdKGToolKc.GetKcClaimOutposts,
-						setFunc = RdKGToolKc.SetKcClaimOutposts
+						name = BeltalowdaMenu.constants.KC_CLAIM_OUTPOSTS,
+						getFunc = BeltalowdaKc.GetKcClaimOutposts,
+						setFunc = BeltalowdaKc.SetKcClaimOutposts
 					},
 					[4] = {
 						type = "checkbox",
-						name = RdKGToolMenu.constants.KC_CLAIM_RESOURCES,
-						getFunc = RdKGToolKc.GetKcClaimResources,
-						setFunc = RdKGToolKc.SetKcClaimResources
+						name = BeltalowdaMenu.constants.KC_CLAIM_RESOURCES,
+						getFunc = BeltalowdaKc.GetKcClaimResources,
+						setFunc = BeltalowdaKc.SetKcClaimResources
 					},
 					[5] = {
 						type = "dropdown",
-						name = RdKGToolMenu.constants.KC_GUILD_1,
-						choices = RdKGToolKc.GetKcGuilds(),
-						getFunc = function() return RdKGToolKc.GetKcGuild(1) end,
-						setFunc = function(value) RdKGToolKc.SetKcGuild(1, value) end
+						name = BeltalowdaMenu.constants.KC_GUILD_1,
+						choices = BeltalowdaKc.GetKcGuilds(),
+						getFunc = function() return BeltalowdaKc.GetKcGuild(1) end,
+						setFunc = function(value) BeltalowdaKc.SetKcGuild(1, value) end
 					},
 					[6] = {
 						type = "dropdown",
-						name = RdKGToolMenu.constants.KC_GUILD_2,
-						choices = RdKGToolKc.GetKcGuilds(),
-						getFunc = function() return RdKGToolKc.GetKcGuild(2) end,
-						setFunc = function(value) RdKGToolKc.SetKcGuild(2, value) end
+						name = BeltalowdaMenu.constants.KC_GUILD_2,
+						choices = BeltalowdaKc.GetKcGuilds(),
+						getFunc = function() return BeltalowdaKc.GetKcGuild(2) end,
+						setFunc = function(value) BeltalowdaKc.SetKcGuild(2, value) end
 					},
 					[7] = {
 						type = "dropdown",
-						name = RdKGToolMenu.constants.KC_GUILD_3,
-						choices = RdKGToolKc.GetKcGuilds(),
-						getFunc = function() return RdKGToolKc.GetKcGuild(3) end,
-						setFunc = function(value) RdKGToolKc.SetKcGuild(3, value) end
+						name = BeltalowdaMenu.constants.KC_GUILD_3,
+						choices = BeltalowdaKc.GetKcGuilds(),
+						getFunc = function() return BeltalowdaKc.GetKcGuild(3) end,
+						setFunc = function(value) BeltalowdaKc.SetKcGuild(3, value) end
 					},
 					[8] = {
 						type = "dropdown",
-						name = RdKGToolMenu.constants.KC_GUILD_4,
-						choices = RdKGToolKc.GetKcGuilds(),
-						getFunc = function() return RdKGToolKc.GetKcGuild(4) end,
-						setFunc = function(value) RdKGToolKc.SetKcGuild(4, value) end
+						name = BeltalowdaMenu.constants.KC_GUILD_4,
+						choices = BeltalowdaKc.GetKcGuilds(),
+						getFunc = function() return BeltalowdaKc.GetKcGuild(4) end,
+						setFunc = function(value) BeltalowdaKc.SetKcGuild(4, value) end
 					},
 					[9] = {
 						type = "dropdown",
-						name = RdKGToolMenu.constants.KC_GUILD_5,
-						choices = RdKGToolKc.GetKcGuilds(),
-						getFunc = function() return RdKGToolKc.GetKcGuild(5) end,
-						setFunc = function(value) RdKGToolKc.SetKcGuild(5, value) end
+						name = BeltalowdaMenu.constants.KC_GUILD_5,
+						choices = BeltalowdaKc.GetKcGuilds(),
+						getFunc = function() return BeltalowdaKc.GetKcGuild(5) end,
+						setFunc = function(value) BeltalowdaKc.SetKcGuild(5, value) end
 					},
 				}
 			}
@@ -233,39 +233,39 @@ function RdKGToolKc.GetMenu()
 end
 
 
-function RdKGToolKc.GetKcEnabled()
-	return RdKGToolKc.kcVars.enabled
+function BeltalowdaKc.GetKcEnabled()
+	return BeltalowdaKc.kcVars.enabled
 end
 
-function RdKGToolKc.SetKcEnabled(value)
-	RdKGToolKc.SetEnabled(value)
+function BeltalowdaKc.SetKcEnabled(value)
+	BeltalowdaKc.SetEnabled(value)
 end
 
-function RdKGToolKc.GetKcClaimKeeps()
-	return RdKGToolKc.kcVars.claimKeep
+function BeltalowdaKc.GetKcClaimKeeps()
+	return BeltalowdaKc.kcVars.claimKeep
 end
 
-function RdKGToolKc.SetKcClaimKeeps(value)
-	RdKGToolKc.kcVars.claimKeep = value
+function BeltalowdaKc.SetKcClaimKeeps(value)
+	BeltalowdaKc.kcVars.claimKeep = value
 end
 
-function RdKGToolKc.GetKcClaimOutposts()
-	return RdKGToolKc.kcVars.claimOutpost
+function BeltalowdaKc.GetKcClaimOutposts()
+	return BeltalowdaKc.kcVars.claimOutpost
 end
 
-function RdKGToolKc.SetKcClaimOutposts(value)
-	RdKGToolKc.kcVars.claimOutpost = value
+function BeltalowdaKc.SetKcClaimOutposts(value)
+	BeltalowdaKc.kcVars.claimOutpost = value
 end
 
-function RdKGToolKc.GetKcClaimResources()
-	return RdKGToolKc.kcVars.claimResource
+function BeltalowdaKc.GetKcClaimResources()
+	return BeltalowdaKc.kcVars.claimResource
 end
 
-function RdKGToolKc.SetKcClaimResources(value)
-	RdKGToolKc.kcVars.claimResource = value
+function BeltalowdaKc.SetKcClaimResources(value)
+	BeltalowdaKc.kcVars.claimResource = value
 end
 
-function RdKGToolKc.GetKcGuilds()
+function BeltalowdaKc.GetKcGuilds()
 	local guilds = {}
 	for i = 1, GetNumGuilds() do
 		table.insert(guilds, GetGuildName(GetGuildId(i)))
@@ -274,23 +274,23 @@ function RdKGToolKc.GetKcGuilds()
 	return guilds
 end
 
-function RdKGToolKc.GetKcGuild(index)
+function BeltalowdaKc.GetKcGuild(index)
 	local retVal = "-"
-	if RdKGToolKc.kcVars.guilds[index] ~= nil and RdKGToolKc.kcVars.guilds[index] ~= "" and RdKGToolKc.kcVars.guilds[index] ~= "-" then
-		local tempName = RdKGToolRoster.GetGuildIdForName(RdKGToolKc.kcVars.guilds[index])
+	if BeltalowdaKc.kcVars.guilds[index] ~= nil and BeltalowdaKc.kcVars.guilds[index] ~= "" and BeltalowdaKc.kcVars.guilds[index] ~= "-" then
+		local tempName = BeltalowdaRoster.GetGuildIdForName(BeltalowdaKc.kcVars.guilds[index])
 		if tempName ~= nil then
-			retVal = RdKGToolKc.kcVars.guilds[index]
+			retVal = BeltalowdaKc.kcVars.guilds[index]
 		else
-			RdKGToolKc.kcVars.guilds[index] = "-"
+			BeltalowdaKc.kcVars.guilds[index] = "-"
 		end
 	else
-		RdKGToolKc.kcVars.guilds[index] = "-"
+		BeltalowdaKc.kcVars.guilds[index] = "-"
 	end
 	return retVal
 end
 
-function RdKGToolKc.SetKcGuild(index, value)
+function BeltalowdaKc.SetKcGuild(index, value)
 	if index ~= nil and value ~= nil and index > 0 and index < 6 then
-		RdKGToolKc.kcVars.guilds[index] = value
+		BeltalowdaKc.kcVars.guilds[index] = value
 	end
 end

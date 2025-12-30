@@ -1,54 +1,54 @@
--- RdK Group Tool Skill Bar
+-- Beltalowda Skill Bar
 -- By @s0rdrak (PC / EU)
 
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.sb = RdKGToolUtil.sb or {}
-local RdKGToolSB = RdKGToolUtil.sb
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.sb = BeltalowdaUtil.sb or {}
+local BeltalowdaSB = BeltalowdaUtil.sb
 
 
-RdKGToolSB.callbackName = RdKGTool.addonName .. "SkillBar"
+BeltalowdaSB.callbackName = Beltalowda.addonName .. "SkillBar"
 
-RdKGToolSB.config = {}
-RdKGToolSB.config.interval = 1000
+BeltalowdaSB.config = {}
+BeltalowdaSB.config.interval = 1000
 
-RdKGToolSB.state = {}
-RdKGToolSB.state.bar = {}
+BeltalowdaSB.state = {}
+BeltalowdaSB.state.bar = {}
 
-RdKGToolSB.constants = {}
-RdKGToolSB.constants.networking = {}
-RdKGToolSB.constants.networking.messagePrefix = {}
-RdKGToolSB.constants.networking.messagePrefix.BAR_1_SKILL_1 = 0
-RdKGToolSB.constants.networking.messagePrefix.BAR_1_SKILL_2 = 1
-RdKGToolSB.constants.networking.messagePrefix.BAR_1_SKILL_3 = 2
-RdKGToolSB.constants.networking.messagePrefix.BAR_1_SKILL_4 = 3
-RdKGToolSB.constants.networking.messagePrefix.BAR_1_SKILL_5 = 4
-RdKGToolSB.constants.networking.messagePrefix.BAR_1_ULTIMATE = 5
-RdKGToolSB.constants.networking.messagePrefix.BAR_2_SKILL_1 = 6
-RdKGToolSB.constants.networking.messagePrefix.BAR_2_SKILL_2 = 7
-RdKGToolSB.constants.networking.messagePrefix.BAR_2_SKILL_3 = 8
-RdKGToolSB.constants.networking.messagePrefix.BAR_2_SKILL_4 = 9
-RdKGToolSB.constants.networking.messagePrefix.BAR_2_SKILL_5 = 10
-RdKGToolSB.constants.networking.messagePrefix.BAR_2_ULTIMATE = 11
+BeltalowdaSB.constants = {}
+BeltalowdaSB.constants.networking = {}
+BeltalowdaSB.constants.networking.messagePrefix = {}
+BeltalowdaSB.constants.networking.messagePrefix.BAR_1_SKILL_1 = 0
+BeltalowdaSB.constants.networking.messagePrefix.BAR_1_SKILL_2 = 1
+BeltalowdaSB.constants.networking.messagePrefix.BAR_1_SKILL_3 = 2
+BeltalowdaSB.constants.networking.messagePrefix.BAR_1_SKILL_4 = 3
+BeltalowdaSB.constants.networking.messagePrefix.BAR_1_SKILL_5 = 4
+BeltalowdaSB.constants.networking.messagePrefix.BAR_1_ULTIMATE = 5
+BeltalowdaSB.constants.networking.messagePrefix.BAR_2_SKILL_1 = 6
+BeltalowdaSB.constants.networking.messagePrefix.BAR_2_SKILL_2 = 7
+BeltalowdaSB.constants.networking.messagePrefix.BAR_2_SKILL_3 = 8
+BeltalowdaSB.constants.networking.messagePrefix.BAR_2_SKILL_4 = 9
+BeltalowdaSB.constants.networking.messagePrefix.BAR_2_SKILL_5 = 10
+BeltalowdaSB.constants.networking.messagePrefix.BAR_2_ULTIMATE = 11
 
 --[[
 /script for i = 1, 32 do d(GetAbilityName(GetSlotBoundId(i))) end
 ]]
 
-function RdKGToolSB.Initialize()
-	EVENT_MANAGER:RegisterForEvent(RdKGToolSB.callbackName, EVENT_ACTIVE_WEAPON_PAIR_CHANGED, RdKGToolSB.OnWeaponPairChanged)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolSB.callbackName, EVENT_ACTION_SLOTS_ALL_HOTBARS_UPDATED, RdKGToolSB.OnSlotsAllHotbarsUpdated)
-	EVENT_MANAGER:RegisterForEvent(RdKGToolSB.callbackName, EVENT_ACTION_SLOT_UPDATED, RdKGToolSB.OnSlotUpdated)
-	RdKGToolSB.UpdateSkillBarInformation()
+function BeltalowdaSB.Initialize()
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaSB.callbackName, EVENT_ACTIVE_WEAPON_PAIR_CHANGED, BeltalowdaSB.OnWeaponPairChanged)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaSB.callbackName, EVENT_ACTION_SLOTS_ALL_HOTBARS_UPDATED, BeltalowdaSB.OnSlotsAllHotbarsUpdated)
+	EVENT_MANAGER:RegisterForEvent(BeltalowdaSB.callbackName, EVENT_ACTION_SLOT_UPDATED, BeltalowdaSB.OnSlotUpdated)
+	BeltalowdaSB.UpdateSkillBarInformation()
 end
 
-function RdKGToolSB.GetSkillBars()
-	return RdKGToolSB.state.bar
+function BeltalowdaSB.GetSkillBars()
+	return BeltalowdaSB.state.bar
 end
 
-function RdKGToolSB.UpdateSkillBarInformation()
+function BeltalowdaSB.UpdateSkillBarInformation()
 	local activeWeapon, locked = GetActiveWeaponPairInfo()
-	local bar = RdKGToolSB.state.bar
+	local bar = BeltalowdaSB.state.bar
 	bar[activeWeapon] = bar[activeWeapon] or {}
 	bar[activeWeapon][1] = GetSlotBoundId(3)
 	bar[activeWeapon][2] = GetSlotBoundId(4)
@@ -59,16 +59,16 @@ function RdKGToolSB.UpdateSkillBarInformation()
 end
 
 --callbacks
-function RdKGToolSB.OnWeaponPairChanged(eventCode, activeWeaponPair, locked)
-	RdKGToolSB.UpdateSkillBarInformation()
+function BeltalowdaSB.OnWeaponPairChanged(eventCode, activeWeaponPair, locked)
+	BeltalowdaSB.UpdateSkillBarInformation()
 end
 
-function RdKGToolSB.OnSlotsAllHotbarsUpdated(eventCode)
+function BeltalowdaSB.OnSlotsAllHotbarsUpdated(eventCode)
 	--d("debug")
-	RdKGToolSB.UpdateSkillBarInformation()
+	BeltalowdaSB.UpdateSkillBarInformation()
 end
 
-function RdKGToolSB.OnSlotUpdated(eventCode)
+function BeltalowdaSB.OnSlotUpdated(eventCode)
 	--d("debug")
-	RdKGToolSB.UpdateSkillBarInformation()
+	BeltalowdaSB.UpdateSkillBarInformation()
 end

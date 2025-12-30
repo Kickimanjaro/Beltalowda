@@ -1,63 +1,63 @@
--- RdK Group Tool Follow The Crown Beam
+-- Beltalowda Follow The Crown Beam
 -- By @s0rdrak (PC / EU)
 
 --local lib3D = LibStub("Lib3D2")
 
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolUtilGroup = RdKGToolUtil.group
-RdKGTool.group = RdKGTool.group or {}
-local RdKGToolGroup = RdKGTool.group
-RdKGToolGroup.ftcb = RdKGToolGroup.ftcb or {}
-local RdKGToolBeam = RdKGToolGroup.ftcb
-RdKGToolUtil.moving3DObjects = RdKGToolUtil.moving3DObjects  or {}
-local RdKGToolM3DO = RdKGToolUtil.moving3DObjects
-RdKGToolUtil.beams = RdKGToolUtil.beams
-local RdKGToolBeams = RdKGToolUtil.beams
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaUtilGroup = BeltalowdaUtil.group
+Beltalowda.group = Beltalowda.group or {}
+local BeltalowdaGroup = Beltalowda.group
+BeltalowdaGroup.ftcb = BeltalowdaGroup.ftcb or {}
+local BeltalowdaBeam = BeltalowdaGroup.ftcb
+BeltalowdaUtil.moving3DObjects = BeltalowdaUtil.moving3DObjects  or {}
+local BeltalowdaM3DO = BeltalowdaUtil.moving3DObjects
+BeltalowdaUtil.beams = BeltalowdaUtil.beams
+local BeltalowdaBeams = BeltalowdaUtil.beams
 
-RdKGToolBeam.callbackName = RdKGTool.addonName .. "FollowTheCrownBeam"
+BeltalowdaBeam.callbackName = Beltalowda.addonName .. "FollowTheCrownBeam"
 
-RdKGToolBeam.constants = {}
+BeltalowdaBeam.constants = {}
 
-RdKGToolBeam.controls = {}
+BeltalowdaBeam.controls = {}
 
-RdKGToolBeam.config = {}
-RdKGToolBeam.config.updateInterval = 10
-RdKGToolBeam.config.distanceUpdateInterval = 100
-RdKGToolBeam.config.maxDistance = 200
+BeltalowdaBeam.config = {}
+BeltalowdaBeam.config.updateInterval = 10
+BeltalowdaBeam.config.distanceUpdateInterval = 100
+BeltalowdaBeam.config.maxDistance = 200
 
-RdKGToolBeam.state = {}
-RdKGToolBeam.state.initialized = false
-RdKGToolBeam.state.registredConsumers = false
-RdKGToolBeam.state.registredActivationConsumers = false
-RdKGToolBeam.state.controlCallbackRegistered = false
-RdKGToolBeam.state.textureRegistered = false
+BeltalowdaBeam.state = {}
+BeltalowdaBeam.state.initialized = false
+BeltalowdaBeam.state.registredConsumers = false
+BeltalowdaBeam.state.registredActivationConsumers = false
+BeltalowdaBeam.state.controlCallbackRegistered = false
+BeltalowdaBeam.state.textureRegistered = false
 
 local wm = GetWindowManager()
 
-function RdKGToolBeam.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolBeam.callbackName, RdKGToolBeam.OnProfileChanged)
-	RdKGToolBeam.controls.beam = wm:CreateControl(nil, RdKGToolM3DO.GetDefaultTopLevelWindow(), CT_TEXTURE)
-	RdKGToolBeam.controls.beam:Create3DRenderSpace()
-	RdKGToolBeam.controls.beam:Set3DLocalDimensions(1, 256)
-	RdKGToolBeam.controls.beam:SetDrawLevel(3)
-	RdKGToolBeam.controls.beam:SetHidden(true)
-	RdKGToolBeam.controls.beam:Set3DRenderSpaceUsesDepthBuffer(true)
-	RdKGToolBeam.state.initialized = true
-	RdKGToolBeam.AdjustTexture()
-	RdKGToolBeam.AdjustColor()
-	RdKGToolBeam.SetEnabled(RdKGToolBeam.ftcbVars.enabled)
-	--RdKGToolM3DO.RegisterTextureControl(RdKGToolBeam.controls.beam)
+function BeltalowdaBeam.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaBeam.callbackName, BeltalowdaBeam.OnProfileChanged)
+	BeltalowdaBeam.controls.beam = wm:CreateControl(nil, BeltalowdaM3DO.GetDefaultTopLevelWindow(), CT_TEXTURE)
+	BeltalowdaBeam.controls.beam:Create3DRenderSpace()
+	BeltalowdaBeam.controls.beam:Set3DLocalDimensions(1, 256)
+	BeltalowdaBeam.controls.beam:SetDrawLevel(3)
+	BeltalowdaBeam.controls.beam:SetHidden(true)
+	BeltalowdaBeam.controls.beam:Set3DRenderSpaceUsesDepthBuffer(true)
+	BeltalowdaBeam.state.initialized = true
+	BeltalowdaBeam.AdjustTexture()
+	BeltalowdaBeam.AdjustColor()
+	BeltalowdaBeam.SetEnabled(BeltalowdaBeam.ftcbVars.enabled)
+	--BeltalowdaM3DO.RegisterTextureControl(BeltalowdaBeam.controls.beam)
 end
 
-function RdKGToolBeam.GetDefaults()
+function BeltalowdaBeam.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
 	defaults.pvpOnly = true
-	defaults.selectedTexture = RdKGToolBeams.constants.beams.BEAM_1
+	defaults.selectedTexture = BeltalowdaBeams.constants.beams.BEAM_1
 	defaults.color = {}
 	defaults.color.r = 0
 	defaults.color.g = 0.5
@@ -66,103 +66,103 @@ function RdKGToolBeam.GetDefaults()
 	return defaults
 end
 
-function RdKGToolBeam.SetEnabled(value)
+function BeltalowdaBeam.SetEnabled(value)
 	--d("SetEnabled")
-	if RdKGToolBeam.state.initialized == true and value ~= nil then
+	if BeltalowdaBeam.state.initialized == true and value ~= nil then
 		--d("dafuq")
-		RdKGToolBeam.ftcbVars.enabled = value
+		BeltalowdaBeam.ftcbVars.enabled = value
 		if value == true then
-			if RdKGToolBeam.state.registredConsumers == false then
-				EVENT_MANAGER:RegisterForEvent(RdKGToolBeam.callbackName, EVENT_PLAYER_ACTIVATED, RdKGToolBeam.OnPlayerActivated)
+			if BeltalowdaBeam.state.registredConsumers == false then
+				EVENT_MANAGER:RegisterForEvent(BeltalowdaBeam.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaBeam.OnPlayerActivated)
 			end
-			RdKGToolBeam.state.registredConsumers = true
+			BeltalowdaBeam.state.registredConsumers = true
 		else
-			if RdKGToolBeam.state.registredConsumers == true then
-				EVENT_MANAGER:UnregisterForEvent(RdKGToolBeam.callbackName, EVENT_PLAYER_ACTIVATED)
+			if BeltalowdaBeam.state.registredConsumers == true then
+				EVENT_MANAGER:UnregisterForEvent(BeltalowdaBeam.callbackName, EVENT_PLAYER_ACTIVATED)
 			end
-			RdKGToolBeam.state.registredConsumers = false
+			BeltalowdaBeam.state.registredConsumers = false
 		end
-		RdKGToolBeam.OnPlayerActivated()
+		BeltalowdaBeam.OnPlayerActivated()
 	end
 end
 
-function RdKGToolBeam.AdjustColor()
-	RdKGToolBeam.controls.beam:SetColor(RdKGToolBeam.ftcbVars.color.r, RdKGToolBeam.ftcbVars.color.g, RdKGToolBeam.ftcbVars.color.b, RdKGToolBeam.ftcbVars.color.a)
+function BeltalowdaBeam.AdjustColor()
+	BeltalowdaBeam.controls.beam:SetColor(BeltalowdaBeam.ftcbVars.color.r, BeltalowdaBeam.ftcbVars.color.g, BeltalowdaBeam.ftcbVars.color.b, BeltalowdaBeam.ftcbVars.color.a)
 end
 
-function RdKGToolBeam.AdjustTexture()
-	local beam = RdKGToolBeams.GetBeamByBeamId(RdKGToolBeam.ftcbVars.selectedTexture)
-	RdKGToolBeam.controls.beam:SetTexture(beam.texture)
-	RdKGToolBeam.controls.beam:Set3DLocalDimensions(beam.width, beam.height)
-	RdKGToolBeam.controls.beam:Set3DRenderSpaceUsesDepthBuffer(beam.usesDepthBuffer)
+function BeltalowdaBeam.AdjustTexture()
+	local beam = BeltalowdaBeams.GetBeamByBeamId(BeltalowdaBeam.ftcbVars.selectedTexture)
+	BeltalowdaBeam.controls.beam:SetTexture(beam.texture)
+	BeltalowdaBeam.controls.beam:Set3DLocalDimensions(beam.width, beam.height)
+	BeltalowdaBeam.controls.beam:Set3DRenderSpaceUsesDepthBuffer(beam.usesDepthBuffer)
 end
 
 --callbacks
-function RdKGToolBeam.OnProfileChanged(currentProfile)
+function BeltalowdaBeam.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolBeam.ftcbVars = currentProfile.group.ftcb
-		if RdKGToolBeam.state.initialized == true then
-			RdKGToolBeam.AdjustColor()
-			RdKGToolBeam.AdjustTexture()
+		BeltalowdaBeam.ftcbVars = currentProfile.group.ftcb
+		if BeltalowdaBeam.state.initialized == true then
+			BeltalowdaBeam.AdjustColor()
+			BeltalowdaBeam.AdjustTexture()
 		end
-		RdKGToolBeam.SetEnabled(RdKGToolBeam.ftcbVars.enabled)
+		BeltalowdaBeam.SetEnabled(BeltalowdaBeam.ftcbVars.enabled)
 	end
 end
 
-function RdKGToolBeam.OnPlayerActivated(eventCode, initial)
+function BeltalowdaBeam.OnPlayerActivated(eventCode, initial)
 	--d("player activated")
-	if RdKGToolBeam.ftcbVars.enabled == true and (RdKGToolBeam.ftcbVars.pvpOnly == false or (RdKGToolBeam.ftcbVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
-		if RdKGToolBeam.state.registredActivationConsumers == false then
+	if BeltalowdaBeam.ftcbVars.enabled == true and (BeltalowdaBeam.ftcbVars.pvpOnly == false or (BeltalowdaBeam.ftcbVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
+		if BeltalowdaBeam.state.registredActivationConsumers == false then
 			--d("enabled")
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolBeam.callbackName, RdKGToolBeam.config.updateInterval, RdKGToolBeam.UiLoop)
-			RdKGToolUtilGroup.AddFeature(RdKGToolBeam.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_COORDINATES, RdKGToolBeam.config.updateInterval)
-			RdKGToolUtilGroup.AddFeature(RdKGToolBeam.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_LEADER_DISTANCE, RdKGToolBeam.config.distanceUpdateInterval)
-			--lib3D:RegisterWorldChangeCallback(RdKGToolBeam.callbackName, RdKGToolBeam.OnWorldMove)
-			--RdKGToolBeam.OnWorldMove()
-			RdKGToolBeam.state.registredActivationConsumers = true
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaBeam.callbackName, BeltalowdaBeam.config.updateInterval, BeltalowdaBeam.UiLoop)
+			BeltalowdaUtilGroup.AddFeature(BeltalowdaBeam.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_COORDINATES, BeltalowdaBeam.config.updateInterval)
+			BeltalowdaUtilGroup.AddFeature(BeltalowdaBeam.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_LEADER_DISTANCE, BeltalowdaBeam.config.distanceUpdateInterval)
+			--lib3D:RegisterWorldChangeCallback(BeltalowdaBeam.callbackName, BeltalowdaBeam.OnWorldMove)
+			--BeltalowdaBeam.OnWorldMove()
+			BeltalowdaBeam.state.registredActivationConsumers = true
 		end
-		--RdKGToolM3DO.RegisterTextureControl(RdKGToolBeam.controls.beam)
+		--BeltalowdaM3DO.RegisterTextureControl(BeltalowdaBeam.controls.beam)
 	else
-		if RdKGToolBeam.state.registredActivationConsumers == true then
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolBeam.callbackName)
-			RdKGToolUtilGroup.RemoveFeature(RdKGToolBeam.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_COORDINATES)
-			RdKGToolUtilGroup.RemoveFeature(RdKGToolBeam.callbackName, RdKGToolUtilGroup.features.FEATURE_GROUP_LEADER_DISTANCE)
-			--lib3D:UnregisterWorldChangeCallback(RdKGToolBeam.callbackName)
-			RdKGToolBeam.state.registredActivationConsumers = false
+		if BeltalowdaBeam.state.registredActivationConsumers == true then
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaBeam.callbackName)
+			BeltalowdaUtilGroup.RemoveFeature(BeltalowdaBeam.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_COORDINATES)
+			BeltalowdaUtilGroup.RemoveFeature(BeltalowdaBeam.callbackName, BeltalowdaUtilGroup.features.FEATURE_GROUP_LEADER_DISTANCE)
+			--lib3D:UnregisterWorldChangeCallback(BeltalowdaBeam.callbackName)
+			BeltalowdaBeam.state.registredActivationConsumers = false
 		end
-		RdKGToolBeam.controls.beam:SetHidden(true)
-		if RdKGToolBeam.state.textureRegistered == true then
-			RdKGToolBeam.state.textureRegistered = false
-			RdKGToolM3DO.UnregisterTextureControl(RdKGToolBeam.controls.beam)
+		BeltalowdaBeam.controls.beam:SetHidden(true)
+		if BeltalowdaBeam.state.textureRegistered == true then
+			BeltalowdaBeam.state.textureRegistered = false
+			BeltalowdaM3DO.UnregisterTextureControl(BeltalowdaBeam.controls.beam)
 		end
 	end
 end
 
 --[[
-function RdKGToolBeam.OnWorldMove()
+function BeltalowdaBeam.OnWorldMove()
 	--d("OnWorldMove")
 	local x, z = lib3D:GlobalToWorld(lib3D:GetWorldOriginAsGlobal())
-	RdKGToolBeam.controls.beam:Set3DRenderSpaceOrigin(x, 0, z)
+	BeltalowdaBeam.controls.beam:Set3DRenderSpaceOrigin(x, 0, z)
 end
 
-function RdKGToolBeam.RenderSpaceUpdate()
-	local x, y, z = RdKGToolBeam.controls.beam:Get3DRenderSpaceOrigin()
+function BeltalowdaBeam.RenderSpaceUpdate()
+	local x, y, z = BeltalowdaBeam.controls.beam:Get3DRenderSpaceOrigin()
 	if x ~= 0 and z ~= 0 then
 		--d("changed location")
 		local x, z = lib3D:GlobalToWorld(lib3D:GetWorldOriginAsGlobal())
-		RdKGToolBeam.controls.beam:Set3DRenderSpaceOrigin(x, 0, z)
+		BeltalowdaBeam.controls.beam:Set3DRenderSpaceOrigin(x, 0, z)
 	end
 end
 ]]
 
-function RdKGToolBeam.UiLoop()
+function BeltalowdaBeam.UiLoop()
 	local drawBeam = false
 	--d("loop")
-	if RdKGToolBeam.ftcbVars.enabled == true and (RdKGToolBeam.ftcbVars.pvpOnly == false or (RdKGToolBeam.ftcbVars.pvpOnly == true and RdKGToolUtil.IsInPvPArea() == true)) then
-		local players = RdKGToolUtilGroup.GetGroupInformation()
+	if BeltalowdaBeam.ftcbVars.enabled == true and (BeltalowdaBeam.ftcbVars.pvpOnly == false or (BeltalowdaBeam.ftcbVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
+		local players = BeltalowdaUtilGroup.GetGroupInformation()
 		if players ~= nil then
-			local leaderDistance = RdKGToolUtilGroup.GetLeaderDistance()
-			if leaderDistance ~= nil and leaderDistance < RdKGToolBeam.config.maxDistance then
+			local leaderDistance = BeltalowdaUtilGroup.GetLeaderDistance()
+			if leaderDistance ~= nil and leaderDistance < BeltalowdaBeam.config.maxDistance then
 				
 				local leader = nil
 				local zoneIndex = nil
@@ -178,11 +178,11 @@ function RdKGToolBeam.UiLoop()
 					if leader.isPlayer == false and leader.coordinates ~= nil and zoneIndex ~= nil and zoneIndex == GetUnitZoneIndex("player") then
 						--d("yes, draw a beam")
 						drawBeam = true
-						local beam = RdKGToolBeams.GetBeamByBeamId(RdKGToolBeam.ftcbVars.selectedTexture)
+						local beam = BeltalowdaBeams.GetBeamByBeamId(BeltalowdaBeam.ftcbVars.selectedTexture)
 						--local _, height, _ = lib3D:GetCameraRenderSpacePosition()
 						--d("code path reached")
 						--d("Position: " .. leader.coordinates.x .. ", " .. height .. ", " .. leader.coordinates.y)
-						--RdKGToolBeam.controls.beam:Set3DRenderSpaceOrigin(leader.coordinates.x, leader.coordinates.height , leader.coordinates.y)
+						--BeltalowdaBeam.controls.beam:Set3DRenderSpaceOrigin(leader.coordinates.x, leader.coordinates.height , leader.coordinates.y)
 						--if GetUnitZoneIndex(leader.unitTag) == 373 or GetUnitZoneIndex(leader.unitTag) == 346 then
 							--wtf IC / Sewers?
 							--[[
@@ -219,20 +219,20 @@ function RdKGToolBeam.UiLoop()
 							d(y)
 							d(z)
 							x, y, z = WorldPositionToGuiRender3DPosition( x, y, z )
-							--RdKGToolBeam.controls.beam:Set3DRenderSpaceOrigin(leader.coordinates.worldX / 100, (leader.coordinates.worldHeight + beam.heightOffset) / 100, leader.coordinates.worldY / 100)
-							RdKGToolBeam.controls.beam:Set3DRenderSpaceOrigin(x / 100, y / 100, z / 100)
-							RdKGToolBeam.controls.beam:Set3DRenderSpaceUsesDepthBuffer(false)
+							--BeltalowdaBeam.controls.beam:Set3DRenderSpaceOrigin(leader.coordinates.worldX / 100, (leader.coordinates.worldHeight + beam.heightOffset) / 100, leader.coordinates.worldY / 100)
+							BeltalowdaBeam.controls.beam:Set3DRenderSpaceOrigin(x / 100, y / 100, z / 100)
+							BeltalowdaBeam.controls.beam:Set3DRenderSpaceUsesDepthBuffer(false)
 							]]
 						--else
 							--d("Not IC")
-							RdKGToolBeam.controls.beam:Set3DRenderSpaceOrigin(leader.coordinates.worldX, leader.coordinates.worldHeight + beam.heightOffset, leader.coordinates.worldY)
+							BeltalowdaBeam.controls.beam:Set3DRenderSpaceOrigin(leader.coordinates.worldX, leader.coordinates.worldHeight + beam.heightOffset, leader.coordinates.worldY)
 						--end
 						local heading = GetPlayerCameraHeading()
 						if heading > math.pi then 
 							heading = heading - 2 * math.pi
 						end
-						RdKGToolBeam.controls.beam:Set3DRenderSpaceOrientation(0, heading, 0)
-						RdKGToolBeam.controls.beam.coordinates = leader.coordinates --layer test
+						BeltalowdaBeam.controls.beam:Set3DRenderSpaceOrientation(0, heading, 0)
+						BeltalowdaBeam.controls.beam.coordinates = leader.coordinates --layer test
 					end
 				end
 			end
@@ -240,72 +240,72 @@ function RdKGToolBeam.UiLoop()
 	end
 	--draw beam
 	if drawBeam == true then
-		RdKGToolBeam.controls.beam:SetHidden(false)
-		if RdKGToolBeam.state.textureRegistered == false then
-			RdKGToolBeam.state.textureRegistered = true
-			RdKGToolM3DO.RegisterTextureControl(RdKGToolBeam.controls.beam)
+		BeltalowdaBeam.controls.beam:SetHidden(false)
+		if BeltalowdaBeam.state.textureRegistered == false then
+			BeltalowdaBeam.state.textureRegistered = true
+			BeltalowdaM3DO.RegisterTextureControl(BeltalowdaBeam.controls.beam)
 		end
 		--[[
-		if RdKGToolBeam.state.controlCallbackRegistered == false then
-			EVENT_MANAGER:RegisterForUpdate(RdKGToolBeam.controlCallbackName, 0, RdKGToolBeam.RenderSpaceUpdate)
-			RdKGToolBeam.state.controlCallbackRegistered = true
+		if BeltalowdaBeam.state.controlCallbackRegistered == false then
+			EVENT_MANAGER:RegisterForUpdate(BeltalowdaBeam.controlCallbackName, 0, BeltalowdaBeam.RenderSpaceUpdate)
+			BeltalowdaBeam.state.controlCallbackRegistered = true
 		end
 		]]
 		--d("all good")
 	else
-		RdKGToolBeam.controls.beam:SetHidden(true)
-		if RdKGToolBeam.state.textureRegistered == true then
-			RdKGToolBeam.state.textureRegistered = false
-			RdKGToolM3DO.UnregisterTextureControl(RdKGToolBeam.controls.beam)
+		BeltalowdaBeam.controls.beam:SetHidden(true)
+		if BeltalowdaBeam.state.textureRegistered == true then
+			BeltalowdaBeam.state.textureRegistered = false
+			BeltalowdaM3DO.UnregisterTextureControl(BeltalowdaBeam.controls.beam)
 		end
 		--[[
-		if RdKGToolBeam.state.controlCallbackRegistered == true then
-			EVENT_MANAGER:UnregisterForUpdate(RdKGToolBeam.controlCallbackName)
-			RdKGToolBeam.state.controlCallbackRegistered = false
+		if BeltalowdaBeam.state.controlCallbackRegistered == true then
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaBeam.controlCallbackName)
+			BeltalowdaBeam.state.controlCallbackRegistered = false
 		end
 		]]
 	end
 end
 
 --menu interaction
-function RdKGToolBeam.GetMenu()
+function BeltalowdaBeam.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.FTCB_HEADER,
+			name = BeltalowdaMenu.constants.FTCB_HEADER,
 			--width = "full",
 			controls = {
 				[1] = {
 					type = "description",
 					title = nil,
-					text = RdKGToolMenu.constants.FTCB_WARNING,
+					text = BeltalowdaMenu.constants.FTCB_WARNING,
 					width = "full"
 				},
 				[2] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCB_ENABLED,
-					getFunc = RdKGToolBeam.GetFtcbEnabled,
-					setFunc = RdKGToolBeam.SetFtcbEnabled,
+					name = BeltalowdaMenu.constants.FTCB_ENABLED,
+					getFunc = BeltalowdaBeam.GetFtcbEnabled,
+					setFunc = BeltalowdaBeam.SetFtcbEnabled,
 				},
 				[3] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.FTCB_PVP_ONLY,
-					getFunc = RdKGToolBeam.GetFtcbPvpOnly,
-					setFunc = RdKGToolBeam.SetFtcbPvpOnly,
+					name = BeltalowdaMenu.constants.FTCB_PVP_ONLY,
+					getFunc = BeltalowdaBeam.GetFtcbPvpOnly,
+					setFunc = BeltalowdaBeam.SetFtcbPvpOnly,
 				},
 				[4] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.FTCB_SELECTED_BEAM,
-					choices = RdKGToolBeam.GetFtcbBeams(),
-					getFunc = RdKGToolBeam.GetFtcbSelectedBeam,
-					setFunc = RdKGToolBeam.SetFtcbSelectedBeam,
+					name = BeltalowdaMenu.constants.FTCB_SELECTED_BEAM,
+					choices = BeltalowdaBeam.GetFtcbBeams(),
+					getFunc = BeltalowdaBeam.GetFtcbSelectedBeam,
+					setFunc = BeltalowdaBeam.SetFtcbSelectedBeam,
 					width = "full"
 				},
 				[5] = {
 					type = "colorpicker",
-					name = RdKGToolMenu.constants.FTCB_COLOR,
-					getFunc = RdKGToolBeam.GetFtcbColor,
-					setFunc = RdKGToolBeam.SetFtcbColor,
+					name = BeltalowdaMenu.constants.FTCB_COLOR,
+					getFunc = BeltalowdaBeam.GetFtcbColor,
+					setFunc = BeltalowdaBeam.SetFtcbColor,
 					width = "full"
 				}
 			}
@@ -314,43 +314,43 @@ function RdKGToolBeam.GetMenu()
 	return menu
 end
 
-function RdKGToolBeam.GetFtcbEnabled()
-	return RdKGToolBeam.ftcbVars.enabled
+function BeltalowdaBeam.GetFtcbEnabled()
+	return BeltalowdaBeam.ftcbVars.enabled
 end
 
-function RdKGToolBeam.SetFtcbEnabled(value)
-	RdKGToolBeam.SetEnabled(value)
+function BeltalowdaBeam.SetFtcbEnabled(value)
+	BeltalowdaBeam.SetEnabled(value)
 end
 
-function RdKGToolBeam.GetFtcbPvpOnly()
-	return RdKGToolBeam.ftcbVars.pvpOnly
+function BeltalowdaBeam.GetFtcbPvpOnly()
+	return BeltalowdaBeam.ftcbVars.pvpOnly
 end
 
-function RdKGToolBeam.SetFtcbPvpOnly(value)
-	RdKGToolBeam.ftcbVars.pvpOnly = value
-	RdKGToolBeam.SetEnabled(RdKGToolBeam.ftcbVars.enabled)
+function BeltalowdaBeam.SetFtcbPvpOnly(value)
+	BeltalowdaBeam.ftcbVars.pvpOnly = value
+	BeltalowdaBeam.SetEnabled(BeltalowdaBeam.ftcbVars.enabled)
 end
 
-function RdKGToolBeam.GetFtcbBeams()
-	return RdKGToolBeams.GetBeamNames()
+function BeltalowdaBeam.GetFtcbBeams()
+	return BeltalowdaBeams.GetBeamNames()
 end
 
-function RdKGToolBeam.GetFtcbSelectedBeam()
-	return RdKGToolBeams.GetBeamByBeamId(RdKGToolBeam.ftcbVars.selectedTexture).name
+function BeltalowdaBeam.GetFtcbSelectedBeam()
+	return BeltalowdaBeams.GetBeamByBeamId(BeltalowdaBeam.ftcbVars.selectedTexture).name
 end
 
-function RdKGToolBeam.SetFtcbSelectedBeam(value)
+function BeltalowdaBeam.SetFtcbSelectedBeam(value)
 	if value ~= nil then
-		RdKGToolBeam.ftcbVars.selectedTexture = RdKGToolBeams.GetBeamIdByName(value)
-		RdKGToolBeam.AdjustTexture()
+		BeltalowdaBeam.ftcbVars.selectedTexture = BeltalowdaBeams.GetBeamIdByName(value)
+		BeltalowdaBeam.AdjustTexture()
 	end
 end
 
-function RdKGToolBeam.GetFtcbColor()
-	return RdKGToolMenu.GetRGBAColor(RdKGToolBeam.ftcbVars.color)
+function BeltalowdaBeam.GetFtcbColor()
+	return BeltalowdaMenu.GetRGBAColor(BeltalowdaBeam.ftcbVars.color)
 end
 
-function RdKGToolBeam.SetFtcbColor(r, g, b, a)
-	RdKGToolBeam.ftcbVars.color = RdKGToolMenu.GetColorFromRGBA(r, g, b, a)
-	RdKGToolBeam.AdjustColor()
+function BeltalowdaBeam.SetFtcbColor(r, g, b, a)
+	BeltalowdaBeam.ftcbVars.color = BeltalowdaMenu.GetColorFromRGBA(r, g, b, a)
+	BeltalowdaBeam.AdjustColor()
 end

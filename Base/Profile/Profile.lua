@@ -1,76 +1,76 @@
--- RdK Group Tool Profile
+-- Beltalowda Profile
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGTool.profile = RdKGTool.profile or {}
-local RdKGToolProfile = RdKGTool.profile
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.chatSystem = RdKGToolUtil.chatSystem or {}
-local RdKGToolChat = RdKGToolUtil.chatSystem
+Beltalowda = Beltalowda or {}
+local BeltalowdaMenu = Beltalowda.menu
+Beltalowda.profile = Beltalowda.profile or {}
+local BeltalowdaProfile = Beltalowda.profile
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.chatSystem = BeltalowdaUtil.chatSystem or {}
+local BeltalowdaChat = BeltalowdaUtil.chatSystem
 
-RdKGToolProfile.profileChangeListeners = {}
+BeltalowdaProfile.profileChangeListeners = {}
 
-RdKGToolProfile.constants = RdKGToolProfile.constants or {}
-RdKGToolProfile.constants.DEFAULT_PROFILE = "Default"
-RdKGToolProfile.constants.PREFIX = "Profile"
-RdKGToolProfile.constants.references = RdKGToolProfile.constants.references or {}
-RdKGToolProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION = "RdKGTool.menu.ProfileErrorMessageDescription"
-RdKGToolProfile.constants.references.PROFILE_SELECTED_PROFILE_DROPDOWN = "RdKGTool.menu.ProfileSelectedProfileDropdown"
+BeltalowdaProfile.constants = BeltalowdaProfile.constants or {}
+BeltalowdaProfile.constants.DEFAULT_PROFILE = "Default"
+BeltalowdaProfile.constants.PREFIX = "Profile"
+BeltalowdaProfile.constants.references = BeltalowdaProfile.constants.references or {}
+BeltalowdaProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION = "Beltalowda.menu.ProfileErrorMessageDescription"
+BeltalowdaProfile.constants.references.PROFILE_SELECTED_PROFILE_DROPDOWN = "Beltalowda.menu.ProfileSelectedProfileDropdown"
 
-RdKGToolProfile.state = RdKGToolProfile.state or {}
-RdKGToolProfile.state.newProfileName = ""
+BeltalowdaProfile.state = BeltalowdaProfile.state or {}
+BeltalowdaProfile.state.newProfileName = ""
 
 --initialization
-function RdKGToolProfile.Initialize(accountVars, charVars)
-	RdKGToolProfile.savedVars = {}
-	RdKGToolProfile.savedVars.acc = accountVars
-	RdKGToolProfile.savedVars.char = charVars
-	--RdKGToolProfile.savedVars.char.test = "test"
+function BeltalowdaProfile.Initialize(accountVars, charVars)
+	BeltalowdaProfile.savedVars = {}
+	BeltalowdaProfile.savedVars.acc = accountVars
+	BeltalowdaProfile.savedVars.char = charVars
+	--BeltalowdaProfile.savedVars.char.test = "test"
 end
 
-function RdKGToolProfile.GetAccountDefaults()
+function BeltalowdaProfile.GetAccountDefaults()
 	local defaults = {}
 	defaults.profiles = {}
 	defaults.profiles[1] = {}
-	defaults.profiles[1].name = RdKGToolProfile.constants.DEFAULT_PROFILE
+	defaults.profiles[1].name = BeltalowdaProfile.constants.DEFAULT_PROFILE
 	return defaults
 end
 
-function RdKGToolProfile.GetCharacterDefaults()
+function BeltalowdaProfile.GetCharacterDefaults()
 	local defaults = {}
-	defaults.selectedProfile = RdKGToolProfile.constants.DEFAULT_PROFILE
+	defaults.selectedProfile = BeltalowdaProfile.constants.DEFAULT_PROFILE
 	return defaults
 end
 
 
 
 --util
-function RdKGToolProfile.GetCharacterVars()
-	return RdKGToolProfile.savedVars.char
+function BeltalowdaProfile.GetCharacterVars()
+	return BeltalowdaProfile.savedVars.char
 end
 
-function RdKGToolProfile.GetSelectedProfile()
+function BeltalowdaProfile.GetSelectedProfile()
 	local currentProfile = nil
-	for i = 1, #RdKGToolProfile.savedVars.acc.profiles do
-		if RdKGToolProfile.savedVars.acc.profiles[i].name == RdKGToolProfile.savedVars.char.selectedProfile then
-			currentProfile = RdKGToolProfile.savedVars.acc.profiles[i]
+	for i = 1, #BeltalowdaProfile.savedVars.acc.profiles do
+		if BeltalowdaProfile.savedVars.acc.profiles[i].name == BeltalowdaProfile.savedVars.char.selectedProfile then
+			currentProfile = BeltalowdaProfile.savedVars.acc.profiles[i]
 			break
 		end
 	end
 	if currentProfile == nil then
-		currentProfile = RdKGToolProfile.savedVars.acc.profiles[1]
-		RdKGToolProfile.savedVars.char.selectedProfile = currentProfile.name
+		currentProfile = BeltalowdaProfile.savedVars.acc.profiles[1]
+		BeltalowdaProfile.savedVars.char.selectedProfile = currentProfile.name
 		
 	end
 	return currentProfile
 end
 
-function RdKGToolProfile.ProfileExists(value)
+function BeltalowdaProfile.ProfileExists(value)
 	local profileExists = false
-	for i = 1, #RdKGToolProfile.savedVars.acc.profiles do
-		if RdKGToolProfile.savedVars.acc.profiles[i].name == value then
+	for i = 1, #BeltalowdaProfile.savedVars.acc.profiles do
+		if BeltalowdaProfile.savedVars.acc.profiles[i].name == value then
 			profileExists = true
 			break
 		end
@@ -78,59 +78,59 @@ function RdKGToolProfile.ProfileExists(value)
 	return profileExists
 end
 
-function RdKGToolProfile.GetAllAccProfiles()
-	return RdKGToolProfile.savedVars.acc.profiles
+function BeltalowdaProfile.GetAllAccProfiles()
+	return BeltalowdaProfile.savedVars.acc.profiles
 end
 
-function RdKGToolProfile.GetSpecificAccProfile(name)
+function BeltalowdaProfile.GetSpecificAccProfile(name)
 	local profile = nil
-	for i = 1, #RdKGToolProfile.savedVars.acc.profiles do
-		if RdKGToolProfile.savedVars.acc.profiles[i].name == name then
-			profile = RdKGToolProfile.savedVars.acc.profiles[i]
+	for i = 1, #BeltalowdaProfile.savedVars.acc.profiles do
+		if BeltalowdaProfile.savedVars.acc.profiles[i].name == name then
+			profile = BeltalowdaProfile.savedVars.acc.profiles[i]
 			break
 		end
 	end
 	return profile
 end
 
-function RdKGToolProfile.AddNewProfileData(profile)
+function BeltalowdaProfile.AddNewProfileData(profile)
 	if profile ~= nil then
 		profile.name = zo_strtrim(profile.name)
-		if RdKGToolProfile.ProfileExists(profile.name) == false then
-			table.insert(RdKGToolProfile.savedVars.acc.profiles, profile)
-			RdKGToolProfile.UpdateProfileSection()
+		if BeltalowdaProfile.ProfileExists(profile.name) == false then
+			table.insert(BeltalowdaProfile.savedVars.acc.profiles, profile)
+			BeltalowdaProfile.UpdateProfileSection()
 		end
 	end
 end
 
 --profile change listener code
-function RdKGToolProfile.AddProfileChangeListener(moduleName, callback, update)
-	if RdKGToolProfile.ProfileChangeListenerExists(moduleName) == false then
+function BeltalowdaProfile.AddProfileChangeListener(moduleName, callback, update)
+	if BeltalowdaProfile.ProfileChangeListenerExists(moduleName) == false then
 		local newModule = {}
 		newModule.moduleName = moduleName
 		newModule.callback = callback
-		table.insert(RdKGToolProfile.profileChangeListeners, newModule)
+		table.insert(BeltalowdaProfile.profileChangeListeners, newModule)
 		if (update == true or update == nil) and type(callback) == "function" then
-			callback(RdKGToolProfile.GetSelectedProfile())
+			callback(BeltalowdaProfile.GetSelectedProfile())
 		end
 	else
-		RdKGToolChat.SendChatMessage("Listener already exists: " .. moduleName, RdKGToolProfile.constants.PREFIX, RdKGToolChat.constants.messageTypes.MESSAGE_DEBUG)
+		BeltalowdaChat.SendChatMessage("Listener already exists: " .. moduleName, BeltalowdaProfile.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_DEBUG)
 	end
 end
 
-function RdKGToolProfile.RemoveProfileChangeListener(moduleName)
-	for i = 1, #RdKGToolProfile.profileChangeListeners do
-		if RdKGToolProfile.profileChangeListeners[i].moduleName == moduleName then
-			table.remove(RdKGToolProfile.profileChangeListeners, i)
+function BeltalowdaProfile.RemoveProfileChangeListener(moduleName)
+	for i = 1, #BeltalowdaProfile.profileChangeListeners do
+		if BeltalowdaProfile.profileChangeListeners[i].moduleName == moduleName then
+			table.remove(BeltalowdaProfile.profileChangeListeners, i)
 			i = i - 1 
 		end
 	end
 end
 
-function RdKGToolProfile.ProfileChangeListenerExists(moduleName)
+function BeltalowdaProfile.ProfileChangeListenerExists(moduleName)
 	local retVal = false
-	for i = 1, #RdKGToolProfile.profileChangeListeners do
-		if RdKGToolProfile.profileChangeListeners[i].moduleName == moduleName then
+	for i = 1, #BeltalowdaProfile.profileChangeListeners do
+		if BeltalowdaProfile.profileChangeListeners[i].moduleName == moduleName then
 			retVal = true
 			break
 		end
@@ -138,18 +138,18 @@ function RdKGToolProfile.ProfileChangeListenerExists(moduleName)
 	return retVal
 end
 
-function RdKGToolProfile.NotifyChangeListeners(moduleName)
-	local currentProfile = RdKGToolProfile.GetSelectedProfile()
+function BeltalowdaProfile.NotifyChangeListeners(moduleName)
+	local currentProfile = BeltalowdaProfile.GetSelectedProfile()
 	if moduleName == nil then
-		for i = 1, #RdKGToolProfile.profileChangeListeners do
-			if type(RdKGToolProfile.profileChangeListeners[i].callback) == "function" then
-				RdKGToolProfile.profileChangeListeners[i].callback(currentProfile)
+		for i = 1, #BeltalowdaProfile.profileChangeListeners do
+			if type(BeltalowdaProfile.profileChangeListeners[i].callback) == "function" then
+				BeltalowdaProfile.profileChangeListeners[i].callback(currentProfile)
 			end
 		end
 	else
-		for i = 1, #RdKGToolProfile.profileChangeListeners do
-			if RdKGToolProfile.profileChangeListeners[i].name == moduleName and type(RdKGToolProfile.profileChangeListeners[i].callback) == "function" then
-				RdKGToolProfile.profileChangeListeners[i].callback(currentProfile)
+		for i = 1, #BeltalowdaProfile.profileChangeListeners do
+			if BeltalowdaProfile.profileChangeListeners[i].name == moduleName and type(BeltalowdaProfile.profileChangeListeners[i].callback) == "function" then
+				BeltalowdaProfile.profileChangeListeners[i].callback(currentProfile)
 				break
 			end
 		end
@@ -157,49 +157,49 @@ function RdKGToolProfile.NotifyChangeListeners(moduleName)
 end
 
 --Menu Interaction
-function RdKGToolProfile.GetMenu()
+function BeltalowdaProfile.GetMenu()
 	local menu = {
 		[1] = {
 			type = "header",
-			name = RdKGToolMenu.constants.PROFILE_HEADER,
+			name = BeltalowdaMenu.constants.PROFILE_HEADER,
 			width = "full",
 		},
 		[2] = {
 			type = "dropdown",
-			name = RdKGToolMenu.constants.PROFILE_SELECTED_PROFILE,
-			tooltip = RdKGToolMenu.constants.PROFILE_SELECTED_PROFILE_TOOLTIP,
-			choices = RdKGToolProfile.GetAvailableProfiles(),
-			getFunc = RdKGToolProfile.GetSelectedProfileName,
-			setFunc = RdKGToolProfile.SetSelectedProfileName,
+			name = BeltalowdaMenu.constants.PROFILE_SELECTED_PROFILE,
+			tooltip = BeltalowdaMenu.constants.PROFILE_SELECTED_PROFILE_TOOLTIP,
+			choices = BeltalowdaProfile.GetAvailableProfiles(),
+			getFunc = BeltalowdaProfile.GetSelectedProfileName,
+			setFunc = BeltalowdaProfile.SetSelectedProfileName,
 			width = "full",
 			--requiresReload = true,
-			reference = RdKGToolProfile.constants.references.PROFILE_SELECTED_PROFILE_DROPDOWN
+			reference = BeltalowdaProfile.constants.references.PROFILE_SELECTED_PROFILE_DROPDOWN
 		},
 		[3] = {
 			type = "button",
-			name = RdKGToolMenu.constants.PROFILE_REMOVE_PROFILE,
-			func = RdKGToolProfile.RemoveSelectedProfile,
+			name = BeltalowdaMenu.constants.PROFILE_REMOVE_PROFILE,
+			func = BeltalowdaProfile.RemoveSelectedProfile,
 			width = "full"
 		},
 		[4] = {
 			type = "editbox",
-			name = RdKGToolMenu.constants.PROFILE_NEW_PROFILE,
-			getFunc = RdKGToolProfile.GetNewProfileName,
-			setFunc = RdKGToolProfile.SetNewProfileName,
+			name = BeltalowdaMenu.constants.PROFILE_NEW_PROFILE,
+			getFunc = BeltalowdaProfile.GetNewProfileName,
+			setFunc = BeltalowdaProfile.SetNewProfileName,
 			isMultiline = false,
 			width = "full",
 			default = ""
 		},
 		[5] = {
 			type = "button",
-			name = RdKGToolMenu.constants.PROFILE_ADD_PROFILE,
-			func = RdKGToolProfile.AddNewProfile,
+			name = BeltalowdaMenu.constants.PROFILE_ADD_PROFILE,
+			func = BeltalowdaProfile.AddNewProfile,
 			width = "full"
 		},
 		[6] = {
 			type = "button",
-			name = RdKGToolMenu.constants.PROFILE_CLONE_PROFILE,
-			func = RdKGToolProfile.CloneProfile,
+			name = BeltalowdaMenu.constants.PROFILE_CLONE_PROFILE,
+			func = BeltalowdaProfile.CloneProfile,
 			width = "full"
 		},
 		[7] = {
@@ -207,110 +207,110 @@ function RdKGToolProfile.GetMenu()
 			title = nil,
 			text = "",
 			width = "full",
-			reference = RdKGToolProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION
+			reference = BeltalowdaProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION
 		}
 	}
-	RdKGToolProfile.state.dropDownMenuEntry = menu[2]
+	BeltalowdaProfile.state.dropDownMenuEntry = menu[2]
 	return menu
 end
 
-function RdKGToolProfile.GetAvailableProfiles()
+function BeltalowdaProfile.GetAvailableProfiles()
 	local profiles = {}
-	local acc = RdKGToolProfile.savedVars.acc.profiles
+	local acc = BeltalowdaProfile.savedVars.acc.profiles
 	for i = 1, #acc do
 		profiles[i] = acc[i].name
 	end
 	return profiles
 end
 
-function RdKGToolProfile.GetSelectedProfileName()
-	return RdKGToolProfile.savedVars.char.selectedProfile
+function BeltalowdaProfile.GetSelectedProfileName()
+	return BeltalowdaProfile.savedVars.char.selectedProfile
 end
 
-function RdKGToolProfile.SetSelectedProfileName(value)
-	if RdKGToolProfile.ProfileExists(value) == true then
-		RdKGToolProfile.savedVars.char.selectedProfile = value
-		RdKGToolProfile.NotifyChangeListeners()
+function BeltalowdaProfile.SetSelectedProfileName(value)
+	if BeltalowdaProfile.ProfileExists(value) == true then
+		BeltalowdaProfile.savedVars.char.selectedProfile = value
+		BeltalowdaProfile.NotifyChangeListeners()
 	end
 end
 
-function RdKGToolProfile.AddNewProfile()
-	local value = RdKGToolProfile.state.newProfileName
+function BeltalowdaProfile.AddNewProfile()
+	local value = BeltalowdaProfile.state.newProfileName
 	--d(value)
-	if RdKGToolProfile.ProfileExists(value) == true then
-		RdKGToolMenu.SetErrorMessage(RdKGToolProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION, RdKGToolMenu.constants.PROFILE_EXISTS)
+	if BeltalowdaProfile.ProfileExists(value) == true then
+		BeltalowdaMenu.SetErrorMessage(BeltalowdaProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION, BeltalowdaMenu.constants.PROFILE_EXISTS)
 		--d("error message set")
 	else
 		if value ~= nil and zo_strtrim(value) ~= "" then
-			local newProfile = RdKGTool.CreateCleanProfile()
+			local newProfile = Beltalowda.CreateCleanProfile()
 			newProfile.name = value
-			table.insert(RdKGToolProfile.savedVars.acc.profiles, newProfile)
+			table.insert(BeltalowdaProfile.savedVars.acc.profiles, newProfile)
 		end
-		RdKGToolProfile.UpdateProfileSection()
+		BeltalowdaProfile.UpdateProfileSection()
 	end
 end
 
-function RdKGToolProfile.CloneProfile()
-	local value = RdKGToolProfile.state.newProfileName
+function BeltalowdaProfile.CloneProfile()
+	local value = BeltalowdaProfile.state.newProfileName
 	--d(value)
-	if RdKGToolProfile.ProfileExists(value) == true then
-		RdKGToolMenu.SetErrorMessage(RdKGToolProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION, RdKGToolMenu.constants.PROFILE_EXISTS)
+	if BeltalowdaProfile.ProfileExists(value) == true then
+		BeltalowdaMenu.SetErrorMessage(BeltalowdaProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION, BeltalowdaMenu.constants.PROFILE_EXISTS)
 		--d("error message set")
 	else
-		local oldProfile = RdKGToolProfile.GetSelectedProfile()
+		local oldProfile = BeltalowdaProfile.GetSelectedProfile()
 		if value ~= nil and zo_strtrim(value) ~= "" and oldProfile ~= nil then
-			--local newProfile = RdKGTool.CreateCleanProfile()
+			--local newProfile = Beltalowda.CreateCleanProfile()
 			local newProfile = {}
 			
-			RdKGToolUtil.DeepCopy(newProfile, oldProfile)
+			BeltalowdaUtil.DeepCopy(newProfile, oldProfile)
 			newProfile.name = value
-			table.insert(RdKGToolProfile.savedVars.acc.profiles, newProfile)
+			table.insert(BeltalowdaProfile.savedVars.acc.profiles, newProfile)
 		end
-		RdKGToolProfile.UpdateProfileSection()
+		BeltalowdaProfile.UpdateProfileSection()
 	end
 end
 
-function RdKGToolProfile.RemoveSelectedProfile()
-	if RdKGToolProfile.savedVars.char.selectedProfile == RdKGToolProfile.constants.DEFAULT_PROFILE then
-		RdKGToolMenu.SetErrorMessage(RdKGToolProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION, RdKGToolMenu.constants.PROFILE_CANT_REMOVE_DEFAULT)
+function BeltalowdaProfile.RemoveSelectedProfile()
+	if BeltalowdaProfile.savedVars.char.selectedProfile == BeltalowdaProfile.constants.DEFAULT_PROFILE then
+		BeltalowdaMenu.SetErrorMessage(BeltalowdaProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION, BeltalowdaMenu.constants.PROFILE_CANT_REMOVE_DEFAULT)
 		--d("error message set")
 	else
 		local index = 0
-		for i = 1, #RdKGToolProfile.savedVars.acc.profiles do
-			if RdKGToolProfile.savedVars.acc.profiles[i].name == RdKGToolProfile.savedVars.char.selectedProfile then
+		for i = 1, #BeltalowdaProfile.savedVars.acc.profiles do
+			if BeltalowdaProfile.savedVars.acc.profiles[i].name == BeltalowdaProfile.savedVars.char.selectedProfile then
 				index = i
 				break
 			end
 		end
-		table.remove(RdKGToolProfile.savedVars.acc.profiles, index)
+		table.remove(BeltalowdaProfile.savedVars.acc.profiles, index)
 		index = index - 1
 		if index >= 1 then
-			RdKGToolProfile.savedVars.char.selectedProfile = RdKGToolProfile.savedVars.acc.profiles[index].name
+			BeltalowdaProfile.savedVars.char.selectedProfile = BeltalowdaProfile.savedVars.acc.profiles[index].name
 		else
-			RdKGToolProfile.savedVars.char.selectedProfile = RdKGToolProfile.constants.DEFAULT_PROFILE
+			BeltalowdaProfile.savedVars.char.selectedProfile = BeltalowdaProfile.constants.DEFAULT_PROFILE
 		end
-		RdKGToolProfile.NotifyChangeListeners()
-		RdKGToolProfile.UpdateProfileSection()
+		BeltalowdaProfile.NotifyChangeListeners()
+		BeltalowdaProfile.UpdateProfileSection()
 	end
 end
 
-function RdKGToolProfile.UpdateProfileSection()
+function BeltalowdaProfile.UpdateProfileSection()
 	--d("update profile section")
-	RdKGToolProfile.state.newProfileName = ""
-	RdKGToolMenu.SetErrorMessage(RdKGToolProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION, "")
-	local dropdownControl = GetWindowManager():GetControlByName(RdKGToolProfile.constants.references.PROFILE_SELECTED_PROFILE_DROPDOWN)
+	BeltalowdaProfile.state.newProfileName = ""
+	BeltalowdaMenu.SetErrorMessage(BeltalowdaProfile.constants.references.PROFILE_ERROR_MESSAGE_DESCRIPTION, "")
+	local dropdownControl = GetWindowManager():GetControlByName(BeltalowdaProfile.constants.references.PROFILE_SELECTED_PROFILE_DROPDOWN)
 	if dropdownControl ~= nil then
-		dropdownControl:UpdateChoices(RdKGToolProfile.GetAvailableProfiles())
+		dropdownControl:UpdateChoices(BeltalowdaProfile.GetAvailableProfiles())
 	else
-		RdKGToolProfile.state.dropDownMenuEntry.choices = RdKGToolProfile.GetAvailableProfiles()
+		BeltalowdaProfile.state.dropDownMenuEntry.choices = BeltalowdaProfile.GetAvailableProfiles()
 	end
 end
 
 
-function RdKGToolProfile.GetNewProfileName()
-	return RdKGToolProfile.state.newProfileName
+function BeltalowdaProfile.GetNewProfileName()
+	return BeltalowdaProfile.state.newProfileName
 end
 
-function RdKGToolProfile.SetNewProfileName(value)
-	RdKGToolProfile.state.newProfileName = value
+function BeltalowdaProfile.SetNewProfileName(value)
+	BeltalowdaProfile.state.newProfileName = value
 end

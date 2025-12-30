@@ -1,12 +1,12 @@
--- RdK Group Tool Iventory
+-- Beltalowda Iventory
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
 
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.inventory = RdKGToolUtil.inventory or {}
-local RdkGToolInventory = RdKGToolUtil.inventory
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.inventory = BeltalowdaUtil.inventory or {}
+local RdkGToolInventory = BeltalowdaUtil.inventory
 
 --functions
 function RdkGToolInventory.GetSoulGemsInventoryInformation()

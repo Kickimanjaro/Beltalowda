@@ -1,17 +1,17 @@
--- RdK Group Tool Util Networking
+-- Beltalowda Util Networking
 -- By @s0rdrak (PC / EU)
 
-RdKGTool = RdKGTool or {}
-RdKGTool.util = RdKGTool.util or {}
-local RdKGToolUtil = RdKGTool.util
-RdKGToolUtil.networking = RdKGToolUtil.networking or {}
-local RdKGToolNetworking = RdKGToolUtil.networking
-RdKGTool.menu = RdKGTool.menu or {}
-local RdKGToolMenu = RdKGTool.menu
-RdKGToolUtil.math = RdKGToolUtil.math or {}
-local RdKGToolMath = RdKGToolUtil.math
-RdKGToolUtil.group = RdKGToolUtil.group or {}
-local RdKGToolGroup = RdKGToolUtil.group
+Beltalowda = Beltalowda or {}
+Beltalowda.util = Beltalowda.util or {}
+local BeltalowdaUtil = Beltalowda.util
+BeltalowdaUtil.networking = BeltalowdaUtil.networking or {}
+local BeltalowdaNetworking = BeltalowdaUtil.networking
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
+BeltalowdaUtil.math = BeltalowdaUtil.math or {}
+local BeltalowdaMath = BeltalowdaUtil.math
+BeltalowdaUtil.group = BeltalowdaUtil.group or {}
+local BeltalowdaGroup = BeltalowdaUtil.group
 
 --local LGPS = LibGPS2
 --local LMP = LibMapPing
@@ -20,179 +20,179 @@ local RdKGToolGroup = RdKGToolUtil.group
 
 local LGB = LibGroupBroadcast
 
-RdKGToolNetworking.callbackName = RdKGTool.addonName .. "UtilNetworking"
+BeltalowdaNetworking.callbackName = Beltalowda.addonName .. "UtilNetworking"
 
-RdKGToolNetworking.config = {}
-RdKGToolNetworking.config.updateInterval = 1000
-RdKGToolNetworking.config.mapIndex = 23
-RdKGToolNetworking.config.mapStepSize = 1.4285034012573e-005
-RdKGToolNetworking.config.urgentMessageInterval = 3000
+BeltalowdaNetworking.config = {}
+BeltalowdaNetworking.config.updateInterval = 1000
+BeltalowdaNetworking.config.mapIndex = 23
+BeltalowdaNetworking.config.mapStepSize = 1.4285034012573e-005
+BeltalowdaNetworking.config.urgentMessageInterval = 3000
 
-RdKGToolNetworking.messageTypes = {}
+BeltalowdaNetworking.messageTypes = {}
 
-RdKGToolNetworking.messageTypes.MESSAGE_ID_HP = 60
-RdKGToolNetworking.messageTypes.MESSAGE_ID_DMG = 50
-RdKGToolNetworking.messageTypes.MESSAGE_ID_BOOM = 190
-RdKGToolNetworking.messageTypes.MESSAGE_ID_SYNERGY = 110
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ROLE = 109
-RdKGToolNetworking.messageTypes.MESSAGE_ID_VERSION_INFORMATION = 189
-RdKGToolNetworking.messageTypes.MESSAGE_ID_VERSION_REQUEST = 188
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_REQUEST = 170
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_1 = 169
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_2 = 168
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_3 = 167
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_4 = 166
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_5 = 165
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_6 = 164
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_7 = 163
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_8 = 162
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_9 = 161
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_AOE = 150
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_SOUND = 149
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_GRAPHICS = 148
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_REQUEST_EQUIPMENT_INFORMATION = 140
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_1 = 139
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_2 = 138
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_3 = 137
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_4 = 136
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_5 = 135
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CHAMPION_INFORMATION = 134
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_STATS_INFORMATION = 133
-RdKGToolNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_SKILLS_INFORMATION = 132
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_HP = 60
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_DMG = 50
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_BOOM = 190
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_SYNERGY = 110
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ROLE = 109
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_VERSION_INFORMATION = 189
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_VERSION_REQUEST = 188
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_REQUEST = 170
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_1 = 169
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_2 = 168
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_3 = 167
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_4 = 166
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_5 = 165
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_6 = 164
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_7 = 163
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_8 = 162
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_ADDON_CONFIGURATION_9 = 161
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_AOE = 150
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_SOUND = 149
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CLIENT_CONFIGURATION_GRAPHICS = 148
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_REQUEST_EQUIPMENT_INFORMATION = 140
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_1 = 139
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_2 = 138
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_3 = 137
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_4 = 136
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_EQUIPMENT_INFORMATION_5 = 135
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_CHAMPION_INFORMATION = 134
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_STATS_INFORMATION = 133
+BeltalowdaNetworking.messageTypes.MESSAGE_ID_ADMIN_RESPONSE_SKILLS_INFORMATION = 132
 
-RdKGToolNetworking.messageIdentifiers = {}
-RdKGToolNetworking.messageIdentifiers.adminResponse = {}
-RdKGToolNetworking.messageIdentifiers.adminResponse.graphics = {}
-RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_1 = 0
-RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_2 = 1
-RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_3 = 2
-RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_4 = 3
-RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_5 = 4
-RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_6 = 5
-RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_7 = 6
-RdKGToolNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_8 = 7
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats = {}
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_MAGICKA = 0
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_HEALTH = 1
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_STAMINA = 2
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_MAGICKA_RECOVERY = 3
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_HEALTH_RECOVERY = 4
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_STAMINA_RECOVERY = 5
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_DAMAGE = 6
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_WEAPON_DAMAGE = 7
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_PENETRATION = 8
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_WEAPON_PENETRATION = 9
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_CRITICAL = 10
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_RESISTANCE = 11
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_PHYSICAL_RESISTANCE = 12
-RdKGToolNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_CRITICAL_RESISTANCE = 13
-RdKGToolNetworking.messageIdentifiers.adminResponse.admin = {}
-RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_1 = 0
-RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_2 = 1
-RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_3 = 2
-RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_4 = 3
-RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_5 = 4
-RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_6 = 5
-RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_7 = 6
-RdKGToolNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_8 = 7
+BeltalowdaNetworking.messageIdentifiers = {}
+BeltalowdaNetworking.messageIdentifiers.adminResponse = {}
+BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics = {}
+BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_1 = 0
+BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_2 = 1
+BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_3 = 2
+BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_4 = 3
+BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_5 = 4
+BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_6 = 5
+BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_7 = 6
+BeltalowdaNetworking.messageIdentifiers.adminResponse.graphics.MESSAGE_8 = 7
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats = {}
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_MAGICKA = 0
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_HEALTH = 1
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_STAMINA = 2
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_MAGICKA_RECOVERY = 3
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_HEALTH_RECOVERY = 4
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_STAMINA_RECOVERY = 5
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_DAMAGE = 6
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_WEAPON_DAMAGE = 7
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_PENETRATION = 8
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_WEAPON_PENETRATION = 9
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_CRITICAL = 10
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_SPELL_RESISTANCE = 11
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_PHYSICAL_RESISTANCE = 12
+BeltalowdaNetworking.messageIdentifiers.adminResponse.stats.MESSAGE_CRITICAL_RESISTANCE = 13
+BeltalowdaNetworking.messageIdentifiers.adminResponse.admin = {}
+BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_1 = 0
+BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_2 = 1
+BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_3 = 2
+BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_4 = 3
+BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_5 = 4
+BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_6 = 5
+BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_7 = 6
+BeltalowdaNetworking.messageIdentifiers.adminResponse.admin.MESSAGE_8 = 7
 
-RdKGToolNetworking.protocolTypes = {}
-RdKGToolNetworking.protocolTypes.LEGACY = 102
-RdKGToolNetworking.protocolTypes.ADMIN = 103
-RdKGToolNetworking.protocolTypes.VERSION = 104
-RdKGToolNetworking.protocolTypes.HEARTBEAT = 105
-RdKGToolNetworking.protocolTypes.SYNERGY = 106
-RdKGToolNetworking.protocolTypes.HPDMG = 107
+BeltalowdaNetworking.protocolTypes = {}
+BeltalowdaNetworking.protocolTypes.LEGACY = 102
+BeltalowdaNetworking.protocolTypes.ADMIN = 103
+BeltalowdaNetworking.protocolTypes.VERSION = 104
+BeltalowdaNetworking.protocolTypes.HEARTBEAT = 105
+BeltalowdaNetworking.protocolTypes.SYNERGY = 106
+BeltalowdaNetworking.protocolTypes.HPDMG = 107
 
-RdKGToolNetworking.messageIdentifiers.roleMessage = {}
-RdKGToolNetworking.messageIdentifiers.roleMessage.MESSAGE_ADMIN_SET_ROLE = 255
+BeltalowdaNetworking.messageIdentifiers.roleMessage = {}
+BeltalowdaNetworking.messageIdentifiers.roleMessage.MESSAGE_ADMIN_SET_ROLE = 255
 
-RdKGToolNetworking.state = {}
-RdKGToolNetworking.state.initialized = false
-RdKGToolNetworking.state.isRunning = false
-RdKGToolNetworking.state.queues = {}
-RdKGToolNetworking.state.queues.critical = {}
-RdKGToolNetworking.state.queues.high = {}
-RdKGToolNetworking.state.queues.medium = {}
-RdKGToolNetworking.state.queues.low = {}
-RdKGToolNetworking.state.lastUrgentMessage = 0
-RdKGToolNetworking.state.rawMessageHandlers = {}
+BeltalowdaNetworking.state = {}
+BeltalowdaNetworking.state.initialized = false
+BeltalowdaNetworking.state.isRunning = false
+BeltalowdaNetworking.state.queues = {}
+BeltalowdaNetworking.state.queues.critical = {}
+BeltalowdaNetworking.state.queues.high = {}
+BeltalowdaNetworking.state.queues.medium = {}
+BeltalowdaNetworking.state.queues.low = {}
+BeltalowdaNetworking.state.lastUrgentMessage = 0
+BeltalowdaNetworking.state.rawMessageHandlers = {}
 
-RdKGToolNetworking.constants = RdKGToolNetworking.constants or {}
-RdKGToolNetworking.constants.priorities = RdKGToolNetworking.constants.priorities or {}
-RdKGToolNetworking.constants.priorities.CRITICAL = 1
-RdKGToolNetworking.constants.priorities.HIGH = 2
-RdKGToolNetworking.constants.priorities.MEDIUM = 3
-RdKGToolNetworking.constants.priorities.LOW = 4
-RdKGToolNetworking.constants.urgentSelection = RdKGToolNetworking.constants.urgentSelection or {}
-RdKGToolNetworking.constants.urgentMode = {}
-RdKGToolNetworking.constants.urgentMode.DIRECT = 1
-RdKGToolNetworking.constants.urgentMode.CRITICAL = 2
+BeltalowdaNetworking.constants = BeltalowdaNetworking.constants or {}
+BeltalowdaNetworking.constants.priorities = BeltalowdaNetworking.constants.priorities or {}
+BeltalowdaNetworking.constants.priorities.CRITICAL = 1
+BeltalowdaNetworking.constants.priorities.HIGH = 2
+BeltalowdaNetworking.constants.priorities.MEDIUM = 3
+BeltalowdaNetworking.constants.priorities.LOW = 4
+BeltalowdaNetworking.constants.urgentSelection = BeltalowdaNetworking.constants.urgentSelection or {}
+BeltalowdaNetworking.constants.urgentMode = {}
+BeltalowdaNetworking.constants.urgentMode.DIRECT = 1
+BeltalowdaNetworking.constants.urgentMode.CRITICAL = 2
 
-function RdKGToolNetworking.Initialize()
-	RdKGTool.profile.AddProfileChangeListener(RdKGToolNetworking.callbackName, RdKGToolNetworking.OnProfileChanged)
-	RdKGToolNetworking.LGB = LGB:RegisterHandler("RdKGroupTool", "RdKGroupToolHandler")
-	RdKGToolNetworking.LGB:SetDisplayName("RdK Group Tool")
-	RdKGToolNetworking.LGB:SetDescription("RdK Group Tool - PvP AddOn -> https://www.esoui.com/downloads/info2475-RdKGroupTool.html \r\nPlease use the AddOn configuration (/rdk menu) to further configure the AddOn.")
-	RdKGToolNetworking.protocols = {}
-	RdKGToolNetworking.protocols.legacy = RdKGToolNetworking.LGB:DeclareProtocol(RdKGToolNetworking.protocolTypes.LEGACY, "RdKGroupToolLegacyProtocol")
-	RdKGToolNetworking.protocols.legacy:AddField(LGB.CreateNumericField("numeric"))
-	RdKGToolNetworking.protocols.legacy:OnData(RdKGToolNetworking.LgbLegacyOnData)
-	RdKGToolNetworking.protocols.legacy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+function BeltalowdaNetworking.Initialize()
+	Beltalowda.profile.AddProfileChangeListener(BeltalowdaNetworking.callbackName, BeltalowdaNetworking.OnProfileChanged)
+	BeltalowdaNetworking.LGB = LGB:RegisterHandler("Beltalowda", "BeltalowdaHandler")
+	BeltalowdaNetworking.LGB:SetDisplayName("Beltalowda")
+	BeltalowdaNetworking.LGB:SetDescription("Beltalowda - PvP AddOn -> https://www.esoui.com/downloads/info2475-Beltalowda.html \r\nPlease use the AddOn configuration (/beltalowda menu) to further configure the AddOn.")
+	BeltalowdaNetworking.protocols = {}
+	BeltalowdaNetworking.protocols.legacy = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.LEGACY, "BeltalowdaLegacyProtocol")
+	BeltalowdaNetworking.protocols.legacy:AddField(LGB.CreateNumericField("numeric"))
+	BeltalowdaNetworking.protocols.legacy:OnData(BeltalowdaNetworking.LgbLegacyOnData)
+	BeltalowdaNetworking.protocols.legacy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
 	
-	RdKGToolNetworking.protocols.admin = RdKGToolNetworking.LGB:DeclareProtocol(RdKGToolNetworking.protocolTypes.ADMIN, "RdKGroupToolAdminProtocol")
-	RdKGToolNetworking.protocols.admin:AddField(LGB.CreateNumericField("numeric"))
-	RdKGToolNetworking.protocols.admin:OnData(RdKGToolNetworking.LgbAdminOnData)
-	RdKGToolNetworking.protocols.admin:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
+	BeltalowdaNetworking.protocols.admin = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.ADMIN, "BeltalowdaAdminProtocol")
+	BeltalowdaNetworking.protocols.admin:AddField(LGB.CreateNumericField("numeric"))
+	BeltalowdaNetworking.protocols.admin:OnData(BeltalowdaNetworking.LgbAdminOnData)
+	BeltalowdaNetworking.protocols.admin:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
 	
-	RdKGToolNetworking.protocols.version = RdKGToolNetworking.LGB:DeclareProtocol(RdKGToolNetworking.protocolTypes.VERSION, "RdKGroupToolVersionProtocol")
-	RdKGToolNetworking.protocols.version:AddField(LGB.CreateNumericField("numeric"))
-	RdKGToolNetworking.protocols.version:OnData(RdKGToolNetworking.LgbVersionOnData)
-	RdKGToolNetworking.protocols.version:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
+	BeltalowdaNetworking.protocols.version = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.VERSION, "BeltalowdaVersionProtocol")
+	BeltalowdaNetworking.protocols.version:AddField(LGB.CreateNumericField("numeric"))
+	BeltalowdaNetworking.protocols.version:OnData(BeltalowdaNetworking.LgbVersionOnData)
+	BeltalowdaNetworking.protocols.version:Finalize({isRelevantInCombat = false, replaceQueuedMessages = false})
 	
-	RdKGToolNetworking.protocols.heartbeat = RdKGToolNetworking.LGB:DeclareProtocol(RdKGToolNetworking.protocolTypes.HEARTBEAT, "RdKGroupToolHeartbeatProtocol")
-	RdKGToolNetworking.protocols.heartbeat:AddField(LGB.CreateNumericField("numeric"))
-	RdKGToolNetworking.protocols.heartbeat:OnData(RdKGToolNetworking.LgbHeartbeatOnData)
-	RdKGToolNetworking.protocols.heartbeat:Finalize({isRelevantInCombat = true, replaceQueuedMessages = true})
+	BeltalowdaNetworking.protocols.heartbeat = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.HEARTBEAT, "BeltalowdaHeartbeatProtocol")
+	BeltalowdaNetworking.protocols.heartbeat:AddField(LGB.CreateNumericField("numeric"))
+	BeltalowdaNetworking.protocols.heartbeat:OnData(BeltalowdaNetworking.LgbHeartbeatOnData)
+	BeltalowdaNetworking.protocols.heartbeat:Finalize({isRelevantInCombat = true, replaceQueuedMessages = true})
 	
-	RdKGToolNetworking.protocols.synergy = RdKGToolNetworking.LGB:DeclareProtocol(RdKGToolNetworking.protocolTypes.SYNERGY, "RdKGroupToolSynergyProtocol")
-	RdKGToolNetworking.protocols.synergy:AddField(LGB.CreateNumericField("numeric"))
-	RdKGToolNetworking.protocols.synergy:OnData(RdKGToolNetworking.LgbSynergyOnData)
-	RdKGToolNetworking.protocols.synergy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+	BeltalowdaNetworking.protocols.synergy = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.SYNERGY, "BeltalowdaSynergyProtocol")
+	BeltalowdaNetworking.protocols.synergy:AddField(LGB.CreateNumericField("numeric"))
+	BeltalowdaNetworking.protocols.synergy:OnData(BeltalowdaNetworking.LgbSynergyOnData)
+	BeltalowdaNetworking.protocols.synergy:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
 	
-	RdKGToolNetworking.protocols.hpDmg = RdKGToolNetworking.LGB:DeclareProtocol(RdKGToolNetworking.protocolTypes.HPDMG, "RdKGroupToolHpDmgProtocol")
-	RdKGToolNetworking.protocols.hpDmg:AddField(LGB.CreateNumericField("numeric"))
-	RdKGToolNetworking.protocols.hpDmg:OnData(RdKGToolNetworking.LgbHpDmgOnData)
-	RdKGToolNetworking.protocols.hpDmg:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
+	BeltalowdaNetworking.protocols.hpDmg = BeltalowdaNetworking.LGB:DeclareProtocol(BeltalowdaNetworking.protocolTypes.HPDMG, "BeltalowdaHpDmgProtocol")
+	BeltalowdaNetworking.protocols.hpDmg:AddField(LGB.CreateNumericField("numeric"))
+	BeltalowdaNetworking.protocols.hpDmg:OnData(BeltalowdaNetworking.LgbHpDmgOnData)
+	BeltalowdaNetworking.protocols.hpDmg:Finalize({isRelevantInCombat = true, replaceQueuedMessages = false})
 	
 	
-	--RdKGToolNetworking.protocols.legacy:Send()
+	--BeltalowdaNetworking.protocols.legacy:Send()
 	
-	RdKGToolNetworking.state.initialized = true
-	RdKGToolNetworking.SetEnabled(RdKGToolNetworking.netVars.enabled)
+	BeltalowdaNetworking.state.initialized = true
+	BeltalowdaNetworking.SetEnabled(BeltalowdaNetworking.netVars.enabled)
 end
 
-function RdKGToolNetworking.GetDefaults()
+function BeltalowdaNetworking.GetDefaults()
 	local defaults = {}
 	defaults.enabled = true
-	--defaults.mode = RdKGToolNetworking.constants.urgentMode.CRITICAL
-	--defaults.updateInterval = RdKGToolNetworking.config.updateInterval
+	--defaults.mode = BeltalowdaNetworking.constants.urgentMode.CRITICAL
+	--defaults.updateInterval = BeltalowdaNetworking.config.updateInterval
 	return defaults
 end
 
-function RdKGToolNetworking.SetEnabled(value)
-	if RdKGToolNetworking.state.initialized == true and value ~= nil then
-		RdKGToolNetworking.netVars.enabled = value
+function BeltalowdaNetworking.SetEnabled(value)
+	if BeltalowdaNetworking.state.initialized == true and value ~= nil then
+		BeltalowdaNetworking.netVars.enabled = value
 		if value == true then
-			if RdKGToolNetworking.state.isRunning == true then
-				RdKGToolNetworking.Disable()
-				RdKGToolNetworking.Enable()
+			if BeltalowdaNetworking.state.isRunning == true then
+				BeltalowdaNetworking.Disable()
+				BeltalowdaNetworking.Enable()
 			else
-				RdKGToolNetworking.Enable()
+				BeltalowdaNetworking.Enable()
 			end
 		else
-			if RdKGToolNetworking.state.isRunning == true then
-				RdKGToolNetworking.Disable()
+			if BeltalowdaNetworking.state.isRunning == true then
+				BeltalowdaNetworking.Disable()
 			else
 				--Nothing to do
 			end
@@ -201,20 +201,20 @@ function RdKGToolNetworking.SetEnabled(value)
 end
 
 --[[
-function RdKGToolNetworking.SendUrgentMessage(message)
+function BeltalowdaNetworking.SendUrgentMessage(message)
 	--d("sending urgent message")
-	if RdKGToolNetworking.netVars.mode == RdKGToolNetworking.constants.urgentMode.CRITICAL then
+	if BeltalowdaNetworking.netVars.mode == BeltalowdaNetworking.constants.urgentMode.CRITICAL then
 		return nil
 	end
 	local messageSent = false
-	if RdKGToolNetworking.netVars.enabled == true then
+	if BeltalowdaNetworking.netVars.enabled == true then
 	--[-[
 		if message ~= nil and message.b0 ~= nil and message.b1 ~= nil and message.b2 ~= nil and message.b3 ~= nil then
-			if RdKGToolNetworking.state.lastUrgentMessage + RdKGToolNetworking.config.urgentMessageInterval < GetGameTimeMilliseconds() then
+			if BeltalowdaNetworking.state.lastUrgentMessage + BeltalowdaNetworking.config.urgentMessageInterval < GetGameTimeMilliseconds() then
 				LGPS:PushCurrentMap()
-				SetMapToMapListIndex(RdKGToolNetworking.config.mapIndex)
+				SetMapToMapListIndex(BeltalowdaNetworking.config.mapIndex)
 
-				LMP:SetMapPing(MAP_PIN_TYPE_PING, MAP_TYPE_LOCATION_CENTERED, RdKGToolNetworking.EncodeMessage(message.b0, message.b1, message.b2, message.b3))
+				LMP:SetMapPing(MAP_PIN_TYPE_PING, MAP_TYPE_LOCATION_CENTERED, BeltalowdaNetworking.EncodeMessage(message.b0, message.b1, message.b2, message.b3))
 				LGPS:PopCurrentMap()
 				message.sent = true
 					
@@ -222,9 +222,9 @@ function RdKGToolNetworking.SendUrgentMessage(message)
 					message.isPingOwner = true
 					message.pingType = MAP_PIN_TYPE_PING
 					message.pingTag = "player"
-					RdKGToolNetworking.HandleRawMessage(message)
+					BeltalowdaNetworking.HandleRawMessage(message)
 				end
-				RdKGToolNetworking.state.lastUrgentMessage = GetGameTimeMilliseconds()
+				BeltalowdaNetworking.state.lastUrgentMessage = GetGameTimeMilliseconds()
 				messageSent = true
 			else
 				messageSent = false
@@ -240,36 +240,36 @@ function RdKGToolNetworking.SendUrgentMessage(message)
 end
 ]]
 
-function RdKGToolNetworking.LgbLegacyOnData(unitTag, data)
+function BeltalowdaNetworking.LgbLegacyOnData(unitTag, data)
 	--d("LEGACY: Received data from " .. GetUnitName(unitTag))
     --d("LEGACY: myNumber: " .. data.numeric)
 	local message = {}
-	message.b0, message.b1, message.b2, message.b3 = RdKGToolNetworking.Encode4ByteInt24(data.numeric)
+	message.b0, message.b1, message.b2, message.b3 = BeltalowdaNetworking.Encode4ByteInt24(data.numeric)
 	message.pingType = 0 -- old implementation - ping type
 	message.pingTag = unitTag
 	message.x = 0 -- old implementation via map pins - x coordinate
 	message.y = 0 -- old implementation via map pins - y coordinate
 	message.isPingOwner = false -- old implementation - ping owner
 	
-	RdKGToolNetworking.HandleRawMessage(message)
+	BeltalowdaNetworking.HandleRawMessage(message)
 end
 
-function RdKGToolNetworking.SendMessage(message, priority)
-	if RdKGToolNetworking.netVars.enabled == true then
-		local numericVal = RdKGToolNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
+function BeltalowdaNetworking.SendMessage(message, priority)
+	if BeltalowdaNetworking.netVars.enabled == true then
+		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
-		RdKGToolNetworking.protocols.legacy:Send({numeric=numericVal})
+		BeltalowdaNetworking.protocols.legacy:Send({numeric=numericVal})
 		if GetGroupSize() == 0 then
 			message.pingTag = "player"
-			RdKGToolNetworking.HandleRawMessage(message)
+			BeltalowdaNetworking.HandleRawMessage(message)
 		end
 		--d("message sent")
 	end
 --[[
-	if RdKGToolNetworking.netVars.enabled == true then
-		local queues = RdKGToolNetworking.state.queues
+	if BeltalowdaNetworking.netVars.enabled == true then
+		local queues = BeltalowdaNetworking.state.queues
 		local queue = queues.low
-		local priorities = RdKGToolNetworking.constants.priorities
+		local priorities = BeltalowdaNetworking.constants.priorities
 		if priority == priorities.CRITICAL then
 			queue = queues.critical
 		elseif priority == priorities.HIGH then
@@ -283,152 +283,152 @@ function RdKGToolNetworking.SendMessage(message, priority)
 		if GetGroupSize() == 0 then
 			message.pingTag = "player"
 		else
-			message.pingTag = RdKGToolGroup.GetUnitTagForPlayer()
+			message.pingTag = BeltalowdaGroup.GetUnitTagForPlayer()
 		end
-		RdKGToolNetworking.HandleRawMessage(message)
+		BeltalowdaNetworking.HandleRawMessage(message)
 	end
 	]]
 end
 
-function RdKGToolNetworking.LgbAdminOnData(unitTag, data)
+function BeltalowdaNetworking.LgbAdminOnData(unitTag, data)
 	--d("Admin: Received data from " .. GetUnitName(unitTag))
     --d("Admin: myNumber: " .. data.numeric)
 	local message = {}
-	message.b0, message.b1, message.b2, message.b3 = RdKGToolNetworking.Encode4ByteInt24(data.numeric)
+	message.b0, message.b1, message.b2, message.b3 = BeltalowdaNetworking.Encode4ByteInt24(data.numeric)
 	message.pingType = 0 -- old implementation - ping type
 	message.pingTag = unitTag
 	message.x = 0 -- old implementation via map pins - x coordinate
 	message.y = 0 -- old implementation via map pins - y coordinate
 	message.isPingOwner = false -- old implementation - ping owner
 	
-	RdKGToolNetworking.HandleRawMessage(message)
+	BeltalowdaNetworking.HandleRawMessage(message)
 end
 
-function RdKGToolNetworking.SendAdminMessage(message, priority)
-	if RdKGToolNetworking.netVars.enabled == true then
-		local numericVal = RdKGToolNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
+function BeltalowdaNetworking.SendAdminMessage(message, priority)
+	if BeltalowdaNetworking.netVars.enabled == true then
+		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
-		RdKGToolNetworking.protocols.admin:Send({numeric=numericVal})
+		BeltalowdaNetworking.protocols.admin:Send({numeric=numericVal})
 		--d("message sent")
 		if GetGroupSize() == 0 then
 			message.pingTag = "player"
-			RdKGToolNetworking.HandleRawMessage(message)
+			BeltalowdaNetworking.HandleRawMessage(message)
 		end
 	end
 end
 
-function RdKGToolNetworking.LgbVersionOnData(unitTag, data)
+function BeltalowdaNetworking.LgbVersionOnData(unitTag, data)
 	--d("Version: Received data from " .. GetUnitName(unitTag))
     --d("Version: myNumber: " .. data.numeric)
 	local message = {}
-	message.b0, message.b1, message.b2, message.b3 = RdKGToolNetworking.Encode4ByteInt24(data.numeric)
+	message.b0, message.b1, message.b2, message.b3 = BeltalowdaNetworking.Encode4ByteInt24(data.numeric)
 	message.pingType = 0 -- old implementation - ping type
 	message.pingTag = unitTag
 	message.x = 0 -- old implementation via map pins - x coordinate
 	message.y = 0 -- old implementation via map pins - y coordinate
 	message.isPingOwner = false -- old implementation - ping owner
 	
-	RdKGToolNetworking.HandleRawMessage(message)
+	BeltalowdaNetworking.HandleRawMessage(message)
 end
 
-function RdKGToolNetworking.SendVersionMessage(message, priority)
-	if RdKGToolNetworking.netVars.enabled == true then
-		local numericVal = RdKGToolNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
+function BeltalowdaNetworking.SendVersionMessage(message, priority)
+	if BeltalowdaNetworking.netVars.enabled == true then
+		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
-		RdKGToolNetworking.protocols.version:Send({numeric=numericVal})
+		BeltalowdaNetworking.protocols.version:Send({numeric=numericVal})
 		--d("message sent")
 		if GetGroupSize() == 0 then
 			message.pingTag = "player"
-			RdKGToolNetworking.HandleRawMessage(message)
+			BeltalowdaNetworking.HandleRawMessage(message)
 		end
 	end
 end
 
-function RdKGToolNetworking.LgbHeartbeatOnData(unitTag, data)
+function BeltalowdaNetworking.LgbHeartbeatOnData(unitTag, data)
 	--d("Heartbeat: Received data from " .. GetUnitName(unitTag))
     --d("Heartbeat: myNumber: " .. data.numeric)
 	local message = {}
-	message.b0, message.b1, message.b2, message.b3 = RdKGToolNetworking.Encode4ByteInt24(data.numeric)
+	message.b0, message.b1, message.b2, message.b3 = BeltalowdaNetworking.Encode4ByteInt24(data.numeric)
 	message.pingType = 0 -- old implementation - ping type
 	message.pingTag = unitTag
 	message.x = 0 -- old implementation via map pins - x coordinate
 	message.y = 0 -- old implementation via map pins - y coordinate
 	message.isPingOwner = false -- old implementation - ping owner
 	
-	RdKGToolNetworking.HandleRawMessage(message)
+	BeltalowdaNetworking.HandleRawMessage(message)
 end
 
-function RdKGToolNetworking.SendHeartbeatMessage(message, priority)
-	if RdKGToolNetworking.netVars.enabled == true then
-		local numericVal = RdKGToolNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
+function BeltalowdaNetworking.SendHeartbeatMessage(message, priority)
+	if BeltalowdaNetworking.netVars.enabled == true then
+		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
-		RdKGToolNetworking.protocols.heartbeat:Send({numeric=numericVal})
+		BeltalowdaNetworking.protocols.heartbeat:Send({numeric=numericVal})
 		--d("message sent")
 		if GetGroupSize() == 0 then
 			message.pingTag = "player"
-			RdKGToolNetworking.HandleRawMessage(message)
+			BeltalowdaNetworking.HandleRawMessage(message)
 		end
 	end
 end
 
-function RdKGToolNetworking.LgbSynergyOnData(unitTag, data)
+function BeltalowdaNetworking.LgbSynergyOnData(unitTag, data)
 	--d("Synergy: Received data from " .. GetUnitName(unitTag))
     --d("Synergy: myNumber: " .. data.numeric)
 	local message = {}
-	message.b0, message.b1, message.b2, message.b3 = RdKGToolNetworking.Encode4ByteInt24(data.numeric)
+	message.b0, message.b1, message.b2, message.b3 = BeltalowdaNetworking.Encode4ByteInt24(data.numeric)
 	message.pingType = 0 -- old implementation - ping type
 	message.pingTag = unitTag
 	message.x = 0 -- old implementation via map pins - x coordinate
 	message.y = 0 -- old implementation via map pins - y coordinate
 	message.isPingOwner = false -- old implementation - ping owner
 	
-	RdKGToolNetworking.HandleRawMessage(message)
+	BeltalowdaNetworking.HandleRawMessage(message)
 end
 
-function RdKGToolNetworking.SendSynergyMessage(message, priority)
-	if RdKGToolNetworking.netVars.enabled == true then
-		local numericVal = RdKGToolNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
+function BeltalowdaNetworking.SendSynergyMessage(message, priority)
+	if BeltalowdaNetworking.netVars.enabled == true then
+		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
-		RdKGToolNetworking.protocols.synergy:Send({numeric=numericVal})
+		BeltalowdaNetworking.protocols.synergy:Send({numeric=numericVal})
 		--d("message sent")
 		if GetGroupSize() == 0 then
 			message.pingTag = "player"
-			RdKGToolNetworking.HandleRawMessage(message)
+			BeltalowdaNetworking.HandleRawMessage(message)
 		end
 	end
 end
 
-function RdKGToolNetworking.LgbHpDmgOnData(unitTag, data)
+function BeltalowdaNetworking.LgbHpDmgOnData(unitTag, data)
 	--d("HpDmg: Received data from " .. GetUnitName(unitTag))
     --d("HpDmg: myNumber: " .. data.numeric)
 	local message = {}
-	message.b0, message.b1, message.b2, message.b3 = RdKGToolNetworking.Encode4ByteInt24(data.numeric)
+	message.b0, message.b1, message.b2, message.b3 = BeltalowdaNetworking.Encode4ByteInt24(data.numeric)
 	message.pingType = 0 -- old implementation - ping type
 	message.pingTag = unitTag
 	message.x = 0 -- old implementation via map pins - x coordinate
 	message.y = 0 -- old implementation via map pins - y coordinate
 	message.isPingOwner = false -- old implementation - ping owner
 	
-	RdKGToolNetworking.HandleRawMessage(message)
+	BeltalowdaNetworking.HandleRawMessage(message)
 end
 
-function RdKGToolNetworking.SendHpDmgMessage(message, priority)
-	if RdKGToolNetworking.netVars.enabled == true then
-		local numericVal = RdKGToolNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
+function BeltalowdaNetworking.SendHpDmgMessage(message, priority)
+	if BeltalowdaNetworking.netVars.enabled == true then
+		local numericVal = BeltalowdaNetworking.Decode4ByteInt24(message.b0, message.b1, message.b2, message.b3)
 		message.sent = true
-		RdKGToolNetworking.protocols.hpDmg:Send({numeric=numericVal})
+		BeltalowdaNetworking.protocols.hpDmg:Send({numeric=numericVal})
 		--d("message sent")
 		if GetGroupSize() == 0 then
 			message.pingTag = "player"
-			RdKGToolNetworking.HandleRawMessage(message)
+			BeltalowdaNetworking.HandleRawMessage(message)
 		end
 	end
 end
 
-function RdKGToolNetworking.IsRawMessageHandlerRegistred(name)
+function BeltalowdaNetworking.IsRawMessageHandlerRegistred(name)
 	local isRegistred = false
-	for i = 1, #RdKGToolNetworking.state.rawMessageHandlers do
-		if RdKGToolNetworking.state.rawMessageHandlers[i].name == name then
+	for i = 1, #BeltalowdaNetworking.state.rawMessageHandlers do
+		if BeltalowdaNetworking.state.rawMessageHandlers[i].name == name then
 			isRegistred = true
 			break
 		end
@@ -436,20 +436,20 @@ function RdKGToolNetworking.IsRawMessageHandlerRegistred(name)
 	return isRegistred
 end
 
-function RdKGToolNetworking.AddRawMessageHandler(name, messageCallback)
+function BeltalowdaNetworking.AddRawMessageHandler(name, messageCallback)
 	if name ~= nil and messageCallback ~= nil then
-		if RdKGToolNetworking.IsRawMessageHandlerRegistred(name) == false then
+		if BeltalowdaNetworking.IsRawMessageHandlerRegistred(name) == false then
 			local newHandler = {}
 			newHandler.name = name
 			newHandler.handleRawMessage = messageCallback
-			table.insert(RdKGToolNetworking.state.rawMessageHandlers, newHandler)
+			table.insert(BeltalowdaNetworking.state.rawMessageHandlers, newHandler)
 		end
 	end
 end
 
-function RdKGToolNetworking.RemoveRawMessageHandler(name)
+function BeltalowdaNetworking.RemoveRawMessageHandler(name)
 	if name ~= nil then
-		local handlers = RdKGToolNetworking.state.rawMessageHandlers
+		local handlers = BeltalowdaNetworking.state.rawMessageHandlers
 		for i = 1, #handlers do
 			if handlers[i].name == name then
 				table.remove(handlers, i)
@@ -461,28 +461,28 @@ function RdKGToolNetworking.RemoveRawMessageHandler(name)
 end
 
 --Careful not to mess up arrays and b1, b2, b3
-function RdKGToolNetworking.EncodeBitArrayToMessage(array)
+function BeltalowdaNetworking.EncodeBitArrayToMessage(array)
 	local b1, b2, b3 = 0,0,0
-	b1 = RdKGToolMath.EncodeBitArrayHelper(array, 0)
-	b2 = RdKGToolMath.EncodeBitArrayHelper(array, 8)
-	b3 = RdKGToolMath.EncodeBitArrayHelper(array, 16)
+	b1 = BeltalowdaMath.EncodeBitArrayHelper(array, 0)
+	b2 = BeltalowdaMath.EncodeBitArrayHelper(array, 8)
+	b3 = BeltalowdaMath.EncodeBitArrayHelper(array, 16)
 	return b1, b2, b3
 end
 
 --Careful not to mess up arrays and b1, b2, b3
-function RdKGToolNetworking.DecodeMessageFromBitArray(b1, b2, b3)
+function BeltalowdaNetworking.DecodeMessageFromBitArray(b1, b2, b3)
 	local array = {}
-	local tempArray = RdKGToolMath.DecodeBitArrayHelper(b1)
+	local tempArray = BeltalowdaMath.DecodeBitArrayHelper(b1)
 	for i = 1, 8 do
 		array[i] = tempArray[i]
 	end
-	tempArray =RdKGToolMath.DecodeBitArrayHelper(b2)
+	tempArray =BeltalowdaMath.DecodeBitArrayHelper(b2)
 	local localIndex = 1
 	for i = 9, 16 do
 		array[i] = tempArray[localIndex]
 		localIndex = localIndex + 1
 	end
-	tempArray =RdKGToolMath.DecodeBitArrayHelper(b3)
+	tempArray =BeltalowdaMath.DecodeBitArrayHelper(b3)
 	localIndex = 1
 	for i = 17, 24 do
 		array[i] = tempArray[localIndex]
@@ -491,11 +491,11 @@ function RdKGToolNetworking.DecodeMessageFromBitArray(b1, b2, b3)
 	return array
 end
 
-function RdKGToolNetworking.Decode4ByteInt24(b0, b1, b2, b3)
+function BeltalowdaNetworking.Decode4ByteInt24(b0, b1, b2, b3)
 	return (b0 * 16777216) + (b1 * 65536) + (b2 * 256) + b3
 end
 
-function RdKGToolNetworking.Encode4ByteInt24(int24)
+function BeltalowdaNetworking.Encode4ByteInt24(int24)
 	local b0 = math.floor(int24 / 16777216)
 	local b1 = math.floor((int24 % 16777216) / 65536)
     local b2 = math.floor((int24 % 16777216 % 65536) / 256)
@@ -505,12 +505,12 @@ function RdKGToolNetworking.Encode4ByteInt24(int24)
 end
 
 -- Compatible with Taos Group Tools Hp / Dmg calculations
-function RdKGToolNetworking.DecodeInt24(b1, b2, b3)
+function BeltalowdaNetworking.DecodeInt24(b1, b2, b3)
     return (b1 * 65536) + (b2 * 256) + b3
 end
 
 -- Compatible with Taos Group Tools Hp / Dmg calculations
-function RdKGToolNetworking.EncodeInt24(int24)
+function BeltalowdaNetworking.EncodeInt24(int24)
     local b1 = math.floor(int24 / 65536)
     local b2 = math.floor((int24 % 65536) / 256)
     local b3 = int24 % 256
@@ -520,9 +520,9 @@ end
 
 --Unfortunately, this code has to be used to integrate with addons like taos
 --Original code comes from libgroupsocket
-function RdKGToolNetworking.DecodeMessage(x, y)
-	x = math.floor(x / RdKGToolNetworking.config.mapStepSize + 0.5)
-	y = math.floor(y / RdKGToolNetworking.config.mapStepSize + 0.5)
+function BeltalowdaNetworking.DecodeMessage(x, y)
+	x = math.floor(x / BeltalowdaNetworking.config.mapStepSize + 0.5)
+	y = math.floor(y / BeltalowdaNetworking.config.mapStepSize + 0.5)
 
 	local b0 = math.floor(x / 0x100)
 	local b1 = x % 0x100
@@ -534,53 +534,53 @@ end
 
 --Unfortunately, this code has to be used to integrate with addons like taos
 --Original code comes from libgroupsocket
-function RdKGToolNetworking.EncodeMessage(b0, b1, b2, b3)
+function BeltalowdaNetworking.EncodeMessage(b0, b1, b2, b3)
 	b0 = b0 or 0
 	b1 = b1 or 0
 	b2 = b2 or 0
 	b3 = b3 or 0
-	return (b0 * 0x100 + b1) * RdKGToolNetworking.config.mapStepSize, (b2 * 0x100 + b3) * RdKGToolNetworking.config.mapStepSize
+	return (b0 * 0x100 + b1) * BeltalowdaNetworking.config.mapStepSize, (b2 * 0x100 + b3) * BeltalowdaNetworking.config.mapStepSize
 end
 
 --[[
-function RdKGToolNetworking.GetUrgentMode()
-	return RdKGToolNetworking.netVars.mode
+function BeltalowdaNetworking.GetUrgentMode()
+	return BeltalowdaNetworking.netVars.mode
 end]]
 
 --internal functions
-function RdKGToolNetworking.Enable()
-	--LMP:RegisterCallback("BeforePingAdded", RdKGToolNetworking.OnBeforePingAdded)
-	--LMP:RegisterCallback("AfterPingRemoved", RdKGToolNetworking.OnAfterPingRemoved)
+function BeltalowdaNetworking.Enable()
+	--LMP:RegisterCallback("BeforePingAdded", BeltalowdaNetworking.OnBeforePingAdded)
+	--LMP:RegisterCallback("AfterPingRemoved", BeltalowdaNetworking.OnAfterPingRemoved)
 	--[[
-	local updateInterval = RdKGToolNetworking.netVars.updateInterval
+	local updateInterval = BeltalowdaNetworking.netVars.updateInterval
 	if updateInterval < 1000 and updateInterval > 3000 then
-		updateInterval = RdKGToolNetworking.config.updateInterval
+		updateInterval = BeltalowdaNetworking.config.updateInterval
 	end]]
 	--d(updateInterval)
-	--EVENT_MANAGER:RegisterForUpdate(RdKGToolNetworking.callbackName, updateInterval, RdKGToolNetworking.OnSendData)
+	--EVENT_MANAGER:RegisterForUpdate(BeltalowdaNetworking.callbackName, updateInterval, BeltalowdaNetworking.OnSendData)
 	
-	RdKGToolNetworking.state.isRunning = true
+	BeltalowdaNetworking.state.isRunning = true
 end
 
-function RdKGToolNetworking.Disable()
-	--LMP:UnregisterCallback("BeforePingAdded", RdKGToolNetworking.OnBeforePingAdded)
-	--LMP:UnregisterCallback("AfterPingRemoved", RdKGToolNetworking.OnAfterPingRemoved)
-	--EVENT_MANAGER:UnregisterForUpdate(RdKGToolNetworking.callbackName)
-	RdKGToolNetworking.state.isRunning = false
+function BeltalowdaNetworking.Disable()
+	--LMP:UnregisterCallback("BeforePingAdded", BeltalowdaNetworking.OnBeforePingAdded)
+	--LMP:UnregisterCallback("AfterPingRemoved", BeltalowdaNetworking.OnAfterPingRemoved)
+	--EVENT_MANAGER:UnregisterForUpdate(BeltalowdaNetworking.callbackName)
+	BeltalowdaNetworking.state.isRunning = false
 end
 
-function RdKGToolNetworking.HandleRawMessage(message)
+function BeltalowdaNetworking.HandleRawMessage(message)
 	--d(message)
 	--[[
-	if message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_VERSION_INFORMATION then
+	if message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_VERSION_INFORMATION then
 		d("received MESSAGE_ID_VERSION_INFORMATION")
 	end
-	if message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_VERSION_REQUEST then
+	if message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_VERSION_REQUEST then
 		d("received MESSAGE_ID_VERSION_REQUEST")
 	end
 	]]
 	if message ~= nil then
-		local handlers = RdKGToolNetworking.state.rawMessageHandlers
+		local handlers = BeltalowdaNetworking.state.rawMessageHandlers
 		for i = 1, #handlers do
 			handlers[i].handleRawMessage(message)
 		end
@@ -588,20 +588,20 @@ function RdKGToolNetworking.HandleRawMessage(message)
 end
 
 --callbacks
-function RdKGToolNetworking.OnProfileChanged(currentProfile)
+function BeltalowdaNetworking.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
-		RdKGToolNetworking.netVars = currentProfile.util.networking
-		if RdKGToolNetworking.state.initialized == true then
-			RdKGToolNetworking.SetEnabled(RdKGToolNetworking.netVars.enabled)
+		BeltalowdaNetworking.netVars = currentProfile.util.networking
+		if BeltalowdaNetworking.state.initialized == true then
+			BeltalowdaNetworking.SetEnabled(BeltalowdaNetworking.netVars.enabled)
 		end
 	end
 end
 --[[
-function RdKGToolNetworking.OnBeforePingAdded(pingType, pingTag, x, y, isPingOwner)
+function BeltalowdaNetworking.OnBeforePingAdded(pingType, pingTag, x, y, isPingOwner)
 	--d("received")
 	if (pingType == MAP_PIN_TYPE_PING) then
 		LGPS:PushCurrentMap()
-		SetMapToMapListIndex(RdKGToolNetworking.config.mapIndex)
+		SetMapToMapListIndex(BeltalowdaNetworking.config.mapIndex)
 		--d(pingTag)
 		x, y = LMP:GetMapPing(pingType, pingTag)
 
@@ -609,18 +609,18 @@ function RdKGToolNetworking.OnBeforePingAdded(pingType, pingTag, x, y, isPingOwn
 		LMP:SuppressPing(pingType, pingTag)
 		
 		local message = {}
-		message.b0, message.b1, message.b2, message.b3 = RdKGToolNetworking.DecodeMessage(x,y)
+		message.b0, message.b1, message.b2, message.b3 = BeltalowdaNetworking.DecodeMessage(x,y)
 		message.pingType = pingType
 		message.pingTag = pingTag
 		message.x = x
 		message.y = y
 		message.isPingOwner = isPingOwner
 		
-		RdKGToolNetworking.HandleRawMessage(message)
+		BeltalowdaNetworking.HandleRawMessage(message)
 	end
 end
 
-function RdKGToolNetworking.OnAfterPingRemoved(pingType, pingTag, x, y, isPingOwner)
+function BeltalowdaNetworking.OnAfterPingRemoved(pingType, pingTag, x, y, isPingOwner)
 	if (pingType == MAP_PIN_TYPE_PING) then
 			
 		LMP:UnsuppressPing(pingType, pingTag)
@@ -631,7 +631,7 @@ end
 
 
 --[[
-function RdKGToolNetworking.OnSendData()
+function BeltalowdaNetworking.OnSendData()
 	---[-[
 	local b0 = 1
 	local b1 = math.random(100) -- ulti
@@ -640,8 +640,8 @@ function RdKGToolNetworking.OnSendData()
 	]-]
 	--d(GetGameTimeMilliseconds())
 	--d("update" .. GetGameTimeMilliseconds())
-	if lib3d:IsValidZone() and RdKGToolNetworking.state.lastUrgentMessage + 1000 < GetGameTimeMilliseconds() then
-		local queues = RdKGToolNetworking.state.queues
+	if lib3d:IsValidZone() and BeltalowdaNetworking.state.lastUrgentMessage + 1000 < GetGameTimeMilliseconds() then
+		local queues = BeltalowdaNetworking.state.queues
 		local queue = nil
 		if #queues.critical > 0 then
 			queue = queues.critical
@@ -657,17 +657,17 @@ function RdKGToolNetworking.OnSendData()
 			local message = queue[1]
 			if message ~= nil and message.b0 ~= nil and message.b1 ~= nil and message.b2 ~= nil and message.b3 ~= nil then
 				LGPS:PushCurrentMap()
-				SetMapToMapListIndex(RdKGToolNetworking.config.mapIndex)
+				SetMapToMapListIndex(BeltalowdaNetworking.config.mapIndex)
 				---[-[
-				if message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_VERSION_INFORMATION then
+				if message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_VERSION_INFORMATION then
 					d("sent MESSAGE_ID_VERSION_INFORMATION")
 				end
-				if message.b0 == RdKGToolNetworking.messageTypes.MESSAGE_ID_VERSION_REQUEST then
+				if message.b0 == BeltalowdaNetworking.messageTypes.MESSAGE_ID_VERSION_REQUEST then
 					d("sent MESSAGE_ID_VERSION_REQUEST")
 				end
 				]-]
 				table.remove(queue, 1)
-				LMP:SetMapPing(MAP_PIN_TYPE_PING, MAP_TYPE_LOCATION_CENTERED, RdKGToolNetworking.EncodeMessage(message.b0, message.b1, message.b2, message.b3))
+				LMP:SetMapPing(MAP_PIN_TYPE_PING, MAP_TYPE_LOCATION_CENTERED, BeltalowdaNetworking.EncodeMessage(message.b0, message.b1, message.b2, message.b3))
 				LGPS:PopCurrentMap()
 				message.sent = true
 				
@@ -675,7 +675,7 @@ function RdKGToolNetworking.OnSendData()
 					message.isPingOwner = true
 					message.pingType = MAP_PIN_TYPE_PING
 					message.pingTag = "player"
-					RdKGToolNetworking.HandleRawMessage(message)
+					BeltalowdaNetworking.HandleRawMessage(message)
 				end
 			else
 				if message ~= nil then
@@ -690,35 +690,35 @@ end
 ]]
 
 --menu interactions
-function RdKGToolNetworking.GetMenu()
+function BeltalowdaNetworking.GetMenu()
 	local menu = {
 		[1] = {
 			type = "submenu",
-			name = RdKGToolMenu.constants.NET_HEADER,
+			name = BeltalowdaMenu.constants.NET_HEADER,
 			controls = {
 				[1] = {
 					type = "checkbox",
-					name = RdKGToolMenu.constants.NET_ENABLED,
-					getFunc = RdKGToolNetworking.GetNetEnabled,
-					setFunc = RdKGToolNetworking.SetNetEnabled
+					name = BeltalowdaMenu.constants.NET_ENABLED,
+					getFunc = BeltalowdaNetworking.GetNetEnabled,
+					setFunc = BeltalowdaNetworking.SetNetEnabled
 				}--[[,
 				[2] = {
 					type = "dropdown",
-					name = RdKGToolMenu.constants.NET_URGENT_MODE,
-					choices = RdKGToolNetworking.GetNetUrgentModes(),
-					getFunc = RdKGToolNetworking.GetNetUrgentMode,
-					setFunc = RdKGToolNetworking.SetNetUrgentMode
+					name = BeltalowdaMenu.constants.NET_URGENT_MODE,
+					choices = BeltalowdaNetworking.GetNetUrgentModes(),
+					getFunc = BeltalowdaNetworking.GetNetUrgentMode,
+					setFunc = BeltalowdaNetworking.SetNetUrgentMode
 				},
 				[3] = {
 					type = "slider",
-					name = RdKGToolMenu.constants.NET_INTERVAL,
+					name = BeltalowdaMenu.constants.NET_INTERVAL,
 					min = 1000,
 					max = 3000,
 					step = 10,
-					getFunc = RdKGToolNetworking.GetNetInterval,
-					setFunc = RdKGToolNetworking.SetNetInterval,
+					getFunc = BeltalowdaNetworking.GetNetInterval,
+					setFunc = BeltalowdaNetworking.SetNetInterval,
 					width = "full",
-					default = RdKGToolNetworking.config.updateInterval
+					default = BeltalowdaNetworking.config.updateInterval
 				},--]]
 			}
 		},
@@ -726,39 +726,39 @@ function RdKGToolNetworking.GetMenu()
 	return menu
 end
 
-function RdKGToolNetworking.GetNetEnabled()
-	return RdKGToolNetworking.netVars.enabled
+function BeltalowdaNetworking.GetNetEnabled()
+	return BeltalowdaNetworking.netVars.enabled
 end
 
-function RdKGToolNetworking.SetNetEnabled(value)
-	RdKGToolNetworking.SetEnabled(value)
+function BeltalowdaNetworking.SetNetEnabled(value)
+	BeltalowdaNetworking.SetEnabled(value)
 end
 --[[
-function RdKGToolNetworking.GetNetUrgentModes()
-	return RdKGToolNetworking.constants.urgentSelection
+function BeltalowdaNetworking.GetNetUrgentModes()
+	return BeltalowdaNetworking.constants.urgentSelection
 end
 
-function RdKGToolNetworking.GetNetUrgentMode()
-	return RdKGToolNetworking.constants.urgentSelection[RdKGToolNetworking.netVars.mode]
+function BeltalowdaNetworking.GetNetUrgentMode()
+	return BeltalowdaNetworking.constants.urgentSelection[BeltalowdaNetworking.netVars.mode]
 end
 
-function RdKGToolNetworking.SetNetUrgentMode(value)
+function BeltalowdaNetworking.SetNetUrgentMode(value)
 		if value ~= nil then
-		for i = 1, #RdKGToolNetworking.constants.urgentSelection do
-			if RdKGToolNetworking.constants.urgentSelection[i] == value then
-				RdKGToolNetworking.netVars.mode = i
+		for i = 1, #BeltalowdaNetworking.constants.urgentSelection do
+			if BeltalowdaNetworking.constants.urgentSelection[i] == value then
+				BeltalowdaNetworking.netVars.mode = i
 				break
 			end
 		end
 	end
 end
 
-function RdKGToolNetworking.GetNetInterval()
-	return RdKGToolNetworking.netVars.updateInterval
+function BeltalowdaNetworking.GetNetInterval()
+	return BeltalowdaNetworking.netVars.updateInterval
 end
 
-function RdKGToolNetworking.SetNetInterval(value)
-	RdKGToolNetworking.netVars.updateInterval = value
-	RdKGToolNetworking.SetNetEnabled(RdKGToolNetworking.netVars.enabled)
+function BeltalowdaNetworking.SetNetInterval(value)
+	BeltalowdaNetworking.netVars.updateInterval = value
+	BeltalowdaNetworking.SetNetEnabled(BeltalowdaNetworking.netVars.enabled)
 end
 ]]
