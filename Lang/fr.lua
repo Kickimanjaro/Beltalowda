@@ -233,8 +233,7 @@ BeltalowdaMenu.constants.RO_ULTIMATE_DISPLAY_MODE = "Mode d'affichage"
 BeltalowdaMenu.constants.RO_MAX_DISTANCE = "Distance maximale"
 BeltalowdaMenu.constants.RO_SOUND_ENABLED = "Son activé"
 BeltalowdaMenu.constants.RO_SELECTED_SOUND = "Sélection du son"
-BeltalowdaMenu.constants.RO_HEADER_GROUPS = "|c4592FFUltimate Tracker - Vue Swimlanes|r"
-BeltalowdaMenu.constants.RO_GROUPS_ENABLED = "Groupes activés" 
+BeltalowdaMenu.constants.RO_GROUPS_ENABLED = "Groupes activés"
 BeltalowdaMenu.constants.RO_GROUPS_MODE = "Mode" 
 BeltalowdaMenu.constants.RO_GROUPS_1_NAME = "Groupe 1 Nom"
 BeltalowdaMenu.constants.RO_GROUPS_2_NAME = "Group 2 Nom"
@@ -749,7 +748,7 @@ BeltalowdaOverview.config.groupsModes[BeltalowdaOverview.constants.groupsModes.M
 BeltalowdaOverview.config.groupsModes[BeltalowdaOverview.constants.groupsModes.MODE_PERCENT] = "Pourcentage"
 BeltalowdaOverview.config.displayModes = BeltalowdaOverview.config.displayModes or {}
 BeltalowdaOverview.config.displayModes[BeltalowdaOverview.constants.displayModes.CLASSIC] = "Classique"
-BeltalowdaOverview.config.displayModes[BeltalowdaOverview.constants.displayModes.SWIMLANES] = "lignes de nage"
+
 
 --Healing / Damage Meter
 BeltalowdaHdm.constants = BeltalowdaHdm.constants or {}

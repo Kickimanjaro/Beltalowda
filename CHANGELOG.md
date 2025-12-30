@@ -5,6 +5,14 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.2.2] - 2025-12-30
+
+### Changed
+- **Ultimate Tracker Refinement** - Simplified New Hotness Ultimate Tracking to use only the unified view
+  - Removed Swimlanes View submenu from settings
+  - Removed swimlanes-related language strings from all language files
+  - Streamlined the ultimate tracking configuration for better user experience
+
 ## [0.2.1] - 2025-12-30
 
 ### Fixed
