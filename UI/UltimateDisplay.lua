@@ -38,6 +38,9 @@ function UltimateDisplay.Initialize()
 		1,
 		"UltimateDisplay",
 		{
+			-- Default ultimates to track in the Group Ultimates window (by ID from Ultimates.lua)
+			-- These IDs correspond to: Negate, Destruction, Storm, Nova, Standard, Storm (Permafrost)
+			-- Players can customize these by clicking the icons (feature to be implemented)
 			trackedUltimates = {1, 15, 13, 5, 7, 17},
 			playerUltimateId = 1,
 			showPlayerBlocks = true,
@@ -453,10 +456,10 @@ function UltimateDisplay.UpdateGroupUltimates()
 			end
 		end
 		
-		-- TODO: Count ready ultimates of this specific type
-		-- Currently we don't track which ultimate each player has slotted,
-		-- so for now we just count all ready ultimates
-		-- Future enhancement: integrate with ESO's GetSlotBoundId() or similar
+		-- Count how many group members have ultimate ready
+		-- Note: Currently counts all ready ultimates, not specific to this ultimate type
+		-- RdK tracked which specific ultimate each player had slotted, but that requires
+		-- ability bar detection which is a future enhancement
 		local readyCount = 0
 		for name, data in pairs(groupPlayers) do
 			if data.ultimatePercent and data.ultimatePercent >= 100 then
@@ -475,10 +478,10 @@ function UltimateDisplay.UpdateUltimateOverview()
 		groupPlayers = Beltalowda.util.group.GetAllPlayers()
 	end
 	
-	-- TODO: Count ready vs total for specific ultimate types
-	-- Currently we don't track which ultimate each player has slotted,
-	-- so we show generic counts for all ultimates
-	-- Future enhancement: integrate ultimate detection to show type-specific counts
+	-- Count ready vs total group members
+	-- Note: Shows same count for all ultimate types since we don't track which
+	-- specific ultimate each player has slotted. RdK had this capability through
+	-- ability bar detection, which is a potential future enhancement.
 	local totalPlayers = 0
 	local readyPlayers = 0
 	
@@ -506,13 +509,15 @@ function UltimateDisplay.UpdateUltimateOverview()
 end
 
 function UltimateDisplay.ShowClientUltimateMenu()
-	-- TODO: Show context menu to select ultimate
-	d("Click to select your ultimate (feature coming soon)")
+	-- Context menu to select which ultimate icon to display
+	-- This would allow players to choose which ultimate ability they want to track for themselves
+	d("Client ultimate selection menu not yet implemented")
 end
 
 function UltimateDisplay.ShowGroupUltimateMenu(index)
-	-- TODO: Show context menu to select ultimate to track
-	d("Click to select ultimate to track at position " .. index .. " (feature coming soon)")
+	-- Context menu to select which ultimate to track at this position
+	-- This would allow customization of the 12 tracked ultimate slots
+	d("Group ultimate selection menu not yet implemented - position " .. index)
 end
 
 function UltimateDisplay.StartUpdateTimer()

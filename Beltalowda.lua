@@ -61,6 +61,10 @@ end
 -- Debug/Development Commands
 -- These commands provide text-based output for debugging and development purposes
 -- The main UI is accessed through the GUI windows (toggle with /bultui)
+--
+-- Command Naming: ESO addon best practice is to prefix commands with addon name
+-- to avoid conflicts. We use "b" (Beltalowda) prefix: /bultimate, /bultui, /bbroadcast
+-- This follows the pattern seen in popular addons and minimizes collision risk.
 
 SLASH_COMMANDS["/bultimate"] = function(args)
     -- Debug command: Display ultimate tracking status in chat

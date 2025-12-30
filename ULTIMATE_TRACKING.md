@@ -21,8 +21,8 @@ Toggle with: `/bultui client`
 ### 2. Group Ultimates
 A row of 12 ultimate ability icons you can configure to track. Each shows a count of ready ultimates.
 - Displays up to 12 selectable ultimate types
-- Shows count of group members with that ultimate ready
-- Click icons to select which ultimates to track (coming soon)
+- Shows count of group members with ultimates ready (currently shows total ready, not type-specific)
+- Icons can be clicked to configure (selection menu to be implemented)
 
 Toggle with: `/bultui group`
 
@@ -104,14 +104,16 @@ Alternative text-based display:
 ### How It Works
 
 1. **Local Tracking**: The addon monitors the `EVENT_POWER_UPDATE` event to track ultimate power changes
-2. **Network Broadcasting**: When your ultimate changes by 5% or more (or reaches 0% or 100%), it broadcasts via party chat
+2. **Network Broadcasting**: Ultimate percentages are shared with group members via the ESO party chat channel
+   - Uses a custom message format that is automatically filtered from visible chat
+   - Messages broadcast when ultimate changes by 5% or more (or reaches 0% or 100%)
+   - Not visible to players, operates transparently in the background
 3. **Network Receiving**: Messages from other group members are received and parsed to update their ultimate status
 4. **UI Display**: The Ultimate Display window shows color-coded bars for each group member
    - **Green bar**: Ultimate ready (100%)
    - **Yellow bar**: Almost ready (80-99%)
    - **Blue bar**: Building ultimate (0-79%)
 5. **Real-time Updates**: UI refreshes every 100ms for smooth visual feedback
-6. **Text Display**: The `/bultimate` command shows real-time ultimate percentages in chat
 
 ## Technical Details
 
@@ -134,24 +136,50 @@ Each ultimate includes:
 
 ### Broadcasting Protocol
 
-Messages are sent in the format: `BTLWD_ULT:<percent>`
-- Messages are filtered from visible chat
+The addon uses ESO's party chat channel for lightweight networking:
+- Messages are sent in the format: `BTLWD_ULT:<percent>`
+- Messages are automatically filtered from visible chat (players don't see them)
 - Only sent when in a group
 - Throttled to one broadcast every 2 seconds
 - Only broadcasts on changes >= 5% (or 0%/100%)
 
+**Why party chat instead of LibGroupBroadcast?**
+- Simpler implementation with no external library dependencies
+- Works on all platforms (PC/Mac/Console)
+- Sufficient for ultimate percentage data (small payload)
+- LibGroupBroadcast could be added in future for enhanced features
+
 ## Known Limitations
 
-- Currently uses party chat for networking (visible in chat logs but filtered from display)
-- Does not integrate with heavy networking libraries like LibGroupBroadcast (intentional for minimal dependencies)
-- No support for specific ultimate ability detection (only tracks percentage, not which ultimate is slotted)
-- Broadcasting is enabled by default and applies to all group members with the addon
+Current implementation choices and their rationale:
+
+- **Party chat networking**: Uses ESO's party chat channel instead of LibGroupBroadcast
+  - Pro: No external dependencies, works on all platforms
+  - Con: Limited to party-size groups (24 members)
+  - Future: Could integrate LibGroupBroadcast for raid groups if needed
+  
+- **Generic ultimate counts**: Shows total ready count, not type-specific counts
+  - RdK tracked which specific ultimate each player had slotted through ability bar detection
+  - This feature requires additional implementation and is planned for future enhancement
+  
+- **Broadcasting enabled by default**: All group members with the addon will share ultimate data
+  - Can be toggled off with `/bbroadcast off` debug command if needed
 
 ## Future Enhancements
 
-Potential improvements for the future:
-- Add specific ultimate ability detection (detect which ultimate each player has slotted)
-- Add UI display instead of slash command
-- Integrate with LibGroupBroadcast for more efficient networking
+Planned improvements:
+
+- **Specific ultimate detection**: Track which ultimate each player has slotted (like RdK did)
+  - Would enable type-specific counts in Group Ultimates and Overview windows
+  - Requires ability bar detection implementation
+  
+- **Ultimate selection menus**: Allow players to customize tracked ultimates by clicking icons
+  - Client Ultimate: Choose which ultimate icon to display for yourself
+  - Group Ultimates: Configure the 12 tracked ultimate slots
+  
+- **LibGroupBroadcast integration**: Optional use for enhanced networking
+  - Would support larger raid groups beyond party size
+  - More efficient for complex data sharing
+  - Maintains party chat as lightweight default option
 - Add configuration options for broadcast frequency and threshold
 - Track ultimate usage/activation timing
