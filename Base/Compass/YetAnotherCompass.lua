@@ -260,7 +260,26 @@ function BeltalowdaYacs.OnProfileChanged(currentProfile)
 	end
 end
 
+-- Check if compass should be enabled based on detector settings
+function BeltalowdaYacs.ShouldEnableCompass()
+	local detector = Beltalowda.addOnIntegration.detector
+	if detector and detector.ShouldEnableBuiltIn and detector.detectorVars then
+		local addonType = detector.constants.ADDON_TYPE_COMPASS
+		local mode = detector.detectorVars.compassMode
+		return detector.ShouldEnableBuiltIn(addonType, mode)
+	end
+	
+	-- Default behavior if detector not available
+	return true
+end
+
 function BeltalowdaYacs.OnUpdate()
+	-- Check if we should enable based on detector settings
+	if not BeltalowdaYacs.ShouldEnableCompass() then
+		BeltalowdaYacs.controls.compass:SetHidden(true)
+		return
+	end
+	
 	local pvpZone = BeltalowdaUtil.IsInPvPArea()
 	
 	if ((BeltalowdaYacs.yacsVars.pvpEnabled == true and pvpZone == true) or (BeltalowdaYacs.yacsVars.pveEnabled == true and pvpZone == false)) and (BeltalowdaYacs.yacsVars.combatEnabled == true or BeltalowdaYacs.yacsVars.combatEnabled == false and IsUnitInCombat("player") == false ) then
@@ -272,6 +291,18 @@ function BeltalowdaYacs.OnUpdate()
 end
 
 function BeltalowdaYacs.OnPlayerActivated(eventCode, initial)
+	-- Check if we should enable based on detector settings
+	if not BeltalowdaYacs.ShouldEnableCompass() then
+		if BeltalowdaYacs.state.registredActiveConsumers == true then
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaYacs.callbackName, EVENT_ACTION_LAYER_POPPED)
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaYacs.callbackName, EVENT_ACTION_LAYER_PUSHED)
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaYacs.callbackName)
+			BeltalowdaYacs.state.registredActiveConsumers = false
+		end
+		BeltalowdaYacs.SetControlVisibility()
+		return
+	end
+	
 	local isInPvPArea = BeltalowdaUtil.IsInPvPArea()
 	if BeltalowdaYacs.yacsVars.enabled and ((BeltalowdaYacs.yacsVars.pvpEnabled == true and isInPvPArea == true) or (BeltalowdaYacs.yacsVars.pveEnabled == true and isInPvPArea == false)) then
 		if BeltalowdaYacs.state.registredActiveConsumers == false then

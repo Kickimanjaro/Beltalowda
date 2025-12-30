@@ -302,12 +302,16 @@ function BeltalowdaDt.SetControlVisibility()
 	local enabled = BeltalowdaDt.dtVars.enabled
 	local pvpOnly = BeltalowdaDt.dtVars.pvpOnly
 	local setHidden = true
-	if enabled ~= nil and pvpOnly ~= nil then
-
+	
+	-- Check if we should enable based on detector settings
+	if not BeltalowdaDt.ShouldEnableDetonationTracker() then
+		setHidden = true
+	elseif enabled ~= nil and pvpOnly ~= nil then
 		if enabled == true and (pvpOnly == false or (pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 			setHidden = false
 		end
 	end
+	
 	if setHidden == false then
 		if BeltalowdaDt.state.foreground == false then
 			BeltalowdaDt.controls.TLW:SetHidden(BeltalowdaDt.state.activeLayerIndex > 2)
@@ -468,6 +472,19 @@ function BeltalowdaDt.OnProfileChanged(currentProfile)
 		BeltalowdaDt.SetEnabled(BeltalowdaDt.dtVars.enabled)
 		
 	end
+end
+
+-- Check if detonation tracker should be enabled based on detector settings
+function BeltalowdaDt.ShouldEnableDetonationTracker()
+	local detector = Beltalowda.addOnIntegration.detector
+	if detector and detector.ShouldEnableBuiltIn and detector.detectorVars then
+		local addonType = detector.constants.ADDON_TYPE_BOMB_TIMER
+		local mode = detector.detectorVars.bombTimerMode
+		return detector.ShouldEnableBuiltIn(addonType, mode)
+	end
+	
+	-- Default behavior if detector not available
+	return true
 end
 
 function BeltalowdaDt.SaveWindowLocation()

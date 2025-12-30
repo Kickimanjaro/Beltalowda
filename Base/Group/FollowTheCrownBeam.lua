@@ -109,9 +109,26 @@ function BeltalowdaBeam.OnProfileChanged(currentProfile)
 	end
 end
 
+-- Check if beam features should be enabled based on detector settings
+function BeltalowdaBeam.ShouldEnableBeam()
+	local detector = Beltalowda.addOnIntegration.detector
+	if detector and detector.ShouldEnableBuiltIn and detector.detectorVars then
+		local addonType = detector.constants.ADDON_TYPE_BEAM
+		local mode = detector.detectorVars.beamMode
+		return detector.ShouldEnableBuiltIn(addonType, mode)
+	end
+	
+	-- Default behavior if detector not available
+	return true
+end
+
 function BeltalowdaBeam.OnPlayerActivated(eventCode, initial)
 	--d("player activated")
-	if BeltalowdaBeam.ftcbVars.enabled == true and (BeltalowdaBeam.ftcbVars.pvpOnly == false or (BeltalowdaBeam.ftcbVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
+	
+	-- Check if we should enable based on detector settings
+	local shouldEnable = BeltalowdaBeam.ShouldEnableBeam()
+	
+	if shouldEnable and BeltalowdaBeam.ftcbVars.enabled == true and (BeltalowdaBeam.ftcbVars.pvpOnly == false or (BeltalowdaBeam.ftcbVars.pvpOnly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 		if BeltalowdaBeam.state.registredActivationConsumers == false then
 			--d("enabled")
 			EVENT_MANAGER:RegisterForUpdate(BeltalowdaBeam.callbackName, BeltalowdaBeam.config.updateInterval, BeltalowdaBeam.UiLoop)
