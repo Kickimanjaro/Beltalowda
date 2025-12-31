@@ -75,19 +75,15 @@ Update the version when:
 
 When incrementing the version number, you **MUST**:
 
-#### 1. Update Version in THREE Places
+#### 1. Update Version in TWO Files
 
 **File 1: `Beltalowda.txt`** (addon manifest)
 - Locate line: `## Version: X.X.X`
-- Update to new version (e.g., `## Version: 0.4.0`)
-- **CRITICAL**: Also update `## AddOnVersion: N`
-  - This is what ESO displays in the addon settings UI
-  - Increment this number with each version (e.g., version 0.4.0 = AddOnVersion 40)
-  - Formula: Remove dots from version and use as integer (0.3.19 → 319, 0.4.0 → 40)
+- Update to new version
 
 **File 2: `Beltalowda.lua`** (main script)
 - Locate line: `Beltalowda.versionString = "X.X.X"`
-- Update to new version (e.g., `Beltalowda.versionString = "0.4.0"`)
+- Update to new version
 
 #### 2. Update CHANGELOG.md
 
@@ -128,9 +124,7 @@ Guidelines:
 User: "Let's increment to version 0.2.5"
 
 Steps:
-1. Update Beltalowda.txt: 
-   - ## Version: 0.2.5
-   - ## AddOnVersion: 25 (remove dots: 0.2.5 → 25)
+1. Update Beltalowda.txt: ## Version: 0.2.5
 2. Update Beltalowda.lua: Beltalowda.versionString = "0.2.5"
 3. Add comprehensive CHANGELOG.md entry documenting:
    - All new features added in this version
