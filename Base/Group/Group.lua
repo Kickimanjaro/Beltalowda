@@ -12,55 +12,20 @@ local BeltalowdaMenu = Beltalowda.menu
 
 
 function BeltalowdaGroup.Initialize()
-	-- DIAGNOSTIC: Systematically disable migrated features to isolate crash
-	d("[Beltalowda] Group Initialize START")
-	
 	BeltalowdaGroup.crown.Initialize() -- Crown display and highlighting
-	d("[Beltalowda] - Crown initialized")
-	
 	BeltalowdaGroup.ai.Initialize() -- Auto Invite system
-	d("[Beltalowda] - AutoInvite initialized")
-	
 	BeltalowdaGroup.ftcv.Initialize() -- Follow The Crown Visual (beams, arrows, etc)
-	d("[Beltalowda] - FTC Visual initialized")
-	
 	BeltalowdaGroup.ftcw.Initialize() -- Follow The Crown Warnings (alerts and notifications)
-	d("[Beltalowda] - FTC Warnings initialized")
-	
 	BeltalowdaGroup.ftca.Initialize() -- Follow The Crown Audio (sound alerts)
-	d("[Beltalowda] - FTC Audio initialized")
-	
 	BeltalowdaGroup.ftcb.Initialize() -- Follow The Crown Beam (directional beam to leader)
-	d("[Beltalowda] - FTC Beam initialized")
-	
 	BeltalowdaGroup.dbo.Initialize() -- Debuff Overview (group debuff tracking)
-	d("[Beltalowda] - Debuff Overview initialized")
-	
-	-- MIGRATED FEATURE #1: Positioning (Rapid Tracker) - DISABLED FOR TESTING
-	-- BeltalowdaGroup.rt.Initialize() -- Rapid Tracker (ultimate cooldown tracking)
-	d("[Beltalowda] - Rapid Tracker (Positioning) DISABLED")
-	
-	-- MIGRATED FEATURE #2: Ultimates (Resource Overview) - DISABLED FOR TESTING  
-	-- BeltalowdaGroup.ro.Initialize() -- Resource Overview (health, stamina, magicka tracking)
-	d("[Beltalowda] - Resource Overview (Ultimates) DISABLED")
-	
+	BeltalowdaGroup.rt.Initialize() -- Rapid Tracker (ultimate cooldown tracking)
+	BeltalowdaGroup.ro.Initialize() -- Resource Overview (health, stamina, magicka tracking)
 	BeltalowdaGroup.hdm.Initialize() -- HP/Damage Meter (health and damage information)
-	d("[Beltalowda] - HP/Damage Meter initialized")
-	
 	BeltalowdaGroup.po.Initialize() -- Potion Overview (buff duration tracking)
-	d("[Beltalowda] - Potion Overview initialized")
-	
-	-- MIGRATED FEATURE #3: AttackTimers (Detonation Tracker) - DISABLED FOR TESTING
-	-- BeltalowdaGroup.dt.Initialize() -- Detonation Tracker (explosive tracking)
-	d("[Beltalowda] - Detonation Tracker (AttackTimers) DISABLED")
-	
+	BeltalowdaGroup.dt.Initialize() -- Detonation Tracker (explosive tracking)
 	BeltalowdaGroup.gb.Initialize() -- Group Beams (visual beams connecting group members)
-	d("[Beltalowda] - Group Beams initialized")
-	
 	BeltalowdaGroup.isdp.Initialize() -- I See Dead People (fallen member highlighting)
-	d("[Beltalowda] - I See Dead People initialized")
-	
-	d("[Beltalowda] Group Initialize COMPLETE")
 end
 
 function BeltalowdaGroup.SlashCmd(param)

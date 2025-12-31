@@ -28,13 +28,6 @@ local BeltalowdaMath = BeltalowdaUtil.math
 BeltalowdaUtil.beams = BeltalowdaUtil.beams or {}
 local BeltalowdaBeams = BeltalowdaUtil.beams
 Beltalowda.toolbox = Beltalowda.toolbox or {}
-
--- Initialize constants early (will be populated by Lang files)
-BeltalowdaAdmin.constants = BeltalowdaAdmin.constants or {}
-BeltalowdaAdmin.constants.defaults = BeltalowdaAdmin.constants.defaults or {}
-BeltalowdaAdmin.constants.defaults.UNDEFINED = BeltalowdaAdmin.constants.defaults.UNDEFINED or "N/A"
-BeltalowdaAdmin.constants.defaults.UNDEFINED_LINE = BeltalowdaAdmin.constants.defaults.UNDEFINED_LINE or "-"
-
 local BeltalowdaToolbox = Beltalowda.toolbox
 BeltalowdaToolbox.sp = BeltalowdaToolbox.sp or {}
 local BeltalowdaSP = BeltalowdaToolbox.sp
