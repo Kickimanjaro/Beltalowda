@@ -88,9 +88,13 @@ BeltalowdaUltimates.config.ultimateOverview.isClampedToScreen = true
 BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.SMALL] = {}
 BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.SMALL].blockHeight = 30
 BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.SMALL].width = 160
+BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.SMALL].height = 120
+BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.SMALL].fontSize = 26
 BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.BIG] = {}
 BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.BIG].blockHeight = 40
-BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.BIG].width = 250
+BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.BIG].width = 210
+BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.BIG].height = 160
+BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.BIG].fontSize = 34
 BeltalowdaUltimates.config.ultimateModes = BeltalowdaUltimates.config.ultimateModes or {}
 
 -- Initialize groups configuration
