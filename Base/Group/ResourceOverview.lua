@@ -2710,12 +2710,16 @@ function BeltalowdaOverview.OnBoomKeyBinding()
 	end
 end
 
--- Delegation function for menu functions that were moved to Ultimates wrapper
+-- Internal utility function - used during initialization before wrapper is loaded
 function BeltalowdaOverview.GetRoAvailableGroupsGroups()
-	if Beltalowda and Beltalowda.features and Beltalowda.features.ultimates and Beltalowda.features.ultimates.GetRoAvailableGroupsGroups then
-		return Beltalowda.features.ultimates.GetRoAvailableGroupsGroups()
-	end
-	return {}
+	local groups = {}
+	table.insert(groups, "-")
+	table.insert(groups, BeltalowdaOverview.roVars.groups.group1.name)
+	table.insert(groups, BeltalowdaOverview.roVars.groups.group2.name)
+	table.insert(groups, BeltalowdaOverview.roVars.groups.group3.name)
+	table.insert(groups, BeltalowdaOverview.roVars.groups.group4.name)
+	table.insert(groups, BeltalowdaOverview.roVars.groups.group5.name)
+	return groups
 end
 
 --menu interactions

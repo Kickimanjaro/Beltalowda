@@ -815,14 +815,8 @@ function BeltalowdaUltimates.SetRoGroups5Name(value)
 end
 
 function BeltalowdaUltimates.GetRoAvailableGroupsGroups()
-	local groups = {}
-	table.insert(groups, "-")
-	table.insert(groups, BeltalowdaOverview.roVars.groups.group1.name)
-	table.insert(groups, BeltalowdaOverview.roVars.groups.group2.name)
-	table.insert(groups, BeltalowdaOverview.roVars.groups.group3.name)
-	table.insert(groups, BeltalowdaOverview.roVars.groups.group4.name)
-	table.insert(groups, BeltalowdaOverview.roVars.groups.group5.name)
-	return groups
+	-- Delegate to internal function in ResourceOverview
+	return BeltalowdaOverview.GetRoAvailableGroupsGroups()
 end
 
 function BeltalowdaUltimates.GetRoSelectedGroupsGroup(index)
