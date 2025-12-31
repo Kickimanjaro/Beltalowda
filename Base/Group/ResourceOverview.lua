@@ -2710,4 +2710,12 @@ function BeltalowdaOverview.OnBoomKeyBinding()
 	end
 end
 
+-- Delegation function for menu functions that were moved to Ultimates wrapper
+function BeltalowdaOverview.GetRoAvailableGroupsGroups()
+	if Beltalowda and Beltalowda.features and Beltalowda.features.ultimates and Beltalowda.features.ultimates.GetRoAvailableGroupsGroups then
+		return Beltalowda.features.ultimates.GetRoAvailableGroupsGroups()
+	end
+	return {}
+end
+
 --menu interactions

@@ -5,6 +5,24 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.11] - 2025-12-31
+
+### Fixed
+- **Critical Bug Fix** - Resolved missing delegation function causing initialization failure in v0.3.10
+  - Added delegation function `BeltalowdaOverview.GetRoAvailableGroupsGroups()` in `ResourceOverview.lua`
+  - `ResourceOverview.lua` line 598 calls this function which was moved to Ultimates wrapper in v0.3.9
+  - Delegation function now forwards calls to `Beltalowda.features.ultimates.GetRoAvailableGroupsGroups()`
+  - Error was: "function expected instead of nil" at `Base/Group/ResourceOverview.lua:598`
+  - Addon now loads correctly with visual elements and settings menu accessible
+
+## [0.3.10] - 2025-12-31
+
+### Fixed
+- **Critical Bug Fix** - Resolved syntax errors preventing addon from loading in v0.3.9
+  - Removed extra `end` statement at line 2714 in ResourceOverview.lua (after "--menu interactions" comment)
+  - Added missing `end` statement for SetRoSpacing function in Ultimates.lua (line 1011)
+  - Fixed cascading errors in en.lua and Group.lua caused by syntax issues
+
 ## [0.3.9] - 2025-12-31
 
 ### Changed
