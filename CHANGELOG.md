@@ -9,10 +9,11 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 
 ### Fixed
 - **Positioning Module** - Fixed "Enabled" toggle not functioning in settings menu
-  - `SetRtEnabled()` now updates `rtVars.enabled` directly (like other setters)
-  - Still calls core `SetEnabled()` to trigger proper event registration/unregistration
-  - Added safety check to `GetRtEnabled()` for nil rtVars
-  - Other toggles (PvP Only, Position Fixed) and color pickers continue working correctly
+  - Root cause: `SetEnabled()` has initialization guards that can block menu updates
+  - Fix: `SetRtEnabled()` now updates `rtVars.enabled` directly before calling `SetEnabled()`
+  - This ensures menu changes persist even if `state.initialized` check fails
+  - Follows pattern of other working setters (PvP Only, Position Fixed)
+  - Removed unnecessary defensive nil checks per DEVELOPMENT.md guidelines
 
 ## [0.3.2] - 2025-12-30
 
