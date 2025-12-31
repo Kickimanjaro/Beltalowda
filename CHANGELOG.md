@@ -5,6 +5,25 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.5.0] - 2025-12-31
+
+### Added
+- **Phase 3 Milestone 5: Ultimates Feature Migration ✅ COMPLETE**
+  - Migrated all 80+ functions from ResourceOverview.lua to Ultimates.lua (3589 lines)
+  - Ultimates is now fully self-contained with Initialize(), GetDefaults(), and all core logic
+  - Created 142-line delegation wrapper in ResourceOverview.lua for backward compatibility
+  
+### Changed
+- Base/Features/Ultimates.lua now contains complete implementation (was 1005 lines, now 3589)
+- Base/Group/ResourceOverview.lua reduced to 142-line delegation wrapper (was 2748 lines)
+- All namespace references updated from `BeltalowdaOverview.*` to `BeltalowdaUltimates.*`
+- Ultimates module is independent and ready for testing
+
+### Technical Notes
+- Saved variables still use `currentProfile.toolbox.ro` path for backward compatibility
+- Delegation wrapper uses metatable for dynamic property access (constants, config, state, controls)
+- **Phase 3 COMPLETE**: All 4 major features (Positioning, Synergies, AttackTimers, Ultimates) now migrated to self-contained modules
+
 ## [0.4.7] - 2025-12-31
 
 ### Fixed
