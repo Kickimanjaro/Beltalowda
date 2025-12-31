@@ -2722,4 +2722,12 @@ function BeltalowdaOverview.GetRoAvailableGroupsGroups()
 	return groups
 end
 
+-- Delegation function - forwards to wrapper location
+function BeltalowdaOverview.GetRoAvailableDisplayModes()
+	if Beltalowda and Beltalowda.features and Beltalowda.features.ultimates and Beltalowda.features.ultimates.GetRoAvailableDisplayModes then
+		return Beltalowda.features.ultimates.GetRoAvailableDisplayModes()
+	end
+	return {}
+end
+
 --menu interactions
