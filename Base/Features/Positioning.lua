@@ -14,10 +14,10 @@ Beltalowda.group = Beltalowda.group or {}
 local BeltalowdaGroup = Beltalowda.group
 BeltalowdaGroup.rt = BeltalowdaGroup.rt or {}
 local BeltalowdaRT = BeltalowdaGroup.rt
+Beltalowda.menu = Beltalowda.menu or {}
+local BeltalowdaMenu = Beltalowda.menu
 
--- Re-export the existing RapidTracker functionality
--- Phase 1: Just provide a clearer namespace while keeping original implementation
-
+-- Core functions still delegated to RapidTracker
 function BeltalowdaPositioning.Initialize()
 	-- Delegate to original implementation
 	if BeltalowdaRT.Initialize then
@@ -33,27 +33,137 @@ function BeltalowdaPositioning.GetDefaults()
 	return {}
 end
 
+-- Phase 2: Menu functions moved here
 function BeltalowdaPositioning.GetMenu()
-	-- Delegate to original implementation
-	if BeltalowdaRT.GetMenu then
-		return BeltalowdaRT.GetMenu()
-	end
-	return {}
+	local menu = {
+		[1] = {
+			type = "submenu",
+			name = BeltalowdaMenu.constants.RT_HEADER,
+			controls = {
+				[1] = {
+					type = "checkbox",
+					name = BeltalowdaMenu.constants.RT_ENABLED,
+					getFunc = BeltalowdaPositioning.GetRtEnabled,
+					setFunc = BeltalowdaPositioning.SetRtEnabled
+				},
+				[2] = {
+					type = "checkbox",
+					name = BeltalowdaMenu.constants.RT_PVP_ONLY,
+					getFunc = BeltalowdaPositioning.GetRtPvpOnly,
+					setFunc = BeltalowdaPositioning.SetRtPvpOnly,
+				},
+				[3] = {
+					type = "checkbox",
+					name = BeltalowdaMenu.constants.RT_POSITION_FIXED,
+					getFunc = BeltalowdaPositioning.GetRtPositionLocked,
+					setFunc = BeltalowdaPositioning.SetRtPositionLocked,
+				},
+				[4] = {
+					type = "colorpicker",
+					name = BeltalowdaMenu.constants.RT_COLOR_LABEL_IN_RANGE,
+					getFunc = BeltalowdaPositioning.GetRtColorLabelInRange,
+					setFunc = BeltalowdaPositioning.SetRtColorLabelInRange,
+					width = "full"
+				},
+				[5] = {
+					type = "colorpicker",
+					name = BeltalowdaMenu.constants.RT_COLOR_LABEL_NOT_IN_RANGE,
+					getFunc = BeltalowdaPositioning.GetRtColorLabelNotInRange,
+					setFunc = BeltalowdaPositioning.SetRtColorLabelNotInRange,
+					width = "full"
+				},
+				[6] = {
+					type = "colorpicker",
+					name = BeltalowdaMenu.constants.RT_COLOR_LABEL_OUT_OF_RANGE,
+					getFunc = BeltalowdaPositioning.GetRtColorLabelOutOfRange,
+					setFunc = BeltalowdaPositioning.SetRtColorLabelOutOfRange,
+					width = "full"
+				},
+				[7] = {
+					type = "colorpicker",
+					name = BeltalowdaMenu.constants.RT_COLOR_RAPID_ON,
+					getFunc = BeltalowdaPositioning.GetRtColorRapidOn,
+					setFunc = BeltalowdaPositioning.SetRtColorRapidOn,
+					width = "full"
+				},
+				[8] = {
+					type = "colorpicker",
+					name = BeltalowdaMenu.constants.RT_COLOR_RAPID_OFF,
+					getFunc = BeltalowdaPositioning.GetRtColorRapidOff,
+					setFunc = BeltalowdaPositioning.SetRtColorRapidOff,
+					width = "full"
+				},
+			}		
+		},
+	}
+	return menu
 end
 
--- Expose common configuration functions
-function BeltalowdaPositioning.SetEnabled(value)
-	if BeltalowdaRT.SetEnabled then
-		BeltalowdaRT.SetEnabled(value)
-	end
+-- Menu getter/setter functions (Phase 2)
+function BeltalowdaPositioning.GetRtEnabled()
+	return BeltalowdaRT.rtVars.enabled
 end
 
-function BeltalowdaPositioning.GetEnabled()
-	if BeltalowdaRT.GetRtEnabled then
-		return BeltalowdaRT.GetRtEnabled()
-	end
-	return false
+function BeltalowdaPositioning.SetRtEnabled(value)
+	BeltalowdaRT.SetEnabled(value)
 end
 
--- Note: This is Phase 1 - a wrapper that delegates to the existing RapidTracker.
--- In future phases, we will gradually move the implementation here.
+function BeltalowdaPositioning.GetRtPvpOnly()
+	return BeltalowdaRT.rtVars.pvponly
+end
+
+function BeltalowdaPositioning.SetRtPvpOnly(value)
+	BeltalowdaRT.rtVars.pvponly = value
+end
+
+function BeltalowdaPositioning.GetRtPositionLocked()
+	return BeltalowdaRT.rtVars.positionLocked
+end
+
+function BeltalowdaPositioning.SetRtPositionLocked(value)
+	BeltalowdaRT.SetMovable(not value)
+end
+
+function BeltalowdaPositioning.GetRtColorLabelInRange()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaRT.rtVars.colors.inRange)
+end
+
+function BeltalowdaPositioning.SetRtColorLabelInRange(r, g, b)
+	BeltalowdaRT.rtVars.colors.inRange = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+end
+
+function BeltalowdaPositioning.GetRtColorLabelNotInRange()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaRT.rtVars.colors.notInRange)
+end
+
+function BeltalowdaPositioning.SetRtColorLabelNotInRange(r, g, b)
+	BeltalowdaRT.rtVars.colors.notInRange = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+end
+
+function BeltalowdaPositioning.GetRtColorLabelOutOfRange()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaRT.rtVars.colors.outOfRange)
+end
+
+function BeltalowdaPositioning.SetRtColorLabelOutOfRange(r, g, b)
+	BeltalowdaRT.rtVars.colors.outOfRange = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+end
+
+function BeltalowdaPositioning.GetRtColorRapidOn()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaRT.rtVars.colors.rapidOn)
+end
+
+function BeltalowdaPositioning.SetRtColorRapidOn(r, g, b)
+	BeltalowdaRT.rtVars.colors.rapidOn = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaRT.AdjustColors()
+end
+
+function BeltalowdaPositioning.GetRtColorRapidOff()
+	return BeltalowdaMenu.GetRGBColor(BeltalowdaRT.rtVars.colors.rapidOff)
+end
+
+function BeltalowdaPositioning.SetRtColorRapidOff(r, g, b)
+	BeltalowdaRT.rtVars.colors.rapidOff = BeltalowdaMenu.GetColorFromRGB(r, g, b)
+	BeltalowdaRT.AdjustColors()
+end
+
+-- Note: Phase 2 - Menu functions now in wrapper, core logic still in RapidTracker.

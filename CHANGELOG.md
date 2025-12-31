@@ -5,6 +5,16 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.2] - 2025-12-30
+
+### Changed
+- **Positioning Module Refactor (Phase 2)** - Moved menu functions to wrapper file
+  - Moved `GetMenu()` function from `RapidTracker.lua` to `Positioning.lua` wrapper
+  - Moved all getter/setter menu functions to `Positioning.lua` (9 functions total)
+  - Core implementation (`Initialize()`, `GetDefaults()`, event handlers) remains in `RapidTracker.lua`
+  - Menu now references `BeltalowdaPositioning.*` functions while still delegating to `BeltalowdaRT.*` internals
+  - Maintains full backward compatibility with Phase 1 architecture
+
 ## [0.3.1] - 2025-12-30
 
 ### Added
