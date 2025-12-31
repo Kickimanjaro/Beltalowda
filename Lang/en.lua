@@ -733,12 +733,9 @@ BeltalowdaFtcw.constants.FTCW_MAX_DISTANCE ="Maximum Distance Reached!!!"
 
 --Resource Overview / Ultimates
 -- Use BeltalowdaUltimates namespace directly (delegation wrapper forwards via metatable)
+-- Ultimates.lua loads first (line 88) and initializes all constants/config before Lang files (line 94)
+-- No defensive initialization needed - just reference the existing tables
 BeltalowdaUltimates = BeltalowdaUltimates or Beltalowda.features.ultimates
-BeltalowdaUltimates.config = BeltalowdaUltimates.config or {}
-BeltalowdaUltimates.constants = BeltalowdaUltimates.constants or {}
-BeltalowdaUltimates.constants.ultimateModes = BeltalowdaUltimates.constants.ultimateModes or {}
-BeltalowdaUltimates.constants.groupsModes = BeltalowdaUltimates.constants.groupsModes or {}
-BeltalowdaUltimates.config.ultimateModes = BeltalowdaUltimates.config.ultimateModes or {}
 --BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_GROUP] = "Group Assignment"
 BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_READINESS] = "Readiness"
 BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_NAME] = "Name"
