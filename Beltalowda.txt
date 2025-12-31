@@ -84,7 +84,7 @@ Base/AddOnIntegration/AddOnIntegration.lua
 Base/AddOnIntegration/MiatPvpAlerts.lua
 Base/Admin/Admin.lua
 
-BeltalowdaMenu.lua
 Lang/en.lua
+BeltalowdaMenu.lua
 Lang/$(language).lua
 bindings.xml
