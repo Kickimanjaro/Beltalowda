@@ -5,6 +5,20 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.9] - 2025-12-31
+
+### Changed
+- **Phase 2 - Ultimates Complete**: Moved menu functions to Ultimates.lua wrapper
+  - Moved `GetMenu()` and 143 getter/setter functions from ResourceOverview.lua (989 lines total)
+  - Core implementation (Initialize, GetDefaults, event handlers, UI) remains in ResourceOverview.lua
+  - Menu functions now in `Beltalowda.features.ultimates` namespace while delegating to `BeltalowdaOverview.*` internals
+  - Applied consistent delegation pattern from previous modules
+  - **Phase 2 COMPLETE**: All four modules now have menu functions extracted to wrapper files
+    - Positioning.lua: 9 functions moved
+    - Synergies.lua: 18 functions moved
+    - AttackTimers.lua: 23 functions moved  
+    - Ultimates.lua: 143 functions moved (largest module)
+
 ## [0.3.8] - 2025-12-30
 
 ### Fixed
