@@ -74,5 +74,9 @@ function BeltalowdaDt.SaveWindowLocation()
 return BeltalowdaAttackTimers.SaveWindowLocation()
 end
 
+function BeltalowdaDt.GetMenu()
+return BeltalowdaAttackTimers.GetMenu()
+end
+
 -- Note: All implementation has been moved to Base/Features/AttackTimers.lua
 -- This file is maintained for backward compatibility only
