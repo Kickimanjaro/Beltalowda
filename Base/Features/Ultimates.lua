@@ -1492,7 +1492,9 @@ function BeltalowdaUltimates.InitializeControlSettings()
 	BeltalowdaUltimates.SetEnabled(BeltalowdaGroup.ro.roVars.enabled)
 	BeltalowdaUltimates.AdjustGroupNames()
 
-	BeltalowdaUltimates.AdjustSize()
+	-- DO NOT call AdjustSize() during initialization
+	-- It will be called automatically when settings change or via UiLoop after init completes
+	-- BeltalowdaUltimates.AdjustSize()
 	BeltalowdaUltimates.AdjustStaminaMagickaBarVisibility()
 end
 
@@ -3359,7 +3361,7 @@ function BeltalowdaUltimates.AdjustSize()
 	
 	BeltalowdaUltimates.SetDisplayedUltimates(BeltalowdaGroup.ro.roVars.groupUltimatesSettings.displayedUltimates)
 	BeltalowdaUltimates.AdjustStaminaMagickaBarVisibility()
-	-- DO NOT call UiLoop() directly here - it runs via EVENT_MANAGER callback and accesses state.sentUltimateCommandTimeStamp which isn't set yet during init
+	BeltalowdaUltimates.UiLoop()
 	
 	
 	--Groups Window Configuration
