@@ -5,6 +5,17 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.6] - 2025-12-30
+
+### Changed
+- **Phase 2 - Synergies Complete** - Moved menu functions to Synergies.lua wrapper
+  - Moved `GetMenu()` function from `SynergyOverview.lua` to `Synergies.lua`
+  - Moved 18 getter/setter functions to wrapper (enabled, colors, display modes, synergy toggles, etc.)
+  - Removed 392 lines from SynergyOverview.lua (menu functions only)
+  - Core implementation (Initialize, GetDefaults, event handlers, UI) remains in SynergyOverview.lua
+  - Menu functions now reference `BeltalowdaSynergies.*` while still delegating to `BeltalowdaSO.*` internals
+  - Applied lessons from Positioning: direct variable updates + explicit SetControlVisibility calls
+
 ## [0.3.5] - 2025-12-30
 
 ### Fixed
