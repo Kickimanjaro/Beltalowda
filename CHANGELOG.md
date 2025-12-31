@@ -5,6 +5,22 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.4] - 2025-12-30
+
+### Changed
+- **DEVELOPMENT.md Enhanced** - Strengthened AI agent guidance to prevent repeat mistakes
+  - Added prominent "MANDATORY PREREQUISITE" header at top of file
+  - Enhanced troubleshooting section with context about previous violations
+  - Made it clearer that defensive nil checks violate established guidelines
+  - This addresses recurring issue where AI agents ignored troubleshooting philosophy
+  - v0.3.3 serves as reminder of importance of following DEVELOPMENT.md guidelines
+
+### Meta
+- **Process Improvement** - v0.3.3 documented the bug fix cycle that violated DEVELOPMENT.md
+  - Initial fix added defensive nil checks (wrong approach per guidelines)
+  - Corrected fix found root cause and removed defensive checks (right approach)
+  - This version increment ensures context is preserved for future reference
+
 ## [0.3.3] - 2025-12-30
 
 ### Fixed

@@ -1,12 +1,29 @@
 # Development Guidelines for Beltalowda
 
+---
+
+# 🚨 MANDATORY PREREQUISITE FOR ALL AI AGENTS 🚨
+
+**STOP! READ THIS ENTIRE FILE BEFORE MAKING ANY CODE CHANGES!**
+
+This file contains **critical troubleshooting patterns** and **ESO-specific development practices** that you **MUST** follow. 
+
+⚠️ **IMPORTANT SECTIONS YOU MUST READ:**
+1. **[ESO Addon Best Practices](#eso-addon-development-best-practices)** - Required namespace patterns
+2. **[Troubleshooting Philosophy](#troubleshooting-philosophy)** - DO NOT add defensive nil checks
+3. **[Version Management](#version-management--changelog)** - How to update versions properly
+
+**Failure to follow these guidelines will result in broken code that must be reverted.**
+
+---
+
 ## Overview
 
 This document provides guidelines for developing and maintaining Beltalowda. It covers version management, changelog updates, code organization, and other best practices.
 
 ## ESO Addon Development Best Practices
 
-**⚠️ IMPORTANT FOR AI AGENTS ⚠️**
+**⚠️ CRITICAL FOR AI AGENTS - READ BEFORE ANY CODE CHANGES ⚠️**
 
 Before making any code changes to this addon, **you MUST read and understand** the patterns documented in:
 
@@ -306,6 +323,16 @@ Before incrementing version:
 - [ ] No console errors when toggling features on/off
 
 ## Troubleshooting Philosophy
+
+---
+
+# ⚠️ MANDATORY READING FOR ALL AI AGENTS ⚠️
+
+**This section is REQUIRED reading before making ANY bug fixes or code changes.**
+
+**Context:** AI agents have previously violated these guidelines by adding defensive nil checks instead of finding root causes, leading to wasted time and code reverts. This pattern has occurred multiple times and must not be repeated.
+
+---
 
 ### When Things Break After Code Changes
 
