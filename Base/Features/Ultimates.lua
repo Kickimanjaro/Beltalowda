@@ -1193,6 +1193,7 @@ BeltalowdaUltimates.state.ultimateAvailable = {}
 BeltalowdaUltimates.state.sounds = {}
 BeltalowdaUltimates.state.networkInformation = {}
 BeltalowdaUltimates.state.groupsData = {}
+BeltalowdaUltimates.state.spacing = 0
 BeltalowdaUltimates.state.buffs = {}
 BeltalowdaUltimates.state.selectedClientUltimate = 0
 BeltalowdaUltimates.state.selectedGroupUltimate = 0
