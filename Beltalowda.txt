@@ -84,6 +84,10 @@ Base/AddOnIntegration/AddOnIntegration.lua
 Base/AddOnIntegration/MiatPvpAlerts.lua
 Base/Admin/Admin.lua
 
+Base/Features/Ultimates.lua
+Base/Features/Synergies.lua
+Base/Features/Positioning.lua
+Base/Features/AttackTimers.lua
 
 BeltalowdaMenu.lua
 Lang/en.lua
