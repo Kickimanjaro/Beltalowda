@@ -5,6 +5,17 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.7] - 2025-12-30
+
+### Changed
+- **Phase 2 - AttackTimers Complete** - Moved menu functions to AttackTimers.lua wrapper
+  - Moved `GetMenu()` function from `DetonationTracker.lua` to `AttackTimers.lua`
+  - Moved 23 getter/setter functions to wrapper (enabled, position, PvP, mode, size, smooth transition, 12 color pickers)
+  - Removed 273 lines from DetonationTracker.lua (menu functions only)
+  - Core implementation (Initialize, GetDefaults, event handlers, UI) remains in DetonationTracker.lua
+  - Menu functions now reference `BeltalowdaAttackTimers.*` while delegating to `BeltalowdaDT.*` internals
+  - Applied lessons from Positioning and Synergies (direct variable updates + explicit SetControlVisibility calls)
+
 ## [0.3.6] - 2025-12-30
 
 ### Changed
