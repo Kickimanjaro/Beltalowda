@@ -5,6 +5,20 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.5.1] - 2025-12-31
+
+### Fixed
+- **Phase 3 Milestone 5: Ultimates Constants and Config**
+  - Added missing `constants` and `config` initialization to Ultimates.lua
+  - Updated Lang/en.lua to reference `BeltalowdaUltimates` instead of `BeltalowdaOverview`
+  - Fixed nil reference errors in line 735 (Lang/en.lua) and line 1098 (Ultimates.lua)
+  - Ultimates module now fully functional with all required properties initialized
+
+### Technical Notes
+- Constants include: ultimateModes, groupsModes, displayModes, size, TLW names, and more
+- Config includes: update intervals, client ultimate settings
+- Lang file now properly sets displayable names for modes via BeltalowdaUltimates namespace
+
 ## [0.5.0] - 2025-12-31
 
 ### Added

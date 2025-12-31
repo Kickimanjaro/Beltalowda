@@ -1048,6 +1048,64 @@ BeltalowdaUltimates.controls.groupUltimates = {}
 BeltalowdaUltimates.controls.ultimateOverview = {}
 BeltalowdaUltimates.controls.groupAssignments = {}
 
+-- Constants and configuration
+BeltalowdaUltimates.constants = BeltalowdaUltimates.constants or {}
+BeltalowdaUltimates.constants.TLW_CLIENT_ULTIMATE_NAME = "Beltalowda.group.ro.client_ultimate_TLW"
+BeltalowdaUltimates.constants.TLW_GROUP_ULTIMATES_NAME = "Beltalowda.group.ro.group_ultimates_TLW"
+BeltalowdaUltimates.constants.TLW_GROUP_ASSIGNMENT_NAME = "Beltalowda.group.ro.group_assignment_TLW"
+BeltalowdaUltimates.constants.TLW_ULTIMATE_OVERVIEW_NAME = "Beltalowda.group.ro.ultimate_overview_TLW"
+BeltalowdaUltimates.constants.TLW_GROUPS_GROUP = {}
+BeltalowdaUltimates.constants.TLW_GROUPS_GROUP[1] = "Beltalowda.group.ro.groups_group_1_TLW"
+BeltalowdaUltimates.constants.TLW_GROUPS_GROUP[2] = "Beltalowda.group.ro.groups_group_2_TLW"
+BeltalowdaUltimates.constants.TLW_GROUPS_GROUP[3] = "Beltalowda.group.ro.groups_group_3_TLW"
+BeltalowdaUltimates.constants.TLW_GROUPS_GROUP[4] = "Beltalowda.group.ro.groups_group_4_TLW"
+BeltalowdaUltimates.constants.TLW_GROUPS_GROUP[5] = "Beltalowda.group.ro.groups_group_5_TLW"
+BeltalowdaUltimates.constants.TLW_GROUPS_EMPTY = "Beltalowda.group.ro.groups_group_EMPTY"
+
+BeltalowdaUltimates.constants.groupsModes = {}
+BeltalowdaUltimates.constants.groupsModes.MODE_PRIORITY_NAME = 1
+BeltalowdaUltimates.constants.groupsModes.MODE_PRIORITY_PERCENT = 2
+BeltalowdaUltimates.constants.groupsModes.MODE_PERCENT = 3
+
+BeltalowdaUltimates.constants.ultimateModes = {}
+BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_READINESS = 1
+BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_NAME = 2
+BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_GROUP = 3
+
+BeltalowdaUltimates.constants.displayModes = {}
+BeltalowdaUltimates.constants.displayModes.CLASSIC = 1
+BeltalowdaUltimates.constants.displayModes.SWIMLANES = 2
+
+BeltalowdaUltimates.constants.OFFLINE_TRESHOLD = 30000
+
+BeltalowdaUltimates.constants.ULTIMATE_OVERVIEW_STRING = "%d/%d %s:"
+
+BeltalowdaUltimates.constants.references = BeltalowdaUltimates.constants.references or {}
+BeltalowdaUltimates.constants.references.GROUPS_DROPDOWN = "Beltalowda.group.ro.groups.assignment."
+
+BeltalowdaUltimates.constants.size = {}
+BeltalowdaUltimates.constants.size.SMALL = 1
+BeltalowdaUltimates.constants.size.BIG = 2
+
+-- Will be set by Lang files, initialize here to avoid nil errors
+BeltalowdaUltimates.constants.BOOM = "BOOM"
+BeltalowdaUltimates.constants.TOGGLE_BOOM = "Send BOOM"
+
+BeltalowdaUltimates.callbackName = Beltalowda.addonName .. "ResourceOverview"
+BeltalowdaUltimates.uiCallbackName = Beltalowda.addonName .. "ResourceOverviewUI"
+BeltalowdaUltimates.groupsUiCallbackName = Beltalowda.addonName .. "ResourceOverviewGroupsUI"
+BeltalowdaUltimates.networkingCallbackName = Beltalowda.addonName .. "ResourceOverviewNetworking"
+BeltalowdaUltimates.messageCallbackName = Beltalowda.addonName .. "ResourceOverviewMessageUpdate"
+
+BeltalowdaUltimates.config = {}
+BeltalowdaUltimates.config.networkUpdateInterval = 500
+BeltalowdaUltimates.config.messageUpdateInterval = 1000
+BeltalowdaUltimates.config.uiUpdateInterval = 100
+BeltalowdaUltimates.config.groupsUiUpdateInterval = 100
+BeltalowdaUltimates.config.buffUpdateInterval = 100
+BeltalowdaUltimates.config.clientUltimate = {}
+BeltalowdaUltimates.config.ultimateModes = BeltalowdaUltimates.config.ultimateModes or {}
+
 -- ============================================================================
 
 function BeltalowdaUltimates.Initialize()
