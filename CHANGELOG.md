@@ -5,6 +5,14 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.2.3] - 2025-12-30
+
+### Changed
+- **Code Documentation** - Added descriptive comments to Group.lua Initialize(), GetDefaults(), and GetMenu() functions
+  - Each module initialization now has inline comments explaining its purpose
+  - Clarifies abbreviations: crown, ai, ftcv, ftcw, ftca, ftcb, dbo, rt, ro, hdm, po, dt, gb, isdp
+  - Improves code maintainability and developer onboarding
+
 ## [0.2.2] - 2025-12-30
 
 ### Changed
