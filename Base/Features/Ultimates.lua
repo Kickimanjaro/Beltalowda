@@ -9,6 +9,10 @@ Beltalowda.features = Beltalowda.features or {}
 Beltalowda.features.ultimates = Beltalowda.features.ultimates or {}
 Beltalowda.menu = Beltalowda.menu or {}
 
+-- Initialize config and constants early (Lang files need these)
+Beltalowda.features.ultimates.config = Beltalowda.features.ultimates.config or {}
+Beltalowda.features.ultimates.constants = Beltalowda.features.ultimates.constants or {}
+
 -- Create local aliases (performance)
 local BeltalowdaUltimates = Beltalowda.features.ultimates
 local BeltalowdaMenu = Beltalowda.menu

@@ -734,6 +734,8 @@ BeltalowdaFtcw.constants.FTCW_MAX_DISTANCE ="Maximum Distance Reached!!!"
 --Resource Overview / Ultimates
 -- Use BeltalowdaUltimates namespace directly (delegation wrapper forwards via metatable)
 BeltalowdaUltimates = BeltalowdaUltimates or Beltalowda.features.ultimates
+BeltalowdaUltimates.config = BeltalowdaUltimates.config or {}
+BeltalowdaUltimates.constants = BeltalowdaUltimates.constants or {}
 BeltalowdaUltimates.config.ultimateModes = BeltalowdaUltimates.config.ultimateModes or {}
 --BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_GROUP] = "Group Assignment"
 BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_READINESS] = "Readiness"
