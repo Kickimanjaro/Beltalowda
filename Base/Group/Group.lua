@@ -1,5 +1,6 @@
 -- Beltalowda Group
 -- By @s0rdrak (PC / EU)
+-- Modified by @Kickimanjaro for Beltalowda
 
 Beltalowda = Beltalowda or {}
 
@@ -11,20 +12,20 @@ local BeltalowdaMenu = Beltalowda.menu
 
 
 function BeltalowdaGroup.Initialize()
-	BeltalowdaGroup.crown.Initialize()
-	BeltalowdaGroup.ai.Initialize()
-	BeltalowdaGroup.ftcv.Initialize()
-	BeltalowdaGroup.ftcw.Initialize()
-	BeltalowdaGroup.ftca.Initialize()
-	BeltalowdaGroup.ftcb.Initialize()
-	BeltalowdaGroup.dbo.Initialize()
-	BeltalowdaGroup.rt.Initialize()
-	BeltalowdaGroup.ro.Initialize()
-	BeltalowdaGroup.hdm.Initialize()
-	BeltalowdaGroup.po.Initialize()
-	BeltalowdaGroup.dt.Initialize()
-	BeltalowdaGroup.gb.Initialize()
-	BeltalowdaGroup.isdp.Initialize()
+	BeltalowdaGroup.crown.Initialize() -- Crown display and highlighting
+	BeltalowdaGroup.ai.Initialize() -- Auto Invite system
+	BeltalowdaGroup.ftcv.Initialize() -- Follow The Crown Visual (beams, arrows, etc)
+	BeltalowdaGroup.ftcw.Initialize() -- Follow The Crown Warnings (alerts and notifications)
+	BeltalowdaGroup.ftca.Initialize() -- Follow The Crown Audio (sound alerts)
+	BeltalowdaGroup.ftcb.Initialize() -- Follow The Crown Beam (directional beam to leader)
+	BeltalowdaGroup.dbo.Initialize() -- Debuff Overview (group debuff tracking)
+	BeltalowdaGroup.rt.Initialize() -- Rapid Tracker (ultimate cooldown tracking)
+	BeltalowdaGroup.ro.Initialize() -- Resource Overview (health, stamina, magicka tracking)
+	BeltalowdaGroup.hdm.Initialize() -- HP/Damage Meter (health and damage information)
+	BeltalowdaGroup.po.Initialize() -- Potion Overview (buff duration tracking)
+	BeltalowdaGroup.dt.Initialize() -- Detonation Tracker (explosive tracking)
+	BeltalowdaGroup.gb.Initialize() -- Group Beams (visual beams connecting group members)
+	BeltalowdaGroup.isdp.Initialize() -- I See Dead People (fallen member highlighting)
 end
 
 function BeltalowdaGroup.SlashCmd(param)
@@ -40,20 +41,20 @@ end
 
 function BeltalowdaGroup.GetDefaults()
 	local defaults = {}
-	defaults.crown = BeltalowdaGroup.crown.GetDefaults()
-	defaults.ai = BeltalowdaGroup.ai.GetDefaults()
-	defaults.ftcv = BeltalowdaGroup.ftcv.GetDefaults()
-	defaults.ftcw = BeltalowdaGroup.ftcw.GetDefaults()
-	defaults.ftca = BeltalowdaGroup.ftca.GetDefaults()
-	defaults.ftcb = BeltalowdaGroup.ftcb.GetDefaults()
-	defaults.dbo = BeltalowdaGroup.dbo.GetDefaults()
-	defaults.rt = BeltalowdaGroup.rt.GetDefaults()
-	defaults.ro = BeltalowdaGroup.ro.GetDefaults()
-	defaults.hdm = BeltalowdaGroup.hdm.GetDefaults()
-	defaults.po = BeltalowdaGroup.po.GetDefaults()
-	defaults.dt = BeltalowdaGroup.dt.GetDefaults()
-	defaults.gb = BeltalowdaGroup.gb.GetDefaults()
-	defaults.isdp = BeltalowdaGroup.isdp.GetDefaults()
+	defaults.crown = BeltalowdaGroup.crown.GetDefaults() -- Crown display and highlighting
+	defaults.ai = BeltalowdaGroup.ai.GetDefaults() -- Auto Invite system
+	defaults.ftcv = BeltalowdaGroup.ftcv.GetDefaults() -- Follow The Crown Visual (beams, arrows, etc)
+	defaults.ftcw = BeltalowdaGroup.ftcw.GetDefaults() -- Follow The Crown Warnings (alerts and notifications)
+	defaults.ftca = BeltalowdaGroup.ftca.GetDefaults() -- Follow The Crown Audio (sound alerts)
+	defaults.ftcb = BeltalowdaGroup.ftcb.GetDefaults() -- Follow The Crown Beam (directional beam to leader)
+	defaults.dbo = BeltalowdaGroup.dbo.GetDefaults() -- Debuff Overview (group debuff tracking)
+	defaults.rt = BeltalowdaGroup.rt.GetDefaults() -- Rapid Tracker (ultimate cooldown tracking)
+	defaults.ro = BeltalowdaGroup.ro.GetDefaults() -- Resource Overview (health, stamina, magicka tracking)
+	defaults.hdm = BeltalowdaGroup.hdm.GetDefaults() -- HP/Damage Meter (health and damage information)
+	defaults.po = BeltalowdaGroup.po.GetDefaults() -- Potion Overview (buff duration tracking)
+	defaults.dt = BeltalowdaGroup.dt.GetDefaults() -- Detonation Tracker (explosive tracking)
+	defaults.gb = BeltalowdaGroup.gb.GetDefaults() -- Group Beams (visual beams connecting group members)
+	defaults.isdp = BeltalowdaGroup.isdp.GetDefaults() -- I See Dead People (fallen member highlighting)
 	return defaults
 end
 
@@ -65,17 +66,17 @@ function BeltalowdaGroup.GetMenu()
 			width = "full",
 		}
 	}
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.crown.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ai.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftcv.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftcw.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftca.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftcb.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.dbo.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.hdm.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.po.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.dt.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.gb.GetMenu())
-	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.isdp.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.crown.GetMenu()) -- Crown display and highlighting
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ai.GetMenu()) -- Auto Invite system
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftcv.GetMenu()) -- Follow The Crown Visual (beams, arrows, etc)
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftcw.GetMenu()) -- Follow The Crown Warnings (alerts and notifications)
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftca.GetMenu()) -- Follow The Crown Audio (sound alerts)
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ftcb.GetMenu()) -- Follow The Crown Beam (directional beam to leader)
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.dbo.GetMenu()) -- Debuff Overview (group debuff tracking)
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.hdm.GetMenu()) -- HP/Damage Meter (health and damage information)
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.po.GetMenu()) -- Potion Overview (buff duration tracking)
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.dt.GetMenu()) -- Detonation Tracker (explosive tracking)
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.gb.GetMenu()) -- Group Beams (visual beams connecting group members)
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.isdp.GetMenu()) -- I See Dead People (fallen member highlighting)
 	return menu
 end
