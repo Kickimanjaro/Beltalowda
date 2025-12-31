@@ -101,11 +101,21 @@ end
 
 -- Menu getter/setter functions (Phase 2)
 function BeltalowdaPositioning.GetRtEnabled()
-	return BeltalowdaRT.rtVars.enabled
+	if BeltalowdaRT.rtVars then
+		return BeltalowdaRT.rtVars.enabled
+	end
+	return false
 end
 
 function BeltalowdaPositioning.SetRtEnabled(value)
-	BeltalowdaRT.SetEnabled(value)
+	-- Update the saved variable directly (like other setters)
+	if BeltalowdaRT.rtVars then
+		BeltalowdaRT.rtVars.enabled = value
+	end
+	-- Also call the core SetEnabled to trigger event registration/unregistration
+	if BeltalowdaRT.SetEnabled then
+		BeltalowdaRT.SetEnabled(value)
+	end
 end
 
 function BeltalowdaPositioning.GetRtPvpOnly()

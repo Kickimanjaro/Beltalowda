@@ -5,6 +5,15 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.3] - 2025-12-30
+
+### Fixed
+- **Positioning Module** - Fixed "Enabled" toggle not functioning in settings menu
+  - `SetRtEnabled()` now updates `rtVars.enabled` directly (like other setters)
+  - Still calls core `SetEnabled()` to trigger proper event registration/unregistration
+  - Added safety check to `GetRtEnabled()` for nil rtVars
+  - Other toggles (PvP Only, Position Fixed) and color pickers continue working correctly
+
 ## [0.3.2] - 2025-12-30
 
 ### Changed
