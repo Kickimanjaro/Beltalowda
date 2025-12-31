@@ -1493,7 +1493,9 @@ function BeltalowdaUltimates.InitializeControlSettings()
 	BeltalowdaUltimates.SetEnabled(BeltalowdaGroup.ro.roVars.enabled)
 	BeltalowdaUltimates.AdjustGroupNames()
 
-	BeltalowdaUltimates.AdjustSize()
+	-- AdjustSize() should not be called during initialization as it accesses UI controls
+	-- Size adjustments will be handled by the periodic UiLoop callback after initialization completes
+	-- BeltalowdaUltimates.AdjustSize()
 	BeltalowdaUltimates.AdjustStaminaMagickaBarVisibility()
 end
 
