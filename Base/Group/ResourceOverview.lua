@@ -2730,4 +2730,12 @@ function BeltalowdaOverview.GetRoAvailableDisplayModes()
 	return {}
 end
 
+-- Delegation function - forwards to wrapper location
+function BeltalowdaOverview.GetRoAvailableUltimateSortingModes()
+	if Beltalowda and Beltalowda.features and Beltalowda.features.ultimates and Beltalowda.features.ultimates.GetRoAvailableUltimateSortingModes then
+		return Beltalowda.features.ultimates.GetRoAvailableUltimateSortingModes()
+	end
+	return {}
+end
+
 --menu interactions

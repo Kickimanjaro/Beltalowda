@@ -5,6 +5,39 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.15] - 2025-12-31
+
+### Fixed
+- **Critical Bug Fix** - Added delegation function for GetRoAvailableUltimateSortingModes
+  - Added delegation function `BeltalowdaOverview.GetRoAvailableUltimateSortingModes()` in `ResourceOverview.lua`
+  - Ultimates menu GetMenu() calls this function at line 246 during menu initialization
+  - Delegation function forwards calls to `Beltalowda.features.ultimates.GetRoAvailableUltimateSortingModes()`
+  - Error was: "function expected instead of nil" at `Base/Features/Ultimates.lua:246`
+
+## [0.3.14] - 2025-12-31
+
+### Fixed
+- **Critical Bug Fix** - Added delegation function for GetRoAvailableDisplayModes
+  - Ultimates menu GetMenu() calls this function which was moved to wrapper in v0.3.9
+  - Error was: "function expected instead of nil" at `Base/Features/Ultimates.lua:88`
+
+## [0.3.13] - 2025-12-31
+
+### Fixed
+- **Critical Bug Fix** - Added BeltalowdaOverview alias to Ultimates.lua
+  - GetMenu() function referenced BeltalowdaOverview functions but alias was missing
+  - Added `local BeltalowdaOverview = BeltalowdaGroup.ro` to match pattern in ResourceOverview.lua
+  - Error was: "attempt to index a nil value" at `Base/Features/Ultimates.lua:36`
+
+## [0.3.12] - 2025-12-31
+
+### Fixed
+- **Critical Bug Fix** - Restored GetRoAvailableGroupsGroups to ResourceOverview.lua  
+  - Function is internal utility called during initialization before Ultimates wrapper loads
+  - Moved implementation back to ResourceOverview.lua where it belongs
+  - Ultimates wrapper now has delegation stub calling back to ResourceOverview implementation
+  - Error was: "function expected instead of nil" at `Base/Group/ResourceOverview.lua:598`
+
 ## [0.3.11] - 2025-12-31
 
 ### Fixed
