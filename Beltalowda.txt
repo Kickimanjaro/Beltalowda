@@ -53,7 +53,6 @@ Base/Group/FollowTheCrownAudio.lua
 Base/Group/FollowTheCrownBeam.lua
 Base/Group/DebuffOverview.lua
 Base/Group/RapidTracker.lua
-Base/Features/Ultimates.lua
 Base/Group/ResourceOverview.lua
 Base/Group/HpDmgMeter.lua
 Base/Group/PotionOverview.lua
