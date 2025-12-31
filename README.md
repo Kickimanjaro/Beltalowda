@@ -68,6 +68,25 @@ This addon follows ESOUI.com standards and is compatible with the Minion app dis
 - `UI/` - User interface components
 - `Art/` - Art assets and textures
 
+### Documentation
+- [ULTIMATE_TRACKING.md](ULTIMATE_TRACKING.md) - Ultimate tracking feature documentation
+- [LIBGROUPBROADCAST_GUIDE.md](LIBGROUPBROADCAST_GUIDE.md) - Comprehensive LibGroupBroadcast implementation guide
+- [LIBGROUPBROADCAST_QUICK_REFERENCE.md](LIBGROUPBROADCAST_QUICK_REFERENCE.md) - Quick reference for developers
+- [CHANGELOG.md](CHANGELOG.md) - Version history
+
+### Networking
+
+Beltalowda uses **LibGroupBroadcast** for group data sharing with 6 active protocols:
+- **Protocol 102-107**: Legacy, Admin, Version, Heartbeat, Synergy, HP/Damage
+- **Protocol 108-111**: Planned for Position, Equipment, Abilities, Active Effects
+
+See the [LibGroupBroadcast Guide](LIBGROUPBROADCAST_GUIDE.md) for details on:
+- Current implementation status
+- Protocol design and data structures
+- Implementation examples and code snippets
+- Best practices for bandwidth management
+- ID reservation requirements
+
 ## Credits
 
 **Created by:** @Kickimanjaro
