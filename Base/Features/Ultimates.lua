@@ -1203,6 +1203,7 @@ BeltalowdaUltimates.state.buffs = {}
 BeltalowdaUltimates.state.selectedClientUltimate = 0
 BeltalowdaUltimates.state.selectedGroupUltimate = 0
 BeltalowdaUltimates.state.previousActiveGroupSize = 0
+BeltalowdaUltimates.state.sentUltimateCommandTimeStamp = 0
 
 BeltalowdaUltimates.controls = {}
 BeltalowdaUltimates.controls.client = {}
