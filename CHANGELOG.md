@@ -5,6 +5,15 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.16] - 2025-12-31
+
+### Fixed
+- **Critical Bug Fix** - Added delegation function for GetRoAvailableSounds
+  - Added delegation function `BeltalowdaOverview.GetRoAvailableSounds()` in `ResourceOverview.lua`
+  - Ultimates menu GetMenu() calls this function at line 359 during menu initialization
+  - Delegation function forwards calls to `Beltalowda.features.ultimates.GetRoAvailableSounds()`
+  - Error was: "function expected instead of nil" at `Base/Features/Ultimates.lua:359`
+
 ## [0.3.15] - 2025-12-31
 
 ### Fixed

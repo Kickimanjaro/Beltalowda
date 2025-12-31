@@ -2738,4 +2738,12 @@ function BeltalowdaOverview.GetRoAvailableUltimateSortingModes()
 	return {}
 end
 
+-- Delegation function - forwards to wrapper location
+function BeltalowdaOverview.GetRoAvailableSounds()
+	if Beltalowda and Beltalowda.features and Beltalowda.features.ultimates and Beltalowda.features.ultimates.GetRoAvailableSounds then
+		return Beltalowda.features.ultimates.GetRoAvailableSounds()
+	end
+	return {}
+end
+
 --menu interactions
