@@ -19,7 +19,7 @@ local BeltalowdaYacs = BeltalowdaCompass.yacs
 local BeltalowdaSC = BeltalowdaCompass.sc
 local BeltalowdaUtil = Beltalowda.util
 local BeltalowdaUtilUI = BeltalowdaUtil.ui
-local BeltalowdaUltimates = BeltalowdaUtil.ultimates
+local BeltalowdaUltimates = Beltalowda.features.ultimates  -- Fixed: was BeltalowdaUtil.ultimates
 local BeltalowdaNetworking = BeltalowdaUtil.networking
 local BeltalowdaUtilGroup = BeltalowdaUtil.group
 local BeltalowdaVersioning = BeltalowdaUtil.versioning
@@ -732,10 +732,8 @@ BeltalowdaFtcw.constants = BeltalowdaFtcw.constants or {}
 BeltalowdaFtcw.constants.FTCW_MAX_DISTANCE ="Maximum Distance Reached!!!"
 
 --Resource Overview / Ultimates
--- Use BeltalowdaUltimates namespace directly (delegation wrapper forwards via metatable)
+-- Use Beltalowda.features.ultimates namespace via local variable defined at top of file
 -- Ultimates.lua loads first (line 88) and initializes all constants/config before Lang files (line 94)
--- No defensive initialization needed - just reference the existing tables
-BeltalowdaUltimates = BeltalowdaUltimates or Beltalowda.features.ultimates
 --BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_GROUP] = "Group Assignment"
 BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_READINESS] = "Readiness"
 BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_NAME] = "Name"
