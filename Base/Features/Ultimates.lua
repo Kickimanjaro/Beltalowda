@@ -17,6 +17,7 @@ local BeltalowdaGroup = Beltalowda.group
 BeltalowdaGroup.ro = BeltalowdaGroup.ro or {}
 local BeltalowdaRO = BeltalowdaGroup.ro
 local BeltalowdaOverview = BeltalowdaGroup.ro  -- Alias for original namespace
+local wm = WINDOW_MANAGER
 
 -- ============================================================================
 -- Constants and Configuration - MUST be initialized early before Lang files load
