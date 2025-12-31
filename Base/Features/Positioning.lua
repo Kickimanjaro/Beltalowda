@@ -109,6 +109,10 @@ function BeltalowdaPositioning.SetRtEnabled(value)
 	BeltalowdaRT.rtVars.enabled = value
 	-- Then call SetEnabled to handle event registration/unregistration
 	BeltalowdaRT.SetEnabled(value)
+	-- Ensure visibility is updated immediately (in case SetEnabled's guards prevent it)
+	if BeltalowdaRT.SetControlVisibility then
+		BeltalowdaRT.SetControlVisibility()
+	end
 end
 
 function BeltalowdaPositioning.GetRtPvpOnly()

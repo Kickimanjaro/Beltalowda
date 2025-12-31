@@ -5,6 +5,15 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.5] - 2025-12-30
+
+### Fixed
+- **Positioning Module** - Fixed UI element not disappearing immediately when disabled
+  - Root cause: `SetEnabled()` has initialization guard that can prevent `SetControlVisibility()` from being called
+  - Solution: `SetRtEnabled()` now explicitly calls `SetControlVisibility()` after updating settings
+  - UI now hides immediately when feature is disabled, no /reloadui required
+  - Follows pattern: update saved var → call core function → ensure UI updates
+
 ## [0.3.4] - 2025-12-30
 
 ### Changed
