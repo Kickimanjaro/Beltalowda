@@ -45,44 +45,44 @@ function BeltalowdaUltimates.GetMenu()
 					setFunc = BeltalowdaOverview.SetRoPositionLocked,
 					warning = BeltalowdaMenu.constants.RO_SHARED_SETTING
 				},
-				[3] = {
+				[4] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_PVP_ONLY,
 					getFunc = BeltalowdaOverview.GetRoPvpOnly,
 					setFunc = BeltalowdaOverview.SetRoPvpOnly,
 					warning = BeltalowdaMenu.constants.RO_SHARED_SETTING
 				},
-				[4] = {
+				[5] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_OVERVIEW_ENABLED,
 					getFunc = BeltalowdaOverview.GetRoUltimateOverviewEnabled,
 					setFunc = BeltalowdaOverview.SetRoUltimateOverviewEnabled
 				},
-				[5] = {
+				[6] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_CLIENT_ULTIMATE_ENABLED,
 					getFunc = BeltalowdaOverview.GetRoClientUltimateEnabled,
 					setFunc = BeltalowdaOverview.SetRoClientUltimateEnabled
 				},
-				[6] = {
+				[7] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_GROUP_ULTIMATES_ENABLED,
 					getFunc = BeltalowdaOverview.GetRoGroupUltimatesEnabled,
 					setFunc = BeltalowdaOverview.SetRoGroupUltimatesEnabled
 				},
-				[7] = {
+				[8] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_SHOW_SOFT_RESOURCES,
 					getFunc = BeltalowdaOverview.GetRoShowSoftResources,
 					setFunc = BeltalowdaOverview.SetRoShowSoftResources
 				},
-				[8] = {
+				[9] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_GROUPS_ENABLED,
 					getFunc = BeltalowdaOverview.GetRoGroupUltimatesGroupsEnabled,
 					setFunc = BeltalowdaOverview.SetRoGroupUltimatesGroupsEnabled
 				},
-				[9] = {
+				[10] = {
 					type = "dropdown",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_DISPLAY_MODE,
 					choices = BeltalowdaOverview.GetRoAvailableDisplayModes(),
@@ -91,7 +91,7 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					reference = lReference
 				},
-				[10] = {
+				[11] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_SPACING,
 					min = 0,
@@ -103,7 +103,7 @@ function BeltalowdaUltimates.GetMenu()
 					decimals = 0,
 					default = 0
 				},
-				[11] = {
+				[12] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_SIZE,
 					min = 1.0,
@@ -115,7 +115,7 @@ function BeltalowdaUltimates.GetMenu()
 					decimals = 2,
 					default = 1.0
 				},
-				[12] = {
+				[13] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_DISPLAYED_ULTIMATES,
 					min = 1,
@@ -126,84 +126,84 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 6
 				},
-				[13] = {
+				[14] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_BACKGROUND,
 					getFunc = BeltalowdaOverview.GetRoColorBackground,
 					setFunc = BeltalowdaOverview.SetRoColorBackground,
 					width = "full"
 				},
-				[14] = {
+				[15] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_MAGICKA,
 					getFunc = BeltalowdaOverview.GetRoColorMagicka,
 					setFunc = BeltalowdaOverview.SetRoColorMagicka,
 					width = "full"
 				},
-				[15] = {
+				[16] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_STAMINA,
 					getFunc = BeltalowdaOverview.GetRoColorStamina,
 					setFunc = BeltalowdaOverview.SetRoColorStamina,
 					width = "full"
 				},
-				[16] = {
+				[17] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_OUT_OF_RANGE,
 					getFunc = BeltalowdaOverview.GetRoColorOutOfRange,
 					setFunc = BeltalowdaOverview.SetRoColorOutOfRange,
 					width = "full"
 				},
-				[17] = {
+				[18] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_DEAD,
 					getFunc = BeltalowdaOverview.GetRoColorDead,
 					setFunc = BeltalowdaOverview.SetRoColorDead,
 					width = "full"
 				},
-				[18] = {
+				[19] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_PROGRESS_NOT_FULL,
 					getFunc = BeltalowdaOverview.GetRoColorProgressNotFull,
 					setFunc = BeltalowdaOverview.SetRoColorProgressNotFull,
 					width = "full"
 				},
-				[19] = {
+				[20] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_PROGRESS_FULL,
 					getFunc = BeltalowdaOverview.GetRoColorProgressFull,
 					setFunc = BeltalowdaOverview.SetRoColorProgressFull,
 					width = "full"
 				},
-				[20] = {
+				[21] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_LABEL_FULL,
 					getFunc = BeltalowdaOverview.GetRoColorLabelFull,
 					setFunc = BeltalowdaOverview.SetRoColorLabelFull,
 					width = "full"
 				},
-				[21] = {
+				[22] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_LABEL_NOT_FULL,
 					getFunc = BeltalowdaOverview.GetRoColorLabelNotFull,
 					setFunc = BeltalowdaOverview.SetRoColorLabelNotFull,
 					width = "full"
 				},
-				[22] = {
+				[23] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_LABEL_GROUP,
 					getFunc = BeltalowdaOverview.GetRoColorLabelGroup,
 					setFunc = BeltalowdaOverview.SetRoColorLabelGroup,
 					width = "full"
 				},
-				[23] = {
+				[24] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_LABEL_ANNOUNCEMENT,
 					getFunc = BeltalowdaOverview.GetRoColorLabelAnnouncement,
 					setFunc = BeltalowdaOverview.SetRoColorLabelAnnouncement,
 					width = "full"
 				},
-				[24] = {
+				[25] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_ANNOUNCEMENT_SIZE,
 					min = 32,
@@ -214,33 +214,33 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 50
 				},
-				[25] = {
+				[26] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_IN_COMBAT_ENABLED,
 					getFunc = BeltalowdaOverview.GetRoInCombatEnabled,
 					setFunc = BeltalowdaOverview.SetRoInCombatEnabled
 				},
-				[26] = {
+				[27] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_IN_COMBAT_COLOR,
 					getFunc = BeltalowdaOverview.GetRoInCombatColor,
 					setFunc = BeltalowdaOverview.SetRoInCombatColor,
 					width = "full"
 				},
-				[27] = {
+				[28] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_OUT_OF_COMBAT_COLOR,
 					getFunc = BeltalowdaOverview.GetRoOutOfCombatColor,
 					setFunc = BeltalowdaOverview.SetRoOutOfCombatColor,
 					width = "full"
 				},
-				[28] = {
+				[29] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_IN_STEALTH_ENABLED,
 					getFunc = BeltalowdaOverview.GetRoCombinedInStealthEnabled,
 					setFunc = BeltalowdaOverview.SetRoCombinedInStealthEnabled
 				},
-				[29] = {
+				[30] = {
 					type = "dropdown",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_SORTING_MODE,
 					choices = BeltalowdaOverview.GetRoAvailableUltimateSortingModes(),
@@ -248,7 +248,7 @@ function BeltalowdaUltimates.GetMenu()
 					setFunc = BeltalowdaOverview.SetRoSelectedUltimateSortingMode,
 					width = "full"
 				},
-				[30] = {
+				[31] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_GROUP_SIZE_DESTRO,
 					min = 0,
@@ -259,7 +259,7 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 2
 				},
-				[31] = {
+				[32] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_GROUP_SIZE_STORM,
 					min = 0,
@@ -270,7 +270,7 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 1
 				},
-				[32] = {
+				[33] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_GROUP_SIZE_NORTHERNSTORM,
 					min = 0,
@@ -281,7 +281,7 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 1
 				},
-				[33] = {
+				[34] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_GROUP_SIZE_PERMAFROST,
 					min = 0,
@@ -292,7 +292,7 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 1
 				},
-				[34] = {
+				[35] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_GROUP_SIZE_NEGATE,
 					min = 0,
@@ -303,7 +303,7 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 2
 				},
-				[35] = {
+				[36] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_GROUP_SIZE_NEGATE_OFFENSIVE,
 					min = 0,
@@ -314,7 +314,7 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 2
 				},
-				[36] = {
+				[37] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_GROUP_SIZE_NEGATE_COUNTER,
 					min = 0,
@@ -325,7 +325,7 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 2
 				},
-				[37] = {
+				[38] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_GROUP_SIZE_NOVA,
 					min = 0,
@@ -336,7 +336,7 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 2
 				},
-				[38] = {
+				[39] = {
 					type = "slider",
 					name = BeltalowdaMenu.constants.RO_MAX_DISTANCE,
 					min = 1,
@@ -347,13 +347,13 @@ function BeltalowdaUltimates.GetMenu()
 					width = "full",
 					default = 50
 				},
-				[39] = {
+				[40] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_SOUND_ENABLED,
 					getFunc = BeltalowdaOverview.GetRoSoundEnabled,
 					setFunc = BeltalowdaOverview.SetRoSoundEnabled
 				},
-				[40] = {
+				[41] = {
 					type = "dropdown",
 					name = BeltalowdaMenu.constants.RO_SELECTED_SOUND,
 					choices = BeltalowdaOverview.GetRoAvailableSounds(),

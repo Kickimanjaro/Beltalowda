@@ -5,6 +5,15 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.17] - 2025-12-31
+
+### Fixed
+- **Critical Bug Fix** - Fixed duplicate array indices in Ultimates.lua GetMenu() function
+  - Root cause: Duplicate array index `[3]` at lines 41 and 48 caused all subsequent menu items to be misaligned or skipped
+  - Fixed by renumbering all control array indices sequentially from 1-41
+  - Resolves issue where "Ultimate Tracker - Unified View" submenu showed only description text with no settings controls
+  - All 40+ menu controls now display correctly in the settings menu
+
 ## [0.3.16] - 2025-12-31
 
 ### Fixed
