@@ -9,10 +9,6 @@ Beltalowda.features = Beltalowda.features or {}
 Beltalowda.features.ultimates = Beltalowda.features.ultimates or {}
 Beltalowda.menu = Beltalowda.menu or {}
 
--- Initialize config and constants early (Lang files need these)
-Beltalowda.features.ultimates.config = Beltalowda.features.ultimates.config or {}
-Beltalowda.features.ultimates.constants = Beltalowda.features.ultimates.constants or {}
-
 -- Create local aliases (performance)
 local BeltalowdaUltimates = Beltalowda.features.ultimates
 local BeltalowdaMenu = Beltalowda.menu
@@ -1101,7 +1097,7 @@ BeltalowdaUltimates.groupsUiCallbackName = Beltalowda.addonName .. "ResourceOver
 BeltalowdaUltimates.networkingCallbackName = Beltalowda.addonName .. "ResourceOverviewNetworking"
 BeltalowdaUltimates.messageCallbackName = Beltalowda.addonName .. "ResourceOverviewMessageUpdate"
 
-BeltalowdaUltimates.config = {}
+BeltalowdaUltimates.config = BeltalowdaUltimates.config or {}
 BeltalowdaUltimates.config.networkUpdateInterval = 500
 BeltalowdaUltimates.config.messageUpdateInterval = 1000
 BeltalowdaUltimates.config.uiUpdateInterval = 100
