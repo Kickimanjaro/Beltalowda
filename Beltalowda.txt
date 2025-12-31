@@ -3,7 +3,7 @@
 ## SavedVariables: BeltalowdaVars
 ## Author: @Kickimanjaro
 ## Description: Group PvP addon for Elder Scrolls Online (Based on RdK Group Tool by @s0rdrak)
-## AddOnVersion: 1
+## AddOnVersion: 40
 ## Version: 0.4.0
 ## DependsOn: LibMapPins-1.0>=10041 LibMapPing>=1240 LibGPS>=73 LibAddonMenu-2.0>=39 Lib3D>=312 LibFoodDrinkBuff>=18 LibPotionBuff>=3 LibCustomMenu>=730 LibGroupBroadcast>=91
 

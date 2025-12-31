@@ -20,6 +20,11 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 - Updated Beltalowda.lua initialization to call Beltalowda.core.Initialize()
 - Added Core defaults to CreateCleanProfile()
 
+### Fixed
+- **CRITICAL**: Updated `## AddOnVersion` field in Beltalowda.txt (was 1, now 40)
+  - This is what ESO displays in addon settings UI, not the `## Version` field
+  - Added comprehensive documentation in DEVELOPMENT.md about three version fields
+
 ### Technical Notes
 - Core.lua provides feature registry infrastructure only in this milestone
 - Event handling and group data collection remain in BeltalowdaUtil.group for now
