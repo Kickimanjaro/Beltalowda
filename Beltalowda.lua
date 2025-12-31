@@ -5,7 +5,7 @@
 Beltalowda = Beltalowda or {}
 Beltalowda.addonName = "Beltalowda"
 Beltalowda.version = 1 --for saved vars, shouldn't be used (version.fix instead)
-Beltalowda.versionString = "0.3.19"
+Beltalowda.versionString = "0.4.0"
 Beltalowda.updateInterval = 50 -- in ms
 Beltalowda.author = "@Kickimanjaro"
 Beltalowda.credits = "Based on RdK Group Tool by @s0rdrak (PC / EU)" 
@@ -73,7 +73,8 @@ function Beltalowda.BeltalowdaOnInitialize(event, addonName)
 		Beltalowda.profile.Initialize(accVars, charVars)
 			
 		Beltalowda.ui.Initialize()
-		Beltalowda.util.Initialize()			
+		Beltalowda.util.Initialize()
+		Beltalowda.core.Initialize()
 		Beltalowda.group.Initialize()
 		Beltalowda.compass.Initialize()
 		Beltalowda.toolbox.Initialize()
@@ -93,6 +94,7 @@ end
 function Beltalowda.CreateCleanProfile()
 	local profile = Beltalowda.profile.GetAccountDefaults().profiles[1]
 	profile.ui = Beltalowda.ui.GetDefaults()
+	profile.core = Beltalowda.core.GetDefaults()
 	profile.group = Beltalowda.group.GetDefaults()
 	profile.compass = Beltalowda.compass.GetDefaults()
 	profile.toolbox = Beltalowda.toolbox.GetDefaults()

@@ -5,6 +5,27 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.4.0] - 2025-12-31
+
+### Added
+- **Phase 3 Milestone 1: Core.lua Foundation**
+  - Created Base/Core.lua with feature registry infrastructure
+  - Added BeltalowdaCore.RegisterFeature() API for features to register callbacks
+  - Added BeltalowdaCore.EnableFeature() and DisableFeature() for feature lifecycle
+  - Added BeltalowdaCore.NotifyFeatures() for coordinated group data updates
+  - Established clean API contract between Core and Features
+  
+### Changed
+- Updated load order in Beltalowda.txt to include Core.lua before Group.lua
+- Updated Beltalowda.lua initialization to call Beltalowda.core.Initialize()
+- Added Core defaults to CreateCleanProfile()
+
+### Technical Notes
+- Core.lua provides feature registry infrastructure only in this milestone
+- Event handling and group data collection remain in BeltalowdaUtil.group for now
+- No features migrated yet - existing features continue using old paths
+- This establishes the foundation for incremental feature migration in Milestones 2-5
+
 ## [0.3.19] - 2025-12-31
 
 ### Fixed
