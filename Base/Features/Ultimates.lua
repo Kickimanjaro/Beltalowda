@@ -1203,7 +1203,6 @@ BeltalowdaUltimates.state.buffs = {}
 BeltalowdaUltimates.state.selectedClientUltimate = 0
 BeltalowdaUltimates.state.selectedGroupUltimate = 0
 BeltalowdaUltimates.state.previousActiveGroupSize = 0
-BeltalowdaUltimates.state.sentUltimateCommandTimeStamp = 0
 
 BeltalowdaUltimates.controls = {}
 BeltalowdaUltimates.controls.client = {}
@@ -3360,7 +3359,7 @@ function BeltalowdaUltimates.AdjustSize()
 	
 	BeltalowdaUltimates.SetDisplayedUltimates(BeltalowdaGroup.ro.roVars.groupUltimatesSettings.displayedUltimates)
 	BeltalowdaUltimates.AdjustStaminaMagickaBarVisibility()
-	BeltalowdaUltimates.UiLoop()
+	-- DO NOT call UiLoop() directly here - it runs via EVENT_MANAGER callback and accesses state.sentUltimateCommandTimeStamp which isn't set yet during init
 	
 	
 	--Groups Window Configuration
