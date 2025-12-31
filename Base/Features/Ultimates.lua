@@ -1170,6 +1170,25 @@ BeltalowdaUltimates.controls.ultimateOverview = {}
 BeltalowdaUltimates.controls.groupAssignments = {}
 
 -- ============================================================================
+-- Utility Functions
+-- ============================================================================
+
+function BeltalowdaUltimates.GetUltimateIndexFromUltimateId(id)
+	local selectedIndex = nil
+	if id ~= nil then
+		local ultimates = BeltalowdaUltimates.ultimates
+		for i = 1, #ultimates do
+			if id == ultimates[i].id then
+				selectedIndex = i
+				break
+			end
+		end
+		
+	end
+	return selectedIndex
+end
+
+-- ============================================================================
 
 function BeltalowdaUltimates.Initialize()
 	Beltalowda.profile.AddProfileChangeListener(BeltalowdaUltimates.callbackName, BeltalowdaUltimates.OnProfileChanged)
