@@ -5,6 +5,24 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.4.1] - 2025-12-31
+
+### Added
+- **Phase 3 Milestone 2: Positioning Feature Migration**
+  - Migrated all 14 functions from RapidTracker.lua to Positioning.lua (571 lines)
+  - Positioning is now fully self-contained with Initialize(), GetDefaults(), and all core logic
+  - Created delegation wrapper in RapidTracker.lua for backward compatibility
+  
+### Changed
+- Base/Features/Positioning.lua now contains complete implementation (was 176 lines, now 571)
+- Base/Group/RapidTracker.lua reduced to 70-line delegation wrapper
+- Positioning module is independent and ready for Core.lua integration in future milestones
+
+### Technical Notes
+- Saved variables still use `currentProfile.group.rt` path for backward compatibility
+- All function references updated from `BeltalowdaRt.*` to `BeltalowdaPositioning.*`
+- Module uses existing BeltalowdaUtil.group infrastructure (will migrate to Core.lua in later milestones)
+
 ## [0.4.0] - 2025-12-31
 
 ### Added
