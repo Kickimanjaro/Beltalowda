@@ -5,6 +5,16 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.5.4] - 2025-12-31
+
+### Fixed
+- **Phase 3 Milestone 5: Constants Initialization Order**
+  - Moved all constants and config initialization to top of Ultimates.lua (immediately after namespace creation)
+  - Removed duplicate constants/config initialization from middle of file (lines 1171-1284)
+  - Fixed nil errors at Lang/en.lua:741 (accessing ultimateModes before initialization)
+  - Fixed nil errors at Ultimates.lua:1600 (accessing TLW_CLIENT_ULTIMATE_NAME before initialization)
+  - Constants and config now properly available when Lang files load
+
 ## [0.5.3] - 2025-12-31
 
 ### Fixed
