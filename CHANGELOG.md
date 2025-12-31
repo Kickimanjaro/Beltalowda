@@ -5,6 +5,24 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.1] - 2025-12-30
+
+### Added
+- **Modular Feature Architecture (Phase 1)** - Created wrapper files for better code organization
+  - New `Base/Features/` directory containing modular feature wrappers
+  - Created `Ultimates.lua` wrapper for ultimate tracking and resource bars (wraps ResourceOverview)
+  - Created `Synergies.lua` wrapper for synergy availability tracking (wraps SynergyOverview)
+  - Created `Positioning.lua` wrapper for expedition buff tracking (wraps RapidTracker)
+  - Created `AttackTimers.lua` wrapper for detonation/shalk timer tracking (wraps DetonationTracker)
+  - New `Beltalowda.features.*` namespace provides clearer organization while maintaining backward compatibility
+  - All original functionality preserved through delegation pattern
+
+### Changed
+- **Menu Integration** - Updated menu to use new modular feature namespaces
+  - Menu now references `Beltalowda.features.ultimates`, `synergies`, `positioning`, and `attackTimers`
+  - Added safe nil checks for graceful handling of missing modules
+  - Original `BeltalowdaGroup.ro`, `BeltalowdaGroup.rt`, `BeltalowdaGroup.dt`, and `BeltalowdaToolbox.so` namespaces still functional
+
 ## [0.2.3] - 2025-12-30
 
 ### Changed
