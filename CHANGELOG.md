@@ -5,6 +5,25 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.4.6] - 2025-12-31
+
+### Added
+- **Phase 3 Milestone 4: AttackTimers Feature Migration**
+  - Migrated all 23 functions from DetonationTracker.lua to AttackTimers.lua (937 lines)
+  - AttackTimers is now fully self-contained with Initialize(), GetDefaults(), and all core logic
+  - Created delegation wrapper in DetonationTracker.lua for backward compatibility
+  
+### Changed
+- Base/Features/AttackTimers.lua now contains complete implementation (was 324 lines, now 937)
+- Base/Group/DetonationTracker.lua reduced to 78-line delegation wrapper
+- AttackTimers module is independent and ready for testing
+
+### Technical Notes
+- Saved variables still use `currentProfile.group.dt` path for backward compatibility
+- All function references updated from `BeltalowdaDt.*` to `BeltalowdaAttackTimers.*`
+- Delegation wrapper uses metatable proxy for dynamic constants access
+- Module uses existing BeltalowdaUtil.group infrastructure (will migrate to Core.lua in later milestones)
+
 ## [0.4.5] - 2025-12-31
 
 ### Fixed
