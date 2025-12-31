@@ -498,13 +498,13 @@ function BeltalowdaPositioning.GetRtEnabled()
 end
 
 function BeltalowdaPositioning.SetRtEnabled(value)
-	-- Directly update rtVars first (menu needs immediate update)
+	-- Directly update vars first (menu needs immediate update)
 	BeltalowdaPositioning.vars.enabled = value
 	-- Then call SetEnabled to handle event registration/unregistration
-	BeltalowdaRT.SetEnabled(value)
+	BeltalowdaPositioning.SetEnabled(value)
 	-- Ensure visibility is updated immediately (in case SetEnabled's guards prevent it)
-	if BeltalowdaRT.SetControlVisibility then
-		BeltalowdaRT.SetControlVisibility()
+	if BeltalowdaPositioning.SetControlVisibility then
+		BeltalowdaPositioning.SetControlVisibility()
 	end
 end
 
@@ -521,7 +521,7 @@ function BeltalowdaPositioning.GetRtPositionLocked()
 end
 
 function BeltalowdaPositioning.SetRtPositionLocked(value)
-	BeltalowdaRT.SetMovable(not value)
+	BeltalowdaPositioning.SetMovable(not value)
 end
 
 function BeltalowdaPositioning.GetRtColorLabelInRange()

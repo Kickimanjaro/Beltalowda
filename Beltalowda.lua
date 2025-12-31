@@ -5,7 +5,7 @@
 Beltalowda = Beltalowda or {}
 Beltalowda.addonName = "Beltalowda"
 Beltalowda.version = 1 --for saved vars, shouldn't be used (version.fix instead)
-Beltalowda.versionString = "0.4.1"
+Beltalowda.versionString = "0.4.2"
 Beltalowda.updateInterval = 50 -- in ms
 Beltalowda.author = "@Kickimanjaro"
 Beltalowda.credits = "Based on RdK Group Tool by @s0rdrak (PC / EU)" 

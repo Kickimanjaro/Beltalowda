@@ -5,6 +5,15 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.4.2] - 2025-12-31
+
+### Fixed
+- **CRITICAL**: Fixed undefined BeltalowdaRT references in Positioning menu functions
+  - SetRtEnabled() was calling undefined BeltalowdaRT.SetEnabled causing nil index error
+  - SetRtPositionLocked() was calling undefined BeltalowdaRT.SetMovable
+  - All references updated to use BeltalowdaPositioning.* instead
+  - Positioning toggle and position lock settings now work correctly
+
 ## [0.4.1] - 2025-12-31
 
 ### Added
