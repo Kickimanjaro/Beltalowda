@@ -5,6 +5,16 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.8] - 2025-12-30
+
+### Fixed
+- **Critical Bug Fix** - Resolved UI error preventing addon from loading in v0.3.7
+  - Added delegation function `BeltalowdaDt.GetMenu()` in `DetonationTracker.lua`
+  - `Group.lua` line 78 calls `BeltalowdaGroup.dt.GetMenu()` which was removed in v0.3.7
+  - Delegation function now forwards calls to new wrapper location `Beltalowda.features.attackTimers.GetMenu()`
+  - Maintains backward compatibility while preserving Phase 2 refactoring benefits
+  - Error was: "function expected instead of nil" at `Base/Group/Group.lua:78`
+
 ## [0.3.7] - 2025-12-30
 
 ### Changed

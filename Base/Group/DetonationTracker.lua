@@ -631,3 +631,12 @@ end
 -- Note: Menu functions (GetMenu and all Get*/Set* functions) have been moved to
 -- Base/Features/AttackTimers.lua as part of Phase 2 refactoring.
 -- Core implementation remains here.
+-- Delegation function maintained for backward compatibility with Group.lua
+
+function BeltalowdaDt.GetMenu()
+	-- Delegate to new wrapper location
+	if Beltalowda and Beltalowda.features and Beltalowda.features.attackTimers and Beltalowda.features.attackTimers.GetMenu then
+		return Beltalowda.features.attackTimers.GetMenu()
+	end
+	return {}
+end
