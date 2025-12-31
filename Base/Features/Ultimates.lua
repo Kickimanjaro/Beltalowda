@@ -16,6 +16,7 @@ Beltalowda.group = Beltalowda.group or {}
 local BeltalowdaGroup = Beltalowda.group
 BeltalowdaGroup.ro = BeltalowdaGroup.ro or {}
 local BeltalowdaRO = BeltalowdaGroup.ro
+local BeltalowdaOverview = BeltalowdaGroup.ro  -- Alias for original namespace
 
 -- Phase 2: Menu functions moved to wrapper, still delegate to original implementation
 
