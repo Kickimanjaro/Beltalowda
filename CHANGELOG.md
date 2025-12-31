@@ -5,6 +5,13 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.4.7] - 2025-12-31
+
+### Fixed
+- **Phase 3 Milestone 4: AttackTimers Delegation Fix**
+  - Added missing GetMenu() delegation in DetonationTracker.lua wrapper
+  - Fixed "function expected instead of nil" error during menu initialization
+
 ## [0.4.6] - 2025-12-31
 
 ### Added
