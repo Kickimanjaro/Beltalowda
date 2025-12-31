@@ -5,6 +5,195 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.5.4] - 2025-12-31
+
+### Fixed
+- **Phase 3 Milestone 5: Constants Initialization Order**
+  - Moved all constants and config initialization to top of Ultimates.lua (immediately after namespace creation)
+  - Removed duplicate constants/config initialization from middle of file (lines 1171-1284)
+  - Fixed nil errors at Lang/en.lua:741 (accessing ultimateModes before initialization)
+  - Fixed nil errors at Ultimates.lua:1600 (accessing TLW_CLIENT_ULTIMATE_NAME before initialization)
+  - Constants and config now properly available when Lang files load
+
+## [0.5.3] - 2025-12-31
+
+### Fixed
+- **Phase 3 Milestone 5: Ultimates Configuration Completion**
+  - Added comprehensive `config.sizes` initialization for both SMALL and BIG sizes
+  - Added `config.swimLaneSizes` initialization for swim lane display modes
+  - Added `config.clientUltimate.isClampedToScreen` and `config.groupUltimates.isClampedToScreen`
+  - Fixed nil reference errors in line 741 (Lang/en.lua) and line 1547 (Ultimates.lua)
+  - All size-related properties now initialized: ultiIconWidth, ultiIconHeight, offset, playerBlock dimensions, fontSize, spacing, border
+  - Ultimates module now fully operational with complete configuration
+
+### Technical Notes
+- Config.sizes defines dimensions for ultimate icons and player blocks in both small and large modes
+- SwimLaneSizes provides alternative layout configurations for swim lane display
+- Early initialization ensures Lang files and CreateDefaultUI() can safely access all config properties
+
+## [0.5.2] - 2025-12-31
+
+### Fixed
+- **Phase 3 Milestone 5: Ultimates Config Initialization Order**
+  - Moved config and constants initialization to top of Ultimates.lua (immediately after namespace creation)
+  - Added defensive initialization in Lang/en.lua before accessing config properties
+  - Fixed load order issue where config was initialized too late (line 1100) for Lang file access (line 737)
+
+## [0.5.1] - 2025-12-31
+
+### Fixed
+- **Phase 3 Milestone 5: Ultimates Constants and Config**
+  - Added missing `constants` and `config` initialization to Ultimates.lua
+  - Updated Lang/en.lua to reference `BeltalowdaUltimates` instead of `BeltalowdaOverview`
+  - Fixed nil reference errors in line 735 (Lang/en.lua) and line 1098 (Ultimates.lua)
+  - Ultimates module now fully functional with all required properties initialized
+
+### Technical Notes
+- Constants include: ultimateModes, groupsModes, displayModes, size, TLW names, and more
+- Config includes: update intervals, client ultimate settings
+- Lang file now properly sets displayable names for modes via BeltalowdaUltimates namespace
+
+## [0.5.0] - 2025-12-31
+
+### Added
+- **Phase 3 Milestone 5: Ultimates Feature Migration ✅ COMPLETE**
+  - Migrated all 80+ functions from ResourceOverview.lua to Ultimates.lua (3589 lines)
+  - Ultimates is now fully self-contained with Initialize(), GetDefaults(), and all core logic
+  - Created 142-line delegation wrapper in ResourceOverview.lua for backward compatibility
+  
+### Changed
+- Base/Features/Ultimates.lua now contains complete implementation (was 1005 lines, now 3589)
+- Base/Group/ResourceOverview.lua reduced to 142-line delegation wrapper (was 2748 lines)
+- All namespace references updated from `BeltalowdaOverview.*` to `BeltalowdaUltimates.*`
+- Ultimates module is independent and ready for testing
+
+### Technical Notes
+- Saved variables still use `currentProfile.toolbox.ro` path for backward compatibility
+- Delegation wrapper uses metatable for dynamic property access (constants, config, state, controls)
+- **Phase 3 COMPLETE**: All 4 major features (Positioning, Synergies, AttackTimers, Ultimates) now migrated to self-contained modules
+
+## [0.4.7] - 2025-12-31
+
+### Fixed
+- **Phase 3 Milestone 4: AttackTimers Delegation Fix**
+  - Added missing GetMenu() delegation in DetonationTracker.lua wrapper
+  - Fixed "function expected instead of nil" error during menu initialization
+
+## [0.4.6] - 2025-12-31
+
+### Added
+- **Phase 3 Milestone 4: AttackTimers Feature Migration**
+  - Migrated all 23 functions from DetonationTracker.lua to AttackTimers.lua (937 lines)
+  - AttackTimers is now fully self-contained with Initialize(), GetDefaults(), and all core logic
+  - Created delegation wrapper in DetonationTracker.lua for backward compatibility
+  
+### Changed
+- Base/Features/AttackTimers.lua now contains complete implementation (was 324 lines, now 937)
+- Base/Group/DetonationTracker.lua reduced to 78-line delegation wrapper
+- AttackTimers module is independent and ready for testing
+
+### Technical Notes
+- Saved variables still use `currentProfile.group.dt` path for backward compatibility
+- All function references updated from `BeltalowdaDt.*` to `BeltalowdaAttackTimers.*`
+- Delegation wrapper uses metatable proxy for dynamic constants access
+- Module uses existing BeltalowdaUtil.group infrastructure (will migrate to Core.lua in later milestones)
+
+## [0.4.5] - 2025-12-31
+
+### Fixed
+- **CRITICAL**: Fixed load order issues causing nil references
+  - SynergyOverview delegation wrapper now uses metatable proxy for dynamic constants access
+  - Base/Admin/Admin.lua now initializes default constants before first use
+  - Fixes "attempt to index a nil value" at Lang/en.lua:923 and Base/Admin/Admin.lua:2505
+
+### Technical Notes
+- Load order problem: Delegation wrappers load before feature modules, so direct assignment fails
+- Solution: Use Lua metatables for lazy evaluation of constants references
+- Admin constants must be initialized with defaults before Lang files override them
+
+## [0.4.4] - 2025-12-31
+
+### Fixed
+- **CRITICAL**: Fixed nil reference errors after Synergies migration
+  - SynergyOverview delegation wrapper now exposes constants table for Lang files
+  - Base/Util/UI.lua now initializes ON/OFF constants before Lang files load
+  - Fixes "attempt to index a nil value" errors at Lang/en.lua:923 and Base/Util/UI.lua:20
+
+### Technical Notes
+- Load order issue: Lang files load after Base/Util/UI.lua, so constants must be initialized early
+- Delegation wrappers must expose all public tables (constants, state, etc.) for backward compatibility
+
+## [0.4.3] - 2025-12-31
+
+### Added
+- **Phase 3 Milestone 3: Synergies Feature Migration**
+  - Migrated all 31 functions from SynergyOverview.lua to Synergies.lua (1719 lines)
+  - Synergies is now fully self-contained with Initialize(), GetDefaults(), and all core logic
+  - Created delegation wrapper in SynergyOverview.lua for backward compatibility
+  
+### Changed
+- Base/Features/Synergies.lua now contains complete implementation (was 443 lines, now 1719)
+- Base/Toolbox/SynergyOverview.lua reduced to 63-line delegation wrapper
+- Synergies module is independent and ready for testing
+
+### Technical Notes
+- Saved variables still use `currentProfile.toolbox.so` path for backward compatibility
+- All function references updated from `BeltalowdaSO.*` to `BeltalowdaSynergies.*`
+- Module uses existing BeltalowdaUtil.group infrastructure (will migrate to Core.lua in later milestones)
+
+## [0.4.2] - 2025-12-31
+
+### Fixed
+- **CRITICAL**: Fixed undefined BeltalowdaRT references in Positioning menu functions
+  - SetRtEnabled() was calling undefined BeltalowdaRT.SetEnabled causing nil index error
+  - SetRtPositionLocked() was calling undefined BeltalowdaRT.SetMovable
+  - All references updated to use BeltalowdaPositioning.* instead
+  - Positioning toggle and position lock settings now work correctly
+
+## [0.4.1] - 2025-12-31
+
+### Added
+- **Phase 3 Milestone 2: Positioning Feature Migration**
+  - Migrated all 14 functions from RapidTracker.lua to Positioning.lua (571 lines)
+  - Positioning is now fully self-contained with Initialize(), GetDefaults(), and all core logic
+  - Created delegation wrapper in RapidTracker.lua for backward compatibility
+  
+### Changed
+- Base/Features/Positioning.lua now contains complete implementation (was 176 lines, now 571)
+- Base/Group/RapidTracker.lua reduced to 70-line delegation wrapper
+- Positioning module is independent and ready for Core.lua integration in future milestones
+
+### Technical Notes
+- Saved variables still use `currentProfile.group.rt` path for backward compatibility
+- All function references updated from `BeltalowdaRt.*` to `BeltalowdaPositioning.*`
+- Module uses existing BeltalowdaUtil.group infrastructure (will migrate to Core.lua in later milestones)
+
+## [0.4.0] - 2025-12-31
+
+### Added
+- **Phase 3 Milestone 1: Core.lua Foundation**
+  - Created Base/Core.lua with feature registry infrastructure
+  - Added BeltalowdaCore.RegisterFeature() API for features to register callbacks
+  - Added BeltalowdaCore.EnableFeature() and DisableFeature() for feature lifecycle
+  - Added BeltalowdaCore.NotifyFeatures() for coordinated group data updates
+  - Established clean API contract between Core and Features
+  
+### Changed
+- Updated load order in Beltalowda.txt to include Core.lua before Group.lua
+- Updated Beltalowda.lua initialization to call Beltalowda.core.Initialize()
+- Added Core defaults to CreateCleanProfile()
+
+### Fixed
+- **CRITICAL**: Updated `## AddOnVersion` field in Beltalowda.txt (was 1, now 40)
+  - This is what ESO displays in addon settings UI, not the `## Version` field
+  - Added comprehensive documentation in DEVELOPMENT.md about three version fields
+
+### Technical Notes
+- Core.lua provides feature registry infrastructure only in this milestone
+- Event handling and group data collection remain in BeltalowdaUtil.group for now
+- No features migrated yet - existing features continue using old paths
+- This establishes the foundation for incremental feature migration in Milestones 2-5
+
 ## [0.3.19] - 2025-12-31
 
 ### Fixed

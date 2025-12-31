@@ -19,7 +19,7 @@ local BeltalowdaYacs = BeltalowdaCompass.yacs
 local BeltalowdaSC = BeltalowdaCompass.sc
 local BeltalowdaUtil = Beltalowda.util
 local BeltalowdaUtilUI = BeltalowdaUtil.ui
-local BeltalowdaUltimates = BeltalowdaUtil.ultimates
+local BeltalowdaUltimates = Beltalowda.features.ultimates  -- Fixed: was BeltalowdaUtil.ultimates
 local BeltalowdaNetworking = BeltalowdaUtil.networking
 local BeltalowdaUtilGroup = BeltalowdaUtil.group
 local BeltalowdaVersioning = BeltalowdaUtil.versioning
@@ -731,23 +731,24 @@ BeltalowdaFtcv.textures[8].name = "Arrow 8"
 BeltalowdaFtcw.constants = BeltalowdaFtcw.constants or {}
 BeltalowdaFtcw.constants.FTCW_MAX_DISTANCE ="Maximum Distance Reached!!!"
 
---Resource Overview
-BeltalowdaOverview.config.ultimateModes = BeltalowdaOverview.config.ultimateModes or {}
---BeltalowdaOverview.config.ultimateModes[BeltalowdaOverview.constants.ultimateModes.ORDER_BY_GROUP] = "Group Assignment"
-BeltalowdaOverview.config.ultimateModes[BeltalowdaOverview.constants.ultimateModes.ORDER_BY_READINESS] = "Readiness"
-BeltalowdaOverview.config.ultimateModes[BeltalowdaOverview.constants.ultimateModes.ORDER_BY_NAME] = "Name"
-BeltalowdaOverview.constants.BOOM = "BOOM"
-BeltalowdaOverview.constants.TOGGLE_BOOM = "Send BOOM"
-BeltalowdaOverview.constants.IDENENTIFIER_DESTRUCTION = "Destro"
-BeltalowdaOverview.constants.IDENENTIFIER_STORM = "Storm"
-BeltalowdaOverview.constants.IDENENTIFIER_NEGATE = "Neg."
-BeltalowdaOverview.constants.IDENENTIFIER_NOVA = "Nova"
-BeltalowdaOverview.config.groupsModes = BeltalowdaOverview.config.groupsModes or {}
-BeltalowdaOverview.config.groupsModes[BeltalowdaOverview.constants.groupsModes.MODE_PRIORITY_NAME] = "Priority - Name"
-BeltalowdaOverview.config.groupsModes[BeltalowdaOverview.constants.groupsModes.MODE_PRIORITY_PERCENT] = "Priority - Percent"
-BeltalowdaOverview.config.groupsModes[BeltalowdaOverview.constants.groupsModes.MODE_PERCENT] = "Percent"
-BeltalowdaOverview.config.displayModes = BeltalowdaOverview.config.displayModes or {}
-BeltalowdaOverview.config.displayModes[BeltalowdaOverview.constants.displayModes.CLASSIC] = "Classic"
+--Resource Overview / Ultimates
+-- Use Beltalowda.features.ultimates namespace via local variable defined at top of file
+-- Ultimates.lua loads first (line 88) and initializes all constants/config before Lang files (line 94)
+--BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_GROUP] = "Group Assignment"
+BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_READINESS] = "Readiness"
+BeltalowdaUltimates.config.ultimateModes[BeltalowdaUltimates.constants.ultimateModes.ORDER_BY_NAME] = "Name"
+BeltalowdaUltimates.constants.BOOM = "BOOM"
+BeltalowdaUltimates.constants.TOGGLE_BOOM = "Send BOOM"
+BeltalowdaUltimates.constants.IDENENTIFIER_DESTRUCTION = "Destro"
+BeltalowdaUltimates.constants.IDENENTIFIER_STORM = "Storm"
+BeltalowdaUltimates.constants.IDENENTIFIER_NEGATE = "Neg."
+BeltalowdaUltimates.constants.IDENENTIFIER_NOVA = "Nova"
+BeltalowdaUltimates.config.groupsModes = BeltalowdaUltimates.config.groupsModes or {}
+BeltalowdaUltimates.config.groupsModes[BeltalowdaUltimates.constants.groupsModes.MODE_PRIORITY_NAME] = "Priority - Name"
+BeltalowdaUltimates.config.groupsModes[BeltalowdaUltimates.constants.groupsModes.MODE_PRIORITY_PERCENT] = "Priority - Percent"
+BeltalowdaUltimates.config.groupsModes[BeltalowdaUltimates.constants.groupsModes.MODE_PERCENT] = "Percent"
+BeltalowdaUltimates.config.displayModes = BeltalowdaUltimates.config.displayModes or {}
+BeltalowdaUltimates.config.displayModes[BeltalowdaUltimates.constants.displayModes.CLASSIC] = "Classic"
 
 --Healing / Damage Meter
 BeltalowdaHdm.constants = BeltalowdaHdm.constants or {}

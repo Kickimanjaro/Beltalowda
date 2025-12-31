@@ -10,6 +10,11 @@ local wm = GetWindowManager()
 
 BeltalowdaUI.labelFont = "$(BOLD_FONT)|$(KB_20)soft-shadow-thick"
 
+-- Initialize constants (can be overridden by Lang files later)
+BeltalowdaUI.constants = BeltalowdaUI.constants or {}
+BeltalowdaUI.constants.ON = BeltalowdaUI.constants.ON or "ON"
+BeltalowdaUI.constants.OFF = BeltalowdaUI.constants.OFF or "OFF"
+
 --checkbox
 local function CheckBoxSetChecked(control, isChecked)
 	if isChecked ~= nil then
