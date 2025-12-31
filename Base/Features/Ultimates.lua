@@ -3360,7 +3360,7 @@ function BeltalowdaUltimates.AdjustSize()
 	
 	BeltalowdaUltimates.SetDisplayedUltimates(BeltalowdaGroup.ro.roVars.groupUltimatesSettings.displayedUltimates)
 	BeltalowdaUltimates.AdjustStaminaMagickaBarVisibility()
-	BeltalowdaUltimates.UiLoop()
+	-- UiLoop() is registered as an EVENT_MANAGER callback and should not be called directly during initialization
 	
 	
 	--Groups Window Configuration
