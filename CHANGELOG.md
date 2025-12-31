@@ -5,6 +5,30 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.5.3] - 2025-12-31
+
+### Fixed
+- **Phase 3 Milestone 5: Ultimates Configuration Completion**
+  - Added comprehensive `config.sizes` initialization for both SMALL and BIG sizes
+  - Added `config.swimLaneSizes` initialization for swim lane display modes
+  - Added `config.clientUltimate.isClampedToScreen` and `config.groupUltimates.isClampedToScreen`
+  - Fixed nil reference errors in line 741 (Lang/en.lua) and line 1547 (Ultimates.lua)
+  - All size-related properties now initialized: ultiIconWidth, ultiIconHeight, offset, playerBlock dimensions, fontSize, spacing, border
+  - Ultimates module now fully operational with complete configuration
+
+### Technical Notes
+- Config.sizes defines dimensions for ultimate icons and player blocks in both small and large modes
+- SwimLaneSizes provides alternative layout configurations for swim lane display
+- Early initialization ensures Lang files and CreateDefaultUI() can safely access all config properties
+
+## [0.5.2] - 2025-12-31
+
+### Fixed
+- **Phase 3 Milestone 5: Ultimates Config Initialization Order**
+  - Moved config and constants initialization to top of Ultimates.lua (immediately after namespace creation)
+  - Added defensive initialization in Lang/en.lua before accessing config properties
+  - Fixed load order issue where config was initialized too late (line 1100) for Lang file access (line 737)
+
 ## [0.5.1] - 2025-12-31
 
 ### Fixed

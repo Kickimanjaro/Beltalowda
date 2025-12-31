@@ -1104,7 +1104,64 @@ BeltalowdaUltimates.config.uiUpdateInterval = 100
 BeltalowdaUltimates.config.groupsUiUpdateInterval = 100
 BeltalowdaUltimates.config.buffUpdateInterval = 100
 BeltalowdaUltimates.config.clientUltimate = {}
+BeltalowdaUltimates.config.clientUltimate.isClampedToScreen = true
+BeltalowdaUltimates.config.groupUltimates = {}
+BeltalowdaUltimates.config.groupUltimates.isClampedToScreen = true
 BeltalowdaUltimates.config.ultimateModes = BeltalowdaUltimates.config.ultimateModes or {}
+
+-- Initialize sizes configuration
+BeltalowdaUltimates.config.sizes = {}
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL] = {}
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].offset = 12
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].ultiIconWidth = 50
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].ultiIconHeight = 50
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].playerBlockWidth = 50
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].playerBlockHeight = 25
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].playerBlockStaminaHeight = 5
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].playerBlockMagickaHeight = 5
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].playerBlockGroupWidth = 10
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].fontSize = 13
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].spacingRatio = 1.0
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL].border = 2
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG] = {}
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].offset = 12
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].ultiIconWidth = 70
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].ultiIconHeight = 70
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].playerBlockWidth = 70
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].playerBlockHeight = 35
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].playerBlockStaminaHeight = 7
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].playerBlockMagickaHeight = 7
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].playerBlockGroupWidth = 15
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].fontSize = 18
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].spacingRatio = 1.3
+BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.BIG].border = 3
+
+-- Initialize swimLane sizes configuration  
+BeltalowdaUltimates.config.swimLaneSizes = {}
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL] = {}
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].offset = 12
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].ultiIconWidth = 20
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].ultiIconHeight = 20
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].playerBlockWidth = 75
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].playerBlockHeight = 25
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].playerBlockStaminaHeight = 5
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].playerBlockMagickaHeight = 5
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].playerBlockGroupWidth = 10
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].fontSizePlayer = 13
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].fontSizeHeader = 16
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.SMALL].spacingRatio = 1.0
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG] = {}
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].offset = 12
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].ultiIconWidth = 40
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].ultiIconHeight = 40
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].playerBlockWidth = 150
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].playerBlockHeight = 35
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].playerBlockStaminaHeight = 7
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].playerBlockMagickaHeight = 7
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].playerBlockGroupWidth = 20
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].fontSizePlayer = 26
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].fontSizeHeader = 36
+BeltalowdaUltimates.config.swimLaneSizes[BeltalowdaUltimates.constants.size.BIG].spacingRatio = 2.0
 
 -- ============================================================================
 
