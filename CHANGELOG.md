@@ -5,6 +5,18 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.4.4] - 2025-12-31
+
+### Fixed
+- **CRITICAL**: Fixed nil reference errors after Synergies migration
+  - SynergyOverview delegation wrapper now exposes constants table for Lang files
+  - Base/Util/UI.lua now initializes ON/OFF constants before Lang files load
+  - Fixes "attempt to index a nil value" errors at Lang/en.lua:923 and Base/Util/UI.lua:20
+
+### Technical Notes
+- Load order issue: Lang files load after Base/Util/UI.lua, so constants must be initialized early
+- Delegation wrappers must expose all public tables (constants, state, etc.) for backward compatibility
+
 ## [0.4.3] - 2025-12-31
 
 ### Added

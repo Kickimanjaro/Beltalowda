@@ -18,6 +18,9 @@ Beltalowda.features.synergies = Beltalowda.features.synergies or {}
 local BeltalowdaSO = Beltalowda.toolbox.so
 local BeltalowdaSynergies = Beltalowda.features.synergies
 
+-- Expose constants for backward compatibility (used by Lang files)
+BeltalowdaSO.constants = BeltalowdaSynergies.constants
+
 -- Delegate all functions to Synergies module
 function BeltalowdaSO.Initialize()
 return BeltalowdaSynergies.Initialize()
