@@ -4,6 +4,46 @@
 
 This document provides guidelines for developing and maintaining Beltalowda. It covers version management, changelog updates, code organization, and other best practices.
 
+## ESO Addon Development Best Practices
+
+**⚠️ IMPORTANT FOR AI AGENTS ⚠️**
+
+Before making any code changes to this addon, **you MUST read and understand** the patterns documented in:
+
+📖 **[ESO_ADDON_BEST_PRACTICES.md](ESO_ADDON_BEST_PRACTICES.md)**
+
+This document covers critical ESO addon development patterns including:
+- **Namespace initialization with `or {}`** - Required for multi-file addons to prevent overwriting
+- **Local alias patterns** - Performance optimization for table lookups
+- **Module organization** - How to structure namespaces across files
+- **File header templates** - Proper initialization in every file
+
+### Key Principles
+
+1. **Always use `TableName = TableName or {}`** when initializing namespaces
+2. **Create local aliases** at the top of each file for performance
+3. **Follow the established namespace hierarchy** (`Beltalowda.module.submodule`)
+4. **Never assume a namespace exists** - always initialize with `or {}`
+5. **Understand multi-file safety** - your file isn't the only one touching these tables
+
+### Example from This Codebase
+
+```lua
+-- Initialize namespace (safe for multi-file use)
+Beltalowda.group = Beltalowda.group or {}
+BeltalowdaGroup.ro = BeltalowdaGroup.ro or {}
+
+-- Create local alias (performance)
+local BeltalowdaOverview = BeltalowdaGroup.ro
+
+-- Now use the local alias
+BeltalowdaOverview.Initialize = function()
+    -- Implementation
+end
+```
+
+**Failing to follow these patterns will break the addon.** ESO addons are not like typical Lua applications - they have specific requirements for multi-file namespace management.
+
 ## Version Management & Changelog
 
 ### When to Update Version
@@ -265,6 +305,81 @@ Before incrementing version:
 - [ ] No console errors when loading addon
 - [ ] No console errors when toggling features on/off
 
+## Troubleshooting Philosophy
+
+### When Things Break After Code Changes
+
+**⚠️ STOP AND THINK BEFORE ADDING DEFENSIVE CHECKS ⚠️**
+
+If you've made changes (like removing a feature) and errors appear:
+
+#### ❌ DON'T: Add Defensive Nil Checks Everywhere
+```lua
+-- BAD: Treating symptoms, not the root cause
+if BeltalowdaOverview.roVars then
+    if BeltalowdaOverview.roVars.groups then
+        if BeltalowdaOverview.GetRoAvailableGroupsGroups then
+            -- Now do the actual work
+        end
+    end
+end
+```
+
+This approach:
+- Masks the real problem
+- Creates cascading errors
+- Makes code harder to maintain
+- Can cause UI elements to disappear silently
+
+#### ✅ DO: Find and Fix the Root Cause
+
+**Step-by-step approach:**
+
+1. **Understand what you removed**
+   - Did you delete initialization code?
+   - Did you remove required function definitions?
+   - Did you break if/end statement balance?
+
+2. **Compare with reference implementation** (RDK)
+   - Look at the same file in `/home/kick/rdk/`
+   - Identify what structural differences exist
+   - Focus on initialization and function definitions
+
+3. **Make ONE targeted fix**
+   - Address the specific missing piece
+   - Don't add defensive checks around it
+   - If the reference code doesn't have nil checks, you probably don't need them
+
+4. **Test in ESO immediately**
+   - Don't make multiple changes without testing
+   - If your fix creates new errors, you're fixing the wrong thing
+   - Revert and try again
+
+5. **Use version control**
+   - Commit working states frequently
+   - Don't hesitate to `git reset --hard` when things spiral
+   - It's faster to start over than fix cascading errors
+
+### Real Example: The Swimlane Removal Issue
+
+**What happened:**
+- Removed swimlane feature code (~20 lines)
+- Got "function expected instead of nil" error
+- Started adding defensive nil checks
+- Created more errors across 5+ files
+- UI elements disappeared
+- Had to reset everything
+
+**What we should have done:**
+1. Read the error: "GetRoAvailableGroupsGroups is nil"
+2. Search RDK for that function definition
+3. Realize it was removed with swimlane code
+4. Check if it's actually needed or if calls to it should be removed
+5. Make ONE change: either restore the function or remove the calls
+6. Test in ESO
+
+**Key insight:** The RDK reference implementation exists for a reason. Use it.
+
 ## Common Issues & Solutions
 
 ### Issue: UI disappears in cursor mode
@@ -278,6 +393,9 @@ Before incrementing version:
 
 ### Issue: Settings don't persist
 **Solution:** Verify saved variables are registered in `Beltalowda.txt` and defaults set in config structure
+
+### Issue: Error after removing code
+**Solution:** Compare with RDK reference implementation to identify what's actually missing - don't add defensive nil checks
 
 ## Release Process
 
