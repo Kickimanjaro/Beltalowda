@@ -5,6 +5,24 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.4.3] - 2025-12-31
+
+### Added
+- **Phase 3 Milestone 3: Synergies Feature Migration**
+  - Migrated all 31 functions from SynergyOverview.lua to Synergies.lua (1719 lines)
+  - Synergies is now fully self-contained with Initialize(), GetDefaults(), and all core logic
+  - Created delegation wrapper in SynergyOverview.lua for backward compatibility
+  
+### Changed
+- Base/Features/Synergies.lua now contains complete implementation (was 443 lines, now 1719)
+- Base/Toolbox/SynergyOverview.lua reduced to 63-line delegation wrapper
+- Synergies module is independent and ready for testing
+
+### Technical Notes
+- Saved variables still use `currentProfile.toolbox.so` path for backward compatibility
+- All function references updated from `BeltalowdaSO.*` to `BeltalowdaSynergies.*`
+- Module uses existing BeltalowdaUtil.group infrastructure (will migrate to Core.lua in later milestones)
+
 ## [0.4.2] - 2025-12-31
 
 ### Fixed
