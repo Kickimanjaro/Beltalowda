@@ -93,6 +93,32 @@ BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.B
 BeltalowdaUltimates.config.ultimateOverview[BeltalowdaUltimates.constants.size.BIG].width = 250
 BeltalowdaUltimates.config.ultimateModes = BeltalowdaUltimates.config.ultimateModes or {}
 
+-- Initialize groups configuration
+BeltalowdaUltimates.config.groups = {}
+BeltalowdaUltimates.config.groups.isClampedToScreen = true
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL] = {}
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].width = 175
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].height = 100
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].entryWidth = 175
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].entryHeight = 25
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].entryPercentWidth = 50
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].softHeight = 3
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].captionFontSize = BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].entryHeight - 8
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].fontSizeWithResources = BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].entryHeight - 13
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].fontSizeWithoutResources = BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].entryHeight - 13
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.SMALL].edgeSize = 2
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG] = {}
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].width = 225
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].height = 130
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].entryWidth = 225
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].entryHeight = 32
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].entryPercentWidth = 66
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].softHeight = 4
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].captionFontSize = BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].entryHeight - 10
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].fontSizeWithResources = BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].entryHeight - 20
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].fontSizeWithoutResources = BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].entryHeight - 14
+BeltalowdaUltimates.config.groups[BeltalowdaUltimates.constants.size.BIG].edgeSize = 2
+
 -- Initialize sizes configuration
 BeltalowdaUltimates.config.sizes = {}
 BeltalowdaUltimates.config.sizes[BeltalowdaUltimates.constants.size.SMALL] = {}
