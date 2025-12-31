@@ -30,8 +30,6 @@ Beltalowda.cfg = Beltalowda.cfg or {}
 local BeltalowdaConfig = Beltalowda.cfg
 BeltalowdaUtil.chatSystem = BeltalowdaUtil.chatSystem or {}
 local BeltalowdaChat = BeltalowdaUtil.chatSystem
-Beltalowda.features = Beltalowda.features or {}
-local BeltalowdaFeatures = Beltalowda.features
 
 local wm = GetWindowManager()
 
@@ -132,19 +130,9 @@ function BeltalowdaMenu.CreateOptionsData()
 		}
 	}
 	BeltalowdaMenu.AddMenuEntries(menu, tempMenu)
-	-- Use new wrapper namespaces for clearer organization
-	if BeltalowdaFeatures.ultimates and BeltalowdaFeatures.ultimates.GetMenu then
-		BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaFeatures.ultimates.GetMenu())
-	end
-	if BeltalowdaFeatures.synergies and BeltalowdaFeatures.synergies.GetMenu then
-		BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaFeatures.synergies.GetMenu())
-	end
-	if BeltalowdaFeatures.positioning and BeltalowdaFeatures.positioning.GetMenu then
-		BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaFeatures.positioning.GetMenu())
-	end
-	if BeltalowdaFeatures.attackTimers and BeltalowdaFeatures.attackTimers.GetMenu then
-		BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaFeatures.attackTimers.GetMenu())
-	end
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.ro.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaToolbox.so.GetMenu())
+	BeltalowdaMenu.AddMenuEntries(menu, BeltalowdaGroup.rt.GetMenu())
 	--placeholder submenus for future features
 	tempMenu = {
 		[1] = {

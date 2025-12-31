@@ -105,13 +105,15 @@ function BeltalowdaVersioning.GetVersionArray(versionString)
 	if versionString ~= nil then
 		local tempVersion = {zo_strsplit(".", versionString)}
 		if tempVersion[1] ~= nil then
-			versionInformation.major = tonumber(tempVersion[1])
+			versionInformation.major = tonumber(tempVersion[1]) or 0
 		end
 		if tempVersion[2] ~= nil then
-			versionInformation.minor = tonumber(tempVersion[2])
+			versionInformation.minor = tonumber(tempVersion[2]) or 0
 		end
 		if tempVersion[3] ~= nil then
-			versionInformation.revision = tonumber(tempVersion[3])
+			-- Extract numeric part before any non-numeric characters (e.g., "20-revert" -> 20)
+			local numericPart = string.match(tempVersion[3], "^%d+")
+			versionInformation.revision = tonumber(numericPart) or 0
 		end
 	end
 	return versionInformation
