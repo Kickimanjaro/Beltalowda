@@ -1008,3 +1008,4 @@ end
 function BeltalowdaUltimates.SetRoSpacing(value)
 	BeltalowdaOverview.roVars.spacing = value
 	BeltalowdaOverview.AdjustSize()
+end

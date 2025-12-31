@@ -2711,4 +2711,3 @@ function BeltalowdaOverview.OnBoomKeyBinding()
 end
 
 --menu interactions
-end
