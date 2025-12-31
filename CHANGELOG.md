@@ -5,6 +5,19 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.4.5] - 2025-12-31
+
+### Fixed
+- **CRITICAL**: Fixed load order issues causing nil references
+  - SynergyOverview delegation wrapper now uses metatable proxy for dynamic constants access
+  - Base/Admin/Admin.lua now initializes default constants before first use
+  - Fixes "attempt to index a nil value" at Lang/en.lua:923 and Base/Admin/Admin.lua:2505
+
+### Technical Notes
+- Load order problem: Delegation wrappers load before feature modules, so direct assignment fails
+- Solution: Use Lua metatables for lazy evaluation of constants references
+- Admin constants must be initialized with defaults before Lang files override them
+
 ## [0.4.4] - 2025-12-31
 
 ### Fixed

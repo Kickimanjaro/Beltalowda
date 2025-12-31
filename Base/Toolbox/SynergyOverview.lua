@@ -18,8 +18,16 @@ Beltalowda.features.synergies = Beltalowda.features.synergies or {}
 local BeltalowdaSO = Beltalowda.toolbox.so
 local BeltalowdaSynergies = Beltalowda.features.synergies
 
--- Expose constants for backward compatibility (used by Lang files)
-BeltalowdaSO.constants = BeltalowdaSynergies.constants
+-- Create a proxy that forwards constants access to the Synergies module
+-- This works around load order issues since Synergies.lua loads after this file
+setmetatable(BeltalowdaSO, {
+	__index = function(table, key)
+		if key == "constants" then
+			return BeltalowdaSynergies.constants
+		end
+		return rawget(table, key)
+	end
+})
 
 -- Delegate all functions to Synergies module
 function BeltalowdaSO.Initialize()
