@@ -34,60 +34,60 @@ function BeltalowdaUltimates.GetMenu()
 				[2] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_ENABLED,
-					getFunc = BeltalowdaOverview.GetRoEnabled,
-					setFunc = BeltalowdaOverview.SetRoEnabled,
+					getFunc = BeltalowdaUltimates.GetRoEnabled,
+					setFunc = BeltalowdaUltimates.SetRoEnabled,
 					warning = BeltalowdaMenu.constants.RO_SHARED_SETTING
 				},
 				[3] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_POSITION_FIXED,
-					getFunc = BeltalowdaOverview.GetRoPositionLocked,
-					setFunc = BeltalowdaOverview.SetRoPositionLocked,
+					getFunc = BeltalowdaUltimates.GetRoPositionLocked,
+					setFunc = BeltalowdaUltimates.SetRoPositionLocked,
 					warning = BeltalowdaMenu.constants.RO_SHARED_SETTING
 				},
 				[4] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_PVP_ONLY,
-					getFunc = BeltalowdaOverview.GetRoPvpOnly,
-					setFunc = BeltalowdaOverview.SetRoPvpOnly,
+					getFunc = BeltalowdaUltimates.GetRoPvpOnly,
+					setFunc = BeltalowdaUltimates.SetRoPvpOnly,
 					warning = BeltalowdaMenu.constants.RO_SHARED_SETTING
 				},
 				[5] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_OVERVIEW_ENABLED,
-					getFunc = BeltalowdaOverview.GetRoUltimateOverviewEnabled,
-					setFunc = BeltalowdaOverview.SetRoUltimateOverviewEnabled
+					getFunc = BeltalowdaUltimates.GetRoUltimateOverviewEnabled,
+					setFunc = BeltalowdaUltimates.SetRoUltimateOverviewEnabled
 				},
 				[6] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_CLIENT_ULTIMATE_ENABLED,
-					getFunc = BeltalowdaOverview.GetRoClientUltimateEnabled,
-					setFunc = BeltalowdaOverview.SetRoClientUltimateEnabled
+					getFunc = BeltalowdaUltimates.GetRoClientUltimateEnabled,
+					setFunc = BeltalowdaUltimates.SetRoClientUltimateEnabled
 				},
 				[7] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_GROUP_ULTIMATES_ENABLED,
-					getFunc = BeltalowdaOverview.GetRoGroupUltimatesEnabled,
-					setFunc = BeltalowdaOverview.SetRoGroupUltimatesEnabled
+					getFunc = BeltalowdaUltimates.GetRoGroupUltimatesEnabled,
+					setFunc = BeltalowdaUltimates.SetRoGroupUltimatesEnabled
 				},
 				[8] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_SHOW_SOFT_RESOURCES,
-					getFunc = BeltalowdaOverview.GetRoShowSoftResources,
-					setFunc = BeltalowdaOverview.SetRoShowSoftResources
+					getFunc = BeltalowdaUltimates.GetRoShowSoftResources,
+					setFunc = BeltalowdaUltimates.SetRoShowSoftResources
 				},
 				[9] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_GROUPS_ENABLED,
-					getFunc = BeltalowdaOverview.GetRoGroupUltimatesGroupsEnabled,
-					setFunc = BeltalowdaOverview.SetRoGroupUltimatesGroupsEnabled
+					getFunc = BeltalowdaUltimates.GetRoGroupUltimatesGroupsEnabled,
+					setFunc = BeltalowdaUltimates.SetRoGroupUltimatesGroupsEnabled
 				},
 				[10] = {
 					type = "dropdown",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_DISPLAY_MODE,
-					choices = BeltalowdaOverview.GetRoAvailableDisplayModes(),
-					getFunc = BeltalowdaOverview.GetRoAvailableDisplayMode,
-					setFunc = BeltalowdaOverview.SetRoAvailableDisplayMode,
+					choices = BeltalowdaUltimates.GetRoAvailableDisplayModes(),
+					getFunc = BeltalowdaUltimates.GetRoAvailableDisplayMode,
+					setFunc = BeltalowdaUltimates.SetRoAvailableDisplayMode,
 					width = "full"
 				},
 				[11] = {
@@ -96,8 +96,8 @@ function BeltalowdaUltimates.GetMenu()
 					min = 0,
 					max = 200,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoSpacing,
-					setFunc = BeltalowdaOverview.SetRoSpacing,
+					getFunc = BeltalowdaUltimates.GetRoSpacing,
+					setFunc = BeltalowdaUltimates.SetRoSpacing,
 					width = "full",
 					decimals = 0,
 					default = 0
@@ -108,8 +108,8 @@ function BeltalowdaUltimates.GetMenu()
 					min = 1.0,
 					max = 2.0,
 					step = 0.01,
-					getFunc = BeltalowdaOverview.GetRoSize,
-					setFunc = BeltalowdaOverview.SetRoSize,
+					getFunc = BeltalowdaUltimates.GetRoSize,
+					setFunc = BeltalowdaUltimates.SetRoSize,
 					width = "full",
 					decimals = 2,
 					default = 1.0
@@ -120,86 +120,86 @@ function BeltalowdaUltimates.GetMenu()
 					min = 1,
 					max = 12,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoDisplayUltimates,
-					setFunc = BeltalowdaOverview.SetRoDisplayUltimates,
+					getFunc = BeltalowdaUltimates.GetRoDisplayUltimates,
+					setFunc = BeltalowdaUltimates.SetRoDisplayUltimates,
 					width = "full",
 					default = 6
 				},
 				[14] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_BACKGROUND,
-					getFunc = BeltalowdaOverview.GetRoColorBackground,
-					setFunc = BeltalowdaOverview.SetRoColorBackground,
+					getFunc = BeltalowdaUltimates.GetRoColorBackground,
+					setFunc = BeltalowdaUltimates.SetRoColorBackground,
 					width = "full"
 				},
 				[15] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_MAGICKA,
-					getFunc = BeltalowdaOverview.GetRoColorMagicka,
-					setFunc = BeltalowdaOverview.SetRoColorMagicka,
+					getFunc = BeltalowdaUltimates.GetRoColorMagicka,
+					setFunc = BeltalowdaUltimates.SetRoColorMagicka,
 					width = "full"
 				},
 				[16] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_STAMINA,
-					getFunc = BeltalowdaOverview.GetRoColorStamina,
-					setFunc = BeltalowdaOverview.SetRoColorStamina,
+					getFunc = BeltalowdaUltimates.GetRoColorStamina,
+					setFunc = BeltalowdaUltimates.SetRoColorStamina,
 					width = "full"
 				},
 				[17] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_OUT_OF_RANGE,
-					getFunc = BeltalowdaOverview.GetRoColorOutOfRange,
-					setFunc = BeltalowdaOverview.SetRoColorOutOfRange,
+					getFunc = BeltalowdaUltimates.GetRoColorOutOfRange,
+					setFunc = BeltalowdaUltimates.SetRoColorOutOfRange,
 					width = "full"
 				},
 				[18] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_DEAD,
-					getFunc = BeltalowdaOverview.GetRoColorDead,
-					setFunc = BeltalowdaOverview.SetRoColorDead,
+					getFunc = BeltalowdaUltimates.GetRoColorDead,
+					setFunc = BeltalowdaUltimates.SetRoColorDead,
 					width = "full"
 				},
 				[19] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_PROGRESS_NOT_FULL,
-					getFunc = BeltalowdaOverview.GetRoColorProgressNotFull,
-					setFunc = BeltalowdaOverview.SetRoColorProgressNotFull,
+					getFunc = BeltalowdaUltimates.GetRoColorProgressNotFull,
+					setFunc = BeltalowdaUltimates.SetRoColorProgressNotFull,
 					width = "full"
 				},
 				[20] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_PROGRESS_FULL,
-					getFunc = BeltalowdaOverview.GetRoColorProgressFull,
-					setFunc = BeltalowdaOverview.SetRoColorProgressFull,
+					getFunc = BeltalowdaUltimates.GetRoColorProgressFull,
+					setFunc = BeltalowdaUltimates.SetRoColorProgressFull,
 					width = "full"
 				},
 				[21] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_LABEL_FULL,
-					getFunc = BeltalowdaOverview.GetRoColorLabelFull,
-					setFunc = BeltalowdaOverview.SetRoColorLabelFull,
+					getFunc = BeltalowdaUltimates.GetRoColorLabelFull,
+					setFunc = BeltalowdaUltimates.SetRoColorLabelFull,
 					width = "full"
 				},
 				[22] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_LABEL_NOT_FULL,
-					getFunc = BeltalowdaOverview.GetRoColorLabelNotFull,
-					setFunc = BeltalowdaOverview.SetRoColorLabelNotFull,
+					getFunc = BeltalowdaUltimates.GetRoColorLabelNotFull,
+					setFunc = BeltalowdaUltimates.SetRoColorLabelNotFull,
 					width = "full"
 				},
 				[23] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_LABEL_GROUP,
-					getFunc = BeltalowdaOverview.GetRoColorLabelGroup,
-					setFunc = BeltalowdaOverview.SetRoColorLabelGroup,
+					getFunc = BeltalowdaUltimates.GetRoColorLabelGroup,
+					setFunc = BeltalowdaUltimates.SetRoColorLabelGroup,
 					width = "full"
 				},
 				[24] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_COLOR_LABEL_ANNOUNCEMENT,
-					getFunc = BeltalowdaOverview.GetRoColorLabelAnnouncement,
-					setFunc = BeltalowdaOverview.SetRoColorLabelAnnouncement,
+					getFunc = BeltalowdaUltimates.GetRoColorLabelAnnouncement,
+					setFunc = BeltalowdaUltimates.SetRoColorLabelAnnouncement,
 					width = "full"
 				},
 				[25] = {
@@ -208,43 +208,43 @@ function BeltalowdaUltimates.GetMenu()
 					min = 32,
 					max = 64,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoAnnouncementSize,
-					setFunc = BeltalowdaOverview.SetRoAnnouncementSize,
+					getFunc = BeltalowdaUltimates.GetRoAnnouncementSize,
+					setFunc = BeltalowdaUltimates.SetRoAnnouncementSize,
 					width = "full",
 					default = 50
 				},
 				[26] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_IN_COMBAT_ENABLED,
-					getFunc = BeltalowdaOverview.GetRoInCombatEnabled,
-					setFunc = BeltalowdaOverview.SetRoInCombatEnabled
+					getFunc = BeltalowdaUltimates.GetRoInCombatEnabled,
+					setFunc = BeltalowdaUltimates.SetRoInCombatEnabled
 				},
 				[27] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_IN_COMBAT_COLOR,
-					getFunc = BeltalowdaOverview.GetRoInCombatColor,
-					setFunc = BeltalowdaOverview.SetRoInCombatColor,
+					getFunc = BeltalowdaUltimates.GetRoInCombatColor,
+					setFunc = BeltalowdaUltimates.SetRoInCombatColor,
 					width = "full"
 				},
 				[28] = {
 					type = "colorpicker",
 					name = BeltalowdaMenu.constants.RO_OUT_OF_COMBAT_COLOR,
-					getFunc = BeltalowdaOverview.GetRoOutOfCombatColor,
-					setFunc = BeltalowdaOverview.SetRoOutOfCombatColor,
+					getFunc = BeltalowdaUltimates.GetRoOutOfCombatColor,
+					setFunc = BeltalowdaUltimates.SetRoOutOfCombatColor,
 					width = "full"
 				},
 				[29] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_IN_STEALTH_ENABLED,
-					getFunc = BeltalowdaOverview.GetRoCombinedInStealthEnabled,
-					setFunc = BeltalowdaOverview.SetRoCombinedInStealthEnabled
+					getFunc = BeltalowdaUltimates.GetRoCombinedInStealthEnabled,
+					setFunc = BeltalowdaUltimates.SetRoCombinedInStealthEnabled
 				},
 				[30] = {
 					type = "dropdown",
 					name = BeltalowdaMenu.constants.RO_ULTIMATE_SORTING_MODE,
-					choices = BeltalowdaOverview.GetRoAvailableUltimateSortingModes(),
-					getFunc = BeltalowdaOverview.GetRoSelectedUltimateSortingMode,
-					setFunc = BeltalowdaOverview.SetRoSelectedUltimateSortingMode,
+					choices = BeltalowdaUltimates.GetRoAvailableUltimateSortingModes(),
+					getFunc = BeltalowdaUltimates.GetRoSelectedUltimateSortingMode,
+					setFunc = BeltalowdaUltimates.SetRoSelectedUltimateSortingMode,
 					width = "full"
 				},
 				[31] = {
@@ -253,8 +253,8 @@ function BeltalowdaUltimates.GetMenu()
 					min = 0,
 					max = 24,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoUltimateGroupSizeDestro,
-					setFunc = BeltalowdaOverview.SetRoUltimateGroupSizeDestro,
+					getFunc = BeltalowdaUltimates.GetRoUltimateGroupSizeDestro,
+					setFunc = BeltalowdaUltimates.SetRoUltimateGroupSizeDestro,
 					width = "full",
 					default = 2
 				},
@@ -264,8 +264,8 @@ function BeltalowdaUltimates.GetMenu()
 					min = 0,
 					max = 24,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoUltimateGroupSizeStorm,
-					setFunc = BeltalowdaOverview.SetRoUltimateGroupSizeStorm,
+					getFunc = BeltalowdaUltimates.GetRoUltimateGroupSizeStorm,
+					setFunc = BeltalowdaUltimates.SetRoUltimateGroupSizeStorm,
 					width = "full",
 					default = 1
 				},
@@ -275,8 +275,8 @@ function BeltalowdaUltimates.GetMenu()
 					min = 0,
 					max = 24,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoUltimateGroupSizeNorthernStorm,
-					setFunc = BeltalowdaOverview.SetRoUltimateGroupSizeNorthernStorm,
+					getFunc = BeltalowdaUltimates.GetRoUltimateGroupSizeNorthernStorm,
+					setFunc = BeltalowdaUltimates.SetRoUltimateGroupSizeNorthernStorm,
 					width = "full",
 					default = 1
 				},
@@ -286,8 +286,8 @@ function BeltalowdaUltimates.GetMenu()
 					min = 0,
 					max = 24,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoUltimateGroupSizePermafrost,
-					setFunc = BeltalowdaOverview.SetRoUltimateGroupSizePermafrost,
+					getFunc = BeltalowdaUltimates.GetRoUltimateGroupSizePermafrost,
+					setFunc = BeltalowdaUltimates.SetRoUltimateGroupSizePermafrost,
 					width = "full",
 					default = 1
 				},
@@ -297,8 +297,8 @@ function BeltalowdaUltimates.GetMenu()
 					min = 0,
 					max = 24,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoUltimateGroupSizeNegate,
-					setFunc = BeltalowdaOverview.SetRoUltimateGroupSizeNegate,
+					getFunc = BeltalowdaUltimates.GetRoUltimateGroupSizeNegate,
+					setFunc = BeltalowdaUltimates.SetRoUltimateGroupSizeNegate,
 					width = "full",
 					default = 2
 				},
@@ -308,8 +308,8 @@ function BeltalowdaUltimates.GetMenu()
 					min = 0,
 					max = 24,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoUltimateGroupSizeNegateOffensive,
-					setFunc = BeltalowdaOverview.SetRoUltimateGroupSizeNegateOffensive,
+					getFunc = BeltalowdaUltimates.GetRoUltimateGroupSizeNegateOffensive,
+					setFunc = BeltalowdaUltimates.SetRoUltimateGroupSizeNegateOffensive,
 					width = "full",
 					default = 2
 				},
@@ -319,8 +319,8 @@ function BeltalowdaUltimates.GetMenu()
 					min = 0,
 					max = 24,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoUltimateGroupSizeNegateCounter,
-					setFunc = BeltalowdaOverview.SetRoUltimateGroupSizeNegateCounter,
+					getFunc = BeltalowdaUltimates.GetRoUltimateGroupSizeNegateCounter,
+					setFunc = BeltalowdaUltimates.SetRoUltimateGroupSizeNegateCounter,
 					width = "full",
 					default = 2
 				},
@@ -330,8 +330,8 @@ function BeltalowdaUltimates.GetMenu()
 					min = 0,
 					max = 24,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoUltimateGroupSizeNova,
-					setFunc = BeltalowdaOverview.SetRoUltimateGroupSizeNova,
+					getFunc = BeltalowdaUltimates.GetRoUltimateGroupSizeNova,
+					setFunc = BeltalowdaUltimates.SetRoUltimateGroupSizeNova,
 					width = "full",
 					default = 2
 				},
@@ -341,23 +341,23 @@ function BeltalowdaUltimates.GetMenu()
 					min = 1,
 					max = 50,
 					step = 1,
-					getFunc = BeltalowdaOverview.GetRoMaxDistance,
-					setFunc = BeltalowdaOverview.SetRoMaxDistance,
+					getFunc = BeltalowdaUltimates.GetRoMaxDistance,
+					setFunc = BeltalowdaUltimates.SetRoMaxDistance,
 					width = "full",
 					default = 50
 				},
 				[40] = {
 					type = "checkbox",
 					name = BeltalowdaMenu.constants.RO_SOUND_ENABLED,
-					getFunc = BeltalowdaOverview.GetRoSoundEnabled,
-					setFunc = BeltalowdaOverview.SetRoSoundEnabled
+					getFunc = BeltalowdaUltimates.GetRoSoundEnabled,
+					setFunc = BeltalowdaUltimates.SetRoSoundEnabled
 				},
 				[41] = {
 					type = "dropdown",
 					name = BeltalowdaMenu.constants.RO_SELECTED_SOUND,
-					choices = BeltalowdaOverview.GetRoAvailableSounds(),
-					getFunc = BeltalowdaOverview.GetRoSelectedSound,
-					setFunc = BeltalowdaOverview.SetRoSelectedSound,
+					choices = BeltalowdaUltimates.GetRoAvailableSounds(),
+					getFunc = BeltalowdaUltimates.GetRoSelectedSound,
+					setFunc = BeltalowdaUltimates.SetRoSelectedSound,
 					width = "full"
 				},
 			},

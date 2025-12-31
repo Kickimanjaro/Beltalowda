@@ -5,6 +5,21 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.19] - 2025-12-31
+
+### Fixed
+- **CRITICAL FIX** - Ultimate Tracker menu controls now display correctly
+  - Root cause: GetMenu() was referencing `BeltalowdaOverview.Get/Set*` functions that were moved to `BeltalowdaUltimates` namespace in v0.3.9
+  - LibAddonMenu silently failed when calling undefined getFunc/setFunc callbacks, preventing menu controls from rendering
+  - Updated all 82 function references in GetMenu() from `BeltalowdaOverview.*` to `BeltalowdaUltimates.*`
+  - All 41 Ultimate Tracker settings controls now display correctly under "Ultimate Tracker - Unified View"
+  - This completes Phase 2 - all four feature modules (Positioning, Synergies, AttackTimers, Ultimates) now have fully functional menus
+
+## [0.3.18] - 2025-12-31
+
+### Fixed
+- Version number updated to 0.3.18 (was missed in commit 5488a83)
+
 ## [0.3.17] - 2025-12-31
 
 ### Fixed
