@@ -88,8 +88,7 @@ function BeltalowdaUltimates.GetMenu()
 					choices = BeltalowdaOverview.GetRoAvailableDisplayModes(),
 					getFunc = BeltalowdaOverview.GetRoAvailableDisplayMode,
 					setFunc = BeltalowdaOverview.SetRoAvailableDisplayMode,
-					width = "full",
-					reference = lReference
+					width = "full"
 				},
 				[11] = {
 					type = "slider",
