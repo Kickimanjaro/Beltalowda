@@ -21,7 +21,10 @@ local BeltalowdaUltimates = Beltalowda.features.ultimates
 
 -- Core lifecycle functions
 function BeltalowdaOverview.Initialize()
-	return BeltalowdaUltimates.Initialize()
+	-- TEMPORARY: Disable Ultimates initialization to isolate crash issue
+	-- return BeltalowdaUltimates.Initialize()
+	d("[Beltalowda] Ultimates initialization DISABLED for testing")
+	return
 end
 
 function BeltalowdaOverview.InitializeControlSettings()
