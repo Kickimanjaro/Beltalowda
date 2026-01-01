@@ -57,6 +57,16 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 
 ## [Unreleased]
 
+### Fixed
+- **Corrected LibGroupCombatStats and LibSetDetection API integration**
+  - Fixed LibGroupCombatStats integration to use proper API: `RegisterAddon()` and `RegisterForEvent()`
+  - Fixed event registration to use `EVENT_GROUP_ULT_UPDATE` and `EVENT_PLAYER_ULT_UPDATE` instead of incorrect callback approach
+  - Fixed LibSetDetection integration to use `RegisterAddon()` and `GetSetsForGroupMember()` for on-demand queries
+  - Simplified ultimate data handling to use single callback for all ultimate updates
+  - Updated equipment display to query data on-demand instead of caching
+  - Added proper error handling and registration success messages
+  - Ultimate data should now properly appear when using `/btlwdata ults` command
+
 ### Changed
 - **Made LibGroupCombatStats and LibSetDetection required dependencies**
   - Moved from `OptionalDependsOn` to `DependsOn` in manifest

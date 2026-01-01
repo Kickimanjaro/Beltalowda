@@ -277,7 +277,14 @@ function BeltalowdaNetwork.DebugPrintGroupData()
         if data then
             if data.ultimate then
                 local ult = data.ultimate
-                local abilityName = ult.abilityId and GetAbilityName(ult.abilityId) or "Unknown"
+                -- Safely get ability name with fallback
+                local abilityName = "Unknown"
+                if ult.abilityId then
+                    local abilityNameResult = GetAbilityName(ult.abilityId)
+                    if abilityNameResult and abilityNameResult ~= "" then
+                        abilityName = abilityNameResult
+                    end
+                end
                 d(string.format("  Ultimate: %s (ID: %s, cost: %d)", 
                     abilityName,
                     tostring(ult.abilityId or "?"), 
@@ -347,7 +354,14 @@ function BeltalowdaNetwork.DebugUltimateData()
         if data and data.ultimate then
             foundData = true
             local ult = data.ultimate
-            local abilityName = ult.abilityId and GetAbilityName(ult.abilityId) or "Unknown"
+            -- Safely get ability name with fallback
+            local abilityName = "Unknown"
+            if ult.abilityId then
+                local name = GetAbilityName(ult.abilityId)
+                if name and name ~= "" then
+                    abilityName = name
+                end
+            end
             
             d(string.format("[%d] %s", i, name))
             d(string.format("    Ability: %s (ID: %s)", 
@@ -415,7 +429,18 @@ function BeltalowdaNetwork.DebugEquipmentData()
                 
                 -- Display set data: setId -> piece count
                 for setId, pieces in pairs(sets) do
-                    local setName = GetItemSetName(setId) or ("Set #" .. setId)
+                    -- Safely get set name with fallback
+                    local setName = "Unknown Set"
+                    if type(setId) == "number" then
+                        local name = GetItemSetName(setId)
+                        if name and name ~= "" then
+                            setName = name
+                        else
+                            setName = "Set #" .. setId
+                        end
+                    else
+                        setName = tostring(setId)
+                    end
                     d(string.format("    %s: %d pieces", setName, pieces))
                 end
             end
