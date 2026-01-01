@@ -5,6 +5,14 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.1.6] - 2026-01-01
+
+### Fixed
+- **CRITICAL FIX**: Normalized LGCS field names (`id` → `abilityId`, `value` → `current`) for proper ultimate display
+- Removed verbose debug logging now that data structure is confirmed
+- `/btlwdata ults` now correctly displays ultimate data for all group members
+- Ultimate tracking fully functional with LibGroupCombatStats
+
 ## [0.1.5] - 2026-01-01
 
 ### Fixed

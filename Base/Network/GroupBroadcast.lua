@@ -161,26 +161,8 @@ end
     @param data: Ultimate data table from LGCS
 ]]--
 function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
-    d(string.format("[Beltalowda] ULT DATA: unitTag=%s", tostring(unitTag)))
-    
-    if not data then 
-        d("[Beltalowda] Warning: data is nil for " .. tostring(unitTag))
+    if not data or type(data) ~= "table" then 
         return 
-    end
-    
-    -- Debug log the FULL data structure to understand what LGCS is sending
-    if type(data) == "table" then
-        d("[Beltalowda] Data is table with fields:")
-        local hasFields = false
-        for k, v in pairs(data) do
-            hasFields = true
-            d(string.format("  [%s] = %s (%s)", tostring(k), tostring(v), type(v)))
-        end
-        if not hasFields then
-            d("  (empty table - no fields)")
-        end
-    else
-        d(string.format("[Beltalowda] Data type: %s, value: %s", type(data), tostring(data)))
     end
     
     -- Initialize player data if not exists
@@ -190,31 +172,27 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
     -- Store all ultimate data from LGCS
     local ult = BeltalowdaNetwork.groupData[unitTag].ultimate
     
-    -- LGCS may use different field names - store whatever we receive
-    -- Common field names: abilityId, cost, current, max, value, type, etc.
+    -- LGCS sends data with fields: id, cost, value, max
+    -- Store all fields directly
     for field, value in pairs(data) do
         ult[field] = value
-        d(string.format("[Beltalowda] Stored ult.%s = %s", tostring(field), tostring(value)))
     end
     
-    -- Try to calculate percentage if we have the right fields
+    -- Normalize field names for consistent access
+    -- LGCS uses "id" for abilityId and "value" for current
+    if ult.id then
+        ult.abilityId = ult.id
+    end
+    if ult.value then
+        ult.current = ult.value
+    end
+    
+    -- Calculate percentage if we have the right fields
     if ult.max and ult.max > 0 and ult.current then
         ult.percent = (ult.current / ult.max) * 100
-    elseif ult.max and ult.max > 0 and ult.value then
-        -- Some versions may use "value" instead of "current"
-        ult.current = ult.value
-        ult.percent = (ult.value / ult.max) * 100
     else
         ult.percent = 0
     end
-    
-    d(string.format("[Beltalowda] Stored ultimate for %s: abilityId=%s, cost=%s, current=%s, max=%s, percent=%.1f%%",
-        tostring(unitTag),
-        tostring(ult.abilityId),
-        tostring(ult.cost),
-        tostring(ult.current),
-        tostring(ult.max),
-        ult.percent or 0))
     
     -- Trigger callback for modules that need this data
     BeltalowdaNetwork.OnDataChanged("ultimate", unitTag)
