@@ -43,157 +43,59 @@ This document outlines a comprehensive plan to enhance Beltalowda with advanced 
 
 ## Proposed Enhanced Architecture
 
-### Core Data Collection Layer
+### Data Integration Strategy (REVISED)
 
-A new modular system for collecting and managing player state data:
+**Decision**: Use existing LibGroupBroadcast libraries instead of custom data collection modules.
+
+**Rationale**: Research (Checkpoint 0.1b) revealed 100% coverage of critical MVP needs:
+- **LibGroupCombatStats**: Ultimate Type (ID 20), Ultimate Value (ID 21), DPS (ID 22), HPS (ID 23)
+- **LibSetDetection**: Equipped set pieces (ID 40) for all 14 equipment slots
+- **LibGPS**: Local position tracking (already installed, no broadcast needed initially)
+
+**Architecture Overview**:
 
 ```
-Base/Data/
-├── DataCollector.lua          # Main data collection coordinator
-├── ResourceCollector.lua      # Health, Magicka, Stamina, Ultimate
-├── PositionCollector.lua      # Player position via LibGPS
-├── AbilityCollector.lua       # Skill bar abilities and active effects
-├── EquipmentCollector.lua     # Equipped gear via LibSets
-├── StateCollector.lua         # Combat state, alive/dead, online status
-└── PreferencesCollector.lua   # Player settings and keybinds
+Base/Integration/           # NEW: Library integration layer
+├── CombatStatsAdapter.lua  # Subscribe to LibGroupCombatStats
+└── SetDetectionAdapter.lua # Subscribe to LibSetDetection
+
+Base/Group/                 # EXISTING: Group data management
+└── GroupDataManager.lua    # Store and provide access to group member data
+
+Base/Network/               # RESERVED: Future custom protocols
+└── CustomBroadcast.lua     # IDs 220-229 reserved for future use
 ```
 
-#### DataCollector (Coordinator)
-**Purpose**: Central coordinator for all data collection modules
+#### ~~Core Data Collection Layer~~ NOT NEEDED
 
-**Responsibilities**:
-- Initialize all collector modules
-- Register for relevant events
-- Coordinate data updates
-- Provide unified interface for data access
-- Manage data update intervals (throttling)
+**Original Plan**: Build custom collector modules for all data types.
 
-**Key Functions**:
-```lua
-function DataCollector.Initialize()
-function DataCollector.RegisterCollector(collectorModule)
-function DataCollector.GetPlayerData(unitTag)
-function DataCollector.GetGroupData()
-```
+**Revised Plan**: Subscribe to existing libraries, eliminating need for:
+- ~~DataCollector.lua~~ - Not needed
+- ~~ResourceCollector.lua~~ - Use LibGroupCombatStats for ultimate, native API for local health
+- ~~PositionCollector.lua~~ - Use LibGPS locally, no broadcast initially
+- ~~AbilityCollector.lua~~ - Use LibGroupCombatStats for ultimate abilities
+- ~~EquipmentCollector.lua~~ - Use LibSetDetection
+- ~~StateCollector.lua~~ - Use native ESO API as needed
+- ~~PreferencesCollector.lua~~ - Use SavedVariables directly
 
-#### ResourceCollector
-**Purpose**: Track player resources (local only - ultimates come from LibGroupCombatStats)
+#### Integration Adapters (New Approach)
 
-**Data Tracked**:
-- Current/Max Health (broadcast via custom protocol 220)
-- Current/Max Magicka (optionally use LibGroupResources ID 11 or custom)
-- Current/Max Stamina (optionally use LibGroupResources ID 10 or custom)
-- ~~Current/Max Ultimate~~ **Use LibGroupCombatStats** (IDs 20-21) for ultimate tracking
-- ~~Ultimate cost~~ **Use LibGroupCombatStats** (ID 20) for ultimate ability ID and cost
-- ~~Ultimate ability ID~~ **Use LibGroupCombatStats** (ID 20) for which ult is slotted
+**CombatStatsAdapter**: Subscribes to LibGroupCombatStats broadcasts
+- Receives ultimate data from group members (IDs 20, 21, 22, 23)
+- Maps to Beltalowda's internal data structure
+- Provides access functions for UI modules
 
-**Events Used**:
-- `EVENT_POWER_UPDATE` (health/magicka/stamina changes)
-- `EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED` (shield values)
+**SetDetectionAdapter**: Subscribes to LibSetDetection broadcasts
+- Receives equipment data from group members (ID 40)
+- Maps to Beltalowda's internal data structure
+- Provides access functions for UI modules
 
-**Update Frequency**: Real-time with 5% threshold for broadcasting
-
-**Integration Note**: This collector focuses on Health (the only resource not covered by existing libraries). Ultimate data comes from subscribing to LibGroupCombatStats broadcasts.
-
-#### PositionCollector
-**Purpose**: Track player position for group coordination
-
-**Data Tracked**:
-- Global X, Y coordinates (via LibGPS)
-- Zone ID
-- Distance from group leader
-- Distance from other group members
-- In range of camp (for resurrection)
-
-**Events Used**:
-- `EVENT_PLAYER_ACTIVATED` (zone changes)
-- Periodic updates (100ms for smooth position tracking)
-
-**Integration**: Uses existing LibGPS library
-
-#### AbilityCollector
-**Purpose**: Track player abilities and active effects
-
-**Data Tracked**:
-- **Skill Bar Abilities** (10 total: 5 per bar):
-  - Ability ID
-  - Ability name
-  - Icon
-  - Is ultimate? (slot 8)
-- **Active Effects** (buffs/debuffs):
-  - Effect ID
-  - Effect name
-  - Duration remaining
-  - Stack count
-  - Is relevant for group? (configurable filter)
-
-**Events Used**:
-- `EVENT_ACTION_SLOT_UPDATED` (skill bar changes)
-- `EVENT_EFFECT_CHANGED` (buff/debuff application)
-- `EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED` (visual effects)
-
-**Special Cases**:
-- Volendrung detection (weapon pickup)
-- Synergy availability
-- Major/Minor buff tracking
-
-#### EquipmentCollector
-**Purpose**: Track equipped gear for set-dependent features (uses LibSetDetection for network sharing)
-
-**Data Tracked**:
-- ~~Equipped item set IDs (via LibSets)~~ **Use LibSetDetection** (ID 40) for group sharing
-- Set names (localized) - LibSets used locally for identification
-- Active set bonuses (5-piece, 2-piece counts)
-- Monster set cooldown status
-- Proc set cooldowns
-
-**Integration**: 
-- Uses **LibSets** for local set identification
-- Uses **LibSetDetection** for broadcasting sets to group (avoids redundant network traffic)
-- Tracks 14 equipment slots
-- Detects set bonus activation
-
-**Events Used**:
-- `EVENT_INVENTORY_SINGLE_SLOT_UPDATE` (gear changes)
-- `EVENT_EFFECT_CHANGED` (set proc effects)
-
-**Use Cases**:
-- Monster set cooldown tracking
-- Proc set coordination
-- Role detection based on gear (tank/healer/DPS sets)
-
-**Network Strategy**: Subscribe to LibSetDetection broadcasts from group members instead of implementing custom protocol. This leverages existing ecosystem and reduces network load.
-
-#### StateCollector
-**Purpose**: Track player state and availability
-
-**Data Tracked**:
-- In combat status
-- Alive/Dead/Reincarnating
-- Online/Offline/Disconnected
-- In reload UI (loading screen)
-- In range of forward camp
-- AFK status
-- Group role (tank/healer/DPS)
-- Champion Points allocation (for advanced analysis)
-
-**Events Used**:
-- `EVENT_PLAYER_COMBAT_STATE` (combat state)
-- `EVENT_UNIT_DEATH_STATE_CHANGED` (death/resurrection)
-- `EVENT_GROUP_MEMBER_CONNECTED_STATUS` (online status)
-- `EVENT_ACTION_LAYER_PUSHED/POPPED` (UI state)
-
-#### PreferencesCollector
-**Purpose**: Store player-specific addon settings
-
-**Data Tracked**:
-- Primary ultimate selection
-- Role preference (for auto-assignment)
-- Keybind configurations
-- UI preferences (for coordinated UI across group)
-- Broadcasting preferences
-
-**Storage**: SavedVariables (per-character and account-wide)
+**GroupDataManager**: Central storage for group member data
+- Stores data received from library subscriptions
+- Handles player join/leave events
+- Provides unified access interface
+- Manages data lifecycle (cleanup on disconnect)
 
 ---
 
@@ -336,10 +238,13 @@ Base/Features/
    - Add "intensity" effect for held ultimates (reminder to cast)
 
 **Data Dependencies**:
-- ResourceCollector: Ultimate percentage
-- AbilityCollector: Ultimate ability ID (slot 8)
-- StateCollector: Combat status, alive/dead
-- GroupBroadcast: Sync data to all group members
+- **LibGroupCombatStats**: Ultimate percentage and ability ID from group members
+- **Native ESO API**: Local player ultimate data
+- **GroupDataManager**: Access to group member data
+- ~~ResourceCollector: Ultimate percentage~~ - Removed, use LibGroupCombatStats
+- ~~AbilityCollector: Ultimate ability ID (slot 8)~~ - Removed, use LibGroupCombatStats
+- ~~StateCollector: Combat status, alive/dead~~ - Removed, use native ESO API
+- ~~GroupBroadcast: Sync data to all group members~~ - Replaced by LibGroupCombatStats
 
 #### Feature: Synergy Tracking
 
@@ -356,9 +261,11 @@ Base/Features/
 - Availability indicators
 
 **Data Dependencies**:
-- AbilityCollector: Active synergies from effects
-- StateCollector: Synergy activation events
-- GroupBroadcast: Share synergy usage with group
+- **Native ESO API**: Local synergy events and cooldowns
+- **GroupDataManager**: Access to group member data (if broadcasting synergy state)
+- ~~AbilityCollector: Active synergies from effects~~ - Removed, use native ESO API
+- ~~StateCollector: Synergy activation events~~ - Removed, use native ESO API
+- ~~GroupBroadcast: Share synergy usage with group~~ - Can be added later if needed
 
 #### Feature: Attack Coordination
 
@@ -385,9 +292,12 @@ Base/Features/
    - Sound alerts for optimal timing
 
 **Data Dependencies**:
-- AbilityCollector: Detect ability casts
-- StateCollector: Combat status
-- GroupBroadcast: Share cast timing
+- **Native ESO API**: Detect local ability casts and combat events
+- **GroupDataManager**: Access to group member data (if broadcasting ability casts)
+- **Custom protocols (future)**: May use reserved IDs 220-229 for coordinated ability timing
+- ~~AbilityCollector: Detect ability casts~~ - Removed, use native ESO API
+- ~~StateCollector: Combat status~~ - Removed, use native ESO API
+- ~~GroupBroadcast: Share cast timing~~ - Can be added later with custom protocols
 
 #### Feature: PvP Quality of Life
 

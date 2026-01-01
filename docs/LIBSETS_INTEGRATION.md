@@ -1,8 +1,27 @@
 # LibSets Integration Guide
 
+## Status Update
+
+**Current Approach (Revised)**: After research in Checkpoint 0.1b, we determined that **LibSetDetection** (an existing LibGroupBroadcast library) provides 100% coverage for broadcasting equipment data to group members. 
+
+**This means**:
+- ✅ **LibSets**: Still needed for **local** set identification and role detection
+- ✅ **LibSetDetection**: Use for **group broadcasting** of equipment data (ID 40)
+- ❌ **Custom EquipmentCollector**: No longer needed - use LibSetDetection instead
+
+**This guide remains relevant for**:
+- Installing LibSets for local set identification
+- Understanding LibSets capabilities
+- Local equipment tracking and role detection
+- Reference for future custom features
+
+**For network sharing**: See LIBGROUPBROADCAST_INTEGRATION.md for LibSetDetection details.
+
+---
+
 ## Overview
 
-This document explains how to integrate LibSets into Beltalowda for tracking equipped gear and item sets. LibSets provides comprehensive data about all item sets in The Elder Scrolls Online.
+This document explains how to integrate LibSets into Beltalowda for tracking equipped gear and item sets **locally**. LibSets provides comprehensive data about all item sets in The Elder Scrolls Online.
 
 ## What is LibSets?
 
