@@ -1,0 +1,8 @@
+## Title: LibSets
+## Author: Baertram
+## APIVersion: 101042
+## Version: 71
+## Description: Library for item set detection and information
+## DependsOn: LibAsync>=2
+
+LibSets.lua

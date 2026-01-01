@@ -1,0 +1,25 @@
+## Title: Beltalowda
+## Author: Kickimanjaro
+## APIVersion: 101042
+## Version: 0.1.0
+## Description: Group PvP coordination addon with ultimate tracking, synergy management, and attack coordination
+## SavedVariables: BeltalowdaVars
+## DependsOn: LibStub LibAsync>=2 LibSets>=71
+
+# Libraries (stubs - replace with full libraries for production)
+Lib/LibAsync/LibAsync.lua
+Lib/LibSets/LibSets.lua
+
+# Main initialization
+Beltalowda.lua
+
+# Data Collection Layer
+Base/Data/DataCollector.lua
+Base/Data/ResourceCollector.lua
+Base/Data/PositionCollector.lua
+Base/Data/AbilityCollector.lua
+Base/Data/EquipmentCollector.lua
+Base/Data/StateCollector.lua
+
+# Network Layer
+Base/Network/GroupBroadcast.lua
