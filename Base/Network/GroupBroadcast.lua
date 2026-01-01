@@ -176,23 +176,24 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
     local ult = BeltalowdaNetwork.groupData[unitTag].ultimate
     
     -- LGCS sends data with fields: id, cost, value, max
-    -- Store all fields directly
-    for field, value in pairs(data) do
-        ult[field] = value
-    end
+    -- Store original fields first
+    if data.id then ult.id = data.id end
+    if data.cost then ult.cost = data.cost end
+    if data.value then ult.value = data.value end
+    if data.max then ult.max = data.max end
     
     -- Normalize field names for consistent access
     -- LGCS uses "id" for abilityId and "value" for current
-    if ult.id then
-        ult.abilityId = ult.id
+    if data.id then
+        ult.abilityId = data.id
     end
-    if ult.value then
-        ult.current = ult.value
+    if data.value then
+        ult.current = data.value
     end
     
     -- Calculate percentage if we have the right fields
-    if ult.max and ult.max > 0 and ult.current then
-        ult.percent = (ult.current / ult.max) * 100
+    if data.max and data.max > 0 and data.value then
+        ult.percent = (data.value / data.max) * 100
     else
         ult.percent = 0
     end

@@ -5,6 +5,14 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.1.9] - 2026-01-01
+
+### Fixed
+- **CRITICAL FIX**: Fixed ultimate data storage - data was being received but not stored into ultimate table
+- Changed from generic `pairs()` loop to explicit field-by-field storage from LGCS data
+- Fixed percentage calculation to use `data.value` instead of `ult.current` (which wasn't set yet)
+- Ultimate data should now properly persist and display in `/btlwdata ults` command
+
 ## [0.1.8] - 2026-01-01
 
 ### Fixed
