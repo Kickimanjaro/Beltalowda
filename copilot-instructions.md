@@ -181,6 +181,33 @@ Before committing changes:
 - [ ] No console errors when loading addon
 - [ ] No console errors when toggling features
 
+## Planning Documentation
+
+**Location**: `/docs/` directory contains comprehensive planning documents
+
+**Key Documents**:
+- `ARCHITECTURE_PLAN.md` - Overall system design and architecture
+- `LIBGROUPBROADCAST_INTEGRATION.md` - Network layer integration strategy
+- `LIBSETS_INTEGRATION.md` - Equipment tracking implementation
+- `SAVEDVARIABLES_GUIDE.md` - Data persistence patterns
+- `DEVELOPMENT_ROADMAP.md` - 12-phase implementation plan (26 weeks)
+- `IMPLEMENTATION_CHECKPOINTS.md` - 30+ in-game test procedures
+- `PLANNING_SUMMARY.md` - Executive overview and quick reference
+
+**Documentation Maintenance Rules**:
+1. **Planning docs are source of truth** - implementation should match the plan
+2. **Update docs when plans change** - don't let them drift from reality
+3. **Reference specific sections** when asking AI agents to implement features
+4. **Use checkpoints** from IMPLEMENTATION_CHECKPOINTS.md to verify work
+5. **Document deviations** - if you deviate from the plan, update the plan with rationale
+
+**When to Update Planning Docs**:
+- Architecture changes (new modules, different approach)
+- Library integration changes (adding/removing dependencies)
+- Feature scope changes (adding/removing features)
+- Implementation order changes (phase reordering)
+- Major design decisions (different UI approach, different data structure)
+
 ## Key Principles
 
 1. **Always use `TableName = TableName or {}`** when initializing namespaces
@@ -191,3 +218,4 @@ Before committing changes:
 6. **Update all language files** when adding UI text
 7. **Test in ESO immediately** after changes
 8. **Update version in all required files** when releasing
+9. **"If we don't need it, don't store it"** - minimize SavedVariables data collection

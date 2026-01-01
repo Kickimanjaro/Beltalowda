@@ -10,6 +10,23 @@ This document provides a high-level summary of the comprehensive planning create
 
 ---
 
+## Important Notes
+
+**Documentation Maintenance**:
+- These planning documents are the **source of truth** for implementation
+- Update relevant docs when plans change during development
+- Reference specific sections when delegating tasks to AI agents
+- Use checkpoints (IMPLEMENTATION_CHECKPOINTS.md) to verify work before proceeding
+- Keep docs synced with actual implementation
+
+**For Future Development**:
+- Planning docs live in `/docs/` directory
+- Update in parallel with code changes when architecture shifts
+- Use git history to track evolution of planning decisions
+- Document rationale for deviations from original plan
+
+---
+
 ## Planning Documents Created
 
 ### 1. ARCHITECTURE_PLAN.md

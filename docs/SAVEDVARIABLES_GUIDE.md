@@ -9,6 +9,7 @@ This document explains how ESO's SavedVariables system works and how Beltalowda 
 SavedVariables are ESO's mechanism for addons to persist data between game sessions. Data is stored in:
 - **Windows**: `Documents\Elder Scrolls Online\live\SavedVariables\`
 - **Mac**: `~/Documents/Elder Scrolls Online/live/SavedVariables/`
+- **Console**: Not applicable - ESO on consoles (PlayStation, Xbox) does not support addons or SavedVariables
 
 Each addon gets its own file, e.g., `Beltalowda.lua` containing all saved data.
 
@@ -68,7 +69,7 @@ Beltalowda.vars.char = charVars
 ### Profile System
 
 Beltalowda uses a **profile-based system**:
-- Multiple profiles can be created (e.g., "PvP", "PvE", "Healer")
+- Multiple profiles can be created (e.g., "Lead", "Support", "Damage")
 - Each character selects which profile to use
 - Profiles are account-wide, selection is per-character
 
@@ -88,7 +89,15 @@ profiles = {
         cfg = { ... },
     },
     [2] = {
-        name = "PvP",
+        name = "Lead",
+        -- Same structure
+    },
+    [3] = {
+        name = "Support",
+        -- Same structure
+    },
+    [4] = {
+        name = "Damage",
         -- Same structure
     }
 }
@@ -350,18 +359,11 @@ BeltalowdaVars_Character = {
     -- Character keybinds (if different from account-wide)
     keybinds = {
         ultimateCast = "KEY_R",
-        syncAttack = "KEY_G",
-        -- ... etc
+        -- Additional keybinds as needed
     },
     
-    -- Statistics (optional, for nerds)
-    stats = {
-        ultimatesCast = 0,
-        synergiesUsed = 0,
-        bombsThrown = 0,
-        shalksLanded = 0,
-        sessionsPlayed = 0,
-    },
+    -- NOTE: We follow "if we don't need it, don't store it" philosophy
+    -- Statistics tracking removed unless specifically required for a feature
 }
 ```
 
