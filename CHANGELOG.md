@@ -5,6 +5,12 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.1.8] - 2026-01-01
+
+### Fixed
+- Add comprehensive debug logging to `/btlwdata ults` to show exact ultimate table field contents
+- Help diagnose why ultimate data shows as received in OnUltimateDataReceived but not displayed
+
 ## [0.1.7] - 2026-01-01
 
 ### Fixed

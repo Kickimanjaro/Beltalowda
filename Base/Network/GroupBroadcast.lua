@@ -359,6 +359,16 @@ function BeltalowdaNetwork.DebugUltimateData()
             
             d(string.format("[%s] %s", unitTag, name))
             
+            -- Debug: Show what's in data.ultimate
+            if data.ultimate then
+                d(string.format("    DEBUG: ultimate table exists, id=%s abilityId=%s value=%s current=%s max=%s cost=%s",
+                    tostring(data.ultimate.id), tostring(data.ultimate.abilityId),
+                    tostring(data.ultimate.value), tostring(data.ultimate.current),
+                    tostring(data.ultimate.max), tostring(data.ultimate.cost)))
+            else
+                d("    DEBUG: data.ultimate is nil")
+            end
+            
             -- Check if we have ultimate data with actual values
             if data.ultimate and (data.ultimate.abilityId or data.ultimate.id or data.ultimate.current or data.ultimate.value or data.ultimate.max) then
                 local ult = data.ultimate
