@@ -168,11 +168,16 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
         return 
     end
     
-    -- Debug log the data structure
+    -- Debug log the FULL data structure to understand what LGCS is sending
     if type(data) == "table" then
-        d("[Beltalowda] Data is table, fields:")
+        d("[Beltalowda] Data is table with fields:")
+        local hasFields = false
         for k, v in pairs(data) do
-            d(string.format("  %s = %s (%s)", tostring(k), tostring(v), type(v)))
+            hasFields = true
+            d(string.format("  [%s] = %s (%s)", tostring(k), tostring(v), type(v)))
+        end
+        if not hasFields then
+            d("  (empty table - no fields)")
         end
     else
         d(string.format("[Beltalowda] Data type: %s, value: %s", type(data), tostring(data)))
@@ -185,26 +190,31 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
     -- Store all ultimate data from LGCS
     local ult = BeltalowdaNetwork.groupData[unitTag].ultimate
     
-    -- LGCS provides: abilityId, cost, current, max (values may vary based on library version)
-    if data.abilityId then
-        ult.abilityId = data.abilityId
-    end
-    if data.cost then
-        ult.cost = data.cost
-    end
-    if data.current then
-        ult.current = data.current
-    end
-    if data.max then
-        ult.max = data.max
+    -- LGCS may use different field names - store whatever we receive
+    -- Common field names: abilityId, cost, current, max, value, type, etc.
+    for field, value in pairs(data) do
+        ult[field] = value
+        d(string.format("[Beltalowda] Stored ult.%s = %s", tostring(field), tostring(value)))
     end
     
-    -- Calculate percentage
+    -- Try to calculate percentage if we have the right fields
     if ult.max and ult.max > 0 and ult.current then
         ult.percent = (ult.current / ult.max) * 100
+    elseif ult.max and ult.max > 0 and ult.value then
+        -- Some versions may use "value" instead of "current"
+        ult.current = ult.value
+        ult.percent = (ult.value / ult.max) * 100
     else
         ult.percent = 0
     end
+    
+    d(string.format("[Beltalowda] Stored ultimate for %s: abilityId=%s, cost=%s, current=%s, max=%s, percent=%.1f%%",
+        tostring(unitTag),
+        tostring(ult.abilityId),
+        tostring(ult.cost),
+        tostring(ult.current),
+        tostring(ult.max),
+        ult.percent or 0))
     
     -- Trigger callback for modules that need this data
     BeltalowdaNetwork.OnDataChanged("ultimate", unitTag)
@@ -361,43 +371,53 @@ function BeltalowdaNetwork.DebugUltimateData()
     
     -- Iterate through all stored data (includes "player" and all group members)
     for unitTag, data in pairs(BeltalowdaNetwork.groupData) do
-        if data and data.ultimate then
+        -- Check if we have any data at all for this unit
+        if data then
             foundData = true
-            local ult = data.ultimate
             local name = GetUnitName(unitTag) or "Unknown"
             
-            -- Safely get ability name with fallback
-            local abilityName = "Unknown"
-            if ult.abilityId then
-                local abilityNameResult = GetAbilityName(ult.abilityId)
-                if abilityNameResult and abilityNameResult ~= "" then
-                    abilityName = abilityNameResult
-                end
-            end
-            
             d(string.format("[%s] %s", unitTag, name))
-            d(string.format("    Ability: %s (ID: %s)", 
-                abilityName, 
-                tostring(ult.abilityId or "?")))
-            d(string.format("    Cost: %d", ult.cost or 0))
-            d(string.format("    Current: %d / %d (%.1f%%)", 
-                ult.current or 0, 
-                ult.max or 0, 
-                ult.percent or 0))
             
-            -- Show ready status
-            if ult.percent and ult.percent >= 100 then
-                d("    Status: READY!")
-            elseif ult.percent and ult.percent >= 75 then
-                d("    Status: Almost ready")
+            -- Check if we have ultimate data
+            if data.ultimate then
+                local ult = data.ultimate
+                
+                -- Safely get ability name with fallback
+                local abilityName = "Unknown"
+                if ult.abilityId then
+                    local abilityNameResult = GetAbilityName(ult.abilityId)
+                    if abilityNameResult and abilityNameResult ~= "" then
+                        abilityName = abilityNameResult
+                    end
+                end
+                
+                d(string.format("    Ability: %s (ID: %s)", 
+                    abilityName, 
+                    tostring(ult.abilityId or "?")))
+                d(string.format("    Cost: %d", ult.cost or 0))
+                d(string.format("    Current: %d / %d (%.1f%%)", 
+                    ult.current or 0, 
+                    ult.max or 0, 
+                    ult.percent or 0))
+                
+                -- Show ready status
+                if ult.percent and ult.percent >= 100 then
+                    d("    Status: READY!")
+                elseif ult.percent and ult.percent >= 75 then
+                    d("    Status: Almost ready")
+                else
+                    d("    Status: Building...")
+                end
             else
-                d("    Status: Building...")
+                d("    Ultimate: No data yet (waiting for combat activity)")
             end
         end
     end
     
     if not foundData then
-        d("No ultimate data received yet")
+        d("No group members tracked yet")
+        d("Note: Requires LibGroupCombatStats installed on all group members")
+        d("Try using an ability or waiting for combat to trigger data sync")
         d("Note: Requires LibGroupCombatStats installed on all group members")
         d("Try using an ability or waiting for combat to trigger data sync")
     end

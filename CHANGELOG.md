@@ -5,6 +5,15 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.1.5] - 2026-01-01
+
+### Fixed
+- Fixed `/btlwdata ults` to display all group members even when ultimate data is pending
+- Enhanced debug logging in `OnUltimateDataReceived()` to show actual LGCS data structure
+- Improved handling of different LGCS field names (value vs current)
+- Better user feedback when ultimate data hasn't synced yet
+- Now stores all fields from LGCS data table instead of only expected field names
+
 ## [0.1.0] - 2026-01-01
 
 ### Added
