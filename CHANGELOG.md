@@ -55,6 +55,42 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 - Form group to test data synchronization
 - May require API adjustment based on actual library implementations
 
+## [0.1.1] - 2026-01-01
+
+### Added
+- **Added temporary debug logging to TYPE and VALUE event handlers**
+  - Logs parameters received in `OnUltimateTypeReceived()` and `OnUltimateValueReceived()`
+  - Helps diagnose why ultimate data fields remain nil
+  - Shows exact values being passed by LibGroupCombatStats events
+
+### Fixed
+- **Fixed LibGroupCombatStats event registration to use correct API**
+  - Library uses separate TYPE and VALUE events, not combined UPDATE events
+  - Now registers for `EVENT_PLAYER_ULT_TYPE_UPDATE` and `EVENT_PLAYER_ULT_VALUE_UPDATE`
+  - Now registers for `EVENT_GROUP_ULT_TYPE_UPDATE` and `EVENT_GROUP_ULT_VALUE_UPDATE`
+  - Added separate handlers: `OnUltimateTypeReceived()` for ability ID/cost, `OnUltimateValueReceived()` for current/max
+  - Ultimate data fields (abilityId, cost, current, max, percent) should now populate correctly
+
+### Changed
+- **Removed verbose debug logging from ultimate data handler**
+  - Debug messages were making chat difficult to read
+  - Kept only warning messages for error conditions
+  - Normal operation is now silent
+
+### Added
+- **Added `/btlwdata raw` command for detailed troubleshooting**
+  - Shows raw data dump including unitTag mappings
+  - Displays all stored data for each group member
+  - Helps diagnose unit tag vs player name issues
+  - Lists all unitTags in storage for verification
+
+### Fixed
+- **Fixed variable shadowing bug in `/btlwdata ults` command**
+  - Variable `name` was being shadowed by ability name lookup in `DebugUltimateData()`
+  - This caused only one group member's ultimate to display instead of all members
+  - Renamed inner variable to `abilityNameResult` to prevent shadowing
+  - Now correctly displays ultimate data for all group members who have LibGroupCombatStats
+
 ## [Unreleased]
 
 ### Added
