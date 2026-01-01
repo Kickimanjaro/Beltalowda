@@ -4,7 +4,7 @@
 
 Beltalowda is a greenfield group PvP addon for The Elder Scrolls Online (ESO) written in Lua, currently being built from planning documents in `docs/`. The addon will provide real-time ultimate tracking, synergy management, and group coordination features for PvP gameplay. 
 
-**Reference Implementation:** The Kickimanjaro/RdK repository serves as a reference implementation of similar functionality. RdK was originally created by @Parnax and is used here as a guide and inspiration for understanding ESO addon patterns and group coordination features.
+**Reference Implementation:** The Kickimanjaro/RdK repository serves as a reference implementation of similar functionality. RdK was originally created by @s0rdrak (PC / EU) and is used here as a guide and inspiration for understanding ESO addon patterns and group coordination features.
 
 ## Planning Documentation
 
