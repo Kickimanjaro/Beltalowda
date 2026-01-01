@@ -357,21 +357,15 @@ end
 function BeltalowdaNetwork.DebugUltimateData()
     d("=== Group Ultimate Details ===")
     
-    local groupSize = GetGroupSize()
-    if groupSize == 0 then
-        d("Not in a group")
-        return
-    end
-    
     local foundData = false
-    for i = 1, groupSize do
-        local unitTag = GetGroupUnitTagByIndex(i)
-        local name = GetUnitName(unitTag)
-        local data = BeltalowdaNetwork.groupData[unitTag]
-        
+    
+    -- Iterate through all stored data (includes "player" and all group members)
+    for unitTag, data in pairs(BeltalowdaNetwork.groupData) do
         if data and data.ultimate then
             foundData = true
             local ult = data.ultimate
+            local name = GetUnitName(unitTag) or "Unknown"
+            
             -- Safely get ability name with fallback
             local abilityName = "Unknown"
             if ult.abilityId then
@@ -381,7 +375,7 @@ function BeltalowdaNetwork.DebugUltimateData()
                 end
             end
             
-            d(string.format("[%d] %s", i, name))
+            d(string.format("[%s] %s", unitTag, name))
             d(string.format("    Ability: %s (ID: %s)", 
                 abilityName, 
                 tostring(ult.abilityId or "?")))
