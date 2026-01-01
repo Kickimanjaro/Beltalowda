@@ -19,25 +19,22 @@ local Beltalowda = Beltalowda
 function Beltalowda.AreLibrariesLoaded()
     local loaded = true
     local missingLibs = {}
-    
-    -- Check for LibStub (required by ESO addon ecosystem)
-    if not LibStub then
-        loaded = false
-        table.insert(missingLibs, "LibStub")
-    end
-    
-    -- Check for LibAsync
     if not LibAsync then
         loaded = false
         table.insert(missingLibs, "LibAsync")
     end
-    
-    -- Check for LibSets
+    if not LibGroupBroadcast then
+        loaded = false
+        table.insert(missingLibs, "LibGroupBroadcast")
+    end
+    if not LibAddonMenu-2.0 then
+        loaded = false
+        table.insert(missingLibs, "LibAddonMenu-2.0")
+    end
     if not LibSets then
         loaded = false
         table.insert(missingLibs, "LibSets")
     end
-    
     return loaded, missingLibs
 end
 
@@ -49,7 +46,7 @@ function Beltalowda.Initialize()
     local libsLoaded, missingLibs = Beltalowda.AreLibrariesLoaded()
     
     if not libsLoaded then
-        d("[Beltalowda] ERROR: Missing required libraries:")
+        d("[Beltalowda] ERROR! Missing required libraries:")
         for _, libName in ipairs(missingLibs) do
             d("  - " .. libName)
         end
@@ -59,34 +56,7 @@ function Beltalowda.Initialize()
     
     d("[Beltalowda] " .. Beltalowda.version .. " loaded successfully")
     
-    -- Initialize data collection layer
-    if Beltalowda.data then
-        if Beltalowda.data.collector and Beltalowda.data.collector.Initialize then
-            Beltalowda.data.collector.Initialize()
-        end
-        if Beltalowda.data.resources and Beltalowda.data.resources.Initialize then
-            Beltalowda.data.resources.Initialize()
-        end
-        if Beltalowda.data.position and Beltalowda.data.position.Initialize then
-            Beltalowda.data.position.Initialize()
-        end
-        if Beltalowda.data.abilities and Beltalowda.data.abilities.Initialize then
-            Beltalowda.data.abilities.Initialize()
-        end
-        if Beltalowda.data.equipment and Beltalowda.data.equipment.Initialize then
-            Beltalowda.data.equipment.Initialize()
-        end
-        if Beltalowda.data.state and Beltalowda.data.state.Initialize then
-            Beltalowda.data.state.Initialize()
-        end
-    end
-    
-    -- Initialize network layer
-    if Beltalowda.network and Beltalowda.network.Initialize then
-        Beltalowda.network.Initialize()
-    end
-    
-    d("[Beltalowda] All modules initialized")
+--  d("[Beltalowda] All modules initialized")
     
     return true
 end
