@@ -57,6 +57,14 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 
 ## [Unreleased]
 
+### Changed
+- **Made LibGroupCombatStats and LibSetDetection required dependencies**
+  - Moved from `OptionalDependsOn` to `DependsOn` in manifest
+  - Phase 2 network foundation cannot function without these libraries
+  - Addon will now fail to load with clear error message if libraries are missing
+  - Users should install both libraries from ESOUI.com before using addon
+  - LibCombat remains optional (currently unused)
+
 ### Fixed
 - Made LibGroupCombatStats, LibSetDetection, and LibCombat optional dependencies
   - Changed from `DependsOn` to `OptionalDependsOn` in manifest

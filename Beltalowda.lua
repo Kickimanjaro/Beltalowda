@@ -31,12 +31,17 @@ function Beltalowda.AreLibrariesLoaded()
         loaded = false
         table.insert(missingLibs, "LibAddonMenu2")
     end
-    -- Optional libraries - just log warnings
     if not LibSetDetection then
-        d("[Beltalowda] Warning: LibSetDetection not found. Equipment tracking will be limited.")
+        loaded = false
+        table.insert(missingLibs, "LibSetDetection")
     end
     if not LibGroupCombatStats then
-        d("[Beltalowda] Warning: LibGroupCombatStats not found. Ultimate tracking will be limited.")
+        loaded = false
+        table.insert(missingLibs, "LibGroupCombatStats")
+    end
+    -- Check optional libraries - log info messages
+    if not LibCombat then
+        d("[Beltalowda] Info: LibCombat not found. This is optional and reserved for future features.")
     end
     return loaded, missingLibs
 end

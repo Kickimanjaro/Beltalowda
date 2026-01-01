@@ -42,22 +42,23 @@ BeltalowdaNetwork.groupData = {}
 ]]--
 function BeltalowdaNetwork.Initialize()
     -- Check if required libraries are available
+    -- Note: These are now required dependencies in manifest, so this check is defensive
     if not LGB then
-        d("[Beltalowda] LibGroupBroadcast not available. Network features disabled.")
+        d("[Beltalowda] ERROR: LibGroupBroadcast not available. Network features disabled.")
         return false
     end
     
     if not LGCS then
-        d("[Beltalowda] LibGroupCombatStats not available. Ultimate tracking limited.")
-        -- Not fatal - continue with limited functionality
+        d("[Beltalowda] ERROR: LibGroupCombatStats not available. This should not happen (required dependency).")
+        return false
     else
         d("[Beltalowda] LibGroupCombatStats found - subscribing to ultimate data")
         BeltalowdaNetwork.SubscribeToUltimateData()
     end
     
     if not LSD then
-        d("[Beltalowda] LibSetDetection not available. Equipment tracking disabled.")
-        -- Not fatal - continue with limited functionality
+        d("[Beltalowda] ERROR: LibSetDetection not available. This should not happen (required dependency).")
+        return false
     else
         d("[Beltalowda] LibSetDetection found - subscribing to equipment data")
         BeltalowdaNetwork.SubscribeToEquipmentData()
