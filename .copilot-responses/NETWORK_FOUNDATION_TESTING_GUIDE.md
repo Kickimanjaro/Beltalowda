@@ -50,11 +50,15 @@ These libraries are **required** for the addon to load:
 - ✅ **LibGroupBroadcast** (v91+) - Already installed as dependency
 - ✅ **LibAddonMenu-2.0** (v41+) - Already installed as dependency
 
-### Optional Libraries (Enhance Functionality)
-These libraries are **optional** but enable network features:
-- ⚠️ **LibGroupCombatStats** (v6+) - **RECOMMENDED** for ultimate tracking
-- ⚠️ **LibSetDetection** (v4+) - **RECOMMENDED** for equipment tracking
-- ℹ️ **LibCombat** (v84+) - Currently unused but available
+### Required Data Libraries (Must Install)
+These libraries are **required** for network features to work:
+- ❗ **LibGroupCombatStats** (v6+) - **REQUIRED** for ultimate tracking
+- ❗ **LibSetDetection** (v4+) - **REQUIRED** for equipment tracking
+
+### Optional Libraries
+- ℹ️ **LibCombat** (v84+) - Currently unused but available for future features
+
+**Without LibGroupCombatStats and LibSetDetection, the addon will not load.**
 
 **Installation:**
 1. Download from [ESOUI.com](https://www.esoui.com):
