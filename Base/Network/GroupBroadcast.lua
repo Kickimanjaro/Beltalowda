@@ -377,9 +377,9 @@ function BeltalowdaNetwork.DebugUltimateData()
             -- Safely get ability name with fallback
             local abilityName = "Unknown"
             if ult.abilityId then
-                local name = GetAbilityName(ult.abilityId)
-                if name and name ~= "" then
-                    abilityName = name
+                local abilityNameResult = GetAbilityName(ult.abilityId)
+                if abilityNameResult and abilityNameResult ~= "" then
+                    abilityName = abilityNameResult
                 end
             end
             

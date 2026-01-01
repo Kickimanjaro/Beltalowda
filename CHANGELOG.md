@@ -57,6 +57,13 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 
 ## [Unreleased]
 
+### Fixed
+- **Fixed variable shadowing bug in `/btlwdata ults` command**
+  - Variable `name` was being shadowed by ability name lookup in `DebugUltimateData()`
+  - This caused only one group member's ultimate to display instead of all members
+  - Renamed inner variable to `abilityNameResult` to prevent shadowing
+  - Now correctly displays ultimate data for all group members who have LibGroupCombatStats
+
 ### Added
 - **Enhanced debugging capabilities for troubleshooting ultimate data**
   - Added `/btlwdata debug` command to show registration status, event constants, and data storage
