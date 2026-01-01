@@ -294,7 +294,8 @@ function BeltalowdaNetwork.DebugPrintGroupData()
             end
             
             if data.equipment then
-                d("  Equipment: " .. tostring(#data.equipment or 0) .. " sets tracked")
+                local equipCount = (type(data.equipment) == "table") and #data.equipment or 0
+                d("  Equipment: " .. tostring(equipCount) .. " sets tracked")
             end
         else
             d("  No data available")
@@ -413,19 +414,21 @@ function BeltalowdaNetwork.DebugEquipmentData()
             -- Display equipment data based on its structure
             -- Note: The actual structure depends on LibSetDetection's API
             if type(data.equipment) == "table" then
+                -- Count and display in a single iteration
                 local count = 0
+                local displayLines = {}
                 for k, v in pairs(data.equipment) do
                     count = count + 1
-                end
-                d(string.format("    Equipment entries: %d", count))
-                
-                -- Try to display set information if available
-                for k, v in pairs(data.equipment) do
                     if type(v) == "table" then
-                        d(string.format("    Set: %s", tostring(k)))
+                        table.insert(displayLines, string.format("    Set: %s", tostring(k)))
                     else
-                        d(string.format("    %s: %s", tostring(k), tostring(v)))
+                        table.insert(displayLines, string.format("    %s: %s", tostring(k), tostring(v)))
                     end
+                end
+                
+                d(string.format("    Equipment entries: %d", count))
+                for _, line in ipairs(displayLines) do
+                    d(line)
                 end
             else
                 d(string.format("    Equipment data: %s", tostring(data.equipment)))
