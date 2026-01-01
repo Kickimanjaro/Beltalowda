@@ -77,40 +77,71 @@ end
 --[[
     Subscribe to LibGroupCombatStats ultimate broadcasts
     IDs 20-21: Ultimate Type and Value
+    
+    NOTE: This implementation assumes LibGroupCombatStats provides a callback-based API.
+    The actual API may differ - this may need adjustment after consulting library source.
 ]]--
 function BeltalowdaNetwork.SubscribeToUltimateData()
     if not LGCS then return end
     
-    -- LibGroupCombatStats provides callbacks for ultimate data
-    -- We need to register callbacks to receive data from other group members
+    -- Attempt to register callbacks for ultimate data
+    -- The API below is based on common LibGroupBroadcast library patterns
+    -- If this fails, we'll need to consult the actual library documentation
     
-    -- Register callback for ultimate type changes (ID 20)
-    LGCS:RegisterCallback(LGCS.EVENT_ULTIMATE_TYPE_CHANGED, function(unitTag, abilityId, cost)
-        BeltalowdaNetwork.OnUltimateTypeReceived(unitTag, abilityId, cost)
+    local success, err = pcall(function()
+        -- Try to register callback for ultimate type changes (ID 20)
+        if LGCS.RegisterCallback then
+            LGCS:RegisterCallback(LGCS.EVENT_ULTIMATE_TYPE_CHANGED or "UltimateTypeChanged", 
+                function(unitTag, abilityId, cost)
+                    BeltalowdaNetwork.OnUltimateTypeReceived(unitTag, abilityId, cost)
+                end)
+            
+            -- Try to register callback for ultimate value changes (ID 21)
+            LGCS:RegisterCallback(LGCS.EVENT_ULTIMATE_VALUE_CHANGED or "UltimateValueChanged", 
+                function(unitTag, current, max)
+                    BeltalowdaNetwork.OnUltimateValueReceived(unitTag, current, max)
+                end)
+                
+            d("[Beltalowda] Subscribed to LibGroupCombatStats ultimate data")
+        else
+            d("[Beltalowda] Warning: LibGroupCombatStats API differs from expected. Manual integration needed.")
+        end
     end)
     
-    -- Register callback for ultimate value changes (ID 21)
-    LGCS:RegisterCallback(LGCS.EVENT_ULTIMATE_VALUE_CHANGED, function(unitTag, current, max)
-        BeltalowdaNetwork.OnUltimateValueReceived(unitTag, current, max)
-    end)
-    
-    d("[Beltalowda] Subscribed to LibGroupCombatStats ultimate data")
+    if not success then
+        d("[Beltalowda] Error subscribing to LibGroupCombatStats: " .. tostring(err))
+        d("[Beltalowda] Ultimate tracking may require manual integration. See library documentation.")
+    end
 end
 
 --[[
     Subscribe to LibSetDetection equipment broadcasts
     ID 40: Equipment sets
+    
+    NOTE: This implementation assumes LibSetDetection provides a callback-based API.
+    The actual API may differ - this may need adjustment after consulting library source.
 ]]--
 function BeltalowdaNetwork.SubscribeToEquipmentData()
     if not LSD then return end
     
-    -- LibSetDetection provides callbacks for equipment data
-    -- Register callback for equipment changes (ID 40)
-    LSD:RegisterCallback(LSD.EVENT_EQUIPPED_SETS_CHANGED, function(unitTag, sets)
-        BeltalowdaNetwork.OnEquipmentReceived(unitTag, sets)
+    -- Attempt to register callback for equipment data
+    local success, err = pcall(function()
+        if LSD.RegisterCallback then
+            LSD:RegisterCallback(LSD.EVENT_EQUIPPED_SETS_CHANGED or "EquippedSetsChanged", 
+                function(unitTag, sets)
+                    BeltalowdaNetwork.OnEquipmentReceived(unitTag, sets)
+                end)
+                
+            d("[Beltalowda] Subscribed to LibSetDetection equipment data")
+        else
+            d("[Beltalowda] Warning: LibSetDetection API differs from expected. Manual integration needed.")
+        end
     end)
     
-    d("[Beltalowda] Subscribed to LibSetDetection equipment data")
+    if not success then
+        d("[Beltalowda] Error subscribing to LibSetDetection: " .. tostring(err))
+        d("[Beltalowda] Equipment tracking may require manual integration. See library documentation.")
+    end
 end
 
 --[[
@@ -295,10 +326,24 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
                 d(GetUnitName(unitTag) .. ": " .. tostring(#data.equipment or 0) .. " sets")
             end
         end
+    elseif args == "libapi" then
+        d("=== Library API Status ===")
+        d("LibGroupCombatStats: " .. tostring(LGCS ~= nil))
+        if LGCS then
+            d("  Has RegisterCallback: " .. tostring(LGCS.RegisterCallback ~= nil))
+            d("  EVENT_ULTIMATE_TYPE_CHANGED: " .. tostring(LGCS.EVENT_ULTIMATE_TYPE_CHANGED))
+            d("  EVENT_ULTIMATE_VALUE_CHANGED: " .. tostring(LGCS.EVENT_ULTIMATE_VALUE_CHANGED))
+        end
+        d("LibSetDetection: " .. tostring(LSD ~= nil))
+        if LSD then
+            d("  Has RegisterCallback: " .. tostring(LSD.RegisterCallback ~= nil))
+            d("  EVENT_EQUIPPED_SETS_CHANGED: " .. tostring(LSD.EVENT_EQUIPPED_SETS_CHANGED))
+        end
     else
         d("Beltalowda Data Commands:")
         d("  /btlwdata group - Show all group data")
         d("  /btlwdata ults - Show group ultimates")
         d("  /btlwdata equip - Show group equipment")
+        d("  /btlwdata libapi - Show library API status")
     end
 end
