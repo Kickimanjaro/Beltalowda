@@ -57,6 +57,14 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 
 ## [Unreleased]
 
+### Fixed
+- **Fixed LibGroupCombatStats event registration to use correct API**
+  - Library uses separate TYPE and VALUE events, not combined UPDATE events
+  - Now registers for `EVENT_PLAYER_ULT_TYPE_UPDATE` and `EVENT_PLAYER_ULT_VALUE_UPDATE`
+  - Now registers for `EVENT_GROUP_ULT_TYPE_UPDATE` and `EVENT_GROUP_ULT_VALUE_UPDATE`
+  - Added separate handlers: `OnUltimateTypeReceived()` for ability ID/cost, `OnUltimateValueReceived()` for current/max
+  - Ultimate data fields (abilityId, cost, current, max, percent) should now populate correctly
+
 ### Changed
 - **Removed verbose debug logging from ultimate data handler**
   - Debug messages were making chat difficult to read

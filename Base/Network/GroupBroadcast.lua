@@ -98,26 +98,41 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
             return
         end
         
-        -- Register for group ultimate update events
-        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_GROUP_ULT_UPDATE then
-            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_GROUP_ULT_UPDATE, 
-                function(unitTag, data)
-                    BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+        -- LibGroupCombatStats uses separate events for TYPE and VALUE
+        -- Register for player ultimate TYPE updates (ability ID and cost)
+        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_PLAYER_ULT_TYPE_UPDATE then
+            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_PLAYER_ULT_TYPE_UPDATE, 
+                function(unitTag, abilityId, cost)
+                    BeltalowdaNetwork.OnUltimateTypeReceived(unitTag, abilityId, cost)
                 end)
-            d("[Beltalowda] Registered for GROUP ultimate updates")
-        else
-            d("[Beltalowda] Warning: EVENT_GROUP_ULT_UPDATE not available")
+            d("[Beltalowda] Registered for PLAYER ultimate TYPE updates")
         end
         
-        -- Register for player ultimate update events
-        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_PLAYER_ULT_UPDATE then
-            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_PLAYER_ULT_UPDATE, 
-                function(unitTag, data)
-                    BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+        -- Register for player ultimate VALUE updates (current/max)
+        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_PLAYER_ULT_VALUE_UPDATE then
+            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_PLAYER_ULT_VALUE_UPDATE, 
+                function(unitTag, current, max)
+                    BeltalowdaNetwork.OnUltimateValueReceived(unitTag, current, max)
                 end)
-            d("[Beltalowda] Registered for PLAYER ultimate updates")
-        else
-            d("[Beltalowda] Warning: EVENT_PLAYER_ULT_UPDATE not available")
+            d("[Beltalowda] Registered for PLAYER ultimate VALUE updates")
+        end
+        
+        -- Register for group ultimate TYPE updates
+        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_GROUP_ULT_TYPE_UPDATE then
+            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_GROUP_ULT_TYPE_UPDATE, 
+                function(unitTag, abilityId, cost)
+                    BeltalowdaNetwork.OnUltimateTypeReceived(unitTag, abilityId, cost)
+                end)
+            d("[Beltalowda] Registered for GROUP ultimate TYPE updates")
+        end
+        
+        -- Register for group ultimate VALUE updates
+        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_GROUP_ULT_VALUE_UPDATE then
+            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_GROUP_ULT_VALUE_UPDATE, 
+                function(unitTag, current, max)
+                    BeltalowdaNetwork.OnUltimateValueReceived(unitTag, current, max)
+                end)
+            d("[Beltalowda] Registered for GROUP ultimate VALUE updates")
         end
         
         d("[Beltalowda] Successfully registered with LibGroupCombatStats")
@@ -157,9 +172,60 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
 end
 
 --[[
-    Handle ultimate data received from LibGroupCombatStats
+    Handle ultimate TYPE data received from LibGroupCombatStats
     @param unitTag: Unit tag of the player (e.g., "group1", "player")
-    @param data: Ultimate data from LGCS (contains ability ID, cost, current, max, etc.)
+    @param abilityId: The ultimate ability ID
+    @param cost: The ultimate cost
+]]--
+function BeltalowdaNetwork.OnUltimateTypeReceived(unitTag, abilityId, cost)
+    -- Initialize player data if not exists
+    BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
+    BeltalowdaNetwork.groupData[unitTag].ultimate = BeltalowdaNetwork.groupData[unitTag].ultimate or {}
+    
+    -- Store ultimate type data
+    local ult = BeltalowdaNetwork.groupData[unitTag].ultimate
+    ult.abilityId = abilityId
+    ult.cost = cost
+    
+    -- Recalculate percentage if we have current/max values
+    if ult.max and ult.max > 0 and ult.current then
+        ult.percent = (ult.current / ult.max) * 100
+    end
+    
+    -- Trigger callback for modules that need this data
+    BeltalowdaNetwork.OnDataChanged("ultimateType", unitTag)
+end
+
+--[[
+    Handle ultimate VALUE data received from LibGroupCombatStats
+    @param unitTag: Unit tag of the player
+    @param current: Current ultimate points
+    @param max: Maximum ultimate points
+]]--
+function BeltalowdaNetwork.OnUltimateValueReceived(unitTag, current, max)
+    -- Initialize player data if not exists
+    BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
+    BeltalowdaNetwork.groupData[unitTag].ultimate = BeltalowdaNetwork.groupData[unitTag].ultimate or {}
+    
+    -- Store ultimate value data
+    local ult = BeltalowdaNetwork.groupData[unitTag].ultimate
+    ult.current = current
+    ult.max = max
+    
+    -- Calculate percentage
+    if max and max > 0 then
+        ult.percent = (current / max) * 100
+    else
+        ult.percent = 0
+    end
+    
+    -- Trigger callback for modules that need this data
+    BeltalowdaNetwork.OnDataChanged("ultimateValue", unitTag)
+end
+
+--[[
+    Handle combined ultimate data (deprecated - kept for compatibility)
+    This was the original handler when we thought the API sent combined data
 ]]--
 function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
     if not data then 
