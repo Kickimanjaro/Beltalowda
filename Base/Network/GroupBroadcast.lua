@@ -23,8 +23,7 @@ BeltalowdaNetwork.EXTERNAL_IDS = {
     -- LibGroupCombatStats
     ULTIMATE_TYPE = 20,    -- Ultimate ability ID + cost
     ULTIMATE_VALUE = 21,   -- Current ultimate points (0-500)
-    DPS = 22,              -- Current DPS + overall damage
-    HPS = 23,              -- Current HPS + overall heal
+    SKILL_LINES = 24,      -- Equipped skill lines
     
     -- LibSetDetection  
     EQUIPMENT = 40,        -- Equipped set pieces (all 14 slots)
