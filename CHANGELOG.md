@@ -55,6 +55,16 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 - Form group to test data synchronization
 - May require API adjustment based on actual library implementations
 
+## [0.1.2] - 2026-01-01
+
+### Fixed
+- **Fixed LibGroupCombatStats callback signatures**
+  - All LGCS events use `callback(unitTag, data)` signature with data as a table
+  - Reverted to using `EVENT_PLAYER_ULT_UPDATE` and `EVENT_GROUP_ULT_UPDATE`
+  - Removed incorrect separate TYPE/VALUE handlers
+  - Added comprehensive debug logging to show data structure received from library
+  - Should now properly receive and store ultimate data
+
 ## [0.1.1] - 2026-01-01
 
 ### Added
