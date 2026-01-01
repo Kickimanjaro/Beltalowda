@@ -9,7 +9,7 @@ This document explains how ESO's SavedVariables system works and how Beltalowda 
 SavedVariables are ESO's mechanism for addons to persist data between game sessions. Data is stored in:
 - **Windows**: `Documents\Elder Scrolls Online\live\SavedVariables\`
 - **Mac**: `~/Documents/Elder Scrolls Online/live/SavedVariables/`
-- **Console**: Not applicable - ESO on consoles (PlayStation, Xbox) does not support addons or SavedVariables
+- **Console**: As of Update 46 (2024), ESO supports addons on PlayStation and Xbox via Bethesda.net Mods platform. Console addon support has limitations compared to PC/Mac, including curated addon availability and managed distribution through [mods.bethesda.net](https://mods.bethesda.net/en/elderscrollsonline/all). SavedVariables functionality on console is managed by the platform.
 
 Each addon gets its own file, e.g., `Beltalowda.lua` containing all saved data.
 
