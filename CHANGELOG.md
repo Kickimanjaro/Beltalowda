@@ -5,6 +5,13 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.2.0] - 2026-01-01
+
+### Fixed
+- **CRITICAL FIX**: Fixed LibGroupCombatStats callback signature - callbacks receive `(eventId, unitTag, data)` not `(unitTag, data)`
+- This was causing data to be stored with eventId as the key instead of unitTag
+- Ultimate data now correctly stores in groupData table and displays in `/btlwdata ults` command for all group members
+
 ## [0.1.9] - 2026-01-01
 
 ### Fixed
