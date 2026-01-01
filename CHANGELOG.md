@@ -57,6 +57,12 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 
 ## [Unreleased]
 
+### Added
+- **Added temporary debug logging to TYPE and VALUE event handlers**
+  - Logs parameters received in `OnUltimateTypeReceived()` and `OnUltimateValueReceived()`
+  - Helps diagnose why ultimate data fields remain nil
+  - Shows exact values being passed by LibGroupCombatStats events
+
 ### Fixed
 - **Fixed LibGroupCombatStats event registration to use correct API**
   - Library uses separate TYPE and VALUE events, not combined UPDATE events

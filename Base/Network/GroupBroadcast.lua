@@ -178,6 +178,9 @@ end
     @param cost: The ultimate cost
 ]]--
 function BeltalowdaNetwork.OnUltimateTypeReceived(unitTag, abilityId, cost)
+    d(string.format("[Beltalowda] TYPE: unitTag=%s, abilityId=%s, cost=%s", 
+        tostring(unitTag), tostring(abilityId), tostring(cost)))
+    
     -- Initialize player data if not exists
     BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
     BeltalowdaNetwork.groupData[unitTag].ultimate = BeltalowdaNetwork.groupData[unitTag].ultimate or {}
@@ -203,6 +206,9 @@ end
     @param max: Maximum ultimate points
 ]]--
 function BeltalowdaNetwork.OnUltimateValueReceived(unitTag, current, max)
+    d(string.format("[Beltalowda] VALUE: unitTag=%s, current=%s, max=%s", 
+        tostring(unitTag), tostring(current), tostring(max)))
+    
     -- Initialize player data if not exists
     BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
     BeltalowdaNetwork.groupData[unitTag].ultimate = BeltalowdaNetwork.groupData[unitTag].ultimate or {}
