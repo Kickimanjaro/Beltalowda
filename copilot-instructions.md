@@ -2,7 +2,9 @@
 
 ## Project Overview
 
-Beltalowda is a greenfield group PvP addon for The Elder Scrolls Online (ESO) written in Lua, currently being built from planning documents in `docs/`. The addon will provide real-time ultimate tracking, synergy management, and group coordination features for PvP gameplay. The Kickimanjaro/RdK repository serves as a reference implementation of similar functionality.
+Beltalowda is a greenfield group PvP addon for The Elder Scrolls Online (ESO) written in Lua, currently being built from planning documents in `docs/`. The addon will provide real-time ultimate tracking, synergy management, and group coordination features for PvP gameplay. 
+
+**Reference Implementation:** The Kickimanjaro/RdK repository serves as a reference implementation of similar functionality. RdK was originally created by @Parnax and is used here as a guide and inspiration for understanding ESO addon patterns and group coordination features.
 
 ## Critical ESO Addon Patterns
 
@@ -162,17 +164,17 @@ end
 
 ## Localization
 
-**Current State:** Beltalowda is starting English-only without localization files.
+**Current State:** Beltalowda is starting without separate localization files. All UI text will be defined directly in the code in English initially.
 
 **Future Implementation:**
-When localization is added, update all language files with new UI text:
-- `Lang/en.lua` (English)
-- `Lang/de.lua` (German)  
-- `Lang/fr.lua` (French)
+When localization is added later, create language files and update all of them with new UI text:
+- `Lang/en.lua` (English - extract existing strings here)
+- `Lang/de.lua` (German - translate strings)
+- `Lang/fr.lua` (French - translate strings)
 
 Use constant naming pattern: `CONSTANT_NAME_PATTERN`
 
-**Reference:** RdK supported multiple languages, but Beltalowda will start English-only and can add localization later if needed.
+**Reference:** RdK supported multiple languages via separate Lang/ files, but Beltalowda will start with hardcoded English strings and can add proper localization infrastructure later if needed.
 
 ## Event Handling Patterns
 
