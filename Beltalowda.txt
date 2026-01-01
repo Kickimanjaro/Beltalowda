@@ -1,25 +1,19 @@
 ## Title: Beltalowda
 ## Author: Kickimanjaro
-## APIVersion: 101042
+## Description: Visually tracks the readiness of ultimates and synergies across group members for use in PvP
+## APIVersion: 101048
 ## Version: 0.1.0
-## Description: Group PvP coordination addon with ultimate tracking, synergy management, and attack coordination
 ## SavedVariables: BeltalowdaVars
-## DependsOn: LibStub LibAsync>=2 LibSets>=71
-
-# Libraries (stubs - replace with full libraries for production)
-Lib/LibAsync/LibAsync.lua
-Lib/LibSets/LibSets.lua
+## DependsOn: LibAsync>=3.1.1 LibGroupBroadcast>=91 LibAddonMenu-2.0>=41 LibSetDetection>=4
 
 # Main initialization
 Beltalowda.lua
 
-# Data Collection Layer
-Base/Data/DataCollector.lua
-Base/Data/ResourceCollector.lua
-Base/Data/PositionCollector.lua
-Base/Data/AbilityCollector.lua
-Base/Data/EquipmentCollector.lua
-Base/Data/StateCollector.lua
+# Settings
+# BeltalowdaSettings.lua
 
-# Network Layer
-Base/Network/GroupBroadcast.lua
+# Localization
+# Localization/en.lua
+
+# Keybinds
+# BeltalowdaKeybinds.xml
