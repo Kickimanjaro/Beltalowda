@@ -165,8 +165,8 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
         return 
     end
     
-    d(string.format("[Beltalowda] ULT data for %s: id=%s cost=%s value=%s max=%s", 
-        unitTag, tostring(data.id), tostring(data.cost), tostring(data.value), tostring(data.max)))
+    d(string.format("[Beltalowda] ULT data for %s (type=%s): id=%s cost=%s value=%s max=%s", 
+        tostring(unitTag), type(unitTag), tostring(data.id), tostring(data.cost), tostring(data.value), tostring(data.max)))
     
     -- Initialize player data if not exists
     BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
@@ -197,6 +197,9 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
     else
         ult.percent = 0
     end
+    
+    -- Debug: confirm storage
+    d(string.format("[Beltalowda] Stored ultimate data under key '%s' (key type: %s)", tostring(unitTag), type(unitTag)))
     
     -- Trigger callback for modules that need this data
     BeltalowdaNetwork.OnDataChanged("ultimate", unitTag)
@@ -319,6 +322,16 @@ function BeltalowdaNetwork.DebugGroupStatus()
     d("=== Beltalowda Group Status ===")
     d("Group Size: " .. groupSize)
     
+    -- Debug: Show all keys in groupData
+    d("DEBUG: Keys stored in groupData:")
+    local keyCount = 0
+    for key, value in pairs(BeltalowdaNetwork.groupData) do
+        keyCount = keyCount + 1
+        d(string.format("  Key: '%s' (type: %s), hasUltimate: %s", 
+            tostring(key), type(key), (value.ultimate ~= nil) and "YES" or "NO"))
+    end
+    d(string.format("Total keys in groupData: %d", keyCount))
+    
     if groupSize == 0 then
         d("Not in a group. Form a group to test network functionality.")
         d("Tip: Both you and group members need LibGroupCombatStats and LibSetDetection installed")
@@ -332,7 +345,7 @@ function BeltalowdaNetwork.DebugGroupStatus()
         local hasData = BeltalowdaNetwork.groupData[unitTag] ~= nil
         local hasUlt = hasData and BeltalowdaNetwork.groupData[unitTag].ultimate ~= nil
         
-        d(string.format("  [%d] %s (%s)", i, name, unitTag))
+        d(string.format("  [%d] %s (unitTag='%s', type=%s)", i, name, tostring(unitTag), type(unitTag)))
         d(string.format("      Data: %s | Ultimate: %s",
             hasData and "YES" or "NO",
             hasUlt and "YES" or "NO"))

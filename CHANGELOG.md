@@ -5,6 +5,13 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.2.1] - 2026-01-01
+
+### Fixed
+- Add enhanced debugging to track unitTag type and key storage in groupData
+- Add debug logging to show all keys stored in groupData table to diagnose data persistence issues
+- Help identify if data is being stored under wrong key type or lost after storage
+
 ## [0.2.0] - 2026-01-01
 
 ### Fixed
