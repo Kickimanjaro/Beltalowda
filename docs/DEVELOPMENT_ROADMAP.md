@@ -804,9 +804,9 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
    - Link to documentation
    
 3. Create UI presets:
-   - Tank preset
-   - Healer preset
-   - DPS preset
+   - Damage preset (DPS-focused)
+   - Support preset (Healer/support-focused)
+   - Lead preset (Crown/leader-focused)
    - Quick-apply button
 
 **Deliverables**:

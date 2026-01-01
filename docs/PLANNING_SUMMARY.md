@@ -400,7 +400,7 @@ Each phase follows same pattern:
 
 **5. User-Focused**
 - Settings menu reorganized for clarity
-- UI presets for quick setup (tank/healer/DPS)
+- UI presets for quick setup (Damage/Support/Lead for PvP roles)
 - Quality of life features enhanced
 - Documentation for end users
 

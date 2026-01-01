@@ -1248,34 +1248,35 @@ Beltalowda Settings
 3. Apply each preset
 
 **Test Scenarios**:
-1. **Tank Preset**:
-   - Click "Apply Tank Preset"
-   - Should enable:
-     - Ultimate tracking (for crown/support ults)
-     - Resource overview (for group health)
-     - Minimal attack coordination
-   - Verify UI positions optimized for tanking
-
-2. **Healer Preset**:
-   - Click "Apply Healer Preset"
-   - Should enable:
-     - Ultimate tracking (for healing ults)
-     - Synergy tracking
-     - Resource overview (health priority)
-   - Verify UI positions optimized for healing
-
-3. **DPS Preset**:
-   - Click "Apply DPS Preset"
+1. **Damage Preset**:
+   - Click "Apply Damage Preset"
    - Should enable:
      - Ultimate tracking (for damage ults)
      - Attack coordination (bomb/shalk)
      - Minimal resource overview
-   - Verify UI positions optimized for DPS
+   - Verify UI positions optimized for DPS role
+
+2. **Support Preset**:
+   - Click "Apply Support Preset"
+   - Should enable:
+     - Ultimate tracking (for healing/support ults)
+     - Synergy tracking
+     - Resource overview (health priority)
+   - Verify UI positions optimized for support/healing role
+
+3. **Lead Preset**:
+   - Click "Apply Lead Preset"
+   - Should enable:
+     - Ultimate tracking (for crown/coordination ults)
+     - Resource overview (for group health)
+     - Follow the Crown features
+     - Group positioning tools
+   - Verify UI positions optimized for leading/crown role
 
 **Expected Results**:
 - ✅ Presets apply correctly
 - ✅ Settings change as expected
-- ✅ UI positions appropriate for role
+- ✅ UI positions appropriate for PvP role (Damage/Support/Lead)
 - ✅ Quick and convenient
 
 **Success Criteria**: UI presets make setup easy for new users
