@@ -162,22 +162,9 @@ end
     @param data: Ultimate data from LGCS (contains ability ID, cost, current, max, etc.)
 ]]--
 function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
-    -- Debug logging to verify event is firing
-    d("[Beltalowda] Ultimate data received for " .. tostring(unitTag))
-    
     if not data then 
         d("[Beltalowda] Warning: data is nil for " .. tostring(unitTag))
         return 
-    end
-    
-    -- Debug log the data structure
-    if type(data) == "table" then
-        d("[Beltalowda] Data type: table")
-        for k, v in pairs(data) do
-            d(string.format("  %s = %s", tostring(k), tostring(v)))
-        end
-    else
-        d("[Beltalowda] Data type: " .. type(data) .. ", value: " .. tostring(data))
     end
     
     -- Initialize player data if not exists
@@ -488,6 +475,47 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         BeltalowdaNetwork.DebugUltimateData()
     elseif args == "equip" then
         BeltalowdaNetwork.DebugEquipmentData()
+    elseif args == "raw" then
+        d("=== Raw Group Data Dump ===")
+        d("")
+        
+        local groupSize = GetGroupSize()
+        if groupSize == 0 then
+            d("Not in a group")
+            return
+        end
+        
+        d("Group Size: " .. groupSize)
+        d("")
+        
+        for i = 1, groupSize do
+            local unitTag = GetGroupUnitTagByIndex(i)
+            local name = GetUnitName(unitTag)
+            local data = BeltalowdaNetwork.groupData[unitTag]
+            
+            d(string.format("[%d] unitTag=%s, name=%s", i, unitTag, name))
+            
+            if data then
+                d("  Has data entry: YES")
+                if data.ultimate then
+                    d("  Ultimate data:")
+                    for k, v in pairs(data.ultimate) do
+                        d(string.format("    %s = %s", tostring(k), tostring(v)))
+                    end
+                else
+                    d("  Ultimate data: NONE")
+                end
+            else
+                d("  Has data entry: NO")
+                d("  This means no events have been received for this unit")
+            end
+            d("")
+        end
+        
+        d("All stored unitTags:")
+        for unitTag, _ in pairs(BeltalowdaNetwork.groupData) do
+            d("  " .. unitTag)
+        end
     elseif args == "debug" then
         d("=== Beltalowda Debug Info ===")
         d("")
@@ -576,6 +604,7 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("Diagnostic Commands:")
         d("  /btlwdata libapi  - Check library API availability")
         d("  /btlwdata debug   - Show detailed debug info (registration, events, data)")
+        d("  /btlwdata raw     - Show raw data dump (for troubleshooting unit tags)")
         d("  /btlwdata help    - Show this help message")
         d("")
         d("Testing Tips:")

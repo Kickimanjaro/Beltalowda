@@ -57,6 +57,19 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 
 ## [Unreleased]
 
+### Changed
+- **Removed verbose debug logging from ultimate data handler**
+  - Debug messages were making chat difficult to read
+  - Kept only warning messages for error conditions
+  - Normal operation is now silent
+
+### Added
+- **Added `/btlwdata raw` command for detailed troubleshooting**
+  - Shows raw data dump including unitTag mappings
+  - Displays all stored data for each group member
+  - Helps diagnose unit tag vs player name issues
+  - Lists all unitTags in storage for verification
+
 ### Fixed
 - **Fixed variable shadowing bug in `/btlwdata ults` command**
   - Variable `name` was being shadowed by ability name lookup in `DebugUltimateData()`
