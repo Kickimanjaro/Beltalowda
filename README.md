@@ -10,6 +10,7 @@ This branch contains a clean slate for the Beltalowda project with a reorganized
 ├── old-docs/          # Historical documentation
 ├── copilot-instructions.md
 └── LICENSE
+└── README.md          # This file, lol
 ```
 
 ## Documentation

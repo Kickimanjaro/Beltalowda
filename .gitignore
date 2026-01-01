@@ -1,24 +1,4 @@
 # Beltalowda .gitignore
-
-# Downloaded full libraries (replace stubs with these for production)
-# Keep stubs in repo for development, full libraries should be downloaded by users
-# Lib/LibAsync/
-# Lib/LibSets/
-
-# ESO addon files
-*.bak
-*.tmp
-
-# OS files
-.DS_Store
-Thumbs.db
-
 # Editor files
 .vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Temporary files
-/tmp/
+*.code-workspace
