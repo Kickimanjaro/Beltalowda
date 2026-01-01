@@ -1,0 +1,4 @@
+# Beltalowda .gitignore
+# Editor files
+.vscode/
+*.code-workspace
