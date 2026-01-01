@@ -105,6 +105,8 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
                     BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
                 end)
             d("[Beltalowda] Registered for GROUP ultimate updates")
+        else
+            d("[Beltalowda] Warning: EVENT_GROUP_ULT_UPDATE not available")
         end
         
         -- Register for player ultimate update events
@@ -114,6 +116,8 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
                     BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
                 end)
             d("[Beltalowda] Registered for PLAYER ultimate updates")
+        else
+            d("[Beltalowda] Warning: EVENT_PLAYER_ULT_UPDATE not available")
         end
         
         d("[Beltalowda] Successfully registered with LibGroupCombatStats")
@@ -413,10 +417,14 @@ function BeltalowdaNetwork.DebugEquipmentData()
         local unitTag = GetGroupUnitTagByIndex(i)
         local name = GetUnitName(unitTag)
         
-        -- Query equipment data from LibSetDetection
-        local sets = BeltalowdaNetwork.lsdInstance:GetSetsForGroupMember(unitTag)
+        -- Query equipment data from LibSetDetection with error protection
+        local success, sets = pcall(function()
+            return BeltalowdaNetwork.lsdInstance:GetSetsForGroupMember(unitTag)
+        end)
         
-        if sets and type(sets) == "table" then
+        if not success then
+            d(string.format("[%d] %s - Error retrieving equipment data", i, name))
+        elseif sets and type(sets) == "table" then
             local hasData = false
             for k, v in pairs(sets) do
                 hasData = true
@@ -432,9 +440,9 @@ function BeltalowdaNetwork.DebugEquipmentData()
                     -- Safely get set name with fallback
                     local setName = "Unknown Set"
                     if type(setId) == "number" then
-                        local name = GetItemSetName(setId)
-                        if name and name ~= "" then
-                            setName = name
+                        local itemSetName = GetItemSetName(setId)
+                        if itemSetName and itemSetName ~= "" then
+                            setName = itemSetName
                         else
                             setName = "Set #" .. setId
                         end
