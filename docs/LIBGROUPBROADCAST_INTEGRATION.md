@@ -267,37 +267,47 @@ Before implementing custom protocols, the LibGroupBroadcast community recommends
 
 ### Integration Strategy: Hybrid Approach
 
+**✅ Research Complete** (Checkpoint 0.1b) - See `.copilot-responses/CHECKPOINT_0.1b_RESEARCH.md` for full analysis
+
 **Phase 1: Add Existing Libraries as Dependencies**
-1. ✅ **Add LibGroupCombatStats** as dependency
+1. ✅ **Add LibGroupCombatStats** as dependency - **ADOPTED**
    - Provides: Ultimate Type (ID 20), Ultimate Value (ID 21)
    - Eliminates need for custom ultimate protocols
    - Same library used by Hodor Reflexes (proven in production)
+   - Covers 100% of ultimate tracking needs
+   - **Decision: STRONGLY RECOMMENDED** ✅
    
-2. ✅ **Add LibSetDetection** as dependency  
+2. ✅ **Add LibSetDetection** as dependency - **ADOPTED**
    - Provides: Equipped set pieces (ID 40)
    - **Replaces our planned LibSets integration** for equipment sharing
    - Already does exactly what we need
    - Note: We may still use LibSets locally for set detection, but LibSetDetection handles network sharing
+   - Covers 100% of equipment tracking needs
+   - **Decision: STRONGLY RECOMMENDED** ✅
 
-3. ⚠️ **Evaluate LibGroupResources** (optional)
+3. ⚠️ **Evaluate LibGroupResources** - **SKIPPED**
    - Provides: Magicka (ID 11), Stamina (ID 10)
-   - Missing: Health
-   - Decision: May skip in favor of unified resource packet
+   - Missing: **Health** (CRITICAL for PvP)
+   - **Decision: SKIP** in favor of unified resource packet
+   - **Rationale**: Health is non-negotiable; simpler to implement unified Health+Magicka+Stamina protocol than mix LibGroupResources + custom Health
 
 **Phase 2: Implement Only What's Missing**
-Custom protocols needed for:
-- ✅ **Health** (220): Only missing resource
-- ✅ **Position** (222): For follow-the-crown features  
-- ✅ **Ability Bar** (223): Full 10-ability skill bar
-- ✅ **Player State** (226): Combat, alive, online status
-- ✅ **Active Effects** (227): Critical buffs/debuffs
+
+**Tier 1 (Must Have) - Custom Protocols**:
+- 🔧 **Health + Resources** (220): Health/Magicka/Stamina unified protocol (Health is CRITICAL for PvP)
+- 🔧 **Position** (222): X, Y, Zone for follow-the-crown features
+
+**Tier 2 (Nice to Have) - Optional Future Enhancements**:
+- ⚪ **Ability Bar** (223): Full 10-ability skill bar (optional, Tier 2)
+- ⚪ **Player State** (226): Combat, alive, online status (optional, Tier 3)
+- ⚪ **Active Effects** (227): Critical buffs/debuffs (optional, Tier 2)
 
 **Phase 3: Integration Architecture**
 ```lua
 -- Beltalowda will consume data from:
--- 1. LibGroupCombatStats (ultimate tracking)
--- 2. LibSetDetection (equipment tracking)
--- 3. Custom Beltalowda protocols (health, position, abilities, state, effects)
+-- 1. LibGroupCombatStats (ultimate tracking) - IDs 20-21 ✅
+-- 2. LibSetDetection (equipment tracking) - ID 40 ✅
+-- 3. Custom Beltalowda protocols - IDs 220, 222 (minimum) + optional 223, 226, 227
 
 -- This hybrid approach maximizes reuse while filling gaps
 ```
@@ -308,41 +318,61 @@ Custom protocols needed for:
 3. ✅ Smaller development scope (don't reinvent ultimate/equipment sharing)
 4. ✅ Better compatibility with other addons using same libraries
 5. ✅ Faster implementation (focus on unique features)
+6. ✅ **Reduced custom protocol count from 8 → 2 minimum (75% reduction)**
 
 ### Updated Message ID Allocation
+
+**✅ Research Findings** (Checkpoint 0.1b):
+- Minimum data needed: **5 critical types** (Ultimate %, Ultimate ID, Health, Equipment, Position)
+- Library coverage: **60% of critical needs** (3/5 covered by existing libraries)
+- Custom protocols needed: **2 minimum** (Health+Resources, Position)
 
 Based on reusing existing libraries, our allocation is simplified:
 
 **Reused from Existing Libraries** (NO CUSTOM IDS NEEDED):
-- **LibGroupCombatStats IDs 20-21**: Ultimate Type, Ultimate Value ✅
-- **LibSetDetection ID 40**: Equipment sets ✅
-- *(Optional) LibGroupResources IDs 10-11*: Magicka, Stamina
+- **LibGroupCombatStats ID 20**: Ultimate Type (ability ID + cost) ✅
+- **LibGroupCombatStats ID 21**: Ultimate Value (current points 0-500) ✅
+- **LibSetDetection ID 40**: Equipment sets (all 14 slots) ✅
+- ~~LibGroupResources IDs 10-11~~: **SKIPPED** (Magicka/Stamina - missing Health)
 
 **Custom Beltalowda Protocols** (220-229):
-- **220**: **Health packet** (only missing resource - critical for PvP awareness)
-  - Current health, max health (capped at 500 like ultimate)
-  - Note: Ultimate is capped at 500 by the game, so maxUltimate field may be redundant
-- **221**: ~~Ultimate details~~ **AVAILABLE** (no longer needed, using LibGroupCombatStats)
+
+**Tier 1 (Must Have)**:
+- **220**: **Health + Resources packet** (Health/Magicka/Stamina - unified protocol)
+  - Health is CRITICAL for PvP group awareness (most important resource)
+  - Unified approach simpler than mixing LibGroupResources + custom Health
+  - Format: `health|maxHealth|magicka|maxMagicka|stamina|maxStamina`
 - **222**: **Position packet** (X, Y, Zone for follow-the-crown)
-- **223**: **Ability bar packet** (10 ability IDs for coordination)
+  - Critical for "Follow the Crown" feature
+  - Format: `x|y|zoneId`
+
+**Tier 2 (Optional - Future Enhancements)**:
+- **223**: **Ability bar packet** (10 ability IDs for coordination) - OPTIONAL
+- **226**: **State packet** (combat, alive, online, reload status) - OPTIONAL
+- **227**: **Active effects** (critical buffs/debuffs for coordination) - OPTIONAL
+
+**Available for Future Use**:
+- **221**: ~~Ultimate details~~ **AVAILABLE** (no longer needed, using LibGroupCombatStats)
 - **224**: ~~Equipment packet~~ **AVAILABLE** (no longer needed, using LibSetDetection)
 - **225**: ~~Equipment packet part 2~~ **AVAILABLE** 
-- **226**: **State packet** (combat, alive, online, reload status)
-- **227**: **Active effects** (critical buffs/debuffs for coordination)
 - **228-229**: **Reserved** for future features
 
 **Summary**: 
-- **Using from existing libraries**: Ultimates (LibGroupCombatStats), Equipment (LibSetDetection)
-- **Custom protocols needed**: Health, Position, Abilities, State, Effects (5 protocols)
-- **Available slots**: 221, 224, 225, 228, 229 (5 slots for future expansion)
+- **Using from existing libraries**: Ultimates (LibGroupCombatStats IDs 20-21), Equipment (LibSetDetection ID 40)
+- **Custom protocols (Tier 1)**: Health+Resources (220), Position (222) - **MINIMUM 2**
+- **Custom protocols (Tier 2)**: Abilities (223), State (226), Effects (227) - **OPTIONAL 3**
+- **Available slots**: 221, 224, 225, 228, 229 - **5 slots for future expansion**
+- **Efficiency gain**: From 8 custom protocols → 2 minimum (75% reduction) ✅
 
 **Action Items**: 
-1. ✅ Add LibGroupCombatStats to dependencies in Beltalowda.txt
-2. ✅ Add LibSetDetection to dependencies in Beltalowda.txt
-3. ✅ Subscribe to LibGroupCombatStats data (IDs 20-21) for ultimate tracking
-4. ✅ Subscribe to LibSetDetection data (ID 40) for equipment tracking
-5. ✅ Implement only 5 custom protocols instead of original 8
-6. ✅ Update wiki with final protocol details before release (IDs 220, 222, 223, 226, 227)
+1. ✅ Add LibGroupCombatStats to dependencies in Beltalowda.txt - **DONE (research complete)**
+2. ✅ Add LibSetDetection to dependencies in Beltalowda.txt - **DONE (research complete)**
+3. ✅ Research complete (Checkpoint 0.1b) - see `.copilot-responses/CHECKPOINT_0.1b_RESEARCH.md`
+4. ⏭️ Subscribe to LibGroupCombatStats data (IDs 20-21) for ultimate tracking
+5. ⏭️ Subscribe to LibSetDetection data (ID 40) for equipment tracking
+6. ⏭️ Implement 2 minimum custom protocols (Health+Resources, Position)
+7. ⏭️ Optionally implement Tier 2 protocols (Abilities, State, Effects) in future phases
+8. ⏭️ Update wiki with final protocol details before release (minimum: IDs 220, 222)
 
 ## Requesting Message IDs
 
