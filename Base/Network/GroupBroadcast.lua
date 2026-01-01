@@ -302,53 +302,225 @@ function BeltalowdaNetwork.DebugPrintGroupData()
     end
 end
 
+--[[
+    Debug command: Display group member count and status
+]]--
+function BeltalowdaNetwork.DebugGroupStatus()
+    local groupSize = GetGroupSize()
+    
+    d("=== Beltalowda Group Status ===")
+    d("Group Size: " .. groupSize)
+    
+    if groupSize == 0 then
+        d("Not in a group. Form a group to test network functionality.")
+        d("Tip: Both you and group members need LibGroupCombatStats and LibSetDetection installed")
+        return
+    end
+    
+    d("Group Members:")
+    for i = 1, groupSize do
+        local unitTag = GetGroupUnitTagByIndex(i)
+        local name = GetUnitName(unitTag)
+        local hasData = BeltalowdaNetwork.groupData[unitTag] ~= nil
+        local hasUlt = hasData and BeltalowdaNetwork.groupData[unitTag].ultimate ~= nil
+        local hasEquip = hasData and BeltalowdaNetwork.groupData[unitTag].equipment ~= nil
+        
+        d(string.format("  [%d] %s (%s)", i, name, unitTag))
+        d(string.format("      Data: %s | Ultimate: %s | Equipment: %s",
+            hasData and "YES" or "NO",
+            hasUlt and "YES" or "NO",
+            hasEquip and "YES" or "NO"))
+    end
+    
+    d("")
+    d("Tip: Use '/btlwdata ults' to see ultimate details")
+    d("Tip: Use '/btlwdata equip' to see equipment details")
+end
+
+--[[
+    Debug command: Display detailed ultimate information
+]]--
+function BeltalowdaNetwork.DebugUltimateData()
+    d("=== Group Ultimate Details ===")
+    
+    local groupSize = GetGroupSize()
+    if groupSize == 0 then
+        d("Not in a group")
+        return
+    end
+    
+    local foundData = false
+    for i = 1, groupSize do
+        local unitTag = GetGroupUnitTagByIndex(i)
+        local name = GetUnitName(unitTag)
+        local data = BeltalowdaNetwork.groupData[unitTag]
+        
+        if data and data.ultimate then
+            foundData = true
+            local ult = data.ultimate
+            local abilityName = ult.abilityId and GetAbilityName(ult.abilityId) or "Unknown"
+            
+            d(string.format("[%d] %s", i, name))
+            d(string.format("    Ability: %s (ID: %s)", 
+                abilityName, 
+                tostring(ult.abilityId or "?")))
+            d(string.format("    Cost: %d", ult.cost or 0))
+            d(string.format("    Current: %d / %d (%.1f%%)", 
+                ult.current or 0, 
+                ult.max or 0, 
+                ult.percent or 0))
+            
+            -- Show ready status
+            if ult.percent and ult.percent >= 100 then
+                d("    Status: READY!")
+            elseif ult.percent and ult.percent >= 75 then
+                d("    Status: Almost ready")
+            else
+                d("    Status: Building...")
+            end
+        end
+    end
+    
+    if not foundData then
+        d("No ultimate data received yet")
+        d("Note: Requires LibGroupCombatStats installed on all group members")
+        d("Try using an ability or waiting for combat to trigger data sync")
+    end
+end
+
+--[[
+    Debug command: Display detailed equipment information
+]]--
+function BeltalowdaNetwork.DebugEquipmentData()
+    d("=== Group Equipment Details ===")
+    
+    local groupSize = GetGroupSize()
+    if groupSize == 0 then
+        d("Not in a group")
+        return
+    end
+    
+    local foundData = false
+    for i = 1, groupSize do
+        local unitTag = GetGroupUnitTagByIndex(i)
+        local name = GetUnitName(unitTag)
+        local data = BeltalowdaNetwork.groupData[unitTag]
+        
+        if data and data.equipment then
+            foundData = true
+            d(string.format("[%d] %s", i, name))
+            
+            -- Display equipment data based on its structure
+            -- Note: The actual structure depends on LibSetDetection's API
+            if type(data.equipment) == "table" then
+                local count = 0
+                for k, v in pairs(data.equipment) do
+                    count = count + 1
+                end
+                d(string.format("    Equipment entries: %d", count))
+                
+                -- Try to display set information if available
+                for k, v in pairs(data.equipment) do
+                    if type(v) == "table" then
+                        d(string.format("    Set: %s", tostring(k)))
+                    else
+                        d(string.format("    %s: %s", tostring(k), tostring(v)))
+                    end
+                end
+            else
+                d(string.format("    Equipment data: %s", tostring(data.equipment)))
+            end
+        end
+    end
+    
+    if not foundData then
+        d("No equipment data received yet")
+        d("Note: Requires LibSetDetection installed on all group members")
+        d("Try changing equipment to trigger data sync")
+    end
+end
+
 -- Debug slash commands
 SLASH_COMMANDS["/btlwdata"] = function(args)
-    if args == "group" then
+    if args == "status" then
+        BeltalowdaNetwork.DebugGroupStatus()
+    elseif args == "group" then
         BeltalowdaNetwork.DebugPrintGroupData()
     elseif args == "ults" then
-        d("=== Group Ultimates ===")
-        for unitTag, data in pairs(BeltalowdaNetwork.groupData) do
-            if data.ultimate then
-                local ult = data.ultimate
-                d(string.format("%s: %d/%d (%.1f%%) - Ability %s", 
-                    GetUnitName(unitTag), 
-                    ult.current or 0, 
-                    ult.max or 0, 
-                    ult.percent or 0,
-                    ult.abilityId or "Unknown"))
-            end
-        end
+        BeltalowdaNetwork.DebugUltimateData()
     elseif args == "equip" then
-        d("=== Group Equipment ===")
-        for unitTag, data in pairs(BeltalowdaNetwork.groupData) do
-            if data.equipment then
-                local count = type(data.equipment) == "table" and #data.equipment or 0
-                d(GetUnitName(unitTag) .. ": " .. tostring(count) .. " sets")
-            end
-        end
+        BeltalowdaNetwork.DebugEquipmentData()
     elseif args == "libapi" then
         d("=== Library API Status ===")
         d("LibGroupBroadcast: " .. tostring(LGB ~= nil))
         if LGB then
             d("  Loaded and available")
+            -- Try to check for common API methods
+            if type(LGB) == "table" then
+                d("  Type: table (object)")
+                d("  Has Send method: " .. tostring(type(LGB.Send) == "function"))
+                d("  Has RegisterForMessage method: " .. tostring(type(LGB.RegisterForMessage) == "function"))
+            end
         end
+        d("")
         d("LibGroupCombatStats: " .. tostring(LGCS ~= nil))
         if LGCS then
-            d("  Has RegisterCallback: " .. tostring(LGCS.RegisterCallback ~= nil))
+            d("  Has RegisterCallback: " .. tostring(type(LGCS.RegisterCallback) == "function"))
             d("  EVENT_ULTIMATE_TYPE_CHANGED: " .. tostring(LGCS.EVENT_ULTIMATE_TYPE_CHANGED or "nil"))
             d("  EVENT_ULTIMATE_VALUE_CHANGED: " .. tostring(LGCS.EVENT_ULTIMATE_VALUE_CHANGED or "nil"))
+            -- Check for other possible API methods
+            if type(LGCS) == "table" then
+                d("  Type: table (object)")
+                for k, v in pairs(LGCS) do
+                    if type(v) == "function" and k ~= "RegisterCallback" then
+                        d("  Has method: " .. tostring(k))
+                    end
+                end
+            end
         end
+        d("")
         d("LibSetDetection: " .. tostring(LSD ~= nil))
         if LSD then
-            d("  Has RegisterCallback: " .. tostring(LSD.RegisterCallback ~= nil))
+            d("  Has RegisterCallback: " .. tostring(type(LSD.RegisterCallback) == "function"))
             d("  EVENT_EQUIPPED_SETS_CHANGED: " .. tostring(LSD.EVENT_EQUIPPED_SETS_CHANGED or "nil"))
+            if type(LSD) == "table" then
+                d("  Type: table (object)")
+                for k, v in pairs(LSD) do
+                    if type(v) == "function" and k ~= "RegisterCallback" then
+                        d("  Has method: " .. tostring(k))
+                    end
+                end
+            end
         end
+        d("")
+        d("Note: If libraries show 'nil', they are not installed")
+        d("Install from ESOUI.com to enable full functionality")
+    elseif args == "help" or args == "" or args == nil then
+        d("=== Beltalowda Network Foundation Test Commands ===")
+        d("")
+        d("Basic Commands:")
+        d("  /btlwdata status  - Show group status and data availability")
+        d("  /btlwdata group   - Show all group member data (detailed)")
+        d("  /btlwdata ults    - Show ultimate data for all group members")
+        d("  /btlwdata equip   - Show equipment data for all group members")
+        d("")
+        d("Diagnostic Commands:")
+        d("  /btlwdata libapi  - Check library API availability")
+        d("  /btlwdata help    - Show this help message")
+        d("")
+        d("Testing Tips:")
+        d("  1. Form a group with at least one other player")
+        d("  2. Ensure all members have LibGroupCombatStats installed")
+        d("  3. Ensure all members have LibSetDetection installed")
+        d("  4. Use abilities to trigger ultimate data updates")
+        d("  5. Change equipment to trigger equipment data updates")
+        d("")
+        d("Troubleshooting:")
+        d("  - If no data shows: Check '/btlwdata libapi'")
+        d("  - If libraries missing: Install from ESOUI.com")
+        d("  - If data not syncing: Ensure group members have libraries")
     else
-        d("Beltalowda Data Commands:")
-        d("  /btlwdata group - Show all group data")
-        d("  /btlwdata ults - Show group ultimates")
-        d("  /btlwdata equip - Show group equipment")
-        d("  /btlwdata libapi - Show library API status")
+        d("Unknown command: " .. tostring(args))
+        d("Type '/btlwdata help' for available commands")
     end
 end

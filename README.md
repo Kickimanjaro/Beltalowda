@@ -33,13 +33,19 @@ This project is an ESO addon for group PvP coordination. Current status:
 
 ## Available Commands
 
-Beltalowda provides the following slash commands for debugging and testing:
+Beltalowda provides comprehensive slash commands for debugging and testing network functionality:
 
-- `/btlwdata` - Show help with available commands
-- `/btlwdata group` - Display all group member data
-- `/btlwdata ults` - Display ultimate data for group members  
-- `/btlwdata equip` - Display equipment data for group members
-- `/btlwdata libapi` - Check library API availability and status
+### Basic Test Commands
+- `/btlwdata help` - Show all available commands and testing tips
+- `/btlwdata status` - Quick overview of group status and data availability  
+- `/btlwdata group` - Display detailed data for all group members
+- `/btlwdata ults` - Display ultimate data with ability names and percentages
+- `/btlwdata equip` - Display equipment/set data for group members
+
+### Diagnostic Commands
+- `/btlwdata libapi` - Check library API availability and methods (troubleshooting)
+
+**Testing**: See `.copilot-responses/NETWORK_FOUNDATION_TESTING_GUIDE.md` for comprehensive testing procedures and expected outputs.
 
 **Note**: These are addon-provided commands, not library commands. The addon must be loaded for these commands to work.
 
