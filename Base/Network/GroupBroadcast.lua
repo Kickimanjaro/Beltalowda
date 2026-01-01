@@ -162,7 +162,23 @@ end
     @param data: Ultimate data from LGCS (contains ability ID, cost, current, max, etc.)
 ]]--
 function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
-    if not data then return end
+    -- Debug logging to verify event is firing
+    d("[Beltalowda] Ultimate data received for " .. tostring(unitTag))
+    
+    if not data then 
+        d("[Beltalowda] Warning: data is nil for " .. tostring(unitTag))
+        return 
+    end
+    
+    -- Debug log the data structure
+    if type(data) == "table" then
+        d("[Beltalowda] Data type: table")
+        for k, v in pairs(data) do
+            d(string.format("  %s = %s", tostring(k), tostring(v)))
+        end
+    else
+        d("[Beltalowda] Data type: " .. type(data) .. ", value: " .. tostring(data))
+    end
     
     -- Initialize player data if not exists
     BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
@@ -472,6 +488,34 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         BeltalowdaNetwork.DebugUltimateData()
     elseif args == "equip" then
         BeltalowdaNetwork.DebugEquipmentData()
+    elseif args == "debug" then
+        d("=== Beltalowda Debug Info ===")
+        d("")
+        d("Registration Status:")
+        d("  LGCS Instance: " .. tostring(BeltalowdaNetwork.lgcsInstance ~= nil))
+        d("  LSD Instance: " .. tostring(BeltalowdaNetwork.lsdInstance ~= nil))
+        d("")
+        
+        if LGCS then
+            d("LibGroupCombatStats Events:")
+            d("  EVENT_GROUP_ULT_UPDATE: " .. tostring(LGCS.EVENT_GROUP_ULT_UPDATE))
+            d("  EVENT_PLAYER_ULT_UPDATE: " .. tostring(LGCS.EVENT_PLAYER_ULT_UPDATE))
+            d("  RegisterAddon method: " .. tostring(type(LGCS.RegisterAddon) == "function"))
+            
+            if BeltalowdaNetwork.lgcsInstance then
+                d("  Instance type: " .. type(BeltalowdaNetwork.lgcsInstance))
+                d("  Instance.RegisterForEvent: " .. tostring(type(BeltalowdaNetwork.lgcsInstance.RegisterForEvent) == "function"))
+            end
+        end
+        d("")
+        
+        d("Group Data Storage:")
+        local count = 0
+        for unitTag, data in pairs(BeltalowdaNetwork.groupData) do
+            count = count + 1
+            d(string.format("  %s: %s", unitTag, data.ultimate and "Has Ultimate Data" or "No Ultimate Data"))
+        end
+        d("  Total entries: " .. count)
     elseif args == "libapi" then
         d("=== Library API Status ===")
         d("LibGroupBroadcast: " .. tostring(LGB ~= nil))
@@ -487,15 +531,19 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("")
         d("LibGroupCombatStats: " .. tostring(LGCS ~= nil))
         if LGCS then
-            d("  Has RegisterCallback: " .. tostring(type(LGCS.RegisterCallback) == "function"))
-            d("  EVENT_ULTIMATE_TYPE_CHANGED: " .. tostring(LGCS.EVENT_ULTIMATE_TYPE_CHANGED or "nil"))
-            d("  EVENT_ULTIMATE_VALUE_CHANGED: " .. tostring(LGCS.EVENT_ULTIMATE_VALUE_CHANGED or "nil"))
-            -- Check for other possible API methods
+            d("  Has RegisterAddon: " .. tostring(type(LGCS.RegisterAddon) == "function"))
+            d("  EVENT_GROUP_ULT_UPDATE: " .. tostring(LGCS.EVENT_GROUP_ULT_UPDATE))
+            d("  EVENT_PLAYER_ULT_UPDATE: " .. tostring(LGCS.EVENT_PLAYER_ULT_UPDATE))
+            
+            -- Check for other possible API methods and events
             if type(LGCS) == "table" then
                 d("  Type: table (object)")
+                d("  Available methods:")
                 for k, v in pairs(LGCS) do
-                    if type(v) == "function" and k ~= "RegisterCallback" then
-                        d("  Has method: " .. tostring(k))
+                    if type(v) == "function" then
+                        d("    " .. tostring(k))
+                    elseif type(k) == "string" and k:match("^EVENT_") then
+                        d("    " .. tostring(k) .. " = " .. tostring(v))
                     end
                 end
             end
@@ -503,12 +551,11 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("")
         d("LibSetDetection: " .. tostring(LSD ~= nil))
         if LSD then
-            d("  Has RegisterCallback: " .. tostring(type(LSD.RegisterCallback) == "function"))
-            d("  EVENT_EQUIPPED_SETS_CHANGED: " .. tostring(LSD.EVENT_EQUIPPED_SETS_CHANGED or "nil"))
+            d("  Has RegisterAddon: " .. tostring(type(LSD.RegisterAddon) == "function"))
             if type(LSD) == "table" then
                 d("  Type: table (object)")
                 for k, v in pairs(LSD) do
-                    if type(v) == "function" and k ~= "RegisterCallback" then
+                    if type(v) == "function" then
                         d("  Has method: " .. tostring(k))
                     end
                 end
@@ -528,6 +575,7 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("")
         d("Diagnostic Commands:")
         d("  /btlwdata libapi  - Check library API availability")
+        d("  /btlwdata debug   - Show detailed debug info (registration, events, data)")
         d("  /btlwdata help    - Show this help message")
         d("")
         d("Testing Tips:")

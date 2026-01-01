@@ -57,6 +57,13 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 
 ## [Unreleased]
 
+### Added
+- **Enhanced debugging capabilities for troubleshooting ultimate data**
+  - Added `/btlwdata debug` command to show registration status, event constants, and data storage
+  - Enhanced `/btlwdata libapi` to show all event constants and methods from LibGroupCombatStats
+  - Added debug logging in `OnUltimateDataReceived()` to trace when events fire and what data is received
+  - Debug logs will show data structure to help identify API mismatches
+
 ### Fixed
 - **Corrected LibGroupCombatStats and LibSetDetection API integration**
   - Fixed LibGroupCombatStats integration to use proper API: `RegisterAddon()` and `RegisterForEvent()`
