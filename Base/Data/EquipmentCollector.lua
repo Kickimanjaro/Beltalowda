@@ -16,22 +16,23 @@ EquipmentCollector.state = {
     equipmentSlots = {}  -- Individual slot data
 }
 
--- Equipment slot constants
+-- Equipment slot constants (ESO game constants)
+-- These are defined by the ESO API
 EquipmentCollector.SLOTS = {
-    EQUIP_SLOT_HEAD,
-    EQUIP_SLOT_SHOULDERS,
-    EQUIP_SLOT_CHEST,
-    EQUIP_SLOT_WAIST,
-    EQUIP_SLOT_HAND,
-    EQUIP_SLOT_LEGS,
-    EQUIP_SLOT_FEET,
-    EQUIP_SLOT_NECK,
-    EQUIP_SLOT_RING1,
-    EQUIP_SLOT_RING2,
-    EQUIP_SLOT_MAIN_HAND,
-    EQUIP_SLOT_OFF_HAND,
-    EQUIP_SLOT_BACKUP_MAIN,
-    EQUIP_SLOT_BACKUP_OFF
+    0,  -- EQUIP_SLOT_HEAD
+    1,  -- EQUIP_SLOT_SHOULDERS
+    2,  -- EQUIP_SLOT_CHEST
+    3,  -- EQUIP_SLOT_WAIST
+    4,  -- EQUIP_SLOT_HAND
+    5,  -- EQUIP_SLOT_LEGS
+    6,  -- EQUIP_SLOT_FEET
+    7,  -- EQUIP_SLOT_NECK
+    8,  -- EQUIP_SLOT_RING1
+    9,  -- EQUIP_SLOT_RING2
+    10, -- EQUIP_SLOT_MAIN_HAND
+    11, -- EQUIP_SLOT_OFF_HAND
+    12, -- EQUIP_SLOT_BACKUP_MAIN
+    13  -- EQUIP_SLOT_BACKUP_OFF
 }
 
 --[[

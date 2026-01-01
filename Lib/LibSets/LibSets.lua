@@ -43,5 +43,7 @@ function lib:IsSetItem(itemLink)
     return setId and setId > 0
 end
 
--- Export global reference
-LibStub:NewLibrary("LibSets", lib.VERSION)
+-- Export global reference (only if not already loaded with newer version)
+if LibStub then
+    LibStub:NewLibrary("LibSets", lib.VERSION)
+end

@@ -21,5 +21,7 @@ function lib:Create(name)
     }
 end
 
--- Export global reference
-LibStub:NewLibrary("LibAsync", lib.VERSION)
+-- Export global reference (only if not already loaded with newer version)
+if LibStub then
+    LibStub:NewLibrary("LibAsync", lib.VERSION)
+end
