@@ -39,7 +39,7 @@ function Beltalowda.AreLibrariesLoaded()
         loaded = false
         table.insert(missingLibs, "LibGroupCombatStats")
     end
-    -- Optional libraries - just log warnings
+    -- Check optional libraries - log info messages
     if not LibCombat then
         d("[Beltalowda] Info: LibCombat not found. This is optional and reserved for future features.")
     end
