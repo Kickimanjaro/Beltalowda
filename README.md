@@ -35,12 +35,12 @@ This project is an ESO addon for group PvP coordination. Current status:
 
 Beltalowda requires the following libraries to function. All must be installed from ESOUI.com:
 
-### Core Dependencies (Built-in)
+### Core Dependencies
 - **LibAsync** (v3.1.1+) - Asynchronous operations
 - **LibGroupBroadcast** (v91+) - Network communication
 - **LibAddonMenu-2.0** (v41+) - Settings UI
 
-### Data Libraries (Must Install)
+### Data Libraries
 - **[LibGroupCombatStats](https://www.esoui.com/downloads/info4024-LibGroupCombatStats.html)** (v6+) - **REQUIRED** for ultimate tracking
 - **[LibSetDetection](https://www.esoui.com/downloads/info3338-LibSetDetection.html)** (v4+) - **REQUIRED** for equipment tracking
 
