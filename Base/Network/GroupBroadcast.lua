@@ -165,6 +165,9 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
         return 
     end
     
+    d(string.format("[Beltalowda] ULT data for %s: id=%s cost=%s value=%s max=%s", 
+        unitTag, tostring(data.id), tostring(data.cost), tostring(data.value), tostring(data.max)))
+    
     -- Initialize player data if not exists
     BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
     BeltalowdaNetwork.groupData[unitTag].ultimate = BeltalowdaNetwork.groupData[unitTag].ultimate or {}
@@ -356,32 +359,37 @@ function BeltalowdaNetwork.DebugUltimateData()
             
             d(string.format("[%s] %s", unitTag, name))
             
-            -- Check if we have ultimate data
-            if data.ultimate then
+            -- Check if we have ultimate data with actual values
+            if data.ultimate and (data.ultimate.abilityId or data.ultimate.id or data.ultimate.current or data.ultimate.value or data.ultimate.max) then
                 local ult = data.ultimate
                 
                 -- Safely get ability name with fallback
                 local abilityName = "Unknown"
-                if ult.abilityId then
-                    local abilityNameResult = GetAbilityName(ult.abilityId)
+                local abilityId = ult.abilityId or ult.id
+                if abilityId then
+                    local abilityNameResult = GetAbilityName(abilityId)
                     if abilityNameResult and abilityNameResult ~= "" then
                         abilityName = abilityNameResult
                     end
                 end
                 
+                local current = ult.current or ult.value or 0
+                local max = ult.max or 0
+                local percent = ult.percent or 0
+                
                 d(string.format("    Ability: %s (ID: %s)", 
                     abilityName, 
-                    tostring(ult.abilityId or "?")))
+                    tostring(abilityId or "?")))
                 d(string.format("    Cost: %d", ult.cost or 0))
                 d(string.format("    Current: %d / %d (%.1f%%)", 
-                    ult.current or 0, 
-                    ult.max or 0, 
-                    ult.percent or 0))
+                    current, 
+                    max, 
+                    percent))
                 
                 -- Show ready status
-                if ult.percent and ult.percent >= 100 then
+                if percent >= 100 then
                     d("    Status: READY!")
-                elseif ult.percent and ult.percent >= 75 then
+                elseif percent >= 75 then
                     d("    Status: Almost ready")
                 else
                     d("    Status: Building...")

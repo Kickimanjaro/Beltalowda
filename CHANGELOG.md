@@ -5,6 +5,17 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.1.7] - 2026-01-01
+
+### Fixed
+- Improved ultimate data display check - now validates that actual data fields exist before attempting to display
+- Added fallback checks for both original (`id`, `value`) and normalized (`abilityId`, `current`) field names in display
+- Re-added debug logging to OnUltimateDataReceived to diagnose event firing and data reception
+- Better handling of empty ultimate data tables
+
+### Changed
+- Version bump to 0.1.7 for easier in-game verification
+
 ## [0.1.6] - 2026-01-01
 
 ### Fixed
