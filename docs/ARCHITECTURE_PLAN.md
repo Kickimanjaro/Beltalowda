@@ -18,13 +18,13 @@ This document outlines a comprehensive plan to enhance Beltalowda with advanced 
 
 ### Current Technical Stack
 - **Libraries in Use**:
-  - LibAddonMenu-2.0 (settings UI)
+  - LibAddonMenu-2.0 (settings UI) - Use global variable, not embedded per current best practices
   - LibGPS (positioning)
-  - Lib3D (3D rendering for visual effects)
+  - Lib3D (3D rendering for visual effects) - **DEPRECATED**: Remove in enhanced version, use native ESO 3D API
   - LibMapPing (map coordination)
   - LibCustomMenu (context menus)
-  - LibFoodDrinkBuff (food/drink tracking)
-  - LibPotionBuff (potion tracking)
+  - LibFoodDrinkBuff (food/drink tracking) - May remove in favor of native buff detection
+  - LibPotionBuff (potion tracking) - **DEPRECATED/BROKEN**: Remove in enhanced version
   - **LibGroupBroadcast** (already declared as dependency!)
 
 ### Current Limitations
@@ -32,7 +32,7 @@ This document outlines a comprehensive plan to enhance Beltalowda with advanced 
 2. **Limited Data Sharing**: Only ultimate percentages are currently broadcast
 3. **No Equipment Tracking**: Cannot track equipped gear or sets
 4. **Basic Ability Detection**: Limited to ultimate abilities, not full skill bar
-5. **No Position Sharing**: While LibGPS is available, position data isn't shared with group
+5. **No Position Sharing**: LibGPS provides coordinate functions but position data is not currently broadcast to group members
 
 ## Proposed Enhanced Architecture
 
@@ -222,20 +222,17 @@ LibGroupBroadcast requires unique message IDs for each addon/feature. Based on i
 - 169-167: Admin responses
 
 **Proposed New ID Block** (request from LibGroupBroadcast maintainer):
-We should request IDs **200-219** (20 IDs) for comprehensive data sharing:
+We should request IDs **220-229** (10 IDs) for comprehensive data sharing:
 
-- **200**: Resource packet (Health, Magicka, Stamina, Ultimate %)
-- **201**: Ultimate details (ability ID, cost, ready status)
-- **202**: Position packet (X, Y, Zone)
-- **203**: Ability bar packet (10 ability IDs)
-- **204**: Equipment packet (set IDs, part 1)
-- **205**: Equipment packet (set IDs, part 2)
-- **206**: State packet (combat, alive, online status)
-- **207**: Active effects (critical buffs/debuffs)
-- **208**: Keybind sync (coordinated ability casting)
-- **209**: Role assignment (tank/healer/DPS)
-- **210-214**: Reserved for future features
-- **215-219**: Reserved for experimental features
+- **220**: Resource packet (Health, Magicka, Stamina, Ultimate %)
+- **221**: Ultimate details (ability ID, cost, ready status)
+- **222**: Position packet (X, Y, Zone)
+- **223**: Ability bar packet (10 ability IDs)
+- **224**: Equipment packet (set IDs, part 1)
+- **225**: Equipment packet (set IDs, part 2)
+- **226**: State packet (combat, alive, online status)
+- **227**: Active effects (critical buffs/debuffs)
+- **228-229**: Reserved for future features
 
 #### Data Broadcasting Strategy
 
@@ -305,8 +302,8 @@ Base/Features/
 
 1. **Specific Ultimate Detection**:
    - Use AbilityCollector to detect slotted ultimate (slot 8)
-   - Track which ultimate each player has equipped
-   - Display type-specific counts (not just total ready)
+   - Track which ultimate each player has equipped (e.g., "Negate Magic" vs "Storm Atronach")
+   - Display ultimate ability names/icons for each player (not generic "Ultimate ready")
 
 2. **Dynamic Ultimate Addition**:
    - Detect Volendrung pickup (special weapon)
@@ -320,8 +317,9 @@ Base/Features/
    - Rotation suggestions based on cooldown timing
 
 4. **Enhanced UI**:
-   - Keep existing 4 windows (Client, Group, Overview, Blocks)
-   - Add per-ultimate-type counts in Group Ultimates window
+   - Keep 3 main windows: Client Ultimate, Group Ultimates (icons), Player Blocks (bars)
+   - Remove Ultimate Overview window (counts feature not desired)
+   - Show specific ultimate icons/names for each player
    - Color-code priority order
    - Add "intensity" effect for held ultimates (reminder to cast)
 
@@ -359,8 +357,8 @@ Base/Features/
 1. **Ability Timers**:
    - Proximity Detonation: 8 second fuse
    - Subterranean Assault / Deep Fissure: 3 second delay
-   - Track per-player cast times
-   - Show unified "bomb window" countdown
+   - Track per-player cast times (inspired by BombTimer addon)
+   - Show unified "bomb window" countdown AND individual player timers
 
 2. **Synergy Coordination**:
    - Inner Rage: 12 second debuff
@@ -433,7 +431,9 @@ Base/Features/
 ### UI Architecture
 
 **Display Philosophy**:
-- Persistent tracking windows (Ultimate, Synergy) always visible when enabled
+- **Global PvP-Only Setting**: Single addon-wide toggle for "Show only in PvP zones" (default: true)
+- Optional override for testing/debug to show everywhere
+- Persistent tracking windows (Ultimate, Synergy) visible when enabled and in appropriate zone
 - Contextual displays (Bomb timers) appear only in combat
 - All windows independently movable and lockable
 - Unified visual style across all features
@@ -453,6 +453,8 @@ Base/UI/
 Beltalowda Settings
 ├── Profile Management (existing)
 ├── Fixed Component Positioning (existing)
+├── [NEW] Global Settings
+│   └── Show only in PvP zones (global toggle, default: true, override for testing)
 ├── [NEW SECTION] Core Features
 │   ├── Ultimate Tracking
 │   ├── Synergy Tracking
@@ -584,7 +586,7 @@ BeltalowdaVars = {
 - Code already checks for LGB existence in `Networking.lua`
 
 **What we need to do**:
-1. Request message ID block (200-219) from maintainer
+1. Request message ID block (220-229) from maintainer
 2. Implement full data broadcasting (currently only uses existing IDs)
 3. Expand message handling beyond current simple types
 
@@ -626,13 +628,13 @@ local setType = LibSets:GetSetType(setId)
 
 ```
 Beltalowda
-├── LibAddonMenu-2.0 (settings UI) [HAVE]
+├── LibAddonMenu-2.0 (settings UI) [HAVE - use global, not embedded]
 ├── LibMapPins-1.0 (map markers) [HAVE]
 ├── LibMapPing (map coordination) [HAVE]
 ├── LibGPS (positioning) [HAVE]
-├── Lib3D (3D rendering) [HAVE]
-├── LibFoodDrinkBuff (food tracking) [HAVE]
-├── LibPotionBuff (potion tracking) [HAVE]
+├── Lib3D (3D rendering) [HAVE - REMOVE: deprecated, use native ESO API]
+├── LibFoodDrinkBuff (food tracking) [HAVE - OPTIONAL: may replace with native detection]
+├── LibPotionBuff (potion tracking) [HAVE - REMOVE: deprecated/broken]
 ├── LibCustomMenu (context menus) [HAVE]
 ├── LibGroupBroadcast (data sharing) [HAVE]
 │   └── (no dependencies)
@@ -642,9 +644,13 @@ Beltalowda
 └── LibDebugLogger (debug logging) [HAVE]
 ```
 
-**New Libraries Needed**:
+**Libraries to Add**:
 1. **LibSets** - Download from https://github.com/Baertram/LibSets
 2. **LibAsync** - Download from ESOUI (dependency of LibSets)
+
+**Libraries to Remove** (during enhancement):
+1. **Lib3D** - Deprecated, use native ESO 3D rendering API
+2. **LibPotionBuff** - Broken by ZOS, use native buff detection instead
 
 ---
 

@@ -231,7 +231,7 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
 **Tasks**:
 1. Request message ID block from LibGroupBroadcast maintainer:
    - Post on ESOUI forums
-   - Request IDs 200-219
+   - Request IDs 220-229 (10 IDs, respectful of community standard)
    - Wait for approval (may take a few days)
    
 2. Implement `GroupBroadcast.lua`:
@@ -240,7 +240,7 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
    - Send/receive infrastructure
    - Handler registration system
    
-3. Implement resource broadcasting (ID 200):
+3. Implement resource broadcasting (ID 220):
    - Encode resources to string
    - Send on 5% change or throttle
    - Receive and decode from other players
@@ -268,7 +268,7 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
 ### Week 6: State Broadcasting
 
 **Tasks**:
-1. Implement state broadcasting (ID 206):
+1. Implement state broadcasting (ID 226):
    - Encode state flags (combat, alive, etc.)
    - Use bit-packing for efficiency
    - Send on state change or throttle
@@ -322,7 +322,7 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
    - Identify ultimate ability ID
    - Match to ultimate database
    
-2. Broadcast ultimate details (ID 201):
+2. Broadcast ultimate details (ID 221):
    - Ultimate ability ID
    - Ultimate cost
    - Ready status (100%)
@@ -401,7 +401,7 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
 ### Week 9: Equipment Broadcasting
 
 **Tasks**:
-1. Equipment broadcasting (IDs 204-205):
+1. Equipment broadcasting (IDs 224-225):
    - Split into two messages (14 slots)
    - Send on equipment change
    - Throttle to 2 seconds
@@ -450,10 +450,6 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
    - Equipment tracking toggle
    - Role detection toggle
    - Monster set tracking toggle
-   
-4. Broadcast role (ID 209):
-   - Share detected role with group
-   - Allow manual override
 
 **Deliverables**:
 - ✅ Monster set cooldown tracking
@@ -488,7 +484,7 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
    - Get zone ID
    - Update at 100ms
    
-2. Position broadcasting (ID 202):
+2. Position broadcasting (ID 222):
    - Encode position with precision
    - Send every 100ms
    - Receive and store
@@ -562,7 +558,7 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
    - Detect bar swaps
    - Store ability metadata
    
-2. Ability bar broadcasting (ID 203):
+2. Ability bar broadcasting (ID 223):
    - Send 10 ability IDs
    - Send on bar change
    - Receive and store
@@ -594,7 +590,7 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
    - Filter relevant effects
    - Store duration, stack count
    
-2. Effect broadcasting (ID 207):
+2. Effect broadcasting (ID 227):
    - Send important effects
    - Configurable filter
    - Send on effect change

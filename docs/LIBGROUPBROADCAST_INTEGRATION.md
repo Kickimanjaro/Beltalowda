@@ -115,23 +115,20 @@ The LibGroupBroadcast maintainer tracks all message IDs to prevent conflicts bet
 ```
 Addon: Beltalowda
 Author: @Kickimanjaro
-Requested IDs: 200-219 (20 IDs)
+Requested IDs: 220-229 (10 IDs)
 
 Purpose: Enhanced group PvP coordination addon with comprehensive data sharing
 
 Planned Usage:
-- 200: Resource packet (Health, Magicka, Stamina, Ultimate %)
-- 201: Ultimate details (ability ID, cost, ready status)
-- 202: Position packet (X, Y, Zone)
-- 203: Ability bar packet (10 ability IDs)
-- 204: Equipment packet (set IDs, part 1)
-- 205: Equipment packet (set IDs, part 2)
-- 206: State packet (combat, alive, online status)
-- 207: Active effects (critical buffs/debuffs)
-- 208: Keybind sync (coordinated ability casting)
-- 209: Role assignment (tank/healer/DPS)
-- 210-214: Reserved for future features
-- 215-219: Reserved for experimental features
+- 220: Resource packet (Health, Magicka, Stamina, Ultimate %)
+- 221: Ultimate details (ability ID, cost, ready status)
+- 222: Position packet (X, Y, Zone)
+- 223: Ability bar packet (10 ability IDs)
+- 224: Equipment packet (set IDs, part 1)
+- 225: Equipment packet (set IDs, part 2)
+- 226: State packet (combat, alive, online status)
+- 227: Active effects (critical buffs/debuffs)
+- 228-229: Reserved for future features
 
 Note: Currently using IDs 50, 60, 109, 110, 167-170, 188-190 
 (registered under RdK Group Tool, same codebase)
@@ -157,18 +154,16 @@ local BeltalowdaNetwork = Beltalowda.network
 
 local LGB = LibGroupBroadcast
 
--- Message IDs (200-219 block, pending official assignment)
+-- Message IDs (220-229 block, pending official assignment)
 BeltalowdaNetwork.MESSAGE_IDS = {
-    RESOURCES = 200,
-    ULTIMATE_DETAILS = 201,
-    POSITION = 202,
-    ABILITIES = 203,
-    EQUIPMENT_1 = 204,
-    EQUIPMENT_2 = 205,
-    STATE = 206,
-    ACTIVE_EFFECTS = 207,
-    KEYBIND_SYNC = 208,
-    ROLE = 209,
+    RESOURCES = 220,
+    ULTIMATE_DETAILS = 221,
+    POSITION = 222,
+    ABILITIES = 223,
+    EQUIPMENT_1 = 224,
+    EQUIPMENT_2 = 225,
+    STATE = 226,
+    ACTIVE_EFFECTS = 227,
 }
 
 -- Message handlers (registered for each ID)
@@ -686,7 +681,7 @@ end
 LibGroupBroadcast is the superior solution for data sharing in Beltalowda. Key takeaways:
 
 1. **Already Integrated**: LibGroupBroadcast is already a dependency, just needs full implementation
-2. **Request IDs**: Get official message ID block (200-219 recommended)
+2. **Request IDs**: Get official message ID block (220-229)
 3. **Phased Approach**: Implement one message type at a time
 4. **Keep Fallback**: Maintain party chat as emergency fallback during transition
 5. **Test Thoroughly**: Extensive testing with real groups before full rollout

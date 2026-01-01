@@ -186,7 +186,7 @@ This document provides a high-level summary of the comprehensive planning create
 - Larger payloads (512 bytes vs ~100 chars)
 - Reliable delivery with acknowledgment
 - Designed for addon data (binary protocol)
-- Need to request message ID block (200-219 recommended)
+- Need to request message ID block (220-229)
 - Already using some IDs (50, 60, 109, 110, 167-170, 188-190)
 - No additional dependencies (standalone library)
 
