@@ -6,6 +6,18 @@ Beltalowda is a greenfield group PvP addon for The Elder Scrolls Online (ESO) wr
 
 **Reference Implementation:** The Kickimanjaro/RdK repository serves as a reference implementation of similar functionality. RdK was originally created by @s0rdrak (PC / EU) and is used here as a guide and inspiration for understanding ESO addon patterns and group coordination features.
 
+## AI Agent Generated Documentation
+
+**IMPORTANT:** When creating documentation files (summaries, completion reports, etc.), **ALWAYS** place them in `.copilot-responses/` directory, NOT in the project root.
+
+**Correct location for AI-generated docs**: `.copilot-responses/`
+**Examples**:
+- `.copilot-responses/PHASE0_COMPLETE.md`
+- `.copilot-responses/IMPLEMENTATION_SUMMARY.md`
+- `.copilot-responses/TESTING_RESULTS.md`
+
+**Do NOT place in root**: Markdown files like `PHASE0_COMPLETE.md`, `SUMMARY.md`, etc. clutter the project root.
+
 ## Planning Documentation
 
 **Location**: `/docs/` directory contains comprehensive planning documents
