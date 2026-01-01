@@ -56,6 +56,27 @@ The Ultimate Display provides multiple RdK-style windows for comprehensive ultim
 
 See [ULTIMATE_TRACKING.md](ULTIMATE_TRACKING.md) for detailed documentation and testing instructions.
 
+### Addon Interoperability
+
+Beltalowda includes a comprehensive addon detection and integration system that allows it to work harmoniously with other ESO addons:
+
+- **Automatic Detection**: Scans for external addons with similar functionality (crown markers, compasses, bomb timers, beams)
+- **Flexible Integration Modes**: Choose how to handle overlapping features:
+  - Prefer external addon if available
+  - Always use Beltalowda's built-in features
+  - Disable built-in if external found
+  - Always use built-in regardless
+- **Conflict Prevention**: Automatically prevents duplicate features when similar addons are detected
+- **User Control**: Full control via settings menu to configure integration behavior
+
+**Supported External Addons:**
+- Crown markers: PapaCrown, Crown of Cyrodiil, Sanct's Ultimate Organiser
+- Compasses: LuiExtended, Azurah
+- Bomb timers: BombTimer, RdK Group Tool
+- Beams: Group Beacons
+
+See [ADDON_INTEROPERABILITY.md](ADDON_INTEROPERABILITY.md) for detailed information on addon integration.
+
 ## Development
 
 This addon follows ESOUI.com standards and is compatible with the Minion app distribution platform.

@@ -45,20 +45,41 @@ BeltalowdaCrown.state = {}
 function BeltalowdaCrown.Initialize()
 	Beltalowda.profile.AddProfileChangeListener(BeltalowdaCrown.callbackName, BeltalowdaCrown.OnProfileChanged)
 	
+	-- Check if we should enable crown features based on detector settings
+	-- Note: Detector is initialized early, but detector vars (user preferences) 
+	-- may not be loaded yet. We check detector availability and notify user of 
+	-- detected addons, but actual integration mode is applied in OnPlayerActivated
+	-- where detector vars are guaranteed to be available.
+	local detector = Beltalowda.addOnIntegration.detector
+	if detector and detector.state and detector.state.initialized then
+		local addonType = detector.constants.ADDON_TYPE_CROWN
+		local detected = detector.GetDetectedAddons(addonType)
+		
+		if #detected > 0 then
+			-- External crown addon detected - notify user
+			local names = detector.GetDetectedAddonNames(addonType)
+			BeltalowdaChat.SendChatMessage(
+				string.format("Crown addon detected: %s", table.concat(names, ", ")),
+				BeltalowdaCrown.constants.PREFIX,
+				BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING
+			)
+		end
+	else
+		-- Fallback to old detection method if detector not available yet
+		if QAddon ~= nil and QAddon.name == "PapaCrown" then
+			BeltalowdaChat.SendChatMessage(BeltalowdaCrown.constants.PAPA_CROWN_DETECTED, BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
+			return
+		end
+		if RO ~= nil and RO.name == "SanctsUltimateOrganiser" then
+			BeltalowdaChat.SendChatMessage(BeltalowdaCrown.constants.SANCTS_ULTIMATE_ORGANIZER_DETECTED, BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
+			return
+		end
+		if CrownOfCyrodiil ~= nil and CrownOfCyrodiil.name == "CrownOfCyrodiil" then
+			BeltalowdaChat.SendChatMessage(BeltalowdaCrown.constants.CROWN_OF_CYRODIIL_DETECTED, BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
+			return
+		end
+	end
 	
-	local bodyText= BeltalowdaChat.GetBodyColorHex()
-	if QAddon ~= nil and QAddon.name == "PapaCrown" then
-		BeltalowdaChat.SendChatMessage(BeltalowdaCrown.constants.PAPA_CROWN_DETECTED, BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
-		return
-	end
-	if RO ~= nil and RO.name == "SanctsUltimateOrganiser" then
-		BeltalowdaChat.SendChatMessage(BeltalowdaCrown.constants.SANCTS_ULTIMATE_ORGANIZER_DETECTED, BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
-		return
-	end
-	if CrownOfCyrodiil ~= nil and CrownOfCyrodiil.name == "CrownOfCyrodiil" then
-		BeltalowdaChat.SendChatMessage(BeltalowdaCrown.constants.CROWN_OF_CYRODIIL_DETECTED, BeltalowdaCrown.constants.PREFIX, BeltalowdaChat.constants.messageTypes.MESSAGE_WARNING)
-		return
-	end
 	if BeltalowdaCrown.crownVars.enabled then
 		EVENT_MANAGER:RegisterForEvent(BeltalowdaCrown.callbackName, EVENT_PLAYER_ACTIVATED, BeltalowdaCrown.OnPlayerActivated)
 	end
@@ -68,6 +89,13 @@ end
 function BeltalowdaCrown.OnPlayerActivated()
 	--d("OnPlayerActivated")
 	--/script SetFloatingMarkerInfo(MAP_PIN_TYPE_GROUP_LEADER, 64, "Beltalowda/Art/Crowns/Pfeilpink.dds")
+	
+	-- Check if we should enable based on detector settings
+	if not BeltalowdaCrown.ShouldEnableCrown() then
+		SetFloatingMarkerInfo(MAP_PIN_TYPE_GROUP_LEADER)
+		return
+	end
+	
 	if BeltalowdaCrown.crownVars.enabled and (BeltalowdaCrown.crownVars.pvponly == false or (BeltalowdaCrown.crownVars.pvponly == true and BeltalowdaUtil.IsInPvPArea() == true)) then
 		if BeltalowdaCrown.crownVars.selectedMode == 1 then
 			if BeltalowdaCrown.crownVars.customDDS == true then
@@ -103,6 +131,29 @@ function BeltalowdaCrown.OnProfileChanged(currentProfile)
 	if currentProfile ~= nil then
 		BeltalowdaCrown.crownVars = currentProfile.group.crown
 	end
+end
+
+-- Check if crown features should be enabled based on detector settings
+function BeltalowdaCrown.ShouldEnableCrown()
+	local detector = Beltalowda.addOnIntegration.detector
+	if detector and detector.ShouldEnableBuiltIn and detector.detectorVars then
+		local addonType = detector.constants.ADDON_TYPE_CROWN
+		local mode = detector.detectorVars.crownMode
+		return detector.ShouldEnableBuiltIn(addonType, mode)
+	end
+	
+	-- Default behavior if detector not available: disable if external detected
+	if QAddon ~= nil and QAddon.name == "PapaCrown" then
+		return false
+	end
+	if RO ~= nil and RO.name == "SanctsUltimateOrganiser" then
+		return false
+	end
+	if CrownOfCyrodiil ~= nil and CrownOfCyrodiil.name == "CrownOfCyrodiil" then
+		return false
+	end
+	
+	return true
 end
 
 --Menu Interaction

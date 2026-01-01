@@ -324,6 +324,19 @@ function BeltalowdaSC.OnProfileChanged(currentProfile)
 	end
 end
 
+-- Check if compass should be enabled based on detector settings
+function BeltalowdaSC.ShouldEnableCompass()
+	local detector = Beltalowda.addOnIntegration.detector
+	if detector and detector.ShouldEnableBuiltIn and detector.detectorVars then
+		local addonType = detector.constants.ADDON_TYPE_COMPASS
+		local mode = detector.detectorVars.compassMode
+		return detector.ShouldEnableBuiltIn(addonType, mode)
+	end
+	
+	-- Default behavior if detector not available
+	return true
+end
+
 function BeltalowdaSC.SaveWindowLocation()
 	if BeltalowdaSC.scVars.positionLocked == false then
 		BeltalowdaSC.scVars.location = BeltalowdaSC.scVars.location or {}
@@ -344,6 +357,18 @@ function BeltalowdaSC.SetForegroundVisibility(eventCode, layerIndex, activeLayer
 end
 
 function BeltalowdaSC.OnPlayerActivated(eventCode, initial)
+	-- Check if we should enable based on detector settings
+	if not BeltalowdaSC.ShouldEnableCompass() then
+		if BeltalowdaSC.state.registredActiveConsumers == true then
+			EVENT_MANAGER:UnregisterForUpdate(BeltalowdaSC.callbackName)
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaSC.callbackName, EVENT_ACTION_LAYER_POPPED)
+			EVENT_MANAGER:UnregisterForEvent(BeltalowdaSC.callbackName, EVENT_ACTION_LAYER_PUSHED)
+			BeltalowdaSC.state.registredActiveConsumers = false
+		end
+		BeltalowdaSC.SetControlVisibility()
+		return
+	end
+	
 	local isInPvp = BeltalowdaUtil.IsInPvPArea()
 	if BeltalowdaSC.scVars.enabled == true and ((BeltalowdaSC.scVars.pvpEnabled == true and isInPvp == true) or (BeltalowdaSC.scVars.pveEnabled == true and isInPvp == false)) then
 		if BeltalowdaSC.state.registredActiveConsumers == false then
