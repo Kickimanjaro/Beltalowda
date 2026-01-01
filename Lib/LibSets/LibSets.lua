@@ -8,6 +8,17 @@ if LibSets then
     return -- Library already loaded
 end
 
+-- Check if LibStub is available
+if not LibStub then
+    return -- Can't register without LibStub
+end
+
+-- Check if newer version already loaded
+local existingLib = LibStub:GetLibrary("LibSets", true)
+if existingLib and existingLib.VERSION >= 71 then
+    return -- Newer or same version already loaded
+end
+
 LibSets = {}
 local lib = LibSets
 
@@ -43,7 +54,5 @@ function lib:IsSetItem(itemLink)
     return setId and setId > 0
 end
 
--- Export global reference (only if not already loaded with newer version)
-if LibStub then
-    LibStub:NewLibrary("LibSets", lib.VERSION)
-end
+-- Register with LibStub
+LibStub:NewLibrary("LibSets", lib.VERSION)

@@ -101,7 +101,7 @@ Press `/` to open chat and run these commands:
 ```lua
 /script d(Beltalowda.data.equipment.state.initialized)
 ```
-**Expected**: `true` (or `nil` if LibSets stub doesn't load properly)
+**Expected**: `true`
 
 ```lua
 /script d(Beltalowda.data.state.state.initialized)

@@ -7,6 +7,17 @@ if LibAsync then
     return -- Library already loaded
 end
 
+-- Check if LibStub is available
+if not LibStub then
+    return -- Can't register without LibStub
+end
+
+-- Check if newer version already loaded
+local existingLib = LibStub:GetLibrary("LibAsync", true)
+if existingLib and existingLib.VERSION >= 2.8 then
+    return -- Newer or same version already loaded
+end
+
 LibAsync = {}
 local lib = LibAsync
 
@@ -21,7 +32,5 @@ function lib:Create(name)
     }
 end
 
--- Export global reference (only if not already loaded with newer version)
-if LibStub then
-    LibStub:NewLibrary("LibAsync", lib.VERSION)
-end
+-- Register with LibStub
+LibStub:NewLibrary("LibAsync", lib.VERSION)
