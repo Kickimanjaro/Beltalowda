@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Beltalowda is a group PvP addon for The Elder Scrolls Online (ESO) written in Lua. It provides real-time ultimate tracking, synergy management, and group coordination features for PvP gameplay.
+Beltalowda is a greenfield group PvP addon for The Elder Scrolls Online (ESO) written in Lua, currently being built from planning documents in `docs/`. The addon will provide real-time ultimate tracking, synergy management, and group coordination features for PvP gameplay. The Kickimanjaro/RdK repository serves as a reference implementation of similar functionality.
 
 ## Critical ESO Addon Patterns
 
@@ -43,7 +43,11 @@ BeltalowdaModule.Initialize = function()
 end
 ```
 
-## Version Management
+## Future Patterns
+
+### Version Management
+
+**Note:** These files don't exist yet but will need to follow this pattern when created.
 
 When updating versions, you **MUST** update THREE locations:
 
@@ -53,21 +57,47 @@ When updating versions, you **MUST** update THREE locations:
 
 Follow [Keep a Changelog](https://keepachangelog.com/) format with sections: Added, Changed, Fixed, Removed.
 
+## Reference Implementation (RdK)
+
+**RdK** (Kickimanjaro/RdK) is a similar ESO addon with related functionality that serves as a reference implementation for Beltalowda.
+
+**How to use RdK as reference:**
+- RdK demonstrates ESO API patterns and implementation approaches
+- When planning docs mention "RdK does X", it means "reference this pattern from RdK"
+- RdK is NOT Beltalowda's codebase - it's a reference only
+- Use RdK to understand how similar features were implemented in practice
+
+**What to reference from RdK:**
+- ESO event handling patterns
+- LibGroupBroadcast integration approaches
+- UI layout and control structures
+- Namespace organization patterns
+- SavedVariables data structures
+
 ## Code Organization
 
+**Current State:**
+The repository currently contains only:
+- `docs/` - Planning and architecture documents
+- `old-docs/` - Historical documentation from previous implementation
+- `copilot-instructions.md` - This file
+- `LICENSE` - License file
+- `README.md` - Project overview
+
+**Planned Structure:**
+See `docs/ARCHITECTURE_PLAN.md` for the complete folder structure we're building towards. The architecture includes:
+- `Base/` - Core functionality modules (Data collectors, utilities, integrations)
+- `UI/` - User interface components
+- `Lang/` - Localization files (to be added later)
+
+**Reference Structure (from RdK):**
+The folder structure comments in planning documents show how RdK organized similar functionality. This is for reference only - Beltalowda may organize differently based on the architecture plan.
 ```
-Base/                    # Core functionality modules
-├── Compass/            # Compass features
-├── ClassRole/          # Class/role-based features
-├── Toolbox/            # Utility features (Synergy, Buffs, etc)
-├── Group/              # Group tracking (Ultimate, Debuff, Potion, Rapid)
-├── Profile/            # Profile management
-├── Configuration/      # Config import/export
-├── Admin/              # Admin utilities
-├── Util/               # Utilities (Ultimates, Group, Networking)
-└── AddOnIntegration/   # Integration with other addons
-UI/                      # User interface components
-Lang/                    # Localization (en.lua, de.lua, fr.lua)
+# Example RdK organization (reference only):
+Base/Compass/            # Compass features
+Base/ClassRole/          # Class/role-based features
+Base/Toolbox/            # Utility features (Synergy, Buffs, etc)
+Base/Group/              # Group tracking (Ultimate, Debuff, Potion, Rapid)
 ```
 
 ## Troubleshooting Philosophy
@@ -132,12 +162,17 @@ end
 
 ## Localization
 
-When adding UI text, update **all three** language files:
+**Current State:** Beltalowda is starting English-only without localization files.
+
+**Future Implementation:**
+When localization is added, update all language files with new UI text:
 - `Lang/en.lua` (English)
-- `Lang/de.lua` (German)
+- `Lang/de.lua` (German)  
 - `Lang/fr.lua` (French)
 
 Use constant naming pattern: `CONSTANT_NAME_PATTERN`
+
+**Reference:** RdK supported multiple languages, but Beltalowda will start English-only and can add localization later if needed.
 
 ## Event Handling Patterns
 
@@ -170,6 +205,8 @@ end
 
 ## Testing Checklist
 
+**Note:** This checklist is for future use when features are implemented.
+
 Before committing changes:
 - [ ] Feature works in PvE zones
 - [ ] Feature works in PvP zones
@@ -185,6 +222,8 @@ Before committing changes:
 
 **Location**: `/docs/` directory contains comprehensive planning documents
 
+**CRITICAL:** These planning docs are the PRIMARY source of truth. They describe what we're BUILDING (not what currently exists). The RdK repository is available as a reference for similar implementations.
+
 **Key Documents**:
 - `ARCHITECTURE_PLAN.md` - Overall system design and architecture
 - `LIBGROUPBROADCAST_INTEGRATION.md` - Network layer integration strategy
@@ -193,6 +232,12 @@ Before committing changes:
 - `DEVELOPMENT_ROADMAP.md` - 12-phase implementation plan (26 weeks)
 - `IMPLEMENTATION_CHECKPOINTS.md` - 30+ in-game test procedures
 - `PLANNING_SUMMARY.md` - Executive overview and quick reference
+
+**Implementation Guidance**:
+1. **Planning docs first** - Always start with the planning documents to understand what to build
+2. **RdK patterns second** - Reference RdK for ESO API patterns and implementation approaches
+3. **RdK is reference only** - RdK is NOT Beltalowda's codebase, it's a similar addon to learn from
+4. **When docs mention RdK** - Treat it as "look at RdK for how they solved this problem"
 
 **Documentation Maintenance Rules**:
 1. **Planning docs are source of truth** - implementation should match the plan
@@ -215,7 +260,8 @@ Before committing changes:
 3. **Follow the established namespace hierarchy** (`Beltalowda.module.submodule`)
 4. **Never assume a namespace exists** - always initialize with `or {}`
 5. **Find root causes, not symptoms** - avoid defensive nil checks
-6. **Update all language files** when adding UI text
+6. **Plan for localization** when adding UI text (starting English-only)
 7. **Test in ESO immediately** after changes
-8. **Update version in all required files** when releasing
+8. **Update version in all required files** when releasing (future)
 9. **"If we don't need it, don't store it"** - minimize SavedVariables data collection
+10. **Follow planning docs first** - then reference RdK for implementation patterns
