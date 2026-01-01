@@ -1,5 +1,5 @@
 -- Beltalowda Equipment Collector
--- Tracks equipped gear using LibSets
+-- Tracks equipped gear using LibSetDetection
 
 -- Initialize namespaces
 Beltalowda = Beltalowda or {}
@@ -45,9 +45,9 @@ function EquipmentCollector.Initialize()
     
     d("[Beltalowda] EquipmentCollector: Initializing")
     
-    -- Check if LibSets is available
-    if not LibSets then
-        d("[Beltalowda] EquipmentCollector: LibSets not available. Equipment tracking disabled.")
+    -- Check if LibSetDetection is available
+    if not LibSetDetection then
+        d("[Beltalowda] EquipmentCollector: LibSetDetection not available. Equipment tracking disabled.")
         return
     end
     

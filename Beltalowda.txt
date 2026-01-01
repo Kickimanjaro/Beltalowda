@@ -9,6 +9,17 @@
 # Main initialization
 Beltalowda.lua
 
+# Data Collection Layer
+Base/Data/DataCollector.lua
+Base/Data/ResourceCollector.lua
+Base/Data/PositionCollector.lua
+Base/Data/AbilityCollector.lua
+Base/Data/EquipmentCollector.lua
+Base/Data/StateCollector.lua
+
+# Network Layer
+Base/Network/GroupBroadcast.lua
+
 # Settings
 # BeltalowdaSettings.lua
 

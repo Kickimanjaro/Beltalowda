@@ -56,7 +56,34 @@ function Beltalowda.Initialize()
     
     d("[Beltalowda] " .. Beltalowda.version .. " loaded successfully")
     
---  d("[Beltalowda] All modules initialized")
+    -- Initialize data collection layer
+    if Beltalowda.data then
+        if Beltalowda.data.collector and Beltalowda.data.collector.Initialize then
+            Beltalowda.data.collector.Initialize()
+        end
+        if Beltalowda.data.resources and Beltalowda.data.resources.Initialize then
+            Beltalowda.data.resources.Initialize()
+        end
+        if Beltalowda.data.position and Beltalowda.data.position.Initialize then
+            Beltalowda.data.position.Initialize()
+        end
+        if Beltalowda.data.abilities and Beltalowda.data.abilities.Initialize then
+            Beltalowda.data.abilities.Initialize()
+        end
+        if Beltalowda.data.equipment and Beltalowda.data.equipment.Initialize then
+            Beltalowda.data.equipment.Initialize()
+        end
+        if Beltalowda.data.state and Beltalowda.data.state.Initialize then
+            Beltalowda.data.state.Initialize()
+        end
+    end
+    
+    -- Initialize network layer
+    if Beltalowda.network and Beltalowda.network.Initialize then
+        Beltalowda.network.Initialize()
+    end
+    
+    d("[Beltalowda] All modules initialized")
     
     return true
 end
