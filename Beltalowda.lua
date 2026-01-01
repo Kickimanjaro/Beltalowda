@@ -27,9 +27,9 @@ function Beltalowda.AreLibrariesLoaded()
         loaded = false
         table.insert(missingLibs, "LibGroupBroadcast")
     end
-    if not LibAddonMenu-2.0 then
+    if not LibAddonMenu2 then
         loaded = false
-        table.insert(missingLibs, "LibAddonMenu-2.0")
+        table.insert(missingLibs, "LibAddonMenu2")
     end
     if not LibSetDetection then
         loaded = false
