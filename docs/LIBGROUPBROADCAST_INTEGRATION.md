@@ -109,29 +109,37 @@ Before implementing custom protocols, the LibGroupBroadcast community recommends
    - **Verdict**: Partially useful, but missing critical data (health, ultimate %)
 
 2. **LibGroupCombatStats** (IDs 20-25)
+   - **Author**: m00nyONE (creator of Hodor Reflexes)
+   - **Links**: 
+     - ESOUI: https://www.esoui.com/downloads/info4024-LibGroupCombatStats.html
+     - GitHub: https://github.com/m00nyONE/LibGroupCombatStats
    - **Provides**: 
      - Ultimate Type (ID 20): Equipped ultimates + activation costs
      - Ultimate Value (ID 21): Current ultimate points
-     - DPS (ID 22): Current DPS & overall damage
-     - HPS (ID 23): Current HPS & overheal
+     - DPS (ID 22): Current DPS & overall damage (for trial statistics)
+     - HPS (ID 23): Current HPS & overheal (for trial statistics)
      - SkillLines (ID 24): Equipped skill lines
-   - **Verdict**: **HIGHLY RELEVANT** - Covers ultimate tracking needs!
+   - **Purpose**: Created for Hodor Reflexes (PvE trial coordination addon)
+   - **Verdict**: **HIGHLY RELEVANT** - Ultimate tracking is exactly what we need! DPS/HPS are trial-focused but harmless to include.
 
 3. **LibGroupPotionCooldowns** (IDs 26-29)
    - **Provides**: Potion cooldown (ID 26)
    - **Verdict**: Potentially useful for ability tracking
 
 4. **LibSetDetection** (IDs 40-49)
+   - **Author**: ExoY
+   - **Link**: https://www.esoui.com/downloads/info3338-LibSetDetection.html
    - **Provides**: Equipped set pieces (ID 40)
-   - **Verdict**: **RELEVANT** - May overlap with our LibSets integration
+   - **Purpose**: Shares equipped gear sets with group via LibGroupBroadcast
+   - **Verdict**: **HIGHLY RELEVANT** - This does EXACTLY what we planned with LibSets! We should use this instead of reinventing it.
 
 ### Analysis: Can We Reuse Existing Libraries?
 
 **Resources (Health/Magicka/Stamina/Ultimate)**:
-- ✅ **LibGroupCombatStats** already provides Ultimate Type (ID 20) and Ultimate Value (ID 21)
+- ✅ **LibGroupCombatStats** already provides Ultimate Type (ID 20) and Ultimate Value (ID 21) - **USE THIS!**
 - ⚠️ **LibGroupResources** provides Magicka/Stamina but NOT Health
 - ❌ No existing library provides Health
-- **Recommendation**: Use LibGroupCombatStats for ultimate data; still need custom protocol for Health
+- **Recommendation**: **Add LibGroupCombatStats as dependency** and use it for ultimate data; still need custom protocol for Health
 
 **Position**:
 - ❌ No existing library provides position data
@@ -142,9 +150,8 @@ Before implementing custom protocols, the LibGroupBroadcast community recommends
 - **Recommendation**: Custom protocol required (ID 223)
 
 **Equipment**:
-- ✅ **LibSetDetection** (ID 40) already shares equipped set pieces
-- ❌ However, this may conflict with our LibSets integration approach
-- **Recommendation**: Evaluate LibSetDetection vs custom implementation
+- ✅ **LibSetDetection** (ID 40) already shares equipped set pieces - **USE THIS!**
+- **Recommendation**: **Add LibSetDetection as dependency** instead of implementing our own LibSets integration. This is exactly what we need and avoids redundant network traffic.
 
 **State (Combat/Alive/Online)**:
 - ❌ No existing library provides state flags
@@ -154,44 +161,121 @@ Before implementing custom protocols, the LibGroupBroadcast community recommends
 - ❌ No existing library provides buff/debuff tracking
 - **Recommendation**: Custom protocol required (ID 227)
 
+### ZOS Policy Concerns: PvP Addons
+
+**Background**: The user discovered discussion on the LibSetDetection thread where ZOS staff expressed concerns about "real-time aid to help min/max a battle" in PvP. The addon community is concerned about losing LibGroupBroadcast if PvP addons cross policy lines.
+
+**Analysis of Risk**:
+
+1. **What Hodor Reflexes Does (PvE)**:
+   - Ultimate coordination (who casts when)
+   - DPS/HPS statistics for post-fight analysis
+   - Group composition tracking
+   - **Verdict**: Accepted by community and ZOS for trials (PvE)
+
+2. **What Bomb Timers Do (PvP)**:
+   - Shows when coordinated damage abilities will detonate
+   - Helps groups sync damage output
+   - **Verdict**: Multiple PvP addons do this, still available on ESOUI
+
+3. **What Beltalowda Plans**:
+   - Group resource awareness (health/magicka/stamina/ultimate)
+   - Ultimate coordination (same as Hodor Reflexes)
+   - Position tracking (follow the crown)
+   - Attack coordination (bomb timers)
+   - **Verdict**: Comparable to existing PvP addons, NOT automated combat assistance
+
+**Key Distinction** (per ZOS policy):
+- ❌ **PROHIBITED**: Automated combat decisions, invisible attack warnings, instant reaction triggers
+- ✅ **PERMITTED**: Information display, group coordination tools, player awareness enhancements
+
+**Our Assessment**: Beltalowda is a **coordination tool**, not a combat automation tool. It provides the same level of information to PvP groups that Hodor Reflexes provides to trial groups. The goal is to level the playing field by making group coordination accessible to all players, not to create an unfair advantage through automation.
+
+**Risk Mitigation**:
+1. Keep features focused on **information display** and **coordination**, not automation
+2. Avoid features that provide **instant reaction warnings** to invisible mechanics
+3. Model features after accepted PvE addons (Hodor Reflexes)
+4. Be transparent about functionality in addon description
+5. Monitor community feedback and ZOS policy updates
+
+**Recommendation**: Proceed with caution, but proceed. The features planned are defensible as coordination tools comparable to existing accepted addons.
+
 ### Integration Strategy: Hybrid Approach
 
-**Phase 1: Evaluate Dependencies**
-1. **Add LibGroupCombatStats** as dependency (if not already present)
-2. **Add LibSetDetection** as dependency (evaluate vs LibSets)
-3. Test existing libraries with current group setup
+**Phase 1: Add Existing Libraries as Dependencies**
+1. ✅ **Add LibGroupCombatStats** as dependency
+   - Provides: Ultimate Type (ID 20), Ultimate Value (ID 21)
+   - Eliminates need for custom ultimate protocols
+   - Same library used by Hodor Reflexes (proven in production)
+   
+2. ✅ **Add LibSetDetection** as dependency  
+   - Provides: Equipped set pieces (ID 40)
+   - **Replaces our planned LibSets integration** for equipment sharing
+   - Already does exactly what we need
+   - Note: We may still use LibSets locally for set detection, but LibSetDetection handles network sharing
+
+3. ⚠️ **Evaluate LibGroupResources** (optional)
+   - Provides: Magicka (ID 11), Stamina (ID 10)
+   - Missing: Health
+   - Decision: May skip in favor of unified resource packet
 
 **Phase 2: Implement Only What's Missing**
-- Skip implementing custom protocols for data already available
-- Focus custom protocols on: Health, Position, Abilities, State, Effects
+Custom protocols needed for:
+- ✅ **Health** (220): Only missing resource
+- ✅ **Position** (222): For follow-the-crown features  
+- ✅ **Ability Bar** (223): Full 10-ability skill bar
+- ✅ **Player State** (226): Combat, alive, online status
+- ✅ **Active Effects** (227): Critical buffs/debuffs
 
-**Phase 3: Fallback Strategy**
-- If existing libraries have compatibility issues or insufficient data
-- Fall back to custom protocols for those specific data types
+**Phase 3: Integration Architecture**
+```lua
+-- Beltalowda will consume data from:
+-- 1. LibGroupCombatStats (ultimate tracking)
+-- 2. LibSetDetection (equipment tracking)
+-- 3. Custom Beltalowda protocols (health, position, abilities, state, effects)
+
+-- This hybrid approach maximizes reuse while filling gaps
+```
+
+**Benefits of This Approach**:
+1. ✅ Reduces redundant network traffic (community best practice)
+2. ✅ Leverages battle-tested libraries (LibGroupCombatStats used in Hodor Reflexes)
+3. ✅ Smaller development scope (don't reinvent ultimate/equipment sharing)
+4. ✅ Better compatibility with other addons using same libraries
+5. ✅ Faster implementation (focus on unique features)
 
 ### Updated Message ID Allocation
 
-Based on reusing existing libraries:
+Based on reusing existing libraries, our allocation is simplified:
 
-**Reused from Existing Libraries**:
-- ~~200-201~~: Use **LibGroupCombatStats IDs 20-21** (Ultimate Type, Ultimate Value)
-- ~~204-205~~: Evaluate **LibSetDetection ID 40** (Equipment sets)
+**Reused from Existing Libraries** (NO CUSTOM IDS NEEDED):
+- **LibGroupCombatStats IDs 20-21**: Ultimate Type, Ultimate Value ✅
+- **LibSetDetection ID 40**: Equipment sets ✅
+- *(Optional) LibGroupResources IDs 10-11*: Magicka, Stamina
 
 **Custom Beltalowda Protocols** (220-229):
-- **220**: Health packet (only missing resource)
-- **221**: ~~Ultimate details~~ **Stamina** (LibGroupResources only has ID 10, we may need refined version)
-- **222**: Position packet (X, Y, Zone)
-- **223**: Ability bar packet (10 ability IDs)
-- **224**: Equipment packet (sets, if LibSetDetection insufficient)
-- **225**: Equipment packet part 2 (if needed)
-- **226**: State packet (combat, alive, online status)
-- **227**: Active effects (critical buffs/debuffs)
-- **228-229**: Reserved for future features
+- **220**: **Health packet** (only missing resource - critical for PvP awareness)
+- **221**: ~~Ultimate details~~ **AVAILABLE** (no longer needed, using LibGroupCombatStats)
+- **222**: **Position packet** (X, Y, Zone for follow-the-crown)
+- **223**: **Ability bar packet** (10 ability IDs for coordination)
+- **224**: ~~Equipment packet~~ **AVAILABLE** (no longer needed, using LibSetDetection)
+- **225**: ~~Equipment packet part 2~~ **AVAILABLE** 
+- **226**: **State packet** (combat, alive, online, reload status)
+- **227**: **Active effects** (critical buffs/debuffs for coordination)
+- **228-229**: **Reserved** for future features
 
-**Action Required**: 
-- Research and test LibGroupCombatStats and LibSetDetection
-- Determine if they meet our needs before implementing custom protocols
-- Update dependencies in Beltalowda.txt if adopting these libraries
+**Summary**: 
+- **Using from existing libraries**: Ultimates (LibGroupCombatStats), Equipment (LibSetDetection)
+- **Custom protocols needed**: Health, Position, Abilities, State, Effects (5 protocols)
+- **Available slots**: 221, 224, 225, 228, 229 (5 slots for future expansion)
+
+**Action Items**: 
+1. ✅ Add LibGroupCombatStats to dependencies in Beltalowda.txt
+2. ✅ Add LibSetDetection to dependencies in Beltalowda.txt
+3. ✅ Subscribe to LibGroupCombatStats data (IDs 20-21) for ultimate tracking
+4. ✅ Subscribe to LibSetDetection data (ID 40) for equipment tracking
+5. ✅ Implement only 5 custom protocols instead of original 8
+6. ✅ Update wiki with final protocol details before release (IDs 220, 222, 223, 226, 227)
 
 ## Requesting Message IDs
 

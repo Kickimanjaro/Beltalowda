@@ -38,9 +38,11 @@ This document provides a high-level summary of the comprehensive planning create
 **Key Sections**:
 - What is LibGroupBroadcast and why use it?
 - Current state in Beltalowda (already a dependency!)
+- **Existing library research** (LibGroupCombatStats, LibSetDetection, LibGroupResources)
+- **Hybrid integration strategy** (reuse existing + custom for gaps)
+- **ZOS policy analysis** (PvP addon concerns and risk mitigation)
 - Comparison: Party chat vs LibGroupBroadcast
-- Requesting message IDs (process and template)
-- Implementation strategy (7 phases)
+- Updated message ID allocation (5 custom protocols instead of 8)
 - Message formats for each data type
 - Broadcasting strategy (frequency tiers, compression)
 - Testing strategy
@@ -48,7 +50,9 @@ This document provides a high-level summary of the comprehensive planning create
 - Performance considerations
 - Common issues and solutions
 
-**Size**: 22KB, implementation guide
+**Size**: 25KB+, implementation guide with community best practices
+
+**Major Update**: Recommends using LibGroupCombatStats (ultimate tracking) and LibSetDetection (equipment sharing) instead of building custom implementations. Reduces from 8 custom protocols to 5.
 
 ---
 
@@ -205,23 +209,33 @@ This document provides a high-level summary of the comprehensive planning create
 - EquipmentCollector module will handle data collection
 
 ### Q: Dependent Libraries
-**Answer**: See ARCHITECTURE_PLAN.md, Dependency Analysis section
+**Answer**: See ARCHITECTURE_PLAN.md, Dependency Analysis section + LIBGROUPBROADCAST_INTEGRATION.md
 
 **Complete Dependency Tree**:
 ```
 Already Have:
 - LibAddonMenu-2.0 (settings)
 - LibMapPins, LibMapPing, LibGPS (positioning)
-- Lib3D (3D rendering)
-- LibFoodDrinkBuff, LibPotionBuff (tracking)
+- Lib3D (3D rendering) - **DEPRECATED, remove**
+- LibFoodDrinkBuff (tracking) - May remove
+- LibPotionBuff (tracking) - **DEPRECATED/BROKEN, remove**
 - LibCustomMenu (menus)
 - LibGroupBroadcast (data sharing)
 - LibDebugLogger (debugging)
 
 Need to Add:
-- LibSets (set detection)
+- **LibGroupCombatStats** (ultimate tracking - from Hodor Reflexes)
+- **LibSetDetection** (equipment set sharing - replaces our custom implementation)
+- LibSets (local set detection)
 - LibAsync (dependency of LibSets)
+
+Community Best Practice:
+- Reuse existing LibGroupBroadcast libraries instead of reinventing
+- Reduces redundant network traffic
+- Proven in production (Hodor Reflexes uses LibGroupCombatStats)
 ```
+
+**Major Architecture Change**: Instead of building custom protocols for ultimates and equipment, we'll use existing libraries (LibGroupCombatStats and LibSetDetection). This reduces development scope and follows community best practices.
 
 ### Q: SavedVariables Usage
 **Answer**: See SAVEDVARIABLES_GUIDE.md
@@ -282,17 +296,19 @@ Base/Util/             # Existing: Keep and enhance
 **Answer**: See DEVELOPMENT_ROADMAP.md
 
 **Order Rationale**:
-1. **Phase 0: Foundation** - Don't break anything, set up infrastructure
+1. **Phase 0: Foundation** - Don't break anything, set up infrastructure, **research existing libraries (Week 2)**
 2. **Phase 1: Data Collection** - Collect data locally first (no networking complexity)
-3. **Phase 2: LibGroupBroadcast** - Share basic data once collection works
+3. **Phase 2: LibGroupBroadcast** - Share basic data once collection works, **use hybrid approach (existing libs + custom)**
 4. **Phases 3-8: Features** - Build features incrementally on data foundation
 5. **Phases 9-10: Polish** - Refine once features work
 6. **Phase 11: Optimize** - Performance tuning near end
 7. **Phase 12: Test & Document** - Final validation
 
 **Why This Order**:
+- Week 2 research prevents reinventing the wheel
 - Data collection first avoids dependency on networking
 - Can test locally with debug commands
+- Hybrid approach reduces development scope (use LibGroupCombatStats & LibSetDetection)
 - Each phase builds on previous
 - Regular checkpoints prevent getting "too far ahead"
 - Features depend on data layer, so data layer first
@@ -315,6 +331,27 @@ Base/Util/             # Existing: Keep and enhance
   - Troubleshooting if fails
   - Success criteria before proceeding
 - Prevents building on broken foundation
+
+### Q: ZOS Policy on PvP Addons
+**Answer**: See LIBGROUPBROADCAST_INTEGRATION.md, "ZOS Policy Concerns" section
+
+**Summary**:
+- **Concern**: ZOS staff warned against "real-time aid to help min/max battle" in PvP
+- **Community Fear**: Losing LibGroupBroadcast if PvP addons cross policy lines
+- **Our Assessment**: Beltalowda is a **coordination tool**, not automation
+- **Key Distinction**:
+  - ❌ Prohibited: Automated combat decisions, invisible attack warnings, instant reactions
+  - ✅ Permitted: Information display, group coordination, player awareness
+- **Comparison**: 
+  - Hodor Reflexes (PvE): Ultimate coordination, DPS/HPS stats - **Accepted by ZOS**
+  - Bomb Timers (PvP): Coordinated damage timing - **Multiple addons exist**
+  - Beltalowda (PvP): Same coordination level as Hodor Reflexes - **Defensible**
+- **Risk Mitigation**:
+  - Focus on information display, not automation
+  - Avoid instant reaction triggers
+  - Model after accepted PvE addons
+  - Be transparent about functionality
+- **Verdict**: Proceed with caution. Features planned are coordination tools comparable to existing accepted addons. Goal is to make group coordination accessible to all players, not create unfair automation advantage.
 
 ---
 

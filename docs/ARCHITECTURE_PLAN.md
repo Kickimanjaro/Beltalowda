@@ -26,13 +26,20 @@ This document outlines a comprehensive plan to enhance Beltalowda with advanced 
   - LibFoodDrinkBuff (food/drink tracking) - May remove in favor of native buff detection
   - LibPotionBuff (potion tracking) - **DEPRECATED/BROKEN**: Remove in enhanced version
   - **LibGroupBroadcast** (already declared as dependency!)
+  
+- **Libraries to Add**:
+  - **LibGroupCombatStats** (ultimate tracking, DPS/HPS) - Reuse m00ny's library from Hodor Reflexes
+  - **LibSetDetection** (equipment set sharing) - Reuse ExoY's library instead of implementing our own
+  - LibSets (local set detection) - Keep for local gear analysis
+  - LibAsync (required by LibSets)
 
 ### Current Limitations
 1. **Simple Networking**: Ultimate tracking uses party chat messages instead of LibGroupBroadcast's full capabilities
 2. **Limited Data Sharing**: Only ultimate percentages are currently broadcast
-3. **No Equipment Tracking**: Cannot track equipped gear or sets
+3. **No Equipment Tracking**: Cannot track equipped gear or sets (will use LibSetDetection)
 4. **Basic Ability Detection**: Limited to ultimate abilities, not full skill bar
 5. **No Position Sharing**: LibGPS provides coordinate functions but position data is not currently broadcast to group members
+6. **Reinventing the Wheel**: Not leveraging existing LibGroupBroadcast ecosystem (LibGroupCombatStats, LibSetDetection)
 
 ## Proposed Enhanced Architecture
 
@@ -70,21 +77,23 @@ function DataCollector.GetGroupData()
 ```
 
 #### ResourceCollector
-**Purpose**: Track all player resources
+**Purpose**: Track player resources (local only - ultimates come from LibGroupCombatStats)
 
 **Data Tracked**:
-- Current/Max Health
-- Current/Max Magicka  
-- Current/Max Stamina
-- Current/Max Ultimate
-- Ultimate cost (for percentage calculation)
-- Ultimate ability ID (which ult is slotted)
+- Current/Max Health (broadcast via custom protocol 220)
+- Current/Max Magicka (optionally use LibGroupResources ID 11 or custom)
+- Current/Max Stamina (optionally use LibGroupResources ID 10 or custom)
+- ~~Current/Max Ultimate~~ **Use LibGroupCombatStats** (IDs 20-21) for ultimate tracking
+- ~~Ultimate cost~~ **Use LibGroupCombatStats** (ID 20) for ultimate ability ID and cost
+- ~~Ultimate ability ID~~ **Use LibGroupCombatStats** (ID 20) for which ult is slotted
 
 **Events Used**:
-- `EVENT_POWER_UPDATE` (all resource changes)
+- `EVENT_POWER_UPDATE` (health/magicka/stamina changes)
 - `EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED` (shield values)
 
 **Update Frequency**: Real-time with 5% threshold for broadcasting
+
+**Integration Note**: This collector focuses on Health (the only resource not covered by existing libraries). Ultimate data comes from subscribing to LibGroupCombatStats broadcasts.
 
 #### PositionCollector
 **Purpose**: Track player position for group coordination
@@ -129,17 +138,18 @@ function DataCollector.GetGroupData()
 - Major/Minor buff tracking
 
 #### EquipmentCollector
-**Purpose**: Track equipped gear for set-dependent features
+**Purpose**: Track equipped gear for set-dependent features (uses LibSetDetection for network sharing)
 
 **Data Tracked**:
-- Equipped item set IDs (via LibSets)
-- Set names (localized)
+- ~~Equipped item set IDs (via LibSets)~~ **Use LibSetDetection** (ID 40) for group sharing
+- Set names (localized) - LibSets used locally for identification
 - Active set bonuses (5-piece, 2-piece counts)
 - Monster set cooldown status
 - Proc set cooldowns
 
 **Integration**: 
-- Uses **LibSets** for set identification
+- Uses **LibSets** for local set identification
+- Uses **LibSetDetection** for broadcasting sets to group (avoids redundant network traffic)
 - Tracks 14 equipment slots
 - Detects set bonus activation
 
@@ -151,6 +161,8 @@ function DataCollector.GetGroupData()
 - Monster set cooldown tracking
 - Proc set coordination
 - Role detection based on gear (tank/healer/DPS sets)
+
+**Network Strategy**: Subscribe to LibSetDetection broadcasts from group members instead of implementing custom protocol. This leverages existing ecosystem and reduces network load.
 
 #### StateCollector
 **Purpose**: Track player state and availability
