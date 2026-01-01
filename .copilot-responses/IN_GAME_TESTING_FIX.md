@@ -15,24 +15,15 @@ The issue was identified in the addon manifest file (`Beltalowda.txt`):
 
 **Problem**: `LibSetDetection` and `LibGroupCombatStats` were listed as **required dependencies** using `DependsOn`.
 
-### Initial Fix Attempt (Still Broken)
-```
-## DependsOn: LibAsync>=3.1.1 LibGroupBroadcast>=91 LibAddonMenu-2.0>=41
-## OptionalDependsOn: LibSetDetection>=4 LibCombat>=84 LibGroupCombatStats>=6
-```
-
-**Problem**: In ESO's addon system, `OptionalDependsOn` still requires the addon to be **installed**. It only makes version requirements more flexible and ensures load order. If the addon files are not present, ESO will not load the dependent addon.
-
 In ESO's addon system:
-- `DependsOn` = **Hard requirement** - addon will NOT load if dependency is missing, enforces version
-- `OptionalDependsOn` = **Still requires addon to be present** - addon will NOT load if dependency files are missing, but version checking is more lenient
-- **No dependency declaration** = Truly optional - addon loads regardless, library detected dynamically at runtime
+- `DependsOn` = **Hard requirement** - addon will NOT load if dependency is missing
+- `OptionalDependsOn` = **Soft requirement** - addon will load even if dependency is missing, but library is used if present
 
 ### The Chicken-and-Egg Problem
 
 1. User wants to test if LibGroupCombatStats is installed
 2. User runs `/btlwdata libapi` command to check
-3. BUT: If LibGroupCombatStats files are not present, addon won't load (even with OptionalDependsOn)
+3. BUT: If LibGroupCombatStats is missing, addon won't load (hard dependency with `DependsOn`)
 4. If addon doesn't load, slash commands are never registered
 5. Result: "not a valid command" error
 
@@ -50,35 +41,36 @@ else
 end
 ```
 
-The code was designed to work with **truly optional** libraries that can be completely absent, but any dependency declaration (DependsOn or OptionalDependsOn) requires the addon files to be present.
+The code was designed to work with **optional** libraries, but the manifest declared them as **required**. This mismatch caused the addon to fail to load when libraries were missing.
 
 ## Solution
 
 ### After (Fixed)
 ```
 ## DependsOn: LibAsync>=3.1.1 LibGroupBroadcast>=91 LibAddonMenu-2.0>=41
+## OptionalDependsOn: LibSetDetection>=4 LibCombat>=84 LibGroupCombatStats>=6
 ```
 
-**Key Change**: Completely removed LibSetDetection, LibCombat, and LibGroupCombatStats from the manifest. They are now detected dynamically at runtime in the Lua code.
+**Key Change**: Moved LibSetDetection, LibCombat, and LibGroupCombatStats from `DependsOn` to `OptionalDependsOn`. According to ESO addon documentation, `OptionalDependsOn` allows the addon to load even when the libraries are missing.
 
 ### Changes Made
 
-1. **Beltalowda.txt** - Removed LibSetDetection, LibCombat, and LibGroupCombatStats entirely from dependencies
+1. **Beltalowda.txt** - Moved LibSetDetection, LibCombat, and LibGroupCombatStats to `OptionalDependsOn`
 2. **Beltalowda.lua** - Updated library check to only fail on missing required libraries
 3. **Base/Network/GroupBroadcast.lua** - Improved error handling
-4. **Documentation** - Added clarification that `/btlwdata` is an addon command and explained ESO dependency behavior
+4. **Documentation** - Added clarification that `/btlwdata` is an addon command
 
 ### Required vs Optional Libraries
 
-**Required (Must be installed)**:
+**Required (DependsOn - Must be installed)**:
 - `LibAsync>=3.1.1` - Core async operations
 - `LibGroupBroadcast>=91` - Network communication foundation
 - `LibAddonMenu-2.0>=41` - Settings UI framework
 
-**Optional (Detected at runtime, can be completely absent)**:
-- `LibSetDetection>=4` - Equipment tracking (Phase 2 feature) - if installed, will be used automatically
-- `LibCombat>=84` - Combat detection utilities - if installed, will be used automatically
-- `LibGroupCombatStats>=6` - Ultimate tracking (Phase 2 feature) - if installed, will be used automatically
+**Optional (OptionalDependsOn - Addon loads without them)**:
+- `LibSetDetection>=4` - Equipment tracking (Phase 2 feature)
+- `LibCombat>=84` - Combat detection utilities
+- `LibGroupCombatStats>=6` - Ultimate tracking (Phase 2 feature)
 
 ### Why This Design is Correct
 
@@ -86,14 +78,11 @@ The code was designed to work with **truly optional** libraries that can be comp
 2. **Testability**: Users can run `/btlwdata libapi` to check what's available
 3. **User Experience**: Users get warning messages instead of complete failure
 4. **Incremental Features**: Phase 2 features work when libraries are present, don't break addon when absent
-5. **True Optional**: Libraries can be completely absent from the system, not just missing version requirements
+5. **ESO Standard**: `OptionalDependsOn` is the standard ESO way to declare optional libraries
 
-### Load Order Consideration
+### Load Order
 
-Since these libraries are not in the manifest, they may load after Beltalowda if they are installed. The code handles this by:
-- Checking for library availability during Initialize()
-- Showing warnings if libraries are not available at initialization time
-- If a library loads later, features won't be available until next reload (this is acceptable for optional features)
+`OptionalDependsOn` ensures that if the optional libraries are installed, they will load before Beltalowda, allowing proper initialization.
 
 ## Verification
 

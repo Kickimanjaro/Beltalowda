@@ -58,12 +58,11 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 ## [Unreleased]
 
 ### Fixed
-- Removed LibGroupCombatStats, LibSetDetection, and LibCombat from dependencies entirely
+- Made LibGroupCombatStats, LibSetDetection, and LibCombat optional dependencies
+  - Changed from `DependsOn` to `OptionalDependsOn` in manifest
   - Allows addon to load even when these libraries are not installed
   - Enables testing with `/btlwdata libapi` command to check library availability
-  - Libraries are detected dynamically at runtime if present
-  - If libraries are installed, they will be used automatically for enhanced functionality
-  - Note: In ESO, `OptionalDependsOn` still requires the library to be installed; complete removal is needed for truly optional libraries
+  - Libraries enhance functionality when present but are not required for addon to load
 - Fixed operator precedence issue in `/btlwdata equip` command
 - Improved error handling in `/btlwdata libapi` command to handle nil values gracefully
 - Updated library check to only fail on missing required libraries (LibAsync, LibGroupBroadcast, LibAddonMenu2)
