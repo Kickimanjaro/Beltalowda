@@ -387,57 +387,76 @@ end
 
 ### Role Detection Based on Equipment
 
-Detect player role based on equipped sets:
+Detect player role based on equipped sets (PvP roles: Damage, Support, Lead):
+
+**Note on PvP Role Structure**: ESO PvP uses different roles than traditional MMO structure:
+- **Damage**: Primary damage dealers (replaces traditional "DPS")
+- **Support**: Healers, buff providers, utility (replaces traditional "Healer", includes some traditional support functions)
+- **Lead**: Crown/puller role, coordinates group movement and enemy positioning (replaces traditional "Tank" in PvP context)
+
+**Advanced Roles** (for specialized tracking in casual zerg groups):
+- **Puller**: Traditionally part of Lead role, focuses on enemy positioning (Rush of Agony, Dark Convergence, Void Bash)
+- **Rapids**: Mobility buff provider (now integrated into Support with 12-player cap)
+- **Purger**: Debuff removal specialist (now integrated into Support with 12-player cap)
+- **Negater**: Ultimate-specific role for Negate Magic (casual groups may have dedicated Negate/Barrier trackers)
+
+**Group Size Context**:
+- **Ballgroups** (12 players): Highly optimized composition, multi-role players, focus on Damage/Support/Lead
+- **Zerg Groups** (multiple 12-player groups): More casual, may have single-purpose roles like dedicated Barrier/Negate trackers
+- **Addon Design**: Primary support for ballgroups (Damage/Support/Lead), but Lead role UI provides awareness for zerg group coordination
 
 ```lua
--- Tank sets
-BeltalowdaEquipment.TANK_SETS = {
-    [123] = true,  -- Ebon Armory
-    [124] = true,  -- Plague Doctor
-    -- Add more tank sets
+-- Lead sets (Pull/Crown sets for group coordination)
+BeltalowdaEquipment.LEAD_SETS = {
+    [123] = true,  -- Rush of Agony (pull set)
+    [124] = true,  -- Dark Convergence (pull set)
+    [125] = true,  -- Void Bash (pull set)
+    -- Add more lead/pull sets
 }
 
--- Healer sets
-BeltalowdaEquipment.HEALER_SETS = {
-    [125] = true,  -- Spell Power Cure
-    [126] = true,  -- Worm's Raiment
-    -- Add more healer sets
+-- Support sets (Healer/Support role)
+BeltalowdaEquipment.SUPPORT_SETS = {
+    [126] = true,  -- Spell Power Cure
+    [127] = true,  -- Worm's Raiment
+    [128] = true,  -- Transmutation
+    -- Add more support sets
 }
 
--- DPS sets (less reliable, many options)
-BeltalowdaEquipment.DPS_SETS = {
-    [127] = true,  -- Relequen
-    [128] = true,  -- Advancing Yokeda
-    -- Add more DPS sets
+-- Damage sets (DPS role - many options)
+BeltalowdaEquipment.DAMAGE_SETS = {
+    [129] = true,  -- Plaguebreak
+    [130] = true,  -- Vicious Death
+    [131] = true,  -- Crafty Alfiq
+    -- Add more damage sets
 }
 
 function BeltalowdaEquipment.DetectRole()
     local equippedSets = BeltalowdaEquipment.GetEquippedSets()
     
-    local tankScore = 0
-    local healerScore = 0
-    local dpsScore = 0
+    local leadScore = 0
+    local supportScore = 0
+    local damageScore = 0
     
     for setId, count in pairs(equippedSets) do
         if count >= 5 then  -- Full set bonus active
-            if BeltalowdaEquipment.TANK_SETS[setId] then
-                tankScore = tankScore + 1
+            if BeltalowdaEquipment.LEAD_SETS[setId] then
+                leadScore = leadScore + 1
             end
-            if BeltalowdaEquipment.HEALER_SETS[setId] then
-                healerScore = healerScore + 1
+            if BeltalowdaEquipment.SUPPORT_SETS[setId] then
+                supportScore = supportScore + 1
             end
-            if BeltalowdaEquipment.DPS_SETS[setId] then
-                dpsScore = dpsScore + 1
+            if BeltalowdaEquipment.DAMAGE_SETS[setId] then
+                damageScore = damageScore + 1
             end
         end
     end
     
     -- Determine role based on highest score
-    local role = "DPS"  -- Default
-    if tankScore > healerScore and tankScore > dpsScore then
-        role = "Tank"
-    elseif healerScore > tankScore and healerScore > dpsScore then
-        role = "Healer"
+    local role = "Damage"  -- Default
+    if leadScore > supportScore and leadScore > damageScore then
+        role = "Lead"
+    elseif supportScore > leadScore and supportScore > damageScore then
+        role = "Support"
     end
     
     BeltalowdaEquipment.state.detectedRole = role
@@ -606,9 +625,11 @@ Track proc-based sets for coordination:
 
 ```lua
 -- Useful for sets like:
--- - Maarselok (healer)
--- - Crimson Oath's Rive (tank)
--- - Pillar of Nirn (DPS)
+-- - Earthgore (support/healer - AoE heal proc)
+-- - Black Gem Monstrosity (damage - monster set proc)
+-- - Selene's (damage - monster set proc)
+-- - Rush of Agony (lead - pull proc with cooldown tracking)
+-- - Dark Convergence (lead - pull proc with cooldown tracking)
 -- Show when procs are active for group coordination
 ```
 

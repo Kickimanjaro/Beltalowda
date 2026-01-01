@@ -191,14 +191,79 @@ Before implementing custom protocols, the LibGroupBroadcast community recommends
 
 **Our Assessment**: Beltalowda is a **coordination tool**, not a combat automation tool. It provides the same level of information to PvP groups that Hodor Reflexes provides to trial groups. The goal is to level the playing field by making group coordination accessible to all players, not to create an unfair advantage through automation.
 
+### Defensive Documentation: What We Will NOT Do
+
+**Issue**: Potential challenge on use of LibGroupBroadcast for PvP and/or rejection from ESOUI upload (which would prevent use of Minion Addon Manager).
+
+**PROHIBITED Features** (to avoid policy violations):
+
+1. ❌ **NO Automated Reactions**
+   - No instant block/dodge commands based on enemy actions
+   - No automatic ability casting or combat decisions
+   - No macros or combat automation of any kind
+   - **Contrast**: We only DISPLAY information, players must manually react
+
+2. ❌ **NO Invisible Mechanic Detection**
+   - No detection of invisible enemy abilities/attacks
+   - No detection of stealth players beyond what's visible in-game
+   - No detection of off-screen threats not visible to player
+   - **Contrast**: All our data is from YOUR group members, not enemies
+
+3. ❌ **NO Instant Advantage Warnings**
+   - No "block now!" warnings for incoming attacks
+   - No automated threat callouts for invisible mechanics
+   - No timing assistance that reacts faster than humanly possible
+   - **Contrast**: We show timers for YOUR abilities that YOU cast
+
+4. ❌ **NO Information Unavailable to Manual Play**
+   - No data mining of enemy resources/abilities
+   - No detection of enemy group composition
+   - No revelation of hidden game mechanics
+   - **Contrast**: All data is from voluntary sharing within your group
+
+**PERMITTED Features** (aligned with existing addons):
+
+1. ✅ **Group Member Resource Awareness**
+   - Show health/magicka/stamina of YOUR group members
+   - Same as default UI but enhanced visibility
+   - **Precedent**: Default group frames already show this
+
+2. ✅ **Ultimate Coordination**
+   - Show which ultimates YOUR group members have ready
+   - Coordinate who casts when for efficiency
+   - **Precedent**: Hodor Reflexes does this for PvE trials
+
+3. ✅ **Attack Timing Coordination**
+   - Show when YOUR bomb/shalk abilities will detonate
+   - Help YOUR group sync damage output
+   - **Precedent**: BombTimer addon does exactly this
+
+4. ✅ **Position Awareness**
+   - Show where YOUR group members are located
+   - Help YOUR group stay together (follow the crown)
+   - **Precedent**: Group frames show distance already
+
+5. ✅ **Equipment Awareness**
+   - Show what sets YOUR group members wear
+   - Help optimize group composition
+   - **Precedent**: You can manually inspect group members anyway
+
 **Risk Mitigation**:
 1. Keep features focused on **information display** and **coordination**, not automation
 2. Avoid features that provide **instant reaction warnings** to invisible mechanics
-3. Model features after accepted PvE addons (Hodor Reflexes)
+3. Model features after accepted PvE addons (Hodor Reflexes, BombTimer)
 4. Be transparent about functionality in addon description
 5. Monitor community feedback and ZOS policy updates
+6. Document defensive design decisions (this section)
+7. Make addon freely available to ALL PvP players (not competitive advantage if everyone has access)
 
-**Recommendation**: Proceed with caution, but proceed. The features planned are defensible as coordination tools comparable to existing accepted addons.
+**Legal Defense Strategy**:
+- Point to Hodor Reflexes as accepted precedent for group coordination
+- Point to BombTimer as accepted precedent for PvP attack coordination
+- Emphasize: We're bringing PvE-quality coordination tools to PvP, not creating new automation
+- Emphasize: Open source, free, accessible to all = leveling playing field, not creating advantage
+
+**Recommendation**: Proceed with caution, but proceed. The features planned are defensible as coordination tools comparable to existing accepted addons. If challenged, we have clear precedents and a well-documented rationale.
 
 ### Integration Strategy: Hybrid Approach
 
@@ -255,6 +320,8 @@ Based on reusing existing libraries, our allocation is simplified:
 
 **Custom Beltalowda Protocols** (220-229):
 - **220**: **Health packet** (only missing resource - critical for PvP awareness)
+  - Current health, max health (capped at 500 like ultimate)
+  - Note: Ultimate is capped at 500 by the game, so maxUltimate field may be redundant
 - **221**: ~~Ultimate details~~ **AVAILABLE** (no longer needed, using LibGroupCombatStats)
 - **222**: **Position packet** (X, Y, Zone for follow-the-crown)
 - **223**: **Ability bar packet** (10 ability IDs for coordination)
@@ -620,11 +687,11 @@ Different data types require different update frequencies:
 
 | Data Type | Frequency | Trigger |
 |-----------|-----------|---------|
-| Resources | 500ms | >5% change or throttled |
-| Ultimate Details | 2000ms | Ability change or 100% |
+| Resources (Health) | 500ms | >5% change or throttled |
+| Ultimate Details | N/A | **Using LibGroupCombatStats** |
 | Position | 100ms | Always (if following crown) |
 | Abilities | Event | Skill bar swap or change |
-| Equipment | Event | Item equipped/unequipped |
+| Equipment | N/A | **Using LibSetDetection** |
 | State | 500ms | State change or throttled |
 | Active Effects | 1000ms | Effect change (filtered) |
 
