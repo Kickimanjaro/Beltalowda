@@ -312,24 +312,30 @@ Base/Util/             # Existing: Keep and enhance
 ### Q: Implementation Order / What to Build First
 **Answer**: See DEVELOPMENT_ROADMAP.md
 
-**Order Rationale**:
-1. **Phase 0: Foundation** - Don't break anything, set up infrastructure, **research existing libraries (Week 2)**
-2. **Phase 1: Data Collection** - Collect data locally first (no networking complexity)
-3. **Phase 2: LibGroupBroadcast** - Share basic data once collection works, **use hybrid approach (existing libs + custom)**
-4. **Phases 3-8: Features** - Build features incrementally on data foundation
+**Order Rationale (REVISED)**:
+1. **Phase 0: Foundation** - ✅ COMPLETE - Libraries researched, 100% coverage found
+2. ~~**Phase 1: Data Collection**~~ - ⏭️ SKIPPED - Using existing libraries instead
+3. **Phase 2: LibGroupBroadcast Integration** - ⏩ NEXT - Subscribe to existing libraries
+4. **Phases 3-8: Features** - Build features using data from libraries
 5. **Phases 9-10: Polish** - Refine once features work
 6. **Phase 11: Optimize** - Performance tuning near end
 7. **Phase 12: Test & Document** - Final validation
 
-**Why This Order**:
-- Week 2 research prevents reinventing the wheel
-- Data collection first avoids dependency on networking
-- Can test locally with debug commands
-- Hybrid approach reduces development scope (use LibGroupCombatStats & LibSetDetection)
+**Why This Order (REVISED)**:
+- Week 2 research prevented reinventing the wheel ✅
+- ~~Data collection first~~ - SKIPPED, using existing libraries
+- ~~Can test locally with debug commands~~ - Use library APIs instead
+- Phase 2 now focuses on subscribing to existing libraries (LibGroupCombatStats, LibSetDetection)
 - Each phase builds on previous
 - Regular checkpoints prevent getting "too far ahead"
-- Features depend on data layer, so data layer first
+- Features depend on library data, so library integration first
 - Optimization near end when you know what needs optimizing
+
+**Key Changes**:
+- No custom data collection modules needed
+- Direct integration with LibGroupCombatStats and LibSetDetection
+- Reserved IDs 220-229 available for future custom protocols if needed
+- Streamlined development timeline (4 weeks saved by skipping Phase 1)
 
 ### Q: Regular In-Game Checkpoints
 **Answer**: See IMPLEMENTATION_CHECKPOINTS.md
@@ -374,49 +380,76 @@ Base/Util/             # Existing: Keep and enhance
 
 ## Next Steps for AI Agent Development
 
-### Immediate Actions (Human)
-1. Review all planning documents
-2. Decide on starting phase (recommend Phase 0)
-3. Approve overall approach
-4. Request LibGroupBroadcast message IDs if approved
+### Current Status
+- ✅ **Phase 0 COMPLETE**: Libraries researched, decision made to use existing ecosystem
+- ⏭️ **Phase 1 SKIPPED**: No custom data collection needed
+- ⏩ **Phase 2 NEXT**: Integrate with LibGroupCombatStats and LibSetDetection
 
-### Phase 0: Foundation (First AI Agent Task)
-**Goal**: Set up infrastructure without breaking existing features
+### Immediate Actions (Human)
+1. ✅ Review all planning documents - COMPLETE
+2. ✅ Decide on starting phase - DECIDED: Proceed with Phase 2
+3. ✅ Approve overall approach - APPROVED: Use existing libraries
+4. ✅ LibGroupBroadcast message IDs reserved - IDs 220-229 for future use
+
+### ~~Phase 0: Foundation~~ ✅ COMPLETE
+
+Research findings (Checkpoint 0.1b):
+- LibGroupCombatStats: 100% ultimate tracking coverage
+- LibSetDetection: 100% equipment tracking coverage
+- LibGPS: Local position (no broadcast initially)
+- **Decision**: No custom data collection modules needed
+
+### Phase 2: LibGroupBroadcast Integration (NEXT AI Agent Task)
+**Goal**: Subscribe to existing libraries for group data
 
 **Instructions for AI Agent**:
 ```
-Task: Complete Phase 0 of Beltalowda enhancement
+Task: Complete Phase 2 of Beltalowda enhancement
 
 Context:
-- Review ARCHITECTURE_PLAN.md sections: "Proposed Enhanced Architecture" and "Phase 0"
-- Review LIBSETS_INTEGRATION.md section: "Installation Steps"
-- Review DEVELOPMENT_ROADMAP.md section: "Phase 0"
-- Review IMPLEMENTATION_CHECKPOINTS.md sections: "Checkpoint 0.1" and "Checkpoint 0.2"
+- Review ARCHITECTURE_PLAN.md section: "Data Integration Strategy (REVISED)"
+- Review DEVELOPMENT_ROADMAP.md section: "Phase 2 (NEXT PHASE)"
+- Review IMPLEMENTATION_CHECKPOINTS.md section: "Phase 2"
+- Review LIBGROUPBROADCAST_INTEGRATION.md for library details
 
 Deliverables:
-1. Download LibSets and LibAsync, place in Lib/ folder
-2. Update Beltalowda.txt manifest with new dependencies
-3. Update Beltalowda.lua library check function
-4. **RESEARCH**: Test LibGroupCombatStats, LibSetDetection, LibGroupResources
-   - Document capabilities and gaps
-   - Decide which to integrate vs build custom
-   - Update LIBGROUPBROADCAST_INTEGRATION.md with findings
-5. Create Base/Data/ directory with stub collector modules
-6. Create Base/Network/ directory with stub GroupBroadcast.lua
-7. All modules initialized with proper namespaces (using 'or {}' pattern)
-8. Update Beltalowda.txt to load new files (including researched libraries if beneficial)
-9. Test using Checkpoint 0.1, 0.1b, and 0.2 procedures
+1. Install LibGroupCombatStats (if not already present)
+   - Check ESOUI or existing addons for this library
+   - Verify compatibility with current version
+   
+2. Install LibSetDetection (if not already present)
+   - Check ESOUI or existing addons for this library
+   - Verify compatibility with current version
+
+3. Create Base/Integration/ directory with adapter modules:
+   - CombatStatsAdapter.lua - Subscribe to LibGroupCombatStats
+   - SetDetectionAdapter.lua - Subscribe to LibSetDetection
+
+4. Create Base/Group/GroupDataManager.lua:
+   - Store group member data from library subscriptions
+   - Handle player join/leave events
+   - Provide access functions for UI modules
+
+5. Integrate adapters with existing UI:
+   - Update ResourceOverview to use LibGroupCombatStats data
+   - Prepare for equipment display using LibSetDetection data
+
+6. Test using Checkpoint 2.1, 2.2, 2.3, 2.4 procedures
 
 Success Criteria:
-- All checkpoints pass
-- No existing features broken
+- LibGroupCombatStats integrated and receiving data
+- LibSetDetection integrated and receiving data
+- Group data accessible to UI modules
+- All existing features still work
 - No errors when loading addon
+- Multi-player testing shows data syncing
 
 Constraints:
-- Follow ESO_ADDON_BEST_PRACTICES.md patterns
-- Use namespace 'or {}' pattern everywhere
-- Don't implement functionality yet, just structure
-- Test after each change
+- Do NOT create custom data collection modules
+- Do NOT implement custom LibGroupBroadcast protocols yet
+- Reserved IDs 220-229 remain unused for now
+- Follow existing code patterns
+- Test incrementally
 ```
 
 ### Subsequent Phases

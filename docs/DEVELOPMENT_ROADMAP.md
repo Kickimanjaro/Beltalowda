@@ -100,227 +100,193 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
 
 ---
 
-### Week 2: Research Existing Libraries & Module Stubs
+### Week 2: Research Existing Libraries ✅ COMPLETE - REVISED
 
 **Tasks**:
 1. **Research existing LibGroupBroadcast libraries**:
-   - Install and test **LibGroupCombatStats** (Ultimate Type/Value, DPS, HPS)
-   - Install and test **LibSetDetection** (Equipment sets)
-   - Install and test **LibGroupResources** (Stamina, Magicka)
-   - Document which data we can reuse vs need custom protocols
-   - Update dependency list based on findings
+   - ✅ Research **LibGroupCombatStats** (Ultimate Type/Value, DPS, HPS)
+   - ✅ Research **LibSetDetection** (Equipment sets)
+   - ✅ Research **LibGroupResources** (Stamina, Magicka)
+   - ✅ Document which data we can reuse vs need custom protocols
+   - ✅ Update dependency list based on findings
 
-2. Create `Base/Data/` directory
+2. ~~Create `Base/Data/` directory~~ **SKIPPED** - Not needed
    
-2. Create stub files:
-   - `Base/Data/DataCollector.lua`
-   - `Base/Data/ResourceCollector.lua`
-   - `Base/Data/PositionCollector.lua`
-   - `Base/Data/AbilityCollector.lua`
-   - `Base/Data/EquipmentCollector.lua`
-   - `Base/Data/StateCollector.lua`
+3. ~~Create stub files~~ **SKIPPED** - Not needed:
+   - ~~`Base/Data/DataCollector.lua`~~
+   - ~~`Base/Data/ResourceCollector.lua`~~
+   - ~~`Base/Data/PositionCollector.lua`~~
+   - ~~`Base/Data/AbilityCollector.lua`~~
+   - ~~`Base/Data/EquipmentCollector.lua`~~
+   - ~~`Base/Data/StateCollector.lua`~~
    
-3. Create network stub:
-   - `Base/Network/GroupBroadcast.lua`
+4. ~~Create network stub~~ **Will be addressed in Phase 2**:
+   - ~~`Base/Network/GroupBroadcast.lua`~~
    
-4. Update `Beltalowda.txt` to load new files
-   - Add after existing Base/Util files
-   - Add new library dependencies if research shows they're beneficial
+5. ~~Update `Beltalowda.txt` to load new files~~ **Not needed**
    
-5. Implement basic Initialize() functions (empty for now)
+6. ~~Implement basic Initialize() functions~~ **Not needed**
    
-6. Update main initialization in `Beltalowda.lua`
+7. ~~Update main initialization in `Beltalowda.lua`~~ **Not needed**
 
 **Deliverables**:
 - ✅ Research completed on existing libraries
-- ✅ Decision made on which libraries to use vs custom protocols
-- ✅ All stub files created
-- ✅ Proper namespace initialization (using `or {}` pattern)
-- ✅ Initialize() functions defined
-- ✅ Integration into main addon initialization
-- ✅ Updated dependencies if needed
+- ✅ Decision made: Use existing libraries (100% coverage) instead of custom protocols
+- ❌ ~~All stub files created~~ - SKIPPED, not needed
+- ❌ ~~Proper namespace initialization~~ - SKIPPED, not needed
+- ❌ ~~Initialize() functions defined~~ - SKIPPED, not needed
+- ❌ ~~Integration into main addon initialization~~ - SKIPPED, not needed
+- ✅ Reserved IDs 220-229 for future use if needed
+
+**Research Results**:
+- **LibGroupCombatStats**: 100% coverage of ultimate tracking (IDs 20, 21, 22, 23)
+- **LibSetDetection**: 100% coverage of equipment tracking (ID 40)
+- **LibGPS**: Local position tracking (already installed)
+- **Decision**: No custom data collection needed for MVP
 
 **Testing**:
 - Load addon in-game
 - Verify no errors
 - Verify all existing features still work
 - Test profile system still works
-- If new libraries added, verify they load correctly
 
-**Checkpoint**: Checkpoint 0.2 (Module Stubs Created)
+**Checkpoint**: Checkpoint 0.1b (Existing Library Research) ✅ COMPLETE
 
 **Checkpoint**: End of Phase 0
-- All libraries installed
-- Module structure created
-- No existing features broken
-- Ready to implement data collection
+- ✅ All libraries researched
+- ✅ Decision made: Use existing libraries instead of custom data collection
+- ✅ No existing features broken
+- ⏭️ Ready to proceed to Phase 2 (skip Phase 1)
 
 ---
 
-## Phase 1: Data Collection (Weeks 3-4)
+## Phase 1: Data Collection ⏭️ SKIPPED
 
-**Goal**: Collect player data locally (no broadcasting yet)
+**Status**: PHASE SKIPPED - Not needed based on research findings
 
-### Week 3: Resource & State Collection
+**Rationale**: 
+Research from Checkpoint 0.1b revealed 100% coverage of critical data needs through existing libraries:
+- LibGroupCombatStats: Ultimate tracking (IDs 20, 21, 22, 23)
+- LibSetDetection: Equipment tracking (ID 40)
+- LibGPS: Local position (already installed)
 
-**Tasks**:
-1. Implement `ResourceCollector.lua`:
-   - Track health, magicka, stamina, ultimate
-   - Track max values
-   - Track ultimate ability ID (slot 8)
-   - Register for EVENT_POWER_UPDATE
-   - Store data in collector state
-   
-2. Implement `StateCollector.lua`:
-   - Track combat state (EVENT_PLAYER_COMBAT_STATE)
-   - Track alive/dead (EVENT_UNIT_DEATH_STATE_CHANGED)
-   - Track online status (EVENT_GROUP_MEMBER_CONNECTED_STATUS)
-   - Track UI state (EVENT_ACTION_LAYER_PUSHED/POPPED)
-   - Store data in collector state
-   
-3. Create debug commands:
-   - `/btlwdata resources` - Display resource data
-   - `/btlwdata state` - Display state data
+**Original Goal**: Collect player data locally (no broadcasting yet)
 
-**Deliverables**:
-- ✅ ResourceCollector fully functional
-- ✅ StateCollector fully functional
-- ✅ Debug commands working
-- ✅ Local data accurate
+**What was skipped**:
 
-**Testing**:
-- Use debug commands to view data
-- Change resources in-game, verify tracking
-- Enter/exit combat, verify state changes
-- Die/resurrect, verify death state
-- Open/close menus, verify UI state
+### ~~Week 3: Resource & State Collection~~ SKIPPED
+
+**Tasks**: ❌ Not needed
+1. ~~Implement `ResourceCollector.lua`~~ - Use LibGroupCombatStats instead
+2. ~~Implement `StateCollector.lua`~~ - Use native ESO API as needed
+3. ~~Create debug commands~~ - Use existing library APIs
+
+**Deliverables**: N/A - Using existing libraries
 
 ---
 
-### Week 4: Ability & Equipment Collection
+### ~~Week 4: Ability & Equipment Collection~~ SKIPPED
 
-**Tasks**:
-1. Implement `AbilityCollector.lua`:
-   - Track action bar abilities (ACTION_SLOT_UPDATED)
-   - Detect ultimate in slot 8
-   - Store ability IDs, names, icons
-   - Basic implementation (full bar tracking in Phase 6)
-   
-2. Implement `EquipmentCollector.lua`:
-   - Use LibSets to identify equipped sets
-   - Track all 14 equipment slots
-   - Count set pieces
-   - Detect role from equipment
-   - Register for EVENT_INVENTORY_SINGLE_SLOT_UPDATE
-   
-3. Expand debug commands:
-   - `/btlwdata abilities` - Display skill bar
-   - `/btlwdata equipment` - Display equipped sets
-   - `/btlwdata role` - Display detected role
+**Tasks**: ❌ Not needed
+1. ~~Implement `AbilityCollector.lua`~~ - Use LibGroupCombatStats for ultimates
+2. ~~Implement `EquipmentCollector.lua`~~ - Use LibSetDetection instead
+3. ~~Expand debug commands~~ - Use existing library APIs
 
-**Deliverables**:
-- ✅ AbilityCollector basic implementation
-- ✅ EquipmentCollector fully functional
-- ✅ Role detection working
-- ✅ Debug commands expanded
+**Deliverables**: N/A - Using existing libraries
 
-**Testing**:
-- Swap skill bars, verify ability tracking
-- Change equipment, verify set detection
-- Equip tank/healer sets, verify role detection
-- Use debug commands to verify all data
-
-**Checkpoint**: End of Phase 1
-- All collectors gathering local data
-- Debug commands available for testing
-- No broadcasting yet (intentional)
-- Ready for network integration
+**Checkpoint**: End of Phase 1 - ⏭️ SKIPPED, proceed to Phase 2
+- No custom collectors needed (using existing libraries)
+- Ready for LibGroupBroadcast integration in Phase 2
 
 ---
 
-## Phase 2: LibGroupBroadcast Integration (Weeks 5-6)
+## Phase 2: LibGroupBroadcast Integration (Weeks 5-6) ⏩ NEXT PHASE
 
-**Goal**: Share basic data with group members
+**Status**: ACTIVE - Next phase to implement
 
-### Week 5: Network Foundation
+**Goal**: Integrate with existing LibGroupBroadcast libraries (LibGroupCombatStats, LibSetDetection)
+
+**Background**: 
+Based on Phase 0 research, we will subscribe to existing library data rather than building custom collection modules. Reserved IDs 220-229 remain available for future custom protocols if needed.
+
+### Week 5: Library Integration & Subscription
 
 **Tasks**:
-1. Request message ID block from LibGroupBroadcast maintainer:
-   - Post on ESOUI forums
-   - Request IDs 220-229 (10 IDs, respectful of community standard)
-   - Wait for approval (may take a few days)
+1. ~~Request message ID block from LibGroupBroadcast maintainer~~ **Already reserved: IDs 220-229**
+   - ✅ Reserved on LibGroupBroadcast wiki
+   - Available for future custom protocols if needed
    
-2. Implement `GroupBroadcast.lua`:
-   - Message ID constants
-   - Encode/decode functions
-   - Send/receive infrastructure
-   - Handler registration system
+2. **Integrate LibGroupCombatStats**:
+   - Install library (if not already present)
+   - Subscribe to ultimate data broadcasts (IDs 20, 21, 22, 23)
+   - Store received data in group data structure
+   - Map data to Beltalowda's internal format
    
-3. Implement resource broadcasting (ID 220):
-   - Encode resources to string
-   - Send on 5% change or throttle
-   - Receive and decode from other players
-   - Store in group data structure
+3. **Integrate LibSetDetection**:
+   - Install library (if not already present)
+   - Subscribe to equipment broadcasts (ID 40)
+   - Store received equipment data
+   - Map to Beltalowda's internal format
    
 4. Create group data structure:
    - Store data per unitTag
-   - Update on message receipt
+   - Update on message receipt from libraries
    - Provide access functions
+   - Handle player join/leave
 
 **Deliverables**:
-- ✅ Message IDs assigned (or temp IDs if waiting)
-- ✅ GroupBroadcast infrastructure complete
-- ✅ Resource broadcasting working
+- ✅ LibGroupCombatStats integrated
+- ✅ LibSetDetection integrated
 - ✅ Group data structure in place
+- ✅ Data accessible to UI modules
 
 **Testing**:
-- Form group with alt account
-- Verify resource data syncs
-- Check broadcast throttling
+- Form group with alt account (both with libraries)
+- Verify ultimate data syncs from LibGroupCombatStats
+- Verify equipment data syncs from LibSetDetection
 - Test with 2+ players
 
 ---
 
-### Week 6: State Broadcasting
+### Week 6: Custom Protocol Infrastructure (Optional/Future)
 
 **Tasks**:
-1. Implement state broadcasting (ID 226):
-   - Encode state flags (combat, alive, etc.)
-   - Use bit-packing for efficiency
-   - Send on state change or throttle
-   - Receive and decode
+1. ~~Implement state broadcasting (ID 226)~~ **DEFERRED**:
+   - Reserved for future use if needed
+   - Current focus: integrate existing libraries
    
-2. Create comprehensive group view:
-   - Debug command: `/btlwdata group`
-   - Show all group members
-   - Show resources, state for each
+2. Create debug/monitoring tools:
+   - Debug command: `/btlwdata group` - Show all group data
+   - Monitor data from LibGroupCombatStats
+   - Monitor data from LibSetDetection
    
 3. Performance testing:
-   - Monitor update frequency
-   - Check message sizes
-   - Verify throttling working
+   - Monitor subscription overhead
+   - Check data update frequency
+   - Verify no conflicts with other addons
    
 4. Error handling:
-   - Handle missing LibGroupBroadcast
-   - Handle decode errors
-   - Fallback to party chat if needed
+   - Handle missing libraries gracefully
+   - Provide fallback behavior
+   - Clear error messages for users
 
 **Deliverables**:
-- ✅ State broadcasting working
-- ✅ Group view debug command
+- ✅ Debug commands working
 - ✅ Performance acceptable
 - ✅ Error handling robust
+- ✅ Infrastructure ready for custom protocols if needed later
 
 **Testing**:
 - Form 4+ player group
 - Verify all data syncs across players
-- Enter/exit combat, verify state sync
-- Die/resurrect, verify state sync
 - Monitor performance (FPS, memory)
+- Test error scenarios (missing libraries)
 
 **Checkpoint**: End of Phase 2
-- LibGroupBroadcast fully integrated
-- Basic data (resources, state) broadcasting
+- LibGroupCombatStats integrated for ultimate data
+- LibSetDetection integrated for equipment data
+- Group data accessible to UI modules
+- Ready for enhanced feature development (Phase 3+)
 - Tested with multiple players
 - Ready to enhance existing features
 

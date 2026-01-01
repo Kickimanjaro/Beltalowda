@@ -115,243 +115,58 @@ This document provides detailed in-game testing checkpoints for each phase of Be
 
 ---
 
-### Checkpoint 0.2: Module Structure Created
+### Checkpoint 0.2: Module Structure Created ⏭️ SKIPPED
 
-**When**: After creating Data/ and Network/ directories with stub files
+**Status**: SKIPPED - Not needed based on Checkpoint 0.1b findings
 
-**How to Test**:
-1. Launch ESO
-2. Log in to any character
-3. Run: `/script d(Beltalowda.data ~= nil)`
-   - Should see: `true`
-4. Run: `/script d(Beltalowda.data.resources ~= nil)`
-   - Should see: `true`
-5. Run: `/script d(Beltalowda.network ~= nil)`
-   - Should see: `true`
-6. Test existing feature (e.g., ultimate tracking):
-   - Run: `/bultimate`
-   - Should see ultimate data displayed
+**Rationale**: 
+Research from Checkpoint 0.1b revealed that existing libraries (LibGroupCombatStats for ultimates, LibSetDetection for equipment) provide 100% coverage of critical data needs. No custom data collection modules or stubs are required for MVP. We will integrate directly with existing libraries instead of building custom collection infrastructure.
 
-**Expected Results**:
-- ✅ New namespaces exist
-- ✅ No initialization errors
-- ✅ All existing features functional
-- ✅ Settings menu still works
+**What was skipped**:
+- Creating Base/Data/ directory with collector stub files
+- Creating Base/Network/ directory with GroupBroadcast stub
+- Creating custom data collection namespaces
+- Module stub initialization
 
-**If Problems**:
-- Check namespace initialization (using `or {}`)
-- Verify files added to manifest
-- Check file load order
-- Verify Initialize() functions called
+**Alternative approach**:
+- Use LibGroupCombatStats directly for ultimate data (IDs 20, 21, 22, 23)
+- Use LibSetDetection directly for equipment data (ID 40)
+- Use LibGPS locally for position (no broadcast initially)
+- Reserved IDs 220-229 available if custom protocols needed later
 
-**Success Criteria**: Structure in place, existing features unaffected, ready for implementation
+**Next Step**: Proceed directly to Phase 2 (LibGroupBroadcast Integration)
 
 ---
 
-## Phase 1: Data Collection
+## Phase 1: Data Collection ⏭️ SKIPPED
 
-### Checkpoint 1.1: Resource Collection
+**Status**: PHASE SKIPPED - Not needed based on Checkpoint 0.1b findings
 
-**When**: After implementing ResourceCollector
+**Rationale**: 
+The research completed in Checkpoint 0.1b revealed that existing LibGroupBroadcast libraries provide complete coverage:
+- **LibGroupCombatStats**: Ultimate Type (ID 20), Ultimate Value (ID 21), DPS (ID 22), HPS (ID 23)
+- **LibSetDetection**: Equipped set pieces (ID 40) for all 14 equipment slots
+- **LibGPS**: Local position tracking (already installed, no broadcast needed initially)
+- **LibGroupResources**: Stamina (ID 10), Magicka (ID 11) - Optional, not critical
 
-**How to Test**:
-1. Launch ESO, log in
-2. Enter combat (attack a mob)
-3. Run: `/btlwdata resources`
-4. Should see:
-   ```
-   === Player Resources ===
-   Health: [current]/[max]
-   Magicka: [current]/[max]
-   Stamina: [current]/[max]
-   Ultimate: [current]/[max] ([percent]%)
-   Ultimate Ability: [name]
-   ```
+**Coverage**: 100% of critical MVP needs are met by existing libraries.
 
-**Test Scenarios**:
-- Cast abilities, watch resources decrease
-- Wait for regen, watch resources increase
-- Gain ultimate, watch percentage increase
-- Reach 100% ultimate, verify display
-- Swap skill bars, verify ultimate ability updates
+**What was skipped**:
+- ❌ Checkpoint 1.1: Resource Collection (ResourceCollector.lua not needed)
+- ❌ Checkpoint 1.2: State Collection (StateCollector.lua not needed)
+- ❌ Checkpoint 1.3: Ability Collection (AbilityCollector.lua not needed)
+- ❌ Checkpoint 1.4: Equipment Collection (EquipmentCollector.lua not needed)
 
-**Expected Results**:
-- ✅ All resources track correctly
-- ✅ Ultimate percentage accurate
-- ✅ Ultimate ability detected
-- ✅ Real-time updates
+**Alternative approach**:
+Instead of building custom data collection modules, we will:
+1. Subscribe to LibGroupCombatStats for ultimate data from group members
+2. Subscribe to LibSetDetection for equipment data from group members
+3. Use LibGPS locally for position features (Follow the Crown, etc.)
+4. Use native ESO API for any additional local data needs
 
-**If Problems**:
-- Check EVENT_POWER_UPDATE registration
-- Verify GetUnitPower() calls
-- Check ultimate slot detection (slot 8)
-- Verify data storage structure
+**Custom protocols reserved**: IDs 220-229 available for future enhancements if needed (e.g., Volendrung detection, special mechanics).
 
-**Success Criteria**: Resource tracking 100% accurate, ready for state collection
-
----
-
-### Checkpoint 1.2: State Collection
-
-**When**: After implementing StateCollector
-
-**How to Test**:
-1. Launch ESO, log in
-2. Run: `/btlwdata state`
-3. Should see:
-   ```
-   === Player State ===
-   Combat: false
-   Alive: true
-   Online: true
-   In Reload: false
-   UI Layer: 0
-   ```
-
-**Test Scenarios**:
-1. **Combat State**:
-   - Attack a mob
-   - Run: `/btlwdata state`
-   - Should show: `Combat: true`
-   - Stop combat
-   - Run command again
-   - Should show: `Combat: false`
-
-2. **Death State**:
-   - Let mob kill you
-   - While dead, run: `/btlwdata state`
-   - Should show: `Alive: false`
-   - Resurrect
-   - Run command again
-   - Should show: `Alive: true`
-
-3. **UI State**:
-   - Open inventory (I key)
-   - Run: `/btlwdata state`
-   - Should show UI layer > 0
-   - Close inventory
-   - Should show: `UI Layer: 0`
-
-**Expected Results**:
-- ✅ Combat state accurate
-- ✅ Death state accurate
-- ✅ UI state accurate
-- ✅ Real-time state changes
-
-**If Problems**:
-- Check event registrations
-- Verify event handlers called
-- Check state storage
-- Test event firing (d() in handlers)
-
-**Success Criteria**: All state tracking accurate, ready for ability collection
-
----
-
-### Checkpoint 1.3: Ability Collection
-
-**When**: After implementing AbilityCollector
-
-**How to Test**:
-1. Launch ESO, log in
-2. Run: `/btlwdata abilities`
-3. Should see:
-   ```
-   === Skill Bar (Front) ===
-   1: [Ability Name] (ID: [id])
-   2: [Ability Name] (ID: [id])
-   ...
-   8: [Ultimate Name] (ID: [id]) ***
-   
-   === Skill Bar (Back) ===
-   ...
-   ```
-
-**Test Scenarios**:
-1. **Bar Swap**:
-   - Note front bar ultimate
-   - Swap to back bar
-   - Run: `/btlwdata abilities`
-   - Should show back bar ultimate
-   - Swap back
-   - Should show front bar ultimate again
-
-2. **Ability Change**:
-   - Open skills menu (K key)
-   - Change an ability
-   - Close menu
-   - Run: `/btlwdata abilities`
-   - Should show new ability
-
-**Expected Results**:
-- ✅ All 10 abilities detected
-- ✅ Ultimate in slot 8 marked
-- ✅ Bar swap detected
-- ✅ Ability changes detected
-
-**If Problems**:
-- Check ACTION_SLOT_UPDATED event
-- Verify GetSlotBoundId() calls
-- Check bar state tracking
-- Verify slot numbering (ESO uses 3-8 for front, 9+ for back)
-
-**Success Criteria**: Full skill bar tracked accurately, ready for equipment
-
----
-
-### Checkpoint 1.4: Equipment Collection
-
-**When**: After implementing EquipmentCollector with LibSets
-
-**How to Test**:
-1. Launch ESO, log in
-2. Run: `/btlwdata equipment`
-3. Should see:
-   ```
-   === Equipped Sets ===
-   [Set Name]: 5 pieces
-   [Set Name]: 5 pieces
-   [Set Name]: 2 pieces
-   
-   Detected Role: [Tank/Healer/DPS]
-   ```
-
-**Test Scenarios**:
-1. **Set Detection**:
-   - Verify set names are correct
-   - Verify piece counts are accurate
-   - Check all 14 equipment slots
-
-2. **Equipment Change**:
-   - Unequip an item
-   - Run: `/btlwdata equipment`
-   - Should show reduced piece count
-   - Re-equip item
-   - Should show original count
-
-3. **Role Detection**:
-   - Equip tank set (Ebon Armory, Plague Doctor, etc.)
-   - Run: `/btlwdata role`
-   - Should show: `Detected Role: Tank`
-   - Change to healer set
-   - Should show: `Detected Role: Healer`
-
-**Expected Results**:
-- ✅ All equipped sets detected
-- ✅ Piece counts accurate
-- ✅ Set names correct (localized)
-- ✅ Role detection working
-- ✅ Equipment changes detected
-
-**If Problems**:
-- Verify LibSets working: `/script d(LibSets:GetSetName(123))`
-- Check equipment slot iteration
-- Verify set ID retrieval
-- Check role detection logic
-
-**Success Criteria**: Equipment tracking 100% accurate, role detection functional
-
-**End of Phase 1**: All collectors functional, local data accurate, ready for networking
+**Next Step**: Proceed directly to Phase 2 (LibGroupBroadcast Integration) where we'll integrate with existing libraries.
 
 ---
 
