@@ -1,7 +1,0 @@
-## Title: LibAsync
-## Author: sirinsidiator
-## APIVersion: 101042
-## Version: 2.8
-## Description: Asynchronous task management library for ESO addons
-
-LibAsync.lua
