@@ -4,10 +4,13 @@
 ## APIVersion: 101048
 ## Version: 0.1.0
 ## SavedVariables: BeltalowdaVars
-## DependsOn: LibAsync>=3.1.1 LibGroupBroadcast>=91 LibAddonMenu-2.0>=41 LibSetDetection>=4
+## DependsOn: LibAsync>=3.1.1 LibGroupBroadcast>=91 LibAddonMenu-2.0>=41 LibSetDetection>=4 LibGroupCombatStats>=6
 
 # Main initialization
 Beltalowda.lua
+
+# Network layer
+Base/Network/GroupBroadcast.lua
 
 # Settings
 # BeltalowdaSettings.lua
