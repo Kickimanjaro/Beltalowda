@@ -35,6 +35,10 @@ function Beltalowda.AreLibrariesLoaded()
         loaded = false
         table.insert(missingLibs, "LibSetDetection")
     end
+    if not LibGroupCombatStats then
+        loaded = false
+        table.insert(missingLibs, "LibGroupCombatStats")
+    end
     return loaded, missingLibs
 end
 
@@ -56,7 +60,10 @@ function Beltalowda.Initialize()
     
     d("[Beltalowda] " .. Beltalowda.version .. " loaded successfully")
     
---  d("[Beltalowda] All modules initialized")
+    -- Initialize network layer
+    if Beltalowda.network and Beltalowda.network.Initialize then
+        Beltalowda.network.Initialize()
+    end
     
     return true
 end
