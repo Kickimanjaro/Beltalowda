@@ -31,9 +31,9 @@ function Beltalowda.AreLibrariesLoaded()
         loaded = false
         table.insert(missingLibs, "LibAddonMenu-2.0")
     end
-    if not LibSets then
+    if not LibSetDetection then
         loaded = false
-        table.insert(missingLibs, "LibSets")
+        table.insert(missingLibs, "LibSetDetection")
     end
     return loaded, missingLibs
 end
