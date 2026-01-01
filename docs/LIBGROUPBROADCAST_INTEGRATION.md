@@ -95,6 +95,104 @@ The current ultimate tracking implementation uses party chat (`CHAT_CATEGORY_PAR
 
 **Verdict**: LibGroupBroadcast is significantly better for all data sharing beyond simple text messages.
 
+## Existing LibGroupBroadcast Libraries
+
+### Research: Reusable Implementations
+
+Before implementing custom protocols, the LibGroupBroadcast community recommends checking for existing libraries that already provide the data you need. This reduces redundant network traffic and benefits all users.
+
+**Available Libraries** (from [LibGroupBroadcast IDs Wiki](https://wiki.esoui.com/LibGroupBroadcast_IDs)):
+
+1. **LibGroupResources** (IDs 10-19)
+   - **Provides**: Stamina (ID 10), Magicka (ID 11)
+   - **Missing**: Health, Ultimate percentage
+   - **Verdict**: Partially useful, but missing critical data (health, ultimate %)
+
+2. **LibGroupCombatStats** (IDs 20-25)
+   - **Provides**: 
+     - Ultimate Type (ID 20): Equipped ultimates + activation costs
+     - Ultimate Value (ID 21): Current ultimate points
+     - DPS (ID 22): Current DPS & overall damage
+     - HPS (ID 23): Current HPS & overheal
+     - SkillLines (ID 24): Equipped skill lines
+   - **Verdict**: **HIGHLY RELEVANT** - Covers ultimate tracking needs!
+
+3. **LibGroupPotionCooldowns** (IDs 26-29)
+   - **Provides**: Potion cooldown (ID 26)
+   - **Verdict**: Potentially useful for ability tracking
+
+4. **LibSetDetection** (IDs 40-49)
+   - **Provides**: Equipped set pieces (ID 40)
+   - **Verdict**: **RELEVANT** - May overlap with our LibSets integration
+
+### Analysis: Can We Reuse Existing Libraries?
+
+**Resources (Health/Magicka/Stamina/Ultimate)**:
+- ✅ **LibGroupCombatStats** already provides Ultimate Type (ID 20) and Ultimate Value (ID 21)
+- ⚠️ **LibGroupResources** provides Magicka/Stamina but NOT Health
+- ❌ No existing library provides Health
+- **Recommendation**: Use LibGroupCombatStats for ultimate data; still need custom protocol for Health
+
+**Position**:
+- ❌ No existing library provides position data
+- **Recommendation**: Custom protocol required (ID 222)
+
+**Abilities (Skill Bar)**:
+- ⚠️ **LibGroupCombatStats** provides SkillLines (ID 24) but not full ability bar
+- **Recommendation**: Custom protocol required (ID 223)
+
+**Equipment**:
+- ✅ **LibSetDetection** (ID 40) already shares equipped set pieces
+- ❌ However, this may conflict with our LibSets integration approach
+- **Recommendation**: Evaluate LibSetDetection vs custom implementation
+
+**State (Combat/Alive/Online)**:
+- ❌ No existing library provides state flags
+- **Recommendation**: Custom protocol required (ID 226)
+
+**Active Effects**:
+- ❌ No existing library provides buff/debuff tracking
+- **Recommendation**: Custom protocol required (ID 227)
+
+### Integration Strategy: Hybrid Approach
+
+**Phase 1: Evaluate Dependencies**
+1. **Add LibGroupCombatStats** as dependency (if not already present)
+2. **Add LibSetDetection** as dependency (evaluate vs LibSets)
+3. Test existing libraries with current group setup
+
+**Phase 2: Implement Only What's Missing**
+- Skip implementing custom protocols for data already available
+- Focus custom protocols on: Health, Position, Abilities, State, Effects
+
+**Phase 3: Fallback Strategy**
+- If existing libraries have compatibility issues or insufficient data
+- Fall back to custom protocols for those specific data types
+
+### Updated Message ID Allocation
+
+Based on reusing existing libraries:
+
+**Reused from Existing Libraries**:
+- ~~200-201~~: Use **LibGroupCombatStats IDs 20-21** (Ultimate Type, Ultimate Value)
+- ~~204-205~~: Evaluate **LibSetDetection ID 40** (Equipment sets)
+
+**Custom Beltalowda Protocols** (220-229):
+- **220**: Health packet (only missing resource)
+- **221**: ~~Ultimate details~~ **Stamina** (LibGroupResources only has ID 10, we may need refined version)
+- **222**: Position packet (X, Y, Zone)
+- **223**: Ability bar packet (10 ability IDs)
+- **224**: Equipment packet (sets, if LibSetDetection insufficient)
+- **225**: Equipment packet part 2 (if needed)
+- **226**: State packet (combat, alive, online status)
+- **227**: Active effects (critical buffs/debuffs)
+- **228-229**: Reserved for future features
+
+**Action Required**: 
+- Research and test LibGroupCombatStats and LibSetDetection
+- Determine if they meet our needs before implementing custom protocols
+- Update dependencies in Beltalowda.txt if adopting these libraries
+
 ## Requesting Message IDs
 
 ### Why Request a Block?

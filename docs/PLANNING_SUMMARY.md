@@ -343,11 +343,15 @@ Deliverables:
 1. Download LibSets and LibAsync, place in Lib/ folder
 2. Update Beltalowda.txt manifest with new dependencies
 3. Update Beltalowda.lua library check function
-4. Create Base/Data/ directory with stub collector modules
-5. Create Base/Network/ directory with stub GroupBroadcast.lua
-6. All modules initialized with proper namespaces (using 'or {}' pattern)
-7. Update Beltalowda.txt to load new files
-8. Test using Checkpoint 0.1 and 0.2 procedures
+4. **RESEARCH**: Test LibGroupCombatStats, LibSetDetection, LibGroupResources
+   - Document capabilities and gaps
+   - Decide which to integrate vs build custom
+   - Update LIBGROUPBROADCAST_INTEGRATION.md with findings
+5. Create Base/Data/ directory with stub collector modules
+6. Create Base/Network/ directory with stub GroupBroadcast.lua
+7. All modules initialized with proper namespaces (using 'or {}' pattern)
+8. Update Beltalowda.txt to load new files (including researched libraries if beneficial)
+9. Test using Checkpoint 0.1, 0.1b, and 0.2 procedures
 
 Success Criteria:
 - All checkpoints pass

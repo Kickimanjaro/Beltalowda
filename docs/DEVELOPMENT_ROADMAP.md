@@ -96,12 +96,21 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
 - Verify no missing library errors
 - Verify all existing features still work
 
+**Checkpoint**: Checkpoint 0.1 (Library Verification)
+
 ---
 
-### Week 2: Module Stubs
+### Week 2: Research Existing Libraries & Module Stubs
 
 **Tasks**:
-1. Create `Base/Data/` directory
+1. **Research existing LibGroupBroadcast libraries**:
+   - Install and test **LibGroupCombatStats** (Ultimate Type/Value, DPS, HPS)
+   - Install and test **LibSetDetection** (Equipment sets)
+   - Install and test **LibGroupResources** (Stamina, Magicka)
+   - Document which data we can reuse vs need custom protocols
+   - Update dependency list based on findings
+
+2. Create `Base/Data/` directory
    
 2. Create stub files:
    - `Base/Data/DataCollector.lua`
@@ -116,22 +125,29 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
    
 4. Update `Beltalowda.txt` to load new files
    - Add after existing Base/Util files
+   - Add new library dependencies if research shows they're beneficial
    
 5. Implement basic Initialize() functions (empty for now)
    
 6. Update main initialization in `Beltalowda.lua`
 
 **Deliverables**:
+- ✅ Research completed on existing libraries
+- ✅ Decision made on which libraries to use vs custom protocols
 - ✅ All stub files created
 - ✅ Proper namespace initialization (using `or {}` pattern)
 - ✅ Initialize() functions defined
 - ✅ Integration into main addon initialization
+- ✅ Updated dependencies if needed
 
 **Testing**:
 - Load addon in-game
 - Verify no errors
 - Verify all existing features still work
 - Test profile system still works
+- If new libraries added, verify they load correctly
+
+**Checkpoint**: Checkpoint 0.2 (Module Stubs Created)
 
 **Checkpoint**: End of Phase 0
 - All libraries installed
@@ -1069,6 +1085,7 @@ This roadmap outlines the complete development plan for enhancing Beltalowda fro
    - ESOUI page update
    - Changelog finalization
    - Version number finalization
+   - **Update LibGroupBroadcast IDs wiki** with final protocol details
    
 4. Post-release support:
    - Forum monitoring

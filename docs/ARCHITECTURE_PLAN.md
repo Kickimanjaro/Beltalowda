@@ -586,9 +586,22 @@ BeltalowdaVars = {
 - Code already checks for LGB existence in `Networking.lua`
 
 **What we need to do**:
-1. Request message ID block (220-229) from maintainer
-2. Implement full data broadcasting (currently only uses existing IDs)
-3. Expand message handling beyond current simple types
+1. Request message ID block (220-229) from maintainer ✅ (Reserved on wiki)
+2. **Research existing LibGroupBroadcast libraries** (LibGroupCombatStats, LibSetDetection, LibGroupResources)
+3. Implement full data broadcasting (currently only uses existing IDs)
+4. Expand message handling beyond current simple types
+5. **Before release**: Update wiki with final protocol details for IDs 220-229
+
+### Existing LibGroupBroadcast Libraries
+
+**Community Recommendation**: Reuse existing libraries where possible to reduce redundant network traffic.
+
+**Available Libraries to Research**:
+1. **LibGroupCombatStats** - Already provides ultimate data (Type ID 20, Value ID 21)
+2. **LibSetDetection** - Already provides equipment set sharing (ID 40)
+3. **LibGroupResources** - Provides Stamina (ID 10) and Magicka (ID 11)
+
+See LIBGROUPBROADCAST_INTEGRATION.md for detailed analysis and integration strategy.
 
 ### LibSets Dependencies
 

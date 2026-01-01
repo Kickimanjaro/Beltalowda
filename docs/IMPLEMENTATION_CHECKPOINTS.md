@@ -41,6 +41,52 @@ This document provides detailed in-game testing checkpoints for each phase of Be
 
 ---
 
+### Checkpoint 0.1b: Existing Library Research
+
+**When**: After researching LibGroupCombatStats, LibSetDetection, and LibGroupResources
+
+**How to Test**:
+1. Install test libraries:
+   - Download LibGroupCombatStats from ESOUI
+   - Download LibSetDetection from ESOUI  
+   - Download LibGroupResources from ESOUI
+2. Add to ESO addons folder
+3. Create test script or addon to verify functionality
+
+**Research Tasks**:
+1. **LibGroupCombatStats**:
+   - Test: `/script d(LibGroupCombatStats ~= nil)`
+   - Check available APIs for ultimate data
+   - Verify data format and update frequency
+   - Document: Does it meet our ultimate tracking needs?
+
+2. **LibSetDetection**:
+   - Test: `/script d(LibSetDetection ~= nil)`
+   - Check how it detects equipped sets
+   - Compare with LibSets capabilities
+   - Document: Conflicts or compatibility with LibSets?
+
+3. **LibGroupResources**:
+   - Test: `/script d(LibGroupResources ~= nil)`
+   - Check what resources it provides
+   - Verify it's missing Health (confirmed from wiki)
+   - Document: Worth using for Magicka/Stamina?
+
+**Decision Matrix**:
+- [ ] LibGroupCombatStats: Use / Don't Use / Needs Testing
+- [ ] LibSetDetection: Use / Don't Use / Conflicts with LibSets
+- [ ] LibGroupResources: Use / Don't Use / Partial Use
+
+**Deliverables**:
+- ✅ All three libraries tested
+- ✅ Documentation of capabilities and gaps
+- ✅ Decision made on which to integrate
+- ✅ Updated LIBGROUPBROADCAST_INTEGRATION.md with findings
+
+**Success Criteria**: Clear understanding of existing libraries, informed decision on custom vs reuse
+
+---
+
 ### Checkpoint 0.2: Module Structure Created
 
 **When**: After creating Data/ and Network/ directories with stub files
