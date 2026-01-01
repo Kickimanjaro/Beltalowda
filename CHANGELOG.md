@@ -63,7 +63,7 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
   - Enables testing with `/btlwdata libapi` command to check library availability
   - Libraries are detected dynamically at runtime if present
   - If libraries are installed, they will be used automatically for enhanced functionality
-  - Note: In ESO, `OptionalDependsOn` still requires the addon to be installed; complete removal is needed for truly optional libraries
+  - Note: In ESO, `OptionalDependsOn` still requires the library to be installed; complete removal is needed for truly optional libraries
 - Fixed operator precedence issue in `/btlwdata equip` command
 - Improved error handling in `/btlwdata libapi` command to handle nil values gracefully
 - Updated library check to only fail on missing required libraries (LibAsync, LibGroupBroadcast, LibAddonMenu2)
