@@ -34,6 +34,10 @@ BeltalowdaNetwork.EXTERNAL_IDS = {
 -- Format: groupData[unitTag] = { ultimate = {...}, equipment = {...}, ... }
 BeltalowdaNetwork.groupData = {}
 
+-- Store registered library instances
+BeltalowdaNetwork.lgcsInstance = nil
+BeltalowdaNetwork.lsdInstance = nil
+
 --[[
     Initialize the network layer
     - Subscribe to LibGroupCombatStats broadcasts
@@ -52,7 +56,7 @@ function BeltalowdaNetwork.Initialize()
         d("[Beltalowda] ERROR: LibGroupCombatStats not available. This should not happen (required dependency).")
         return false
     else
-        d("[Beltalowda] LibGroupCombatStats found - subscribing to ultimate data")
+        d("[Beltalowda] LibGroupCombatStats found - registering addon")
         BeltalowdaNetwork.SubscribeToUltimateData()
     end
     
@@ -60,7 +64,7 @@ function BeltalowdaNetwork.Initialize()
         d("[Beltalowda] ERROR: LibSetDetection not available. This should not happen (required dependency).")
         return false
     else
-        d("[Beltalowda] LibSetDetection found - subscribing to equipment data")
+        d("[Beltalowda] LibSetDetection found - registering addon")
         BeltalowdaNetwork.SubscribeToEquipmentData()
     end
     
@@ -77,127 +81,115 @@ end
 
 --[[
     Subscribe to LibGroupCombatStats ultimate broadcasts
-    IDs 20-21: Ultimate Type and Value
     
-    NOTE: This implementation assumes LibGroupCombatStats provides a callback-based API.
-    The actual API may differ - this may need adjustment after consulting library source.
+    LibGroupCombatStats requires calling RegisterAddon first, then registering for events.
+    We track ultimate ("ULT") data for all group members.
 ]]--
 function BeltalowdaNetwork.SubscribeToUltimateData()
     if not LGCS then return end
     
-    -- Attempt to register callbacks for ultimate data
-    -- The API below is based on common LibGroupBroadcast library patterns
-    -- If this fails, we'll need to consult the actual library documentation
-    
     local success, err = pcall(function()
-        -- Try to register callback for ultimate type changes (ID 20)
-        if LGCS.RegisterCallback then
-            LGCS:RegisterCallback(LGCS.EVENT_ULTIMATE_TYPE_CHANGED or "UltimateTypeChanged", 
-                function(unitTag, abilityId, cost)
-                    BeltalowdaNetwork.OnUltimateTypeReceived(unitTag, abilityId, cost)
-                end)
-            
-            -- Try to register callback for ultimate value changes (ID 21)
-            LGCS:RegisterCallback(LGCS.EVENT_ULTIMATE_VALUE_CHANGED or "UltimateValueChanged", 
-                function(unitTag, current, max)
-                    BeltalowdaNetwork.OnUltimateValueReceived(unitTag, current, max)
-                end)
-                
-            d("[Beltalowda] Subscribed to LibGroupCombatStats ultimate data")
-        else
-            d("[Beltalowda] Warning: LibGroupCombatStats API differs from expected. Manual integration needed.")
+        -- Register our addon with LibGroupCombatStats
+        -- RegisterAddon returns an instance object if successful
+        BeltalowdaNetwork.lgcsInstance = LGCS.RegisterAddon("Beltalowda", {"ULT"})
+        
+        if not BeltalowdaNetwork.lgcsInstance then
+            d("[Beltalowda] Warning: Failed to register with LibGroupCombatStats")
+            return
         end
+        
+        -- Register for group ultimate update events
+        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_GROUP_ULT_UPDATE then
+            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_GROUP_ULT_UPDATE, 
+                function(unitTag, data)
+                    BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+                end)
+            d("[Beltalowda] Registered for GROUP ultimate updates")
+        end
+        
+        -- Register for player ultimate update events
+        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_PLAYER_ULT_UPDATE then
+            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_PLAYER_ULT_UPDATE, 
+                function(unitTag, data)
+                    BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+                end)
+            d("[Beltalowda] Registered for PLAYER ultimate updates")
+        end
+        
+        d("[Beltalowda] Successfully registered with LibGroupCombatStats")
     end)
     
     if not success then
-        d("[Beltalowda] Error subscribing to LibGroupCombatStats: " .. tostring(err))
-        d("[Beltalowda] Ultimate tracking may require manual integration. See library documentation.")
+        d("[Beltalowda] Error registering with LibGroupCombatStats: " .. tostring(err))
     end
 end
 
 --[[
     Subscribe to LibSetDetection equipment broadcasts
-    ID 40: Equipment sets
     
-    NOTE: This implementation assumes LibSetDetection provides a callback-based API.
-    The actual API may differ - this may need adjustment after consulting library source.
+    LibSetDetection requires calling RegisterAddon first, then we can query set data.
 ]]--
 function BeltalowdaNetwork.SubscribeToEquipmentData()
     if not LSD then return end
     
-    -- Attempt to register callback for equipment data
     local success, err = pcall(function()
-        if LSD.RegisterCallback then
-            LSD:RegisterCallback(LSD.EVENT_EQUIPPED_SETS_CHANGED or "EquippedSetsChanged", 
-                function(unitTag, sets)
-                    BeltalowdaNetwork.OnEquipmentReceived(unitTag, sets)
-                end)
-                
-            d("[Beltalowda] Subscribed to LibSetDetection equipment data")
-        else
-            d("[Beltalowda] Warning: LibSetDetection API differs from expected. Manual integration needed.")
+        -- Register our addon with LibSetDetection
+        BeltalowdaNetwork.lsdInstance = LSD:RegisterAddon("Beltalowda")
+        
+        if not BeltalowdaNetwork.lsdInstance then
+            d("[Beltalowda] Warning: Failed to register with LibSetDetection")
+            return
         end
+        
+        d("[Beltalowda] Successfully registered with LibSetDetection")
+        
+        -- Note: LibSetDetection doesn't use callbacks for continuous updates
+        -- We'll query set data on-demand when displaying equipment info
     end)
     
     if not success then
-        d("[Beltalowda] Error subscribing to LibSetDetection: " .. tostring(err))
-        d("[Beltalowda] Equipment tracking may require manual integration. See library documentation.")
+        d("[Beltalowda] Error registering with LibSetDetection: " .. tostring(err))
     end
 end
 
 --[[
-    Handle ultimate type data received from LibGroupCombatStats
-    @param unitTag: Unit tag of the player (e.g., "group1")
-    @param abilityId: The ultimate ability ID
-    @param cost: The ultimate cost
+    Handle ultimate data received from LibGroupCombatStats
+    @param unitTag: Unit tag of the player (e.g., "group1", "player")
+    @param data: Ultimate data from LGCS (contains ability ID, cost, current, max, etc.)
 ]]--
-function BeltalowdaNetwork.OnUltimateTypeReceived(unitTag, abilityId, cost)
+function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+    if not data then return end
+    
     -- Initialize player data if not exists
     BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
     BeltalowdaNetwork.groupData[unitTag].ultimate = BeltalowdaNetwork.groupData[unitTag].ultimate or {}
     
-    -- Store ultimate type data
-    BeltalowdaNetwork.groupData[unitTag].ultimate.abilityId = abilityId
-    BeltalowdaNetwork.groupData[unitTag].ultimate.cost = cost
+    -- Store all ultimate data from LGCS
+    local ult = BeltalowdaNetwork.groupData[unitTag].ultimate
+    
+    -- LGCS provides: abilityId, cost, current, max (values may vary based on library version)
+    if data.abilityId then
+        ult.abilityId = data.abilityId
+    end
+    if data.cost then
+        ult.cost = data.cost
+    end
+    if data.current then
+        ult.current = data.current
+    end
+    if data.max then
+        ult.max = data.max
+    end
+    
+    -- Calculate percentage
+    if ult.max and ult.max > 0 and ult.current then
+        ult.percent = (ult.current / ult.max) * 100
+    else
+        ult.percent = 0
+    end
     
     -- Trigger callback for modules that need this data
-    BeltalowdaNetwork.OnDataChanged("ultimateType", unitTag)
-end
-
---[[
-    Handle ultimate value data received from LibGroupCombatStats
-    @param unitTag: Unit tag of the player
-    @param current: Current ultimate points
-    @param max: Maximum ultimate points
-]]--
-function BeltalowdaNetwork.OnUltimateValueReceived(unitTag, current, max)
-    -- Initialize player data if not exists
-    BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
-    BeltalowdaNetwork.groupData[unitTag].ultimate = BeltalowdaNetwork.groupData[unitTag].ultimate or {}
-    
-    -- Store ultimate value data
-    BeltalowdaNetwork.groupData[unitTag].ultimate.current = current
-    BeltalowdaNetwork.groupData[unitTag].ultimate.max = max
-    BeltalowdaNetwork.groupData[unitTag].ultimate.percent = (max > 0) and (current / max * 100) or 0
-    
-    -- Trigger callback for modules that need this data
-    BeltalowdaNetwork.OnDataChanged("ultimateValue", unitTag)
-end
-
---[[
-    Handle equipment data received from LibSetDetection
-    @param unitTag: Unit tag of the player
-    @param sets: Table of equipped set data
-]]--
-function BeltalowdaNetwork.OnEquipmentReceived(unitTag, sets)
-    -- Initialize player data if not exists
-    BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
-    
-    -- Store equipment data
-    BeltalowdaNetwork.groupData[unitTag].equipment = sets
-    
-    -- Trigger callback for modules that need this data
-    BeltalowdaNetwork.OnDataChanged("equipment", unitTag)
+    BeltalowdaNetwork.OnDataChanged("ultimate", unitTag)
 end
 
 --[[
@@ -285,18 +277,15 @@ function BeltalowdaNetwork.DebugPrintGroupData()
         if data then
             if data.ultimate then
                 local ult = data.ultimate
-                d(string.format("  Ultimate: %s (%d cost)", 
-                    ult.abilityId or "Unknown", 
+                local abilityName = ult.abilityId and GetAbilityName(ult.abilityId) or "Unknown"
+                d(string.format("  Ultimate: %s (ID: %s, cost: %d)", 
+                    abilityName,
+                    tostring(ult.abilityId or "?"), 
                     ult.cost or 0))
                 d(string.format("  Value: %d/%d (%.1f%%)", 
                     ult.current or 0, 
                     ult.max or 0, 
                     ult.percent or 0))
-            end
-            
-            if data.equipment then
-                local equipCount = (type(data.equipment) == "table") and #data.equipment or 0
-                d("  Equipment: " .. tostring(equipCount) .. " sets tracked")
             end
         else
             d("  No data available")
@@ -325,13 +314,11 @@ function BeltalowdaNetwork.DebugGroupStatus()
         local name = GetUnitName(unitTag)
         local hasData = BeltalowdaNetwork.groupData[unitTag] ~= nil
         local hasUlt = hasData and BeltalowdaNetwork.groupData[unitTag].ultimate ~= nil
-        local hasEquip = hasData and BeltalowdaNetwork.groupData[unitTag].equipment ~= nil
         
         d(string.format("  [%d] %s (%s)", i, name, unitTag))
-        d(string.format("      Data: %s | Ultimate: %s | Equipment: %s",
+        d(string.format("      Data: %s | Ultimate: %s",
             hasData and "YES" or "NO",
-            hasUlt and "YES" or "NO",
-            hasEquip and "YES" or "NO"))
+            hasUlt and "YES" or "NO"))
     end
     
     d("")
@@ -402,37 +389,35 @@ function BeltalowdaNetwork.DebugEquipmentData()
         return
     end
     
+    if not BeltalowdaNetwork.lsdInstance then
+        d("LibSetDetection not registered - cannot retrieve equipment data")
+        return
+    end
+    
     local foundData = false
     for i = 1, groupSize do
         local unitTag = GetGroupUnitTagByIndex(i)
         local name = GetUnitName(unitTag)
-        local data = BeltalowdaNetwork.groupData[unitTag]
         
-        if data and data.equipment then
-            foundData = true
-            d(string.format("[%d] %s", i, name))
+        -- Query equipment data from LibSetDetection
+        local sets = BeltalowdaNetwork.lsdInstance:GetSetsForGroupMember(unitTag)
+        
+        if sets and type(sets) == "table" then
+            local hasData = false
+            for k, v in pairs(sets) do
+                hasData = true
+                break
+            end
             
-            -- Display equipment data based on its structure
-            -- Note: The actual structure depends on LibSetDetection's API
-            if type(data.equipment) == "table" then
-                -- Count and display in a single iteration
-                local count = 0
-                local displayLines = {}
-                for k, v in pairs(data.equipment) do
-                    count = count + 1
-                    if type(v) == "table" then
-                        table.insert(displayLines, string.format("    Set: %s", tostring(k)))
-                    else
-                        table.insert(displayLines, string.format("    %s: %s", tostring(k), tostring(v)))
-                    end
-                end
+            if hasData then
+                foundData = true
+                d(string.format("[%d] %s", i, name))
                 
-                d(string.format("    Equipment entries: %d", count))
-                for _, line in ipairs(displayLines) do
-                    d(line)
+                -- Display set data: setId -> piece count
+                for setId, pieces in pairs(sets) do
+                    local setName = GetItemSetName(setId) or ("Set #" .. setId)
+                    d(string.format("    %s: %d pieces", setName, pieces))
                 end
-            else
-                d(string.format("    Equipment data: %s", tostring(data.equipment)))
             end
         end
     end
