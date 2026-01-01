@@ -57,6 +57,17 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Made LibGroupCombatStats, LibSetDetection, and LibCombat optional dependencies
+  - Changed from `DependsOn` to `OptionalDependsOn` in manifest
+  - Allows addon to load even when these libraries are not installed
+  - Enables testing with `/btlwdata libapi` command to check library availability
+  - Libraries enhance functionality when present but are not required for addon to load
+- Fixed operator precedence issue in `/btlwdata equip` command
+- Improved error handling in `/btlwdata libapi` command to handle nil values gracefully
+- Updated library check to only fail on missing required libraries (LibAsync, LibGroupBroadcast, LibAddonMenu2)
+- Added warning messages for missing optional libraries
+
 ### Planned
 - Phase 1: Local data collection (equipment tracking, synergy detection)
 - Ultimate tracking system

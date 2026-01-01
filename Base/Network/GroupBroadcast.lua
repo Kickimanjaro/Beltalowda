@@ -323,21 +323,26 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("=== Group Equipment ===")
         for unitTag, data in pairs(BeltalowdaNetwork.groupData) do
             if data.equipment then
-                d(GetUnitName(unitTag) .. ": " .. tostring(#data.equipment or 0) .. " sets")
+                local count = type(data.equipment) == "table" and #data.equipment or 0
+                d(GetUnitName(unitTag) .. ": " .. tostring(count) .. " sets")
             end
         end
     elseif args == "libapi" then
         d("=== Library API Status ===")
+        d("LibGroupBroadcast: " .. tostring(LGB ~= nil))
+        if LGB then
+            d("  Loaded and available")
+        end
         d("LibGroupCombatStats: " .. tostring(LGCS ~= nil))
         if LGCS then
             d("  Has RegisterCallback: " .. tostring(LGCS.RegisterCallback ~= nil))
-            d("  EVENT_ULTIMATE_TYPE_CHANGED: " .. tostring(LGCS.EVENT_ULTIMATE_TYPE_CHANGED))
-            d("  EVENT_ULTIMATE_VALUE_CHANGED: " .. tostring(LGCS.EVENT_ULTIMATE_VALUE_CHANGED))
+            d("  EVENT_ULTIMATE_TYPE_CHANGED: " .. tostring(LGCS.EVENT_ULTIMATE_TYPE_CHANGED or "nil"))
+            d("  EVENT_ULTIMATE_VALUE_CHANGED: " .. tostring(LGCS.EVENT_ULTIMATE_VALUE_CHANGED or "nil"))
         end
         d("LibSetDetection: " .. tostring(LSD ~= nil))
         if LSD then
             d("  Has RegisterCallback: " .. tostring(LSD.RegisterCallback ~= nil))
-            d("  EVENT_EQUIPPED_SETS_CHANGED: " .. tostring(LSD.EVENT_EQUIPPED_SETS_CHANGED))
+            d("  EVENT_EQUIPPED_SETS_CHANGED: " .. tostring(LSD.EVENT_EQUIPPED_SETS_CHANGED or "nil"))
         end
     else
         d("Beltalowda Data Commands:")
