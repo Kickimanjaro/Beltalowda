@@ -6,6 +6,41 @@ Beltalowda is a greenfield group PvP addon for The Elder Scrolls Online (ESO) wr
 
 **Reference Implementation:** The Kickimanjaro/RdK repository serves as a reference implementation of similar functionality. RdK was originally created by @Parnax and is used here as a guide and inspiration for understanding ESO addon patterns and group coordination features.
 
+## Planning Documentation
+
+**Location**: `/docs/` directory contains comprehensive planning documents
+
+**CRITICAL:** These planning docs are the PRIMARY source of truth. They describe what we're BUILDING (not what currently exists). The RdK repository is available as a reference for similar implementations.
+
+**Key Documents**:
+- `ARCHITECTURE_PLAN.md` - Overall system design and architecture
+- `LIBGROUPBROADCAST_INTEGRATION.md` - Network layer integration strategy
+- `LIBSETS_INTEGRATION.md` - Equipment tracking implementation
+- `SAVEDVARIABLES_GUIDE.md` - Data persistence patterns
+- `DEVELOPMENT_ROADMAP.md` - 12-phase implementation plan (26 weeks)
+- `IMPLEMENTATION_CHECKPOINTS.md` - 30+ in-game test procedures
+- `PLANNING_SUMMARY.md` - Executive overview and quick reference
+
+**Implementation Guidance**:
+1. **Planning docs first** - Always start with the planning documents to understand what to build
+2. **RdK patterns second** - Reference RdK for ESO API patterns and implementation approaches
+3. **RdK is reference only** - RdK is NOT Beltalowda's codebase, it's a similar addon to learn from
+4. **When docs mention RdK** - Treat it as "look at RdK for how they solved this problem"
+
+**Documentation Maintenance Rules**:
+1. **Planning docs are source of truth** - implementation should match the plan
+2. **Update docs when plans change** - don't let them drift from reality
+3. **Reference specific sections** when asking AI agents to implement features
+4. **Use checkpoints** from IMPLEMENTATION_CHECKPOINTS.md to verify work
+5. **Document deviations** - if you deviate from the plan, update the plan with rationale
+
+**When to Update Planning Docs**:
+- Architecture changes (new modules, different approach)
+- Library integration changes (adding/removing dependencies)
+- Feature scope changes (adding/removing features)
+- Implementation order changes (phase reordering)
+- Major design decisions (different UI approach, different data structure)
+
 ## Critical ESO Addon Patterns
 
 ### Namespace Initialization (REQUIRED)
@@ -219,41 +254,6 @@ Before committing changes:
 - [ ] All localized strings present (en, de, fr)
 - [ ] No console errors when loading addon
 - [ ] No console errors when toggling features
-
-## Planning Documentation
-
-**Location**: `/docs/` directory contains comprehensive planning documents
-
-**CRITICAL:** These planning docs are the PRIMARY source of truth. They describe what we're BUILDING (not what currently exists). The RdK repository is available as a reference for similar implementations.
-
-**Key Documents**:
-- `ARCHITECTURE_PLAN.md` - Overall system design and architecture
-- `LIBGROUPBROADCAST_INTEGRATION.md` - Network layer integration strategy
-- `LIBSETS_INTEGRATION.md` - Equipment tracking implementation
-- `SAVEDVARIABLES_GUIDE.md` - Data persistence patterns
-- `DEVELOPMENT_ROADMAP.md` - 12-phase implementation plan (26 weeks)
-- `IMPLEMENTATION_CHECKPOINTS.md` - 30+ in-game test procedures
-- `PLANNING_SUMMARY.md` - Executive overview and quick reference
-
-**Implementation Guidance**:
-1. **Planning docs first** - Always start with the planning documents to understand what to build
-2. **RdK patterns second** - Reference RdK for ESO API patterns and implementation approaches
-3. **RdK is reference only** - RdK is NOT Beltalowda's codebase, it's a similar addon to learn from
-4. **When docs mention RdK** - Treat it as "look at RdK for how they solved this problem"
-
-**Documentation Maintenance Rules**:
-1. **Planning docs are source of truth** - implementation should match the plan
-2. **Update docs when plans change** - don't let them drift from reality
-3. **Reference specific sections** when asking AI agents to implement features
-4. **Use checkpoints** from IMPLEMENTATION_CHECKPOINTS.md to verify work
-5. **Document deviations** - if you deviate from the plan, update the plan with rationale
-
-**When to Update Planning Docs**:
-- Architecture changes (new modules, different approach)
-- Library integration changes (adding/removing dependencies)
-- Feature scope changes (adding/removing features)
-- Implementation order changes (phase reordering)
-- Major design decisions (different UI approach, different data structure)
 
 ## Key Principles
 
