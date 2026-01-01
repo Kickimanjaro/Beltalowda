@@ -414,25 +414,29 @@ Install from ESOUI.com to enable full functionality
 
 ### Test 6: Error Handling (Missing Libraries)
 
-**Purpose**: Verify addon handles missing optional libraries gracefully
+**Purpose**: Verify addon fails gracefully when required libraries are missing
 
 **Steps**:
 1. **Disable LibGroupCombatStats** (remove from AddOns folder temporarily)
 2. Load ESO and enter game
-3. Watch for warning message:
-   - Should see: `[Beltalowda] Warning: LibGroupCombatStats not found. Ultimate tracking will be limited.`
-4. Run `/btlwdata libapi`
-   - Should show `LibGroupCombatStats: false`
-5. Run `/btlwdata ults`
-   - Should show "No ultimate data received yet" with helpful message
-6. **Re-enable library** and reload
-7. Verify functionality restored
+3. Watch for ESO error message at character select:
+   - ESO should show addon load error listing missing dependencies
+4. Addon should not appear in loaded addons list
+5. **Re-enable library** and reload
+6. Verify addon loads successfully
 
 **Expected Results**:
-- ✅ Addon loads successfully without optional libraries
-- ✅ Clear warning messages explain what's missing
-- ✅ No Lua errors or crashes
-- ✅ Functionality restored when libraries added back
+- ✅ Addon fails to load with clear error message from ESO
+- ✅ Error message lists missing required libraries
+- ✅ No partial functionality or confusing "Data: NO" messages
+- ✅ Functionality works when all required libraries are present
+
+**Testing Optional Libraries**:
+1. **Disable LibCombat** (remove from AddOns folder temporarily)
+2. Load ESO and enter game
+3. Watch for info message:
+   - Should see: `[Beltalowda] Info: LibCombat not found. This is optional and reserved for future features.`
+4. Addon should load successfully since LibCombat is optional
 
 ---
 
@@ -550,7 +554,8 @@ Network foundation testing is **COMPLETE** when:
 - [ ] Ultimate data updates when abilities are used
 - [ ] Equipment data updates when gear changes
 - [ ] Players leaving/joining group handled correctly
-- [ ] Missing libraries handled gracefully with warnings
+- [ ] Missing required libraries prevent addon from loading with clear error
+- [ ] Missing optional libraries handled gracefully with info messages
 - [ ] No Lua errors during any test scenario
 - [ ] Library APIs verified (or adjusted if needed)
 - [ ] Performance acceptable (no FPS drops, no memory leaks)
