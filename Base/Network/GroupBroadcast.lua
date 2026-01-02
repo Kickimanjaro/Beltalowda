@@ -339,9 +339,9 @@ function BeltalowdaNetwork.DebugPrintGroupData()
         
         if data then
             -- Display ultimate data if available
-            if data.ultimate and (data.ultimate.abilityId or data.ultimate.id) then
+            if data.ultimate and data.ultimate.abilityId then
                 local ult = data.ultimate
-                local abilityId = ult.abilityId or ult.id
+                local abilityId = ult.abilityId
                 local abilityName = GetAbilityNameSafe(abilityId)
                 
                 local current = ult.current or ult.value or 0
@@ -427,13 +427,13 @@ function BeltalowdaNetwork.DebugGroupStatus()
         local equipStatus = "NO"
         
         if data then
-            if data.ultimate and (data.ultimate.abilityId or data.ultimate.id) then
+            if data.ultimate and data.ultimate.abilityId then
                 local ult = data.ultimate
                 local current = ult.current or ult.value or 0
                 local max = ult.max or 0
                 local percent = ult.percent or 0
                 
-                local abilityId = ult.abilityId or ult.id
+                local abilityId = ult.abilityId
                 local abilityName = GetAbilityNameSafe(abilityId)
                 
                 ultStatus = string.format("%s (%.0f%%)", abilityName, percent)
@@ -498,10 +498,10 @@ function BeltalowdaNetwork.DebugUltimateData()
             end
             
             -- Check if we have ultimate data with actual values
-            if data.ultimate and (data.ultimate.abilityId or data.ultimate.id or data.ultimate.current or data.ultimate.value or data.ultimate.max) then
+            if data.ultimate and data.ultimate.abilityId then
                 local ult = data.ultimate
                 
-                local abilityId = ult.abilityId or ult.id
+                local abilityId = ult.abilityId
                 local abilityName = GetAbilityNameSafe(abilityId)
                 
                 local current = ult.current or ult.value or 0
