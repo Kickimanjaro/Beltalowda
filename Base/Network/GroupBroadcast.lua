@@ -71,10 +71,16 @@ function BeltalowdaNetwork.Initialize()
         BeltalowdaNetwork.SubscribeToUltimateData()
     end
     
+    -- Check LibSetDetection availability with diagnostics
+    d("[Beltalowda] INIT: Checking LibSetDetection availability...")
+    d("[Beltalowda] INIT: LibSetDetection type=" .. type(LibSetDetection))
+    d("[Beltalowda] INIT: LibSetDetection nil=" .. tostring(LibSetDetection == nil))
+    
     if not LibSetDetection then
         d("[Beltalowda] ERROR: LibSetDetection not available. This should not happen (required dependency).")
         return false
     else
+        d("[Beltalowda] INIT: LibSetDetection found!")
         d("[Beltalowda] INIT: About to call SubscribeToEquipmentData, function type=" .. type(BeltalowdaNetwork.SubscribeToEquipmentData))
         if logger then
             logger:Info("LibSetDetection found - registering addon")
