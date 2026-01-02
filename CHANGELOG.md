@@ -160,6 +160,69 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
 ## [Unreleased]
 
 ### Added
+- **LibDebugLogger Integration (Issue #44)**
+  - Added LibDebugLogger as optional dependency for advanced logging
+  - Created `Base/Util/Logger.lua` wrapper module with graceful fallback to `d()` when LibDebugLogger not installed
+  - Implemented 5 debug levels: ERROR (default), WARN, INFO, DEBUG, VERBOSE
+  - Module-specific loggers for Network, Ultimates, Equipment, and General modules
+  - 200-entry log limit with automatic rotation
+  - Non-persistent VERBOSE mode that resets to configured level after `/reloadui`
+  - Timestamp support for all log entries
+  - In-memory session log storage
+
+- **Enhanced Slash Commands**
+  - `/btlwdata debug <module> <level>` - Set debug level for specific module
+  - `/btlwdata debug all <level>` - Set all modules to same level
+  - `/btlwdata log show [module] [count]` - Show last N log entries (default: 20)
+  - `/btlwdata log clear` - Clear current session log
+  - `/btlwdata log levels` - Show current debug levels for all modules
+  - `/btlwdata log export` - Show SavedVariables file path for log export
+
+- **Documentation**
+  - Created `docs/DEBUGGING_GUIDE.md` with comprehensive debugging instructions
+  - Includes usage examples for all debug levels
+  - Common troubleshooting scenarios with step-by-step solutions
+  - LibDebugLogger integration guide
+  - Best practices for development, testing, and bug reporting
+
+- **Settings Menu Integration**
+  - Created `BeltalowdaSettings.lua` with LibAddonMenu-2.0 integration
+  - Added "Debugging & Diagnostics" section in settings
+  - Master "Enable Debug Logging" toggle
+  - "Default Debug Level" dropdown (ERROR, WARN, INFO, DEBUG, VERBOSE)
+  - Module-specific level controls in submenu:
+    - Network Module
+    - Ultimate Tracking
+    - Equipment Tracking
+    - General / Core
+  - "Max Log Entries" slider (50-500, default 200)
+  - "Reset VERBOSE on Reload" checkbox (default ON)
+  - "Show Debug Commands" button for quick reference
+  - Settings persist in SavedVariables
+  - Accessible via `/btlwsettings` or ESO Settings → Add-Ons → Beltalowda
+
+### Changed
+- **Network Module Logging Migration**
+  - Replaced verbose debug output in `Base/Network/GroupBroadcast.lua` with logger calls
+  - Lines 59, 67, 78: Initialization messages now use `logger:Info()`
+  - Lines 168-169: Ultimate data reception uses `logger:Debug()`
+  - Line 202: Ultimate storage confirmation uses `logger:Verbose()`
+  - Lines 377-383: Debug output in `/btlwdata ults` now conditional on DEBUG level
+  - User-facing command output (e.g., `/btlwdata` commands) still uses `d()` for visibility
+  - Critical initialization errors remain visible to users via `d()`
+
+- **Logger Initialization**
+  - Logger now initializes early in `Beltalowda.lua` (after SavedVariables, before modules)
+  - Network module creates logger instance during initialization
+  - Configuration loaded from and saved to `BeltalowdaVars.logging`
+
+### Fixed
+- Removed duplicate "no data" messages in GroupBroadcast.lua (lines 431-432)
+- Debug output now respects configured log levels instead of always appearing
+
+## [0.2.1] - 2026-01-01
+
+### Added
 - **Added temporary debug logging to TYPE and VALUE event handlers**
   - Logs parameters received in `OnUltimateTypeReceived()` and `OnUltimateValueReceived()`
   - Helps diagnose why ultimate data fields remain nil
