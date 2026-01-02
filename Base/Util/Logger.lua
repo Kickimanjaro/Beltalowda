@@ -254,6 +254,19 @@ function Logger.AddToSessionLog(level, moduleName, message)
     while #Logger.sessionLog > Logger.maxLogEntries do
         table.remove(Logger.sessionLog, 1)
     end
+    
+    -- Also save to persistent storage in SavedVariables
+    if BeltalowdaVars then
+        BeltalowdaVars.logging = BeltalowdaVars.logging or {}
+        BeltalowdaVars.logging.persistentLog = BeltalowdaVars.logging.persistentLog or {}
+        
+        table.insert(BeltalowdaVars.logging.persistentLog, entry)
+        
+        -- Rotate persistent log if it exceeds max entries
+        while #BeltalowdaVars.logging.persistentLog > Logger.maxLogEntries do
+            table.remove(BeltalowdaVars.logging.persistentLog, 1)
+        end
+    end
 end
 
 --[[

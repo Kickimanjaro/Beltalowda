@@ -176,10 +176,14 @@ end
 ]]--
 function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
     if not data or type(data) ~= "table" then 
+        if logger then
+            logger:Warn("OnUltimateDataReceived called with invalid data", "unitTag=" .. tostring(unitTag), "dataType=" .. type(data))
+        end
         return 
     end
     
     if logger then
+        logger:Info("Ultimate data received!", "unitTag=" .. tostring(unitTag), "abilityId=" .. tostring(data.id), "value=" .. tostring(data.value) .. "/" .. tostring(data.max))
         logger:Debug("Ultimate type received", unitTag, "id=" .. tostring(data.id), "cost=" .. tostring(data.cost), "value=" .. tostring(data.value), "max=" .. tostring(data.max))
     end
     
@@ -214,6 +218,7 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
     end
     
     if logger then
+        logger:Info("Stored ultimate data", "unitTag=" .. tostring(unitTag), "abilityId=" .. tostring(ult.abilityId), "percent=" .. string.format("%.0f%%", ult.percent))
         logger:Verbose("Stored ultimate data under key", unitTag)
     end
     
