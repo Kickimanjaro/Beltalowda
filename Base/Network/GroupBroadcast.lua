@@ -285,6 +285,40 @@ function BeltalowdaNetwork.GetAllGroupData()
 end
 
 --[[
+    Helper: Get ability name safely with fallback
+    @param abilityId: Ability ID number
+    @return: Ability name string or "Unknown"
+]]--
+local function GetAbilityNameSafe(abilityId)
+    if not abilityId then
+        return "Unknown"
+    end
+    
+    local abilityName = GetAbilityName(abilityId)
+    if abilityName and abilityName ~= "" then
+        return abilityName
+    end
+    
+    return "Unknown"
+end
+
+--[[
+    Helper: Get set name safely with fallback
+    @param setId: Set ID (number or other type)
+    @return: Set name string
+]]--
+local function GetSetNameSafe(setId)
+    if type(setId) == "number" then
+        local setName = GetItemSetName(setId)
+        if setName and setName ~= "" then
+            return setName
+        end
+        return "Set #" .. setId
+    end
+    return tostring(setId)
+end
+
+--[[
     Debug: Print group data to chat
 ]]--
 function BeltalowdaNetwork.DebugPrintGroupData()
@@ -307,15 +341,8 @@ function BeltalowdaNetwork.DebugPrintGroupData()
             -- Display ultimate data if available
             if data.ultimate and (data.ultimate.abilityId or data.ultimate.id) then
                 local ult = data.ultimate
-                -- Safely get ability name with fallback
-                local abilityName = "Unknown"
                 local abilityId = ult.abilityId or ult.id
-                if abilityId then
-                    local abilityNameResult = GetAbilityName(abilityId)
-                    if abilityNameResult and abilityNameResult ~= "" then
-                        abilityName = abilityNameResult
-                    end
-                end
+                local abilityName = GetAbilityNameSafe(abilityId)
                 
                 local current = ult.current or ult.value or 0
                 local max = ult.max or 0
@@ -347,18 +374,7 @@ function BeltalowdaNetwork.DebugPrintGroupData()
                             hasData = true
                         end
                         
-                        -- Safely get set name with fallback
-                        local setName = "Unknown Set"
-                        if type(setId) == "number" then
-                            local itemSetName = GetItemSetName(setId)
-                            if itemSetName and itemSetName ~= "" then
-                                setName = itemSetName
-                            else
-                                setName = "Set #" .. setId
-                            end
-                        else
-                            setName = tostring(setId)
-                        end
+                        local setName = GetSetNameSafe(setId)
                         d(string.format("    %s: %d pieces", setName, pieces))
                     end
                     
@@ -417,15 +433,8 @@ function BeltalowdaNetwork.DebugGroupStatus()
                 local max = ult.max or 0
                 local percent = ult.percent or 0
                 
-                -- Get ability name safely
-                local abilityName = "Unknown"
                 local abilityId = ult.abilityId or ult.id
-                if abilityId then
-                    local abilityNameResult = GetAbilityName(abilityId)
-                    if abilityNameResult and abilityNameResult ~= "" then
-                        abilityName = abilityNameResult
-                    end
-                end
+                local abilityName = GetAbilityNameSafe(abilityId)
                 
                 ultStatus = string.format("%s (%.0f%%)", abilityName, percent)
             end
@@ -492,15 +501,8 @@ function BeltalowdaNetwork.DebugUltimateData()
             if data.ultimate and (data.ultimate.abilityId or data.ultimate.id or data.ultimate.current or data.ultimate.value or data.ultimate.max) then
                 local ult = data.ultimate
                 
-                -- Safely get ability name with fallback
-                local abilityName = "Unknown"
                 local abilityId = ult.abilityId or ult.id
-                if abilityId then
-                    local abilityNameResult = GetAbilityName(abilityId)
-                    if abilityNameResult and abilityNameResult ~= "" then
-                        abilityName = abilityNameResult
-                    end
-                end
+                local abilityName = GetAbilityNameSafe(abilityId)
                 
                 local current = ult.current or ult.value or 0
                 local max = ult.max or 0
@@ -578,18 +580,7 @@ function BeltalowdaNetwork.DebugEquipmentData()
                 
                 -- Display set data: setId -> piece count
                 for setId, pieces in pairs(sets) do
-                    -- Safely get set name with fallback
-                    local setName = "Unknown Set"
-                    if type(setId) == "number" then
-                        local itemSetName = GetItemSetName(setId)
-                        if itemSetName and itemSetName ~= "" then
-                            setName = itemSetName
-                        else
-                            setName = "Set #" .. setId
-                        end
-                    else
-                        setName = tostring(setId)
-                    end
+                    local setName = GetSetNameSafe(setId)
                     d(string.format("    %s: %d pieces", setName, pieces))
                 end
             end
