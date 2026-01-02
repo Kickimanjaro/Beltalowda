@@ -61,7 +61,7 @@ function BeltalowdaNetwork.Initialize()
         return false
     end
     
-    if not LGCS then
+    if not LibGroupCombatStats then
         d("[Beltalowda] ERROR: LibGroupCombatStats not available. This should not happen (required dependency).")
         return false
     else
@@ -118,12 +118,12 @@ end
     We track ultimate ("ULT") data for all group members.
 ]]--
 function BeltalowdaNetwork.SubscribeToUltimateData()
-    if not LGCS then return end
+    if not LibGroupCombatStats then return end
     
     local success, err = pcall(function()
         -- Register our addon with LibGroupCombatStats
         -- RegisterAddon returns an instance object if successful
-        BeltalowdaNetwork.lgcsInstance = LGCS.RegisterAddon("Beltalowda", {"ULT"})
+        BeltalowdaNetwork.lgcsInstance = LibGroupCombatStats.RegisterAddon("Beltalowda", {"ULT"})
         
         if not BeltalowdaNetwork.lgcsInstance then
             d("[Beltalowda] Warning: Failed to register with LibGroupCombatStats")
@@ -135,8 +135,8 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
         -- The unitTag is INSIDE the data table, not a separate parameter
         
         -- Register for player ultimate updates
-        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_PLAYER_ULT_UPDATE then
-            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_PLAYER_ULT_UPDATE, 
+        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LibGroupCombatStats.EVENT_PLAYER_ULT_UPDATE then
+            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LibGroupCombatStats.EVENT_PLAYER_ULT_UPDATE, 
                 function(unitTag, data)
                     -- Debug: Log what we actually received
                     if logger then
@@ -157,8 +157,8 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
         end
         
         -- Register for group ultimate updates
-        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_GROUP_ULT_UPDATE then
-            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_GROUP_ULT_UPDATE, 
+        if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LibGroupCombatStats.EVENT_GROUP_ULT_UPDATE then
+            BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LibGroupCombatStats.EVENT_GROUP_ULT_UPDATE, 
                 function(unitTag, data)
                     -- Debug: Log what we actually received
                     if logger then
@@ -915,11 +915,11 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("  LSD Instance: " .. tostring(BeltalowdaNetwork.lsdInstance ~= nil))
         d("")
         
-        if LGCS then
+        if LibGroupCombatStats then
             d("LibGroupCombatStats Events:")
-            d("  EVENT_GROUP_ULT_UPDATE: " .. tostring(LGCS.EVENT_GROUP_ULT_UPDATE))
-            d("  EVENT_PLAYER_ULT_UPDATE: " .. tostring(LGCS.EVENT_PLAYER_ULT_UPDATE))
-            d("  RegisterAddon method: " .. tostring(type(LGCS.RegisterAddon) == "function"))
+            d("  EVENT_GROUP_ULT_UPDATE: " .. tostring(LibGroupCombatStats.EVENT_GROUP_ULT_UPDATE))
+            d("  EVENT_PLAYER_ULT_UPDATE: " .. tostring(LibGroupCombatStats.EVENT_PLAYER_ULT_UPDATE))
+            d("  RegisterAddon method: " .. tostring(type(LibGroupCombatStats.RegisterAddon) == "function"))
             
             if BeltalowdaNetwork.lgcsInstance then
                 d("  Instance type: " .. type(BeltalowdaNetwork.lgcsInstance))
@@ -948,17 +948,17 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
             end
         end
         d("")
-        d("LibGroupCombatStats: " .. tostring(LGCS ~= nil))
-        if LGCS then
-            d("  Has RegisterAddon: " .. tostring(type(LGCS.RegisterAddon) == "function"))
-            d("  EVENT_GROUP_ULT_UPDATE: " .. tostring(LGCS.EVENT_GROUP_ULT_UPDATE))
-            d("  EVENT_PLAYER_ULT_UPDATE: " .. tostring(LGCS.EVENT_PLAYER_ULT_UPDATE))
+        d("LibGroupCombatStats: " .. tostring(LibGroupCombatStats ~= nil))
+        if LibGroupCombatStats then
+            d("  Has RegisterAddon: " .. tostring(type(LibGroupCombatStats.RegisterAddon) == "function"))
+            d("  EVENT_GROUP_ULT_UPDATE: " .. tostring(LibGroupCombatStats.EVENT_GROUP_ULT_UPDATE))
+            d("  EVENT_PLAYER_ULT_UPDATE: " .. tostring(LibGroupCombatStats.EVENT_PLAYER_ULT_UPDATE))
             
             -- Check for other possible API methods and events
-            if type(LGCS) == "table" then
+            if type(LibGroupCombatStats) == "table" then
                 d("  Type: table (object)")
                 d("  Available methods:")
-                for k, v in pairs(LGCS) do
+                for k, v in pairs(LibGroupCombatStats) do
                     if type(v) == "function" then
                         d("    " .. tostring(k))
                     elseif type(k) == "string" and k:match("^EVENT_") then
