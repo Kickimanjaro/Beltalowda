@@ -10,6 +10,9 @@ local LGB = LibGroupBroadcast
 local LGCS = LibGroupCombatStats
 local LSD = LibSetDetection
 
+-- Create logger instance for Network module
+local logger = nil
+
 -- Message IDs (reserved 220-229 for future custom protocols)
 BeltalowdaNetwork.MESSAGE_IDS = {
     -- Reserved for future use (officially registered on LibGroupBroadcast wiki)
@@ -45,6 +48,11 @@ BeltalowdaNetwork.lsdInstance = nil
     Returns: success (boolean)
 ]]--
 function BeltalowdaNetwork.Initialize()
+    -- Initialize logger if not already done
+    if not logger and Beltalowda.Logger and Beltalowda.Logger.CreateModuleLogger then
+        logger = Beltalowda.Logger.CreateModuleLogger("Network")
+    end
+    
     -- Check if required libraries are available
     -- Note: These are now required dependencies in manifest, so this check is defensive
     if not LGB then
@@ -56,7 +64,9 @@ function BeltalowdaNetwork.Initialize()
         d("[Beltalowda] ERROR: LibGroupCombatStats not available. This should not happen (required dependency).")
         return false
     else
-        d("[Beltalowda] LibGroupCombatStats found - registering addon")
+        if logger then
+            logger:Info("LibGroupCombatStats found - registering addon")
+        end
         BeltalowdaNetwork.SubscribeToUltimateData()
     end
     
@@ -64,7 +74,9 @@ function BeltalowdaNetwork.Initialize()
         d("[Beltalowda] ERROR: LibSetDetection not available. This should not happen (required dependency).")
         return false
     else
-        d("[Beltalowda] LibSetDetection found - registering addon")
+        if logger then
+            logger:Info("LibSetDetection found - registering addon")
+        end
         BeltalowdaNetwork.SubscribeToEquipmentData()
     end
     
@@ -75,7 +87,9 @@ function BeltalowdaNetwork.Initialize()
         BeltalowdaNetwork.OnGroupMemberLeft
     )
     
-    d("[Beltalowda] Network layer initialized")
+    if logger then
+        logger:Info("Network layer initialized")
+    end
     return true
 end
 
@@ -165,8 +179,9 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
         return 
     end
     
-    d(string.format("[Beltalowda] ULT data for %s (type=%s): id=%s cost=%s value=%s max=%s", 
-        tostring(unitTag), type(unitTag), tostring(data.id), tostring(data.cost), tostring(data.value), tostring(data.max)))
+    if logger then
+        logger:Debug("Ultimate type received", unitTag, "id=" .. tostring(data.id), "cost=" .. tostring(data.cost), "value=" .. tostring(data.value), "max=" .. tostring(data.max))
+    end
     
     -- Initialize player data if not exists
     BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
@@ -198,8 +213,9 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
         ult.percent = 0
     end
     
-    -- Debug: confirm storage
-    d(string.format("[Beltalowda] Stored ultimate data under key '%s' (key type: %s)", tostring(unitTag), type(unitTag)))
+    if logger then
+        logger:Verbose("Stored ultimate data under key", unitTag)
+    end
     
     -- Trigger callback for modules that need this data
     BeltalowdaNetwork.OnDataChanged("ultimate", unitTag)
@@ -373,14 +389,15 @@ function BeltalowdaNetwork.DebugUltimateData()
             
             d(string.format("[%s] %s", unitTag, name))
             
-            -- Debug: Show what's in data.ultimate
-            if data.ultimate then
-                d(string.format("    DEBUG: ultimate table exists, id=%s abilityId=%s value=%s current=%s max=%s cost=%s",
-                    tostring(data.ultimate.id), tostring(data.ultimate.abilityId),
-                    tostring(data.ultimate.value), tostring(data.ultimate.current),
-                    tostring(data.ultimate.max), tostring(data.ultimate.cost)))
-            else
-                d("    DEBUG: data.ultimate is nil")
+            -- Debug: Show what's in data.ultimate (only at DEBUG level or higher)
+            if logger and Beltalowda.Logger.GetModuleLevel("Network") >= Beltalowda.Logger.Levels.DEBUG then
+                if data.ultimate then
+                    logger:Debug("ultimate table exists", "id=" .. tostring(data.ultimate.id), "abilityId=" .. tostring(data.ultimate.abilityId),
+                        "value=" .. tostring(data.ultimate.value), "current=" .. tostring(data.ultimate.current),
+                        "max=" .. tostring(data.ultimate.max), "cost=" .. tostring(data.ultimate.cost))
+                else
+                    logger:Debug("data.ultimate is nil")
+                end
             end
             
             -- Check if we have ultimate data with actual values
@@ -426,8 +443,6 @@ function BeltalowdaNetwork.DebugUltimateData()
     
     if not foundData then
         d("No group members tracked yet")
-        d("Note: Requires LibGroupCombatStats installed on all group members")
-        d("Try using an ability or waiting for combat to trigger data sync")
         d("Note: Requires LibGroupCombatStats installed on all group members")
         d("Try using an ability or waiting for combat to trigger data sync")
     end
@@ -502,15 +517,21 @@ end
 
 -- Debug slash commands
 SLASH_COMMANDS["/btlwdata"] = function(args)
-    if args == "status" then
+    -- Parse command and arguments
+    local cmd, arg1, arg2 = string.match(args, "^(%S+)%s*(%S*)%s*(%S*)$")
+    if not cmd then
+        cmd = args
+    end
+    
+    if cmd == "status" then
         BeltalowdaNetwork.DebugGroupStatus()
-    elseif args == "group" then
+    elseif cmd == "group" then
         BeltalowdaNetwork.DebugPrintGroupData()
-    elseif args == "ults" then
+    elseif cmd == "ults" then
         BeltalowdaNetwork.DebugUltimateData()
-    elseif args == "equip" then
+    elseif cmd == "equip" then
         BeltalowdaNetwork.DebugEquipmentData()
-    elseif args == "raw" then
+    elseif cmd == "raw" then
         d("=== Raw Group Data Dump ===")
         d("")
         
@@ -627,6 +648,104 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("")
         d("Note: If libraries show 'nil', they are not installed")
         d("Install from ESOUI.com to enable full functionality")
+    elseif cmd == "debug" and arg1 ~= "" then
+        -- /btlwdata debug <module> <level>
+        -- /btlwdata debug all <level>
+        if not Beltalowda.Logger then
+            d("[Beltalowda] Logger system not initialized")
+            return
+        end
+        
+        local moduleName = arg1
+        local levelName = arg2
+        
+        if levelName == "" then
+            d("[Beltalowda] Usage: /btlwdata debug <module> <level>")
+            d("  Example: /btlwdata debug Network DEBUG")
+            d("  Modules: Network, Ultimates, Equipment, General, all")
+            d("  Levels: ERROR, WARN, INFO, DEBUG, VERBOSE")
+            return
+        end
+        
+        local level = Beltalowda.Logger.ParseLevel(levelName)
+        if not level then
+            d("[Beltalowda] Invalid level: " .. levelName)
+            d("  Valid levels: ERROR, WARN, INFO, DEBUG, VERBOSE")
+            return
+        end
+        
+        Beltalowda.Logger.SetModuleLevel(moduleName, level)
+        if moduleName == "all" then
+            d(string.format("[Beltalowda] Set all modules to %s", levelName))
+        else
+            d(string.format("[Beltalowda] Set %s to %s", moduleName, levelName))
+        end
+    elseif cmd == "log" then
+        -- /btlwdata log show [module] [count]
+        -- /btlwdata log clear
+        -- /btlwdata log levels
+        -- /btlwdata log export
+        if not Beltalowda.Logger then
+            d("[Beltalowda] Logger system not initialized")
+            return
+        end
+        
+        if arg1 == "show" then
+            local moduleName = arg2 ~= "" and arg2 or nil
+            local count = 20  -- Default to last 20 entries
+            
+            local entries = Beltalowda.Logger.GetSessionLog(moduleName, count)
+            
+            if #entries == 0 then
+                d("[Beltalowda] No log entries found")
+                return
+            end
+            
+            d("=== Beltalowda Session Log ===")
+            if moduleName then
+                d("Module: " .. moduleName)
+            end
+            d(string.format("Showing last %d entries:", #entries))
+            d("")
+            
+            for i = #entries, 1, -1 do
+                local entry = entries[i]
+                local timestamp = Beltalowda.Logger.FormatTimestamp(entry.timestamp)
+                d(string.format("[%s] %s", timestamp, entry.message))
+            end
+        elseif arg1 == "clear" then
+            Beltalowda.Logger.ClearSessionLog()
+            d("[Beltalowda] Session log cleared")
+        elseif arg1 == "levels" then
+            d("=== Current Debug Levels ===")
+            for module, config in pairs(Beltalowda.Logger.moduleConfig) do
+                local levelName = Beltalowda.Logger.LevelNames[config.level] or "UNKNOWN"
+                d(string.format("  %s: %s", module, levelName))
+            end
+            d("")
+            d("Max log entries: " .. tostring(Beltalowda.Logger.maxLogEntries))
+            d("VERBOSE reset on reload: " .. (Beltalowda.Logger.verboseModeResetOnReload and "ON" or "OFF"))
+        elseif arg1 == "export" then
+            if Beltalowda.Logger.hasLibDebugLogger then
+                d("[Beltalowda] LibDebugLogger is installed")
+                d("Logs are stored in LibDebugLogger's own storage")
+                d("Use LibDebugLogger's export features to access logs")
+            else
+                d("[Beltalowda] LibDebugLogger not installed")
+                d("Session logs are in-memory only and will be lost on /reloadui")
+                d("To persist logs, install LibDebugLogger from ESOUI.com")
+            end
+            d("")
+            d("SavedVariables file location:")
+            d("  Windows: Documents\\Elder Scrolls Online\\live\\SavedVariables\\Beltalowda.lua")
+            d("  Mac: Documents/Elder Scrolls Online/live/SavedVariables/Beltalowda.lua")
+        else
+            d("[Beltalowda] Usage:")
+            d("  /btlwdata log show [module] [count] - Show last N log entries")
+            d("  /btlwdata log clear                 - Clear session log")
+            d("  /btlwdata log levels                - Show current debug levels")
+            d("  /btlwdata log export                - Show SavedVariables file path")
+        end
     elseif args == "help" or args == "" or args == nil then
         d("=== Beltalowda Network Foundation Test Commands ===")
         d("")
@@ -635,6 +754,18 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("  /btlwdata group   - Show all group member data (detailed)")
         d("  /btlwdata ults    - Show ultimate data for all group members")
         d("  /btlwdata equip   - Show equipment data for all group members")
+        d("")
+        d("Debug Level Commands:")
+        d("  /btlwdata debug <module> <level>  - Set debug level for module")
+        d("  /btlwdata debug all <level>       - Set all modules to level")
+        d("    Modules: Network, Ultimates, Equipment, General, all")
+        d("    Levels: ERROR, WARN, INFO, DEBUG, VERBOSE")
+        d("")
+        d("Log Management:")
+        d("  /btlwdata log show [module] [count] - Show last N log entries")
+        d("  /btlwdata log clear                 - Clear session log")
+        d("  /btlwdata log levels                - Show current debug levels")
+        d("  /btlwdata log export                - Show SavedVariables file path")
         d("")
         d("Diagnostic Commands:")
         d("  /btlwdata libapi  - Check library API availability")

@@ -5,10 +5,13 @@
 ## Version: 0.2.1
 ## SavedVariables: BeltalowdaVars
 ## DependsOn: LibAsync>=3.1.1 LibGroupBroadcast>=91 LibAddonMenu-2.0>=41 LibGroupCombatStats>=6 LibSetDetection>=4
-## OptionalDependsOn: LibCombat>=84
+## OptionalDependsOn: LibCombat>=84 LibDebugLogger>=2.0
 
 # Main initialization
 Beltalowda.lua
+
+# Utilities
+Base/Util/Logger.lua
 
 # Network layer
 Base/Network/GroupBroadcast.lua

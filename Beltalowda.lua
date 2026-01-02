@@ -87,6 +87,11 @@ function Beltalowda.OnAddOnLoaded(eventCode, addonName)
     BeltalowdaVars = BeltalowdaVars or {}
     BeltalowdaVars.version = BeltalowdaVars.version or Beltalowda.version
     
+    -- Initialize Logger early (before modules)
+    if Beltalowda.Logger and Beltalowda.Logger.Initialize then
+        Beltalowda.Logger.Initialize()
+    end
+    
     -- Initialize the addon
     Beltalowda.Initialize()
 end
