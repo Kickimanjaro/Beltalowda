@@ -8,7 +8,8 @@ Beltalowda.network = Beltalowda.network or {}
 local BeltalowdaNetwork = Beltalowda.network
 local LGB = LibGroupBroadcast
 local LGCS = LibGroupCombatStats
-local LSD = LibSetDetection
+-- Don't capture LSD as local - check LibSetDetection directly to avoid nil capture issues
+-- local LSD = LibSetDetection
 
 -- Create logger instance for Network module
 local logger = nil
@@ -70,7 +71,7 @@ function BeltalowdaNetwork.Initialize()
         BeltalowdaNetwork.SubscribeToUltimateData()
     end
     
-    if not LSD then
+    if not LibSetDetection then
         d("[Beltalowda] ERROR: LibSetDetection not available. This should not happen (required dependency).")
         return false
     else
@@ -176,8 +177,8 @@ end
 function BeltalowdaNetwork.SubscribeToEquipmentData()
     d("[Beltalowda] SubscribeToEquipmentData called")
     
-    if not LSD then 
-        d("[Beltalowda] LSD not available")
+    if not LibSetDetection then 
+        d("[Beltalowda] LibSetDetection not available")
         return 
     end
     
@@ -185,7 +186,7 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
     
     local success, err = pcall(function()
         -- Register our addon with LibSetDetection
-        BeltalowdaNetwork.lsdInstance = LSD:RegisterAddon("Beltalowda")
+        BeltalowdaNetwork.lsdInstance = LibSetDetection:RegisterAddon("Beltalowda")
         
         d("[Beltalowda] RegisterAddon returned: " .. tostring(BeltalowdaNetwork.lsdInstance ~= nil))
         
