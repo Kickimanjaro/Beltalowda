@@ -47,7 +47,10 @@ Beltalowda requires the following libraries to function. All must be installed f
 **Without these libraries, the addon will not load.**
 
 ### Optional Libraries
-- **LibCombat** (v84+) - Currently unused, reserved for future features
+- **LibCombat** (v84+) - Currently unused, reserved for future raw combat data features
+  - Note: LibCombat is automatically included with LibGroupCombatStats (which depends on it)
+  - Cannot replace LibGroupCombatStats - see [docs/LIBRARY_ARCHITECTURE.md](docs/LIBRARY_ARCHITECTURE.md) for details
+- **LibDebugLogger** (v2.0+) - Enhanced logging persistence (recommended for debugging)
 
 ## Installation
 
