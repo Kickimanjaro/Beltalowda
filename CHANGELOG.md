@@ -5,6 +5,65 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.3.0] - 2026-01-02
+
+### Added
+- **LibDebugLogger Integration (Issue #44)**
+  - Added LibDebugLogger>=2.0 as optional dependency for advanced logging
+  - Created `Base/Util/Logger.lua` wrapper module (395 lines) with graceful fallback to `d()` when LibDebugLogger not installed
+  - Implemented 5 debug levels: ERROR (default), WARN, INFO, DEBUG, VERBOSE
+  - Module-specific loggers for Network, Ultimates, Equipment, and General modules
+  - 200-entry log limit with automatic rotation
+  - Non-persistent VERBOSE mode that resets to configured level after `/reloadui`
+  - Timestamp support for all log entries
+  - In-memory session log storage
+
+- **Enhanced Slash Commands**
+  - `/btlwdata debug <module> <level>` - Set debug level for specific module
+  - `/btlwdata debug all <level>` - Set all modules to same level
+  - `/btlwdata log show [module] [count]` - Show last N log entries (default: 20)
+  - `/btlwdata log clear` - Clear current session log
+  - `/btlwdata log levels` - Show current debug levels for all modules
+  - `/btlwdata log export` - Show SavedVariables file path for log export
+
+- **Documentation**
+  - Created `docs/DEBUGGING_GUIDE.md` (413 lines) with comprehensive debugging instructions
+  - Includes usage examples for all debug levels
+  - Common troubleshooting scenarios with step-by-step solutions
+  - LibDebugLogger integration guide
+  - Best practices for development, testing, and bug reporting
+
+- **Settings Menu Integration**
+  - Created `BeltalowdaSettings.lua` with LibAddonMenu-2.0 integration
+  - Added "Debugging & Diagnostics" section in settings
+  - Master "Enable Debug Logging" toggle
+  - "Default Debug Level" dropdown (ERROR, WARN, INFO, DEBUG, VERBOSE)
+  - Module-specific level controls in submenu:
+    - Network Module
+    - Ultimate Tracking
+    - Equipment Tracking
+    - General / Core
+  - "Max Log Entries" slider (50-500, default 200)
+  - "Reset VERBOSE on Reload" checkbox (default ON)
+  - "Show Debug Commands" button for quick reference
+  - Settings persist in SavedVariables
+  - Accessible via `/btlwsettings` or ESO Settings → Add-Ons → Beltalowda
+
+### Changed
+- **Network Module Logging Migration**
+  - Replaced verbose debug output in `Base/Network/GroupBroadcast.lua` with logger calls
+  - Initialization messages now use `logger:Info()`
+  - Ultimate data reception uses `logger:Debug()`
+  - Ultimate storage confirmation uses `logger:Verbose()`
+  - Debug output in `/btlwdata ults` now conditional on DEBUG level
+  - User-facing command output (e.g., `/btlwdata` commands) still uses `d()` for visibility
+  - Critical initialization errors remain visible to users via `d()`
+
+- **Logger Initialization**
+  - Logger now initializes early in `Beltalowda.lua` (after SavedVariables, before modules)
+  - Network module creates logger instance during initialization
+  - Configuration loaded from and saved to `BeltalowdaVars.logging`
+
 ## [0.2.1] - 2026-01-01
 
 ### Fixed
@@ -156,144 +215,3 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
   - This caused only one group member's ultimate to display instead of all members
   - Renamed inner variable to `abilityNameResult` to prevent shadowing
   - Now correctly displays ultimate data for all group members who have LibGroupCombatStats
-
-## [Unreleased]
-
-### Added
-- **LibDebugLogger Integration (Issue #44)**
-  - Added LibDebugLogger as optional dependency for advanced logging
-  - Created `Base/Util/Logger.lua` wrapper module with graceful fallback to `d()` when LibDebugLogger not installed
-  - Implemented 5 debug levels: ERROR (default), WARN, INFO, DEBUG, VERBOSE
-  - Module-specific loggers for Network, Ultimates, Equipment, and General modules
-  - 200-entry log limit with automatic rotation
-  - Non-persistent VERBOSE mode that resets to configured level after `/reloadui`
-  - Timestamp support for all log entries
-  - In-memory session log storage
-
-- **Enhanced Slash Commands**
-  - `/btlwdata debug <module> <level>` - Set debug level for specific module
-  - `/btlwdata debug all <level>` - Set all modules to same level
-  - `/btlwdata log show [module] [count]` - Show last N log entries (default: 20)
-  - `/btlwdata log clear` - Clear current session log
-  - `/btlwdata log levels` - Show current debug levels for all modules
-  - `/btlwdata log export` - Show SavedVariables file path for log export
-
-- **Documentation**
-  - Created `docs/DEBUGGING_GUIDE.md` with comprehensive debugging instructions
-  - Includes usage examples for all debug levels
-  - Common troubleshooting scenarios with step-by-step solutions
-  - LibDebugLogger integration guide
-  - Best practices for development, testing, and bug reporting
-
-- **Settings Menu Integration**
-  - Created `BeltalowdaSettings.lua` with LibAddonMenu-2.0 integration
-  - Added "Debugging & Diagnostics" section in settings
-  - Master "Enable Debug Logging" toggle
-  - "Default Debug Level" dropdown (ERROR, WARN, INFO, DEBUG, VERBOSE)
-  - Module-specific level controls in submenu:
-    - Network Module
-    - Ultimate Tracking
-    - Equipment Tracking
-    - General / Core
-  - "Max Log Entries" slider (50-500, default 200)
-  - "Reset VERBOSE on Reload" checkbox (default ON)
-  - "Show Debug Commands" button for quick reference
-  - Settings persist in SavedVariables
-  - Accessible via `/btlwsettings` or ESO Settings → Add-Ons → Beltalowda
-
-### Changed
-- **Network Module Logging Migration**
-  - Replaced verbose debug output in `Base/Network/GroupBroadcast.lua` with logger calls
-  - Lines 59, 67, 78: Initialization messages now use `logger:Info()`
-  - Lines 168-169: Ultimate data reception uses `logger:Debug()`
-  - Line 202: Ultimate storage confirmation uses `logger:Verbose()`
-  - Lines 377-383: Debug output in `/btlwdata ults` now conditional on DEBUG level
-  - User-facing command output (e.g., `/btlwdata` commands) still uses `d()` for visibility
-  - Critical initialization errors remain visible to users via `d()`
-
-- **Logger Initialization**
-  - Logger now initializes early in `Beltalowda.lua` (after SavedVariables, before modules)
-  - Network module creates logger instance during initialization
-  - Configuration loaded from and saved to `BeltalowdaVars.logging`
-
-### Fixed
-- Removed duplicate "no data" messages in GroupBroadcast.lua (lines 431-432)
-- Debug output now respects configured log levels instead of always appearing
-
-## [0.2.1] - 2026-01-01
-
-### Added
-- **Added temporary debug logging to TYPE and VALUE event handlers**
-  - Logs parameters received in `OnUltimateTypeReceived()` and `OnUltimateValueReceived()`
-  - Helps diagnose why ultimate data fields remain nil
-  - Shows exact values being passed by LibGroupCombatStats events
-
-### Fixed
-- **Fixed LibGroupCombatStats event registration to use correct API**
-  - Library uses separate TYPE and VALUE events, not combined UPDATE events
-  - Now registers for `EVENT_PLAYER_ULT_TYPE_UPDATE` and `EVENT_PLAYER_ULT_VALUE_UPDATE`
-  - Now registers for `EVENT_GROUP_ULT_TYPE_UPDATE` and `EVENT_GROUP_ULT_VALUE_UPDATE`
-  - Added separate handlers: `OnUltimateTypeReceived()` for ability ID/cost, `OnUltimateValueReceived()` for current/max
-  - Ultimate data fields (abilityId, cost, current, max, percent) should now populate correctly
-
-### Changed
-- **Removed verbose debug logging from ultimate data handler**
-  - Debug messages were making chat difficult to read
-  - Kept only warning messages for error conditions
-  - Normal operation is now silent
-
-### Added
-- **Added `/btlwdata raw` command for detailed troubleshooting**
-  - Shows raw data dump including unitTag mappings
-  - Displays all stored data for each group member
-  - Helps diagnose unit tag vs player name issues
-  - Lists all unitTags in storage for verification
-
-### Fixed
-- **Fixed variable shadowing bug in `/btlwdata ults` command**
-  - Variable `name` was being shadowed by ability name lookup in `DebugUltimateData()`
-  - This caused only one group member's ultimate to display instead of all members
-  - Renamed inner variable to `abilityNameResult` to prevent shadowing
-  - Now correctly displays ultimate data for all group members who have LibGroupCombatStats
-
-### Added
-- **Enhanced debugging capabilities for troubleshooting ultimate data**
-  - Added `/btlwdata debug` command to show registration status, event constants, and data storage
-  - Enhanced `/btlwdata libapi` to show all event constants and methods from LibGroupCombatStats
-  - Added debug logging in `OnUltimateDataReceived()` to trace when events fire and what data is received
-  - Debug logs will show data structure to help identify API mismatches
-
-### Fixed
-- **Corrected LibGroupCombatStats and LibSetDetection API integration**
-  - Fixed LibGroupCombatStats integration to use proper API: `RegisterAddon()` and `RegisterForEvent()`
-  - Fixed event registration to use `EVENT_GROUP_ULT_UPDATE` and `EVENT_PLAYER_ULT_UPDATE` instead of incorrect callback approach
-  - Fixed LibSetDetection integration to use `RegisterAddon()` and `GetSetsForGroupMember()` for on-demand queries
-  - Simplified ultimate data handling to use single callback for all ultimate updates
-  - Updated equipment display to query data on-demand instead of caching
-  - Added proper error handling and registration success messages
-  - Ultimate data should now properly appear when using `/btlwdata ults` command
-
-### Changed
-- **Made LibGroupCombatStats and LibSetDetection required dependencies**
-  - Moved from `OptionalDependsOn` to `DependsOn` in manifest
-  - Phase 2 network foundation cannot function without these libraries
-  - Addon will now fail to load with clear error message if libraries are missing
-  - Users should install both libraries from ESOUI.com before using addon
-  - LibCombat remains optional (currently unused)
-
-### Fixed
-- Made LibGroupCombatStats, LibSetDetection, and LibCombat optional dependencies
-  - Changed from `DependsOn` to `OptionalDependsOn` in manifest
-  - Allows addon to load even when these libraries are not installed
-  - Enables testing with `/btlwdata libapi` command to check library availability
-  - Libraries enhance functionality when present but are not required for addon to load
-- Fixed operator precedence issue in `/btlwdata equip` command
-- Improved error handling in `/btlwdata libapi` command to handle nil values gracefully
-- Updated library check to only fail on missing required libraries (LibAsync, LibGroupBroadcast, LibAddonMenu2)
-- Added warning messages for missing optional libraries
-
-### Planned
-- Phase 1: Local data collection (equipment tracking, synergy detection)
-- Ultimate tracking system
-- Equipment awareness features
-- Settings UI implementation

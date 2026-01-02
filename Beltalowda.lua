@@ -6,7 +6,7 @@ Beltalowda = Beltalowda or {}
 
 -- Version information
 Beltalowda.name = "Beltalowda"
-Beltalowda.version = "0.1.0"
+Beltalowda.version = "0.3.0"
 Beltalowda.author = "Kickimanjaro"
 
 -- Local reference

@@ -2,7 +2,7 @@
 ## Author: Kickimanjaro
 ## Description: Visually tracks the readiness of ultimates and synergies across group members for use in PvP
 ## APIVersion: 101048
-## Version: 0.2.1
+## Version: 0.3.0
 ## SavedVariables: BeltalowdaVars
 ## DependsOn: LibAsync>=3.1.1 LibGroupBroadcast>=91 LibAddonMenu-2.0>=41 LibGroupCombatStats>=6 LibSetDetection>=4
 ## OptionalDependsOn: LibCombat>=84 LibDebugLogger>=2.0
