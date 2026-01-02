@@ -70,8 +70,25 @@ Beltalowda provides comprehensive slash commands for debugging and testing netwo
 - `/btlwdata ults` - Display ultimate data with ability names and percentages
 - `/btlwdata equip` - Display equipment/set data for group members
 
+### Debug Level Commands
+- `/btlwdata debug <module> <level>` - Set debug level for a specific module
+- `/btlwdata debug all <level>` - Set all modules to the same level
+  - **Modules**: Network, Ultimates, Equipment, General, all
+  - **Levels**: ERROR, WARN, INFO, DEBUG, VERBOSE
+
+### Log Management Commands
+- `/btlwdata log show [module] [count]` - Show last N log entries (default: 20)
+- `/btlwdata log clear` - Clear current session log
+- `/btlwdata log levels` - Show current debug levels for all modules
+- `/btlwdata log export` - Show SavedVariables file path for log export
+
+### Settings Commands
+- `/btlwsettings` - Open addon settings menu with logging configuration
+
 ### Diagnostic Commands
 - `/btlwdata libapi` - Check library API availability and methods (troubleshooting)
+
+**Debugging Guide**: See `docs/DEBUGGING_GUIDE.md` for comprehensive debugging instructions, troubleshooting scenarios, and best practices.
 
 **Testing**: See `.copilot-responses/NETWORK_FOUNDATION_TESTING_GUIDE.md` for comprehensive testing procedures and expected outputs.
 

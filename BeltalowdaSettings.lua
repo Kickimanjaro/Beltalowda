@@ -90,7 +90,7 @@ function Settings.CreatePanel()
         name = "Beltalowda",
         displayName = "Beltalowda",
         author = "Kickimanjaro",
-        version = Beltalowda.version or "0.2.1",
+        version = Beltalowda.version or "0.3.0",
         slashCommand = "/btlwsettings",
         registerForRefresh = true,
         registerForDefaults = true,
