@@ -239,9 +239,6 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
             table.insert(fieldList, k .. "=" .. tostring(v) .. "(" .. type(v) .. ")")
         end
         logger:Debug("LGCS data table fields:", table.concat(fieldList, ", "))
-        
-        logger:Info("Ultimate data received!", "unitTag=" .. tostring(unitTag), "abilityId=" .. tostring(data.id), "value=" .. tostring(data.value) .. "/" .. tostring(data.max))
-        logger:Debug("Ultimate type received", unitTag, "id=" .. tostring(data.id), "cost=" .. tostring(data.cost), "value=" .. tostring(data.value), "max=" .. tostring(data.max))
     end
     
     -- Initialize player data if not exists
@@ -251,31 +248,45 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
     -- Store all ultimate data from LGCS
     local ult = BeltalowdaNetwork.groupData[unitTag].ultimate
     
-    -- LGCS sends data with fields: id, cost, value, max
-    -- Store original fields first
-    if data.id then ult.id = data.id end
-    if data.cost then ult.cost = data.cost end
-    if data.value then ult.value = data.value end
-    if data.max then ult.max = data.max end
+    -- LGCS actual fields discovered via SavedVariables data capture:
+    -- - ult1ID, ult2ID: ability IDs for both bars
+    -- - ult1Cost, ult2Cost: ultimate costs for both bars
+    -- - ultValue: current ultimate resource value
+    -- - ultActivatedSetID: which ultimate is active (0 = bar 1, non-zero = bar 2)
     
-    -- Normalize field names for consistent access
-    -- LGCS uses "id" for abilityId and "value" for current
-    if data.id then
-        ult.abilityId = data.id
-    end
-    if data.value then
-        ult.current = data.value
-    end
+    -- Determine which ultimate is active and store its data
+    local activeUltId = data.ultActivatedSetID == 0 and data.ult1ID or data.ult2ID
+    local activeUltCost = data.ultActivatedSetID == 0 and data.ult1Cost or data.ult2Cost
     
-    -- Calculate percentage if we have the right fields
-    if data.max and data.max > 0 and data.value then
-        ult.percent = (data.value / data.max) * 100
+    -- Store original LGCS fields
+    ult.ult1ID = data.ult1ID
+    ult.ult2ID = data.ult2ID
+    ult.ult1Cost = data.ult1Cost
+    ult.ult2Cost = data.ult2Cost
+    ult.ultValue = data.ultValue
+    ult.ultActivatedSetID = data.ultActivatedSetID
+    
+    -- Normalize to standard fields for display compatibility
+    ult.abilityId = activeUltId
+    ult.cost = activeUltCost
+    ult.current = data.ultValue
+    ult.value = data.ultValue -- Alias for compatibility
+    ult.max = activeUltCost -- Max is the cost needed to cast
+    
+    -- Calculate percentage
+    if activeUltCost and activeUltCost > 0 and data.ultValue then
+        ult.percent = (data.ultValue / activeUltCost) * 100
     else
         ult.percent = 0
     end
     
     if logger then
-        logger:Info("Stored ultimate data", "unitTag=" .. tostring(unitTag), "abilityId=" .. tostring(ult.abilityId), "percent=" .. string.format("%.0f%%", ult.percent))
+        logger:Info("Ultimate data received!", "unitTag=" .. tostring(unitTag), 
+            "abilityId=" .. tostring(activeUltId), 
+            "value=" .. tostring(data.ultValue) .. "/" .. tostring(activeUltCost))
+        logger:Info("Stored ultimate data", "unitTag=" .. tostring(unitTag), 
+            "abilityId=" .. tostring(ult.abilityId), 
+            "percent=" .. string.format("%.0f%%", ult.percent))
         logger:Verbose("Stored ultimate data under key", unitTag)
     end
     
