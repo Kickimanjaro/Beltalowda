@@ -112,14 +112,17 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
             return
         end
         
-        -- LibGroupCombatStats events use callback signature: function(eventId, unitTag, data)
-        -- The first parameter is the event ID constant, second is unitTag, third is data
+        -- LibGroupCombatStats callback signature: function(data)
+        -- The callback receives only the data table with fields: unitTag, id, cost, value, max
+        -- The unitTag is INSIDE the data table, not a separate parameter
         
         -- Register for player ultimate updates
         if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_PLAYER_ULT_UPDATE then
             BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_PLAYER_ULT_UPDATE, 
-                function(eventId, unitTag, data)
-                    BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+                function(data)
+                    if data and data.unitTag then
+                        BeltalowdaNetwork.OnUltimateDataReceived(data.unitTag, data)
+                    end
                 end)
             d("[Beltalowda] Registered for PLAYER ultimate updates (EVENT_PLAYER_ULT_UPDATE)")
         end
@@ -127,8 +130,10 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
         -- Register for group ultimate updates
         if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_GROUP_ULT_UPDATE then
             BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_GROUP_ULT_UPDATE, 
-                function(eventId, unitTag, data)
-                    BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+                function(data)
+                    if data and data.unitTag then
+                        BeltalowdaNetwork.OnUltimateDataReceived(data.unitTag, data)
+                    end
                 end)
             d("[Beltalowda] Registered for GROUP ultimate updates (EVENT_GROUP_ULT_UPDATE)")
         end
