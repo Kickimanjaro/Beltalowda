@@ -185,59 +185,52 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
             return
         end
         
-        -- Try to register for equipment update events if the API exists
-        if BeltalowdaNetwork.lsdInstance.RegisterForEvent and LSD.EVENT_PLAYER_EQUIPMENT_CHANGED then
-            BeltalowdaNetwork.lsdInstance:RegisterForEvent(LSD.EVENT_PLAYER_EQUIPMENT_CHANGED,
-                function(unitTag, data)
-                    -- Debug: Log what we actually received
-                    if logger then
-                        logger:Debug("LSD PLAYER callback received", "unitTag type=" .. type(unitTag),
-                            "unitTag=" .. tostring(unitTag),
-                            "data type=" .. type(data))
-                    end
-                    
-                    -- Call handler if we have valid data
-                    if unitTag and data and type(unitTag) == "string" and type(data) == "table" then
-                        BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, data)
-                    elseif logger then
-                        logger:Warn("LSD PLAYER callback received invalid params",
-                            "unitTag type=" .. type(unitTag), "data type=" .. type(data))
-                    end
-                end)
-            d("[Beltalowda] Registered for PLAYER equipment updates (EVENT_PLAYER_EQUIPMENT_CHANGED)")
+        if logger then
+            logger:Info("LibSetDetection found - registering addon")
         end
         
-        -- Try to register for group equipment updates if the API exists
-        if BeltalowdaNetwork.lsdInstance.RegisterForEvent and LSD.EVENT_GROUP_EQUIPMENT_CHANGED then
-            BeltalowdaNetwork.lsdInstance:RegisterForEvent(LSD.EVENT_GROUP_EQUIPMENT_CHANGED,
-                function(unitTag, data)
-                    -- Debug: Log what we actually received
-                    if logger then
-                        logger:Debug("LSD GROUP callback received", "unitTag type=" .. type(unitTag),
-                            "unitTag=" .. tostring(unitTag),
-                            "data type=" .. type(data))
-                    end
-                    
-                    -- Call handler if we have valid data
-                    if unitTag and data and type(unitTag) == "string" and type(data) == "table" then
-                        BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, data)
-                    elseif logger then
-                        logger:Warn("LSD GROUP callback received invalid params",
-                            "unitTag type=" .. type(unitTag), "data type=" .. type(data))
-                    end
-                end)
-            d("[Beltalowda] Registered for GROUP equipment updates (EVENT_GROUP_EQUIPMENT_CHANGED)")
+        -- LibSetDetection doesn't have event callbacks - we need to poll via GetSetsForGroupMember()
+        -- Set up a timer to poll equipment data periodically for data capture
+        zo_callLater(function()
+            BeltalowdaNetwork.PollEquipmentData()
+        end, 2000) -- Poll after 2 seconds to let everything initialize
+        
+        d("[Beltalowda] Successfully registered with LibSetDetection (polling mode)")
+        
+        if logger then
+            logger:Info("Network layer initialized")
         end
-        
-        d("[Beltalowda] Successfully registered with LibSetDetection")
-        
-        -- Note: If LibSetDetection doesn't have event callbacks, we'll query set data on-demand
-        -- when displaying equipment info
     end)
     
     if not success then
         d("[Beltalowda] Error registering with LibSetDetection: " .. tostring(err))
     end
+end
+
+--[[
+    Poll equipment data from LibSetDetection
+    LSD doesn't have callbacks, so we need to query on-demand
+]]--
+function BeltalowdaNetwork.PollEquipmentData()
+    if not BeltalowdaNetwork.lsdInstance then return end
+    
+    -- Poll player's equipment data
+    local success, err = pcall(function()
+        local setData = BeltalowdaNetwork.lsdInstance:GetSetsForGroupMember("player")
+        if setData and type(setData) == "table" then
+            BeltalowdaNetwork.OnEquipmentDataReceived("player", setData)
+        end
+    end)
+    
+    if not success and logger then
+        logger:Warn("Error polling LSD equipment data", tostring(err))
+    end
+    
+    -- Schedule next poll in 5 seconds (for data capture testing)
+    -- In production, this would be triggered by combat events or manual refresh
+    zo_callLater(function()
+        BeltalowdaNetwork.PollEquipmentData()
+    end, 5000)
 end
 
 --[[
