@@ -267,7 +267,7 @@ function Logger.LogToLibDebugLogger(level, moduleName, message)
     
     -- LibDebugLogger typically uses a single Log method
     -- Try to call it safely with pcall to avoid errors
-    local success, err = pcall(function()
+    local success = pcall(function()
         if type(Logger.libDebugLogger.Log) == "function" then
             -- Standard LibDebugLogger API
             Logger.libDebugLogger:Log("Beltalowda", message)
@@ -281,8 +281,8 @@ function Logger.LogToLibDebugLogger(level, moduleName, message)
                 Logger.libDebugLogger:Debug("Beltalowda", message)
             elseif level == Logger.Levels.VERBOSE and type(Logger.libDebugLogger.Verbose) == "function" then
                 Logger.libDebugLogger:Verbose("Beltalowda", message)
-            else
-                -- Fallback to Verbose for INFO and other levels
+            elseif type(Logger.libDebugLogger.Verbose) == "function" then
+                -- Fallback to Verbose for INFO and other levels if it exists
                 Logger.libDebugLogger:Verbose("Beltalowda", message)
             end
         end
