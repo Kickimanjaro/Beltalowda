@@ -176,12 +176,19 @@ end
     and GetSets() method to query current equipment.
 ]]--
 function BeltalowdaNetwork.SubscribeToEquipmentData()
+    d("[Beltalowda] SubscribeToEquipmentData called")
+    
     if not LibSetDetection then 
+        d("[Beltalowda] LibSetDetection not available - equipment tracking disabled")
         if logger then
             logger:Info("LibSetDetection not available - equipment tracking disabled")
         end
         return 
     end
+    
+    d("[Beltalowda] LibSetDetection found - checking for RegisterCallback...")
+    d("[Beltalowda] LibSetDetection.RegisterCallback type: " .. type(LibSetDetection.RegisterCallback))
+    d("[Beltalowda] LibSetDetection.GetSets type: " .. type(LibSetDetection.GetSets))
     
     if logger then
         logger:Info("LibSetDetection found - registering for equipment change callbacks")
@@ -190,7 +197,10 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
     local success, err = pcall(function()
         -- Register for equipment change events
         if LibSetDetection.RegisterCallback then
+            d("[Beltalowda] Attempting to register OnSetChanged callback...")
             LibSetDetection:RegisterCallback("OnSetChanged", function(eventData)
+                d("[Beltalowda] !!!!! OnSetChanged callback fired! eventData type=" .. type(eventData))
+                
                 if logger then
                     logger:Debug("LibSetDetection OnSetChanged event received", "eventData type=" .. type(eventData))
                 end
@@ -198,14 +208,19 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
                 -- eventData should contain player info and set information
                 -- Parse and store in groupData structure
                 if eventData and type(eventData) == "table" then
+                    d("[Beltalowda] Calling OnEquipmentDataReceived with eventData")
                     BeltalowdaNetwork.OnEquipmentDataReceived(eventData.unitTag or "player", eventData)
+                else
+                    d("[Beltalowda] OnSetChanged received non-table data: " .. type(eventData))
                 end
             end)
             
+            d("[Beltalowda] OnSetChanged callback registered successfully")
             if logger then
                 logger:Info("Successfully registered for LibSetDetection OnSetChanged callbacks")
             end
         else
+            d("[Beltalowda] LibSetDetection.RegisterCallback is not a function")
             if logger then
                 logger:Warn("LibSetDetection.RegisterCallback not available")
             end
@@ -213,20 +228,31 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
         
         -- Try to get initial equipment data using GetSets
         if LibSetDetection.GetSets then
+            d("[Beltalowda] Calling GetSets('player')...")
             local initialSets = LibSetDetection:GetSets("player")
+            d("[Beltalowda] GetSets returned type=" .. type(initialSets) .. ", nil=" .. tostring(initialSets == nil))
+            
             if initialSets then
                 if logger then
                     logger:Debug("Got initial equipment data from GetSets", "type=" .. type(initialSets))
                 end
+                d("[Beltalowda] Calling OnEquipmentDataReceived with initial sets")
                 BeltalowdaNetwork.OnEquipmentDataReceived("player", initialSets)
+            else
+                d("[Beltalowda] GetSets returned nil")
             end
+        else
+            d("[Beltalowda] LibSetDetection.GetSets is not a function")
         end
     end)
     
     if not success then
+        d("[Beltalowda] ERROR in SubscribeToEquipmentData: " .. tostring(err))
         if logger then
             logger:Error("Error registering with LibSetDetection", tostring(err))
         end
+    else
+        d("[Beltalowda] SubscribeToEquipmentData completed successfully")
     end
 end
 
@@ -355,12 +381,17 @@ end
     @param data: Equipment data table from LSD
 ]]--
 function BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, data)
+    d("[Beltalowda] OnEquipmentDataReceived called! unitTag=" .. tostring(unitTag) .. ", dataType=" .. type(data))
+    
     if not data or type(data) ~= "table" then
+        d("[Beltalowda] Invalid data in OnEquipmentDataReceived - returning")
         if logger then
             logger:Warn("OnEquipmentDataReceived called with invalid data", "unitTag=" .. tostring(unitTag), "dataType=" .. type(data))
         end
         return
     end
+    
+    d("[Beltalowda] Equipment data table received, processing...")
     
     -- Normalize unitTag (convert "player" to appropriate group tag when in a group)
     local normalizedTag = unitTag
@@ -374,8 +405,11 @@ function BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, data)
         end
     end
     
+    d("[Beltalowda] Normalized tag: from=" .. unitTag .. " to=" .. normalizedTag)
+    
     -- Capture raw data sample to SavedVariables for structure discovery
     if BeltalowdaVars and BeltalowdaVars.debug then
+        d("[Beltalowda] Saving equipment data sample to SavedVariables...")
         BeltalowdaVars.debug.lsdDataSamples = BeltalowdaVars.debug.lsdDataSamples or {}
         table.insert(BeltalowdaVars.debug.lsdDataSamples, {
             timestamp = GetTimeStamp(),
@@ -383,10 +417,14 @@ function BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, data)
             data = data
         })
         
+        d("[Beltalowda] Equipment sample saved. Total samples: " .. #BeltalowdaVars.debug.lsdDataSamples)
+        
         -- Keep only last 10 samples
         while #BeltalowdaVars.debug.lsdDataSamples > 10 do
             table.remove(BeltalowdaVars.debug.lsdDataSamples, 1)
         end
+    else
+        d("[Beltalowda] BeltalowdaVars.debug not available - cannot save sample")
     end
     
     -- DEBUG: Dump all fields in the data table to logs
