@@ -19,9 +19,6 @@ BeltalowdaSettings.lua
 # Network layer
 Base/Network/GroupBroadcast.lua
 
-# Settings
-# BeltalowdaSettings.lua
-
 # Localization
 # Localization/en.lua
 

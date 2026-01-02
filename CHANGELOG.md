@@ -185,6 +185,22 @@ and this project adheres to [Pride Versioning](https://pridever.org/).
   - LibDebugLogger integration guide
   - Best practices for development, testing, and bug reporting
 
+- **Settings Menu Integration**
+  - Created `BeltalowdaSettings.lua` with LibAddonMenu-2.0 integration
+  - Added "Debugging & Diagnostics" section in settings
+  - Master "Enable Debug Logging" toggle
+  - "Default Debug Level" dropdown (ERROR, WARN, INFO, DEBUG, VERBOSE)
+  - Module-specific level controls in submenu:
+    - Network Module
+    - Ultimate Tracking
+    - Equipment Tracking
+    - General / Core
+  - "Max Log Entries" slider (50-500, default 200)
+  - "Reset VERBOSE on Reload" checkbox (default ON)
+  - "Show Debug Commands" button for quick reference
+  - Settings persist in SavedVariables
+  - Accessible via `/btlwsettings` or ESO Settings → Add-Ons → Beltalowda
+
 ### Changed
 - **Network Module Logging Migration**
   - Replaced verbose debug output in `Base/Network/GroupBroadcast.lua` with logger calls
