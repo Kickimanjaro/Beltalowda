@@ -265,18 +265,32 @@ end
 function Logger.LogToLibDebugLogger(level, moduleName, message)
     if not Logger.libDebugLogger then return end
     
-    -- LibDebugLogger has different level methods
-    -- Map our levels to LibDebugLogger levels
-    if level == Logger.Levels.ERROR then
-        Logger.libDebugLogger:Error("Beltalowda", message)
-    elseif level == Logger.Levels.WARN then
-        Logger.libDebugLogger:Warn("Beltalowda", message)
-    elseif level == Logger.Levels.INFO then
-        Logger.libDebugLogger:Info("Beltalowda", message)
-    elseif level == Logger.Levels.DEBUG then
-        Logger.libDebugLogger:Debug("Beltalowda", message)
-    elseif level == Logger.Levels.VERBOSE then
-        Logger.libDebugLogger:Verbose("Beltalowda", message)
+    -- LibDebugLogger typically uses a single Log method
+    -- Try to call it safely with pcall to avoid errors
+    local success, err = pcall(function()
+        if type(Logger.libDebugLogger.Log) == "function" then
+            -- Standard LibDebugLogger API
+            Logger.libDebugLogger:Log("Beltalowda", message)
+        elseif type(Logger.libDebugLogger.Verbose) == "function" then
+            -- Alternative API with level-specific methods
+            if level == Logger.Levels.ERROR and type(Logger.libDebugLogger.Error) == "function" then
+                Logger.libDebugLogger:Error("Beltalowda", message)
+            elseif level == Logger.Levels.WARN and type(Logger.libDebugLogger.Warn) == "function" then
+                Logger.libDebugLogger:Warn("Beltalowda", message)
+            elseif level == Logger.Levels.DEBUG and type(Logger.libDebugLogger.Debug) == "function" then
+                Logger.libDebugLogger:Debug("Beltalowda", message)
+            elseif level == Logger.Levels.VERBOSE and type(Logger.libDebugLogger.Verbose) == "function" then
+                Logger.libDebugLogger:Verbose("Beltalowda", message)
+            else
+                -- Fallback to Verbose for INFO and other levels
+                Logger.libDebugLogger:Verbose("Beltalowda", message)
+            end
+        end
+    end)
+    
+    if not success then
+        -- If LibDebugLogger fails, silently fall back to session log only
+        -- Don't spam errors about logging failures
     end
 end
 
