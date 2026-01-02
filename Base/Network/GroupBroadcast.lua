@@ -209,6 +209,23 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
         return 
     end
     
+    -- Normalize unitTag: LGCS sends "player" but we need group tags for consistency
+    -- When in a group, convert "player" to the appropriate group tag
+    local normalizedTag = unitTag
+    if unitTag == "player" then
+        -- Find player's group tag if in a group
+        local groupSize = GetGroupSize()
+        if groupSize > 0 then
+            for i = 1, groupSize do
+                local groupTag = GetGroupUnitTagByIndex(i)
+                if GetUnitName(groupTag) == GetUnitName("player") then
+                    normalizedTag = groupTag
+                    break
+                end
+            end
+        end
+    end
+    
     -- DEBUG: Capture raw data samples to SavedVariables for easier analysis
     -- Keep only the last 10 samples to avoid bloat
     if BeltalowdaVars and BeltalowdaVars.debug then
@@ -239,14 +256,18 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
             table.insert(fieldList, k .. "=" .. tostring(v) .. "(" .. type(v) .. ")")
         end
         logger:Debug("LGCS data table fields:", table.concat(fieldList, ", "))
+        
+        if normalizedTag ~= unitTag then
+            logger:Debug("Normalized unitTag", "from=" .. unitTag, "to=" .. normalizedTag)
+        end
     end
     
-    -- Initialize player data if not exists
-    BeltalowdaNetwork.groupData[unitTag] = BeltalowdaNetwork.groupData[unitTag] or {}
-    BeltalowdaNetwork.groupData[unitTag].ultimate = BeltalowdaNetwork.groupData[unitTag].ultimate or {}
+    -- Initialize player data if not exists (use normalized tag)
+    BeltalowdaNetwork.groupData[normalizedTag] = BeltalowdaNetwork.groupData[normalizedTag] or {}
+    BeltalowdaNetwork.groupData[normalizedTag].ultimate = BeltalowdaNetwork.groupData[normalizedTag].ultimate or {}
     
-    -- Store all ultimate data from LGCS
-    local ult = BeltalowdaNetwork.groupData[unitTag].ultimate
+    -- Store all ultimate data from LGCS (use normalized tag)
+    local ult = BeltalowdaNetwork.groupData[normalizedTag].ultimate
     
     -- LGCS actual fields discovered via SavedVariables data capture:
     -- - ult1ID, ult2ID: ability IDs for both bars
@@ -281,17 +302,17 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
     end
     
     if logger then
-        logger:Info("Ultimate data received!", "unitTag=" .. tostring(unitTag), 
+        logger:Info("Ultimate data received!", "unitTag=" .. tostring(normalizedTag), 
             "abilityId=" .. tostring(activeUltId), 
             "value=" .. tostring(data.ultValue) .. "/" .. tostring(activeUltCost))
-        logger:Info("Stored ultimate data", "unitTag=" .. tostring(unitTag), 
+        logger:Info("Stored ultimate data", "unitTag=" .. tostring(normalizedTag), 
             "abilityId=" .. tostring(ult.abilityId), 
             "percent=" .. string.format("%.0f%%", ult.percent))
-        logger:Verbose("Stored ultimate data under key", unitTag)
+        logger:Verbose("Stored ultimate data under key", normalizedTag)
     end
     
-    -- Trigger callback for modules that need this data
-    BeltalowdaNetwork.OnDataChanged("ultimate", unitTag)
+    -- Trigger callback for modules that need this data (use normalized tag)
+    BeltalowdaNetwork.OnDataChanged("ultimate", normalizedTag)
 end
 
 --[[
