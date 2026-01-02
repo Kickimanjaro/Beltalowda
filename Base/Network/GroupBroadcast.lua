@@ -120,8 +120,27 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
         if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_PLAYER_ULT_UPDATE then
             BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_PLAYER_ULT_UPDATE, 
                 function(data)
-                    if data and data.unitTag then
-                        BeltalowdaNetwork.OnUltimateDataReceived(data.unitTag, data)
+                    -- Debug: Log what we actually received
+                    if logger then
+                        logger:Debug("LGCS PLAYER callback received", "data type=" .. type(data), 
+                            "data.unitTag=" .. tostring(data and data.unitTag or "nil"),
+                            "data.id=" .. tostring(data and data.id or "nil"))
+                    end
+                    
+                    if data and type(data) == "table" then
+                        -- Try to find the actual unitTag string
+                        local unitTag = data.unitTag
+                        if type(unitTag) == "table" and unitTag.tag then
+                            -- unitTag might be an object with a tag field
+                            unitTag = unitTag.tag
+                        end
+                        
+                        if unitTag then
+                            BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+                        else
+                            -- No unitTag found, try using "player" as default
+                            BeltalowdaNetwork.OnUltimateDataReceived("player", data)
+                        end
                     end
                 end)
             d("[Beltalowda] Registered for PLAYER ultimate updates (EVENT_PLAYER_ULT_UPDATE)")
@@ -131,8 +150,28 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
         if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_GROUP_ULT_UPDATE then
             BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_GROUP_ULT_UPDATE, 
                 function(data)
-                    if data and data.unitTag then
-                        BeltalowdaNetwork.OnUltimateDataReceived(data.unitTag, data)
+                    -- Debug: Log what we actually received
+                    if logger then
+                        logger:Debug("LGCS GROUP callback received", "data type=" .. type(data),
+                            "data.unitTag=" .. tostring(data and data.unitTag or "nil"),
+                            "data.id=" .. tostring(data and data.id or "nil"))
+                    end
+                    
+                    if data and type(data) == "table" then
+                        -- Try to find the actual unitTag string
+                        local unitTag = data.unitTag
+                        if type(unitTag) == "table" and unitTag.tag then
+                            -- unitTag might be an object with a tag field
+                            unitTag = unitTag.tag
+                        end
+                        
+                        if unitTag then
+                            BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+                        else
+                            if logger then
+                                logger:Warn("GROUP ultimate data has no unitTag field")
+                            end
+                        end
                     end
                 end)
             d("[Beltalowda] Registered for GROUP ultimate updates (EVENT_GROUP_ULT_UPDATE)")
