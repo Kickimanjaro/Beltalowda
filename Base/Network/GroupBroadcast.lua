@@ -358,13 +358,55 @@ function BeltalowdaNetwork.DebugGroupStatus()
     for i = 1, groupSize do
         local unitTag = GetGroupUnitTagByIndex(i)
         local name = GetUnitName(unitTag)
-        local hasData = BeltalowdaNetwork.groupData[unitTag] ~= nil
-        local hasUlt = hasData and BeltalowdaNetwork.groupData[unitTag].ultimate ~= nil
+        local data = BeltalowdaNetwork.groupData[unitTag]
         
-        d(string.format("  [%d] %s (unitTag='%s', type=%s)", i, name, tostring(unitTag), type(unitTag)))
-        d(string.format("      Data: %s | Ultimate: %s",
-            hasData and "YES" or "NO",
-            hasUlt and "YES" or "NO"))
+        -- Format ultimate status
+        local ultStatus = "NO"
+        local equipStatus = "NO"
+        
+        if data then
+            if data.ultimate and (data.ultimate.abilityId or data.ultimate.id) then
+                local ult = data.ultimate
+                local current = ult.current or ult.value or 0
+                local max = ult.max or 0
+                local percent = ult.percent or 0
+                
+                -- Get ability name safely
+                local abilityName = "Unknown"
+                local abilityId = ult.abilityId or ult.id
+                if abilityId then
+                    local abilityNameResult = GetAbilityName(abilityId)
+                    if abilityNameResult and abilityNameResult ~= "" then
+                        abilityName = abilityNameResult
+                    end
+                end
+                
+                ultStatus = string.format("%s (%.0f%%)", abilityName, percent)
+            end
+            
+            -- Query equipment data from LibSetDetection
+            if BeltalowdaNetwork.lsdInstance then
+                local success, sets = pcall(function()
+                    return BeltalowdaNetwork.lsdInstance:GetSetsForGroupMember(unitTag)
+                end)
+                
+                if success and sets and type(sets) == "table" then
+                    local setCount = 0
+                    for _ in pairs(sets) do
+                        setCount = setCount + 1
+                    end
+                    if setCount > 0 then
+                        equipStatus = string.format("%d sets", setCount)
+                    end
+                end
+            end
+        end
+        
+        d(string.format("[%d] %s (%s)", i, name, unitTag))
+        d(string.format("    Data: %s  Ultimate: %s  Equipment: %s",
+            data and "YES" or "NO",
+            ultStatus,
+            equipStatus))
     end
     
     d("")
