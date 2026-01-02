@@ -69,6 +69,11 @@ function Beltalowda.Initialize()
         Beltalowda.network.Initialize()
     end
     
+    -- Initialize settings menu
+    if Beltalowda.Settings and Beltalowda.Settings.Initialize then
+        Beltalowda.Settings.Initialize()
+    end
+    
     return true
 end
 

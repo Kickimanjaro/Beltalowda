@@ -13,6 +13,9 @@ Beltalowda.lua
 # Utilities
 Base/Util/Logger.lua
 
+# Settings
+BeltalowdaSettings.lua
+
 # Network layer
 Base/Network/GroupBroadcast.lua
 
