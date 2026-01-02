@@ -238,6 +238,16 @@ function BeltalowdaNetwork.PollEquipmentData()
         return 
     end
     
+    -- Check if the GetSetsForGroupMember method exists
+    if type(LibSetDetection.GetSetsForGroupMember) ~= "function" then
+        d("[Beltalowda] LibSetDetection.GetSetsForGroupMember is not a function (type=" .. type(LibSetDetection.GetSetsForGroupMember) .. ")")
+        
+        if logger then
+            logger:Error("LibSetDetection.GetSetsForGroupMember is not a function", "type=" .. type(LibSetDetection.GetSetsForGroupMember))
+        end
+        return
+    end
+    
     -- Poll player's equipment data
     local success, err = pcall(function()
         d("[Beltalowda] Calling LibSetDetection.GetSetsForGroupMember(player)...")
