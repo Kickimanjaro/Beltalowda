@@ -304,24 +304,70 @@ function BeltalowdaNetwork.DebugPrintGroupData()
         d("--- " .. name .. " (" .. unitTag .. ") ---")
         
         if data then
-            if data.ultimate then
+            -- Display ultimate data if available
+            if data.ultimate and (data.ultimate.abilityId or data.ultimate.id) then
                 local ult = data.ultimate
                 -- Safely get ability name with fallback
                 local abilityName = "Unknown"
-                if ult.abilityId then
-                    local abilityNameResult = GetAbilityName(ult.abilityId)
+                local abilityId = ult.abilityId or ult.id
+                if abilityId then
+                    local abilityNameResult = GetAbilityName(abilityId)
                     if abilityNameResult and abilityNameResult ~= "" then
                         abilityName = abilityNameResult
                     end
                 end
+                
+                local current = ult.current or ult.value or 0
+                local max = ult.max or 0
+                local percent = ult.percent or 0
+                
                 d(string.format("  Ultimate: %s (ID: %s, cost: %d)", 
                     abilityName,
-                    tostring(ult.abilityId or "?"), 
+                    tostring(abilityId or "?"), 
                     ult.cost or 0))
                 d(string.format("  Value: %d/%d (%.1f%%)", 
-                    ult.current or 0, 
-                    ult.max or 0, 
-                    ult.percent or 0))
+                    current, 
+                    max, 
+                    percent))
+            else
+                d("  Ultimate: No data yet")
+            end
+            
+            -- Display equipment data if available
+            if BeltalowdaNetwork.lsdInstance then
+                local success, sets = pcall(function()
+                    return BeltalowdaNetwork.lsdInstance:GetSetsForGroupMember(unitTag)
+                end)
+                
+                if success and sets and type(sets) == "table" then
+                    local hasData = false
+                    for setId, pieces in pairs(sets) do
+                        if not hasData then
+                            d("  Equipment:")
+                            hasData = true
+                        end
+                        
+                        -- Safely get set name with fallback
+                        local setName = "Unknown Set"
+                        if type(setId) == "number" then
+                            local itemSetName = GetItemSetName(setId)
+                            if itemSetName and itemSetName ~= "" then
+                                setName = itemSetName
+                            else
+                                setName = "Set #" .. setId
+                            end
+                        else
+                            setName = tostring(setId)
+                        end
+                        d(string.format("    %s: %d pieces", setName, pieces))
+                    end
+                    
+                    if not hasData then
+                        d("  Equipment: No sets detected")
+                    end
+                else
+                    d("  Equipment: No data yet")
+                end
             end
         else
             d("  No data available")
