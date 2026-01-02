@@ -185,10 +185,54 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
             return
         end
         
+        -- Try to register for equipment update events if the API exists
+        if BeltalowdaNetwork.lsdInstance.RegisterForEvent and LSD.EVENT_PLAYER_EQUIPMENT_CHANGED then
+            BeltalowdaNetwork.lsdInstance:RegisterForEvent(LSD.EVENT_PLAYER_EQUIPMENT_CHANGED,
+                function(unitTag, data)
+                    -- Debug: Log what we actually received
+                    if logger then
+                        logger:Debug("LSD PLAYER callback received", "unitTag type=" .. type(unitTag),
+                            "unitTag=" .. tostring(unitTag),
+                            "data type=" .. type(data))
+                    end
+                    
+                    -- Call handler if we have valid data
+                    if unitTag and data and type(unitTag) == "string" and type(data) == "table" then
+                        BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, data)
+                    elseif logger then
+                        logger:Warn("LSD PLAYER callback received invalid params",
+                            "unitTag type=" .. type(unitTag), "data type=" .. type(data))
+                    end
+                end)
+            d("[Beltalowda] Registered for PLAYER equipment updates (EVENT_PLAYER_EQUIPMENT_CHANGED)")
+        end
+        
+        -- Try to register for group equipment updates if the API exists
+        if BeltalowdaNetwork.lsdInstance.RegisterForEvent and LSD.EVENT_GROUP_EQUIPMENT_CHANGED then
+            BeltalowdaNetwork.lsdInstance:RegisterForEvent(LSD.EVENT_GROUP_EQUIPMENT_CHANGED,
+                function(unitTag, data)
+                    -- Debug: Log what we actually received
+                    if logger then
+                        logger:Debug("LSD GROUP callback received", "unitTag type=" .. type(unitTag),
+                            "unitTag=" .. tostring(unitTag),
+                            "data type=" .. type(data))
+                    end
+                    
+                    -- Call handler if we have valid data
+                    if unitTag and data and type(unitTag) == "string" and type(data) == "table" then
+                        BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, data)
+                    elseif logger then
+                        logger:Warn("LSD GROUP callback received invalid params",
+                            "unitTag type=" .. type(unitTag), "data type=" .. type(data))
+                    end
+                end)
+            d("[Beltalowda] Registered for GROUP equipment updates (EVENT_GROUP_EQUIPMENT_CHANGED)")
+        end
+        
         d("[Beltalowda] Successfully registered with LibSetDetection")
         
-        -- Note: LibSetDetection doesn't use callbacks for continuous updates
-        -- We'll query set data on-demand when displaying equipment info
+        -- Note: If LibSetDetection doesn't have event callbacks, we'll query set data on-demand
+        -- when displaying equipment info
     end)
     
     if not success then
@@ -313,6 +357,77 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
     
     -- Trigger callback for modules that need this data (use normalized tag)
     BeltalowdaNetwork.OnDataChanged("ultimate", normalizedTag)
+end
+
+--[[
+    Handle equipment data from LibSetDetection
+    @param unitTag: Unit tag of the player (e.g., "group1", "player")
+    @param data: Equipment data table from LSD
+]]--
+function BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, data)
+    if not data or type(data) ~= "table" then
+        if logger then
+            logger:Warn("OnEquipmentDataReceived called with invalid data", "unitTag=" .. tostring(unitTag), "dataType=" .. type(data))
+        end
+        return
+    end
+    
+    -- Normalize unitTag (convert "player" to appropriate group tag when in a group)
+    local normalizedTag = unitTag
+    if IsUnitGrouped("player") and unitTag == "player" then
+        local groupIndex = GetGroupIndexByUnitTag("player")
+        if groupIndex then
+            normalizedTag = GetGroupUnitTagByIndex(groupIndex)
+            if not normalizedTag or normalizedTag == "" then
+                normalizedTag = unitTag
+            end
+        end
+    end
+    
+    -- Capture raw data sample to SavedVariables for structure discovery
+    if BeltalowdaVars and BeltalowdaVars.debug then
+        BeltalowdaVars.debug.lsdDataSamples = BeltalowdaVars.debug.lsdDataSamples or {}
+        table.insert(BeltalowdaVars.debug.lsdDataSamples, {
+            timestamp = GetTimeStamp(),
+            unitTag = unitTag,
+            data = data
+        })
+        
+        -- Keep only last 10 samples
+        while #BeltalowdaVars.debug.lsdDataSamples > 10 do
+            table.remove(BeltalowdaVars.debug.lsdDataSamples, 1)
+        end
+    end
+    
+    -- DEBUG: Dump all fields in the data table to logs
+    if logger then
+        local fieldList = {}
+        for k, v in pairs(data) do
+            table.insert(fieldList, k .. "=" .. tostring(v) .. "(" .. type(v) .. ")")
+        end
+        logger:Debug("LSD data table fields:", table.concat(fieldList, ", "))
+        
+        if normalizedTag ~= unitTag then
+            logger:Debug("Normalized unitTag", "from=" .. unitTag, "to=" .. normalizedTag)
+        end
+    end
+    
+    -- Initialize player data if not exists (use normalized tag)
+    BeltalowdaNetwork.groupData[normalizedTag] = BeltalowdaNetwork.groupData[normalizedTag] or {}
+    BeltalowdaNetwork.groupData[normalizedTag].equipment = BeltalowdaNetwork.groupData[normalizedTag].equipment or {}
+    
+    -- Store equipment data from LSD
+    -- Field structure will be discovered via SavedVariables data capture
+    -- For now, store the raw data table
+    BeltalowdaNetwork.groupData[normalizedTag].equipment.rawData = data
+    
+    if logger then
+        logger:Info("Equipment data received!", "unitTag=" .. tostring(normalizedTag))
+        logger:Verbose("Stored equipment data under key", normalizedTag)
+    end
+    
+    -- Trigger callback for modules that need this data (use normalized tag)
+    BeltalowdaNetwork.OnDataChanged("equipment", normalizedTag)
 end
 
 --[[
