@@ -170,24 +170,63 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
 end
 
 --[[
-    Subscribe to LibSetDetection equipment broadcasts
+    Subscribe to LibSetDetection equipment change callbacks
     
-    NOTE: LibSetDetection uses LibGroupBroadcast ID 40 to broadcast equipment data,
-    not a polling API. Equipment tracking will be implemented in a future phase by
-    subscribing to LibGroupBroadcast message ID 40.
-    
-    For Phase 2, ultimate tracking via LibGroupCombatStats is complete and functional.
+    LibSetDetection provides RegisterCallback API for set change events
+    and GetSets() method to query current equipment.
 ]]--
 function BeltalowdaNetwork.SubscribeToEquipmentData()
     if not LibSetDetection then 
         if logger then
-            logger:Info("LibSetDetection not available - equipment tracking deferred to future phase")
+            logger:Info("LibSetDetection not available - equipment tracking disabled")
         end
         return 
     end
     
     if logger then
-        logger:Info("LibSetDetection found - integration deferred to future phase (requires LibGroupBroadcast subscription to ID 40)")
+        logger:Info("LibSetDetection found - registering for equipment change callbacks")
+    end
+    
+    local success, err = pcall(function()
+        -- Register for equipment change events
+        if LibSetDetection.RegisterCallback then
+            LibSetDetection:RegisterCallback("OnSetChanged", function(eventData)
+                if logger then
+                    logger:Debug("LibSetDetection OnSetChanged event received", "eventData type=" .. type(eventData))
+                end
+                
+                -- eventData should contain player info and set information
+                -- Parse and store in groupData structure
+                if eventData and type(eventData) == "table" then
+                    BeltalowdaNetwork.OnEquipmentDataReceived(eventData.unitTag or "player", eventData)
+                end
+            end)
+            
+            if logger then
+                logger:Info("Successfully registered for LibSetDetection OnSetChanged callbacks")
+            end
+        else
+            if logger then
+                logger:Warn("LibSetDetection.RegisterCallback not available")
+            end
+        end
+        
+        -- Try to get initial equipment data using GetSets
+        if LibSetDetection.GetSets then
+            local initialSets = LibSetDetection:GetSets("player")
+            if initialSets then
+                if logger then
+                    logger:Debug("Got initial equipment data from GetSets", "type=" .. type(initialSets))
+                end
+                BeltalowdaNetwork.OnEquipmentDataReceived("player", initialSets)
+            end
+        end
+    end)
+    
+    if not success then
+        if logger then
+            logger:Error("Error registering with LibSetDetection", tostring(err))
+        end
     end
 end
 
