@@ -669,20 +669,22 @@ end
 
 -- Debug slash commands
 SLASH_COMMANDS["/btlwdata"] = function(args)
-    -- Parse command and arguments
-    local cmd, arg1, arg2 = string.match(args, "^(%S+)%s*(%S*)%s*(%S*)$")
-    if not cmd then
-        cmd = args
-    end
-    
-    if cmd == "status" then
-        BeltalowdaNetwork.DebugGroupStatus()
-    elseif cmd == "group" then
-        BeltalowdaNetwork.DebugPrintGroupData()
-    elseif cmd == "ults" then
-        BeltalowdaNetwork.DebugUltimateData()
-    elseif cmd == "equip" then
-        BeltalowdaNetwork.DebugEquipmentData()
+    -- Wrap in pcall to catch and display any errors
+    local success, err = pcall(function()
+        -- Parse command and arguments
+        local cmd, arg1, arg2 = string.match(args, "^(%S+)%s*(%S*)%s*(%S*)$")
+        if not cmd then
+            cmd = args
+        end
+        
+        if cmd == "status" then
+            BeltalowdaNetwork.DebugGroupStatus()
+        elseif cmd == "group" then
+            BeltalowdaNetwork.DebugPrintGroupData()
+        elseif cmd == "ults" then
+            BeltalowdaNetwork.DebugUltimateData()
+        elseif cmd == "equip" then
+            BeltalowdaNetwork.DebugEquipmentData()
     elseif cmd == "raw" then
         d("=== Raw Group Data Dump ===")
         d("")
@@ -936,8 +938,15 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("  - If no data shows: Check '/btlwdata libapi'")
         d("  - If libraries missing: Install from ESOUI.com")
         d("  - If data not syncing: Ensure group members have libraries")
-    else
-        d("Unknown command: " .. tostring(args))
-        d("Type '/btlwdata help' for available commands")
+        else
+            d("Unknown command: " .. tostring(args))
+            d("Type '/btlwdata help' for available commands")
+        end
+    end)
+    
+    if not success then
+        d("[Beltalowda] ERROR executing command:")
+        d(tostring(err))
+        d("Please report this error with steps to reproduce")
     end
 end
