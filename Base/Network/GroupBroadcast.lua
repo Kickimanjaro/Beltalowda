@@ -75,10 +75,21 @@ function BeltalowdaNetwork.Initialize()
         d("[Beltalowda] ERROR: LibSetDetection not available. This should not happen (required dependency).")
         return false
     else
+        d("[Beltalowda] INIT: About to call SubscribeToEquipmentData, function type=" .. type(BeltalowdaNetwork.SubscribeToEquipmentData))
         if logger then
             logger:Info("LibSetDetection found - registering addon")
         end
-        BeltalowdaNetwork.SubscribeToEquipmentData()
+        
+        -- Call with explicit error handling to catch any issues
+        local success, err = pcall(BeltalowdaNetwork.SubscribeToEquipmentData)
+        if not success then
+            d("[Beltalowda] ERROR calling SubscribeToEquipmentData: " .. tostring(err))
+            if logger then
+                logger:Error("Error calling SubscribeToEquipmentData", tostring(err))
+            end
+        else
+            d("[Beltalowda] SubscribeToEquipmentData call completed")
+        end
     end
     
     -- Register for group change events to clean up data
