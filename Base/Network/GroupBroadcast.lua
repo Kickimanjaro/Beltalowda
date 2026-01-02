@@ -172,138 +172,23 @@ end
 --[[
     Subscribe to LibSetDetection equipment broadcasts
     
-    LibSetDetection requires calling RegisterAddon first, then we can query set data.
+    NOTE: LibSetDetection uses LibGroupBroadcast ID 40 to broadcast equipment data,
+    not a polling API. Equipment tracking will be implemented in a future phase by
+    subscribing to LibGroupBroadcast message ID 40.
+    
+    For Phase 2, ultimate tracking via LibGroupCombatStats is complete and functional.
 ]]--
 function BeltalowdaNetwork.SubscribeToEquipmentData()
-    d("[Beltalowda] SubscribeToEquipmentData called")
-    
     if not LibSetDetection then 
-        d("[Beltalowda] LibSetDetection not available")
+        if logger then
+            logger:Info("LibSetDetection not available - equipment tracking deferred to future phase")
+        end
         return 
     end
     
     if logger then
-        logger:Info("LibSetDetection found - starting equipment polling")
+        logger:Info("LibSetDetection found - integration deferred to future phase (requires LibGroupBroadcast subscription to ID 40)")
     end
-    
-    -- LibSetDetection doesn't require registration - it's a query-only library
-    -- No RegisterAddon method exists - just call GetSetsForGroupMember() directly
-    d("[Beltalowda] LSD polling timer scheduled - will start in 2 seconds")
-    
-    if logger then
-        logger:Debug("LSD polling timer scheduled", "will start in 2 seconds")
-    end
-    
-    local success, err = pcall(function()
-        
-        zo_callLater(function()
-            d("[Beltalowda] LSD polling timer fired!")
-            
-            if logger then
-                logger:Debug("LSD polling timer fired", "calling PollEquipmentData()")
-            end
-            BeltalowdaNetwork.PollEquipmentData()
-        end, 2000) -- Poll after 2 seconds to let everything initialize
-        
-        d("[Beltalowda] Setup LSD polling successfully (polling mode)")
-    end)
-    
-     if not success then
-        d("[Beltalowda] Error setting up LSD polling: " .. tostring(err))
-        if logger then
-            logger:Error("Error setting up LibSetDetection polling", tostring(err))
-        end
-    else
-        d("[Beltalowda] SubscribeToEquipmentData completed successfully")
-    end
-end
-
---[[
-    Poll equipment data from LibSetDetection
-    LSD doesn't have callbacks, so we need to query on-demand
-]]--
-function BeltalowdaNetwork.PollEquipmentData()
-    d("[Beltalowda] PollEquipmentData called")
-    
-    if logger then
-        logger:Debug("PollEquipmentData called")
-    end
-    
-    if not LibSetDetection then 
-        d("[Beltalowda] PollEquipmentData: LibSetDetection not available")
-        
-        if logger then
-            logger:Warn("PollEquipmentData: LibSetDetection not available")
-        end
-        return 
-    end
-    
-    -- Check if the GetSetsForGroupMember method exists
-    if type(LibSetDetection.GetSetsForGroupMember) ~= "function" then
-        d("[Beltalowda] LibSetDetection.GetSetsForGroupMember is not a function (type=" .. type(LibSetDetection.GetSetsForGroupMember) .. ")")
-        
-        if logger then
-            logger:Error("LibSetDetection.GetSetsForGroupMember is not a function", "type=" .. type(LibSetDetection.GetSetsForGroupMember))
-        end
-        return
-    end
-    
-    -- Poll player's equipment data
-    local success, err = pcall(function()
-        d("[Beltalowda] Calling LibSetDetection.GetSetsForGroupMember(player)...")
-        
-        if logger then
-            logger:Debug("Calling GetSetsForGroupMember", "unitTag=player")
-        end
-        
-        local setData = LibSetDetection.GetSetsForGroupMember("player")
-        
-        d("[Beltalowda] GetSetsForGroupMember returned - type=" .. type(setData) .. ", nil=" .. tostring(setData == nil))
-        
-        if logger then
-            logger:Debug("GetSetsForGroupMember returned", "type=" .. type(setData), "nil=" .. tostring(setData == nil))
-        end
-        
-        if setData and type(setData) == "table" then
-            d("[Beltalowda] Calling OnEquipmentDataReceived with setData")
-            
-            if logger then
-                logger:Debug("Calling OnEquipmentDataReceived with setData")
-            end
-            BeltalowdaNetwork.OnEquipmentDataReceived("player", setData)
-        else
-            d("[Beltalowda] GetSetsForGroupMember returned nil or non-table, skipping")
-            
-            if logger then
-                logger:Debug("GetSetsForGroupMember returned nil or non-table")
-            end
-        end
-    end)
-    
-    if not success then
-        d("[Beltalowda] Error polling LSD equipment data: " .. tostring(err))
-        
-        if logger then
-            logger:Warn("Error polling LSD equipment data", tostring(err))
-        end
-    end
-    
-    -- Schedule next poll in 5 seconds (for data capture testing)
-    -- In production, this would be triggered by combat events or manual refresh
-    d("[Beltalowda] Scheduling next LSD poll in 5 seconds")
-    
-    if logger then
-        logger:Debug("Scheduling next LSD poll", "in 5 seconds")
-    end
-    
-    zo_callLater(function()
-        d("[Beltalowda] LSD poll timer fired again")
-        
-        if logger then
-            logger:Debug("LSD poll timer fired again")
-        end
-        BeltalowdaNetwork.PollEquipmentData()
-    end, 5000)
 end
 
 --[[
