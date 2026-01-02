@@ -119,28 +119,20 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
         -- Register for player ultimate updates
         if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_PLAYER_ULT_UPDATE then
             BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_PLAYER_ULT_UPDATE, 
-                function(data)
+                function(unitTag, data)
                     -- Debug: Log what we actually received
                     if logger then
-                        logger:Debug("LGCS PLAYER callback received", "data type=" .. type(data), 
-                            "data.unitTag=" .. tostring(data and data.unitTag or "nil"),
-                            "data.id=" .. tostring(data and data.id or "nil"))
+                        logger:Debug("LGCS PLAYER callback received", "unitTag type=" .. type(unitTag), 
+                            "unitTag=" .. tostring(unitTag),
+                            "data type=" .. type(data))
                     end
                     
-                    if data and type(data) == "table" then
-                        -- Try to find the actual unitTag string
-                        local unitTag = data.unitTag
-                        if type(unitTag) == "table" and unitTag.tag then
-                            -- unitTag might be an object with a tag field
-                            unitTag = unitTag.tag
-                        end
-                        
-                        if unitTag then
-                            BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
-                        else
-                            -- No unitTag found, try using "player" as default
-                            BeltalowdaNetwork.OnUltimateDataReceived("player", data)
-                        end
+                    -- LGCS passes unitTag as first param (string), data as second param (table)
+                    if unitTag and data and type(unitTag) == "string" and type(data) == "table" then
+                        BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+                    elseif logger then
+                        logger:Warn("LGCS PLAYER callback received invalid params", 
+                            "unitTag type=" .. type(unitTag), "data type=" .. type(data))
                     end
                 end)
             d("[Beltalowda] Registered for PLAYER ultimate updates (EVENT_PLAYER_ULT_UPDATE)")
@@ -149,29 +141,20 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
         -- Register for group ultimate updates
         if BeltalowdaNetwork.lgcsInstance.RegisterForEvent and LGCS.EVENT_GROUP_ULT_UPDATE then
             BeltalowdaNetwork.lgcsInstance:RegisterForEvent(LGCS.EVENT_GROUP_ULT_UPDATE, 
-                function(data)
+                function(unitTag, data)
                     -- Debug: Log what we actually received
                     if logger then
-                        logger:Debug("LGCS GROUP callback received", "data type=" .. type(data),
-                            "data.unitTag=" .. tostring(data and data.unitTag or "nil"),
-                            "data.id=" .. tostring(data and data.id or "nil"))
+                        logger:Debug("LGCS GROUP callback received", "unitTag type=" .. type(unitTag),
+                            "unitTag=" .. tostring(unitTag),
+                            "data type=" .. type(data))
                     end
                     
-                    if data and type(data) == "table" then
-                        -- Try to find the actual unitTag string
-                        local unitTag = data.unitTag
-                        if type(unitTag) == "table" and unitTag.tag then
-                            -- unitTag might be an object with a tag field
-                            unitTag = unitTag.tag
-                        end
-                        
-                        if unitTag then
-                            BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
-                        else
-                            if logger then
-                                logger:Warn("GROUP ultimate data has no unitTag field")
-                            end
-                        end
+                    -- LGCS passes unitTag as first param (string), data as second param (table)
+                    if unitTag and data and type(unitTag) == "string" and type(data) == "table" then
+                        BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
+                    elseif logger then
+                        logger:Warn("LGCS GROUP callback received invalid params",
+                            "unitTag type=" .. type(unitTag), "data type=" .. type(data))
                     end
                 end)
             d("[Beltalowda] Registered for GROUP ultimate updates (EVENT_GROUP_ULT_UPDATE)")
