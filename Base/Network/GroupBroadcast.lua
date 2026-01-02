@@ -209,7 +209,30 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
         return 
     end
     
-    -- DEBUG: Dump all fields in the data table to understand LGCS structure
+    -- DEBUG: Capture raw data samples to SavedVariables for easier analysis
+    -- Keep only the last 10 samples to avoid bloat
+    if BeltalowdaVars and BeltalowdaVars.debug then
+        BeltalowdaVars.debug.lgcsDataSamples = BeltalowdaVars.debug.lgcsDataSamples or {}
+        
+        -- Deep copy the data table to SavedVariables
+        local dataCopy = {}
+        for k, v in pairs(data) do
+            dataCopy[k] = v
+        end
+        
+        table.insert(BeltalowdaVars.debug.lgcsDataSamples, {
+            timestamp = GetTimeStamp(),
+            unitTag = unitTag,
+            data = dataCopy
+        })
+        
+        -- Keep only last 10 samples
+        while #BeltalowdaVars.debug.lgcsDataSamples > 10 do
+            table.remove(BeltalowdaVars.debug.lgcsDataSamples, 1)
+        end
+    end
+    
+    -- DEBUG: Dump all fields in the data table to logs
     if logger then
         local fieldList = {}
         for k, v in pairs(data) do

@@ -91,6 +91,8 @@ function Beltalowda.OnAddOnLoaded(eventCode, addonName)
     -- Initialize SavedVariables
     BeltalowdaVars = BeltalowdaVars or {}
     BeltalowdaVars.version = BeltalowdaVars.version or Beltalowda.version
+    BeltalowdaVars.debug = BeltalowdaVars.debug or {}
+    BeltalowdaVars.debug.lgcsDataSamples = BeltalowdaVars.debug.lgcsDataSamples or {}
     
     -- Initialize Logger early (before modules)
     if Beltalowda.Logger and Beltalowda.Logger.Initialize then
