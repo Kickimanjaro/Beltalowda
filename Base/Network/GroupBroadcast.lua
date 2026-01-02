@@ -209,7 +209,14 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
         return 
     end
     
+    -- DEBUG: Dump all fields in the data table to understand LGCS structure
     if logger then
+        local fieldList = {}
+        for k, v in pairs(data) do
+            table.insert(fieldList, k .. "=" .. tostring(v) .. "(" .. type(v) .. ")")
+        end
+        logger:Debug("LGCS data table fields:", table.concat(fieldList, ", "))
+        
         logger:Info("Ultimate data received!", "unitTag=" .. tostring(unitTag), "abilityId=" .. tostring(data.id), "value=" .. tostring(data.value) .. "/" .. tostring(data.max))
         logger:Debug("Ultimate type received", unitTag, "id=" .. tostring(data.id), "cost=" .. tostring(data.cost), "value=" .. tostring(data.value), "max=" .. tostring(data.max))
     end
