@@ -182,30 +182,19 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
         return 
     end
     
-    d("[Beltalowda] Attempting to register with LibSetDetection...")
+    if logger then
+        logger:Info("LibSetDetection found - starting equipment polling")
+    end
+    
+    -- LibSetDetection doesn't require registration - it's a query-only library
+    -- No RegisterAddon method exists - just call GetSetsForGroupMember() directly
+    d("[Beltalowda] LSD polling timer scheduled - will start in 2 seconds")
+    
+    if logger then
+        logger:Debug("LSD polling timer scheduled", "will start in 2 seconds")
+    end
     
     local success, err = pcall(function()
-        -- Register our addon with LibSetDetection
-        BeltalowdaNetwork.lsdInstance = LibSetDetection:RegisterAddon("Beltalowda")
-        
-        d("[Beltalowda] RegisterAddon returned: " .. tostring(BeltalowdaNetwork.lsdInstance ~= nil))
-        
-        if not BeltalowdaNetwork.lsdInstance then
-            d("[Beltalowda] Warning: Failed to register with LibSetDetection")
-            return
-        end
-        
-        if logger then
-            logger:Info("LibSetDetection found - registering addon")
-        end
-        
-        -- LibSetDetection doesn't have event callbacks - we need to poll via GetSetsForGroupMember()
-        -- Set up a timer to poll equipment data periodically for data capture
-        d("[Beltalowda] LSD polling timer scheduled - will start in 2 seconds")
-        
-        if logger then
-            logger:Debug("LSD polling timer scheduled", "will start in 2 seconds")
-        end
         
         zo_callLater(function()
             d("[Beltalowda] LSD polling timer fired!")
@@ -216,13 +205,13 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
             BeltalowdaNetwork.PollEquipmentData()
         end, 2000) -- Poll after 2 seconds to let everything initialize
         
-        d("[Beltalowda] Successfully registered with LibSetDetection (polling mode)")
+        d("[Beltalowda] Setup LSD polling successfully (polling mode)")
     end)
     
-    if not success then
-        d("[Beltalowda] Error registering with LibSetDetection: " .. tostring(err))
+     if not success then
+        d("[Beltalowda] Error setting up LSD polling: " .. tostring(err))
         if logger then
-            logger:Error("Error registering with LibSetDetection", tostring(err))
+            logger:Error("Error setting up LibSetDetection polling", tostring(err))
         end
     else
         d("[Beltalowda] SubscribeToEquipmentData completed successfully")
@@ -234,30 +223,30 @@ end
     LSD doesn't have callbacks, so we need to query on-demand
 ]]--
 function BeltalowdaNetwork.PollEquipmentData()
-    d("[Beltalowda] PollEquipmentData called - lsdInstance=" .. tostring(BeltalowdaNetwork.lsdInstance ~= nil))
+    d("[Beltalowda] PollEquipmentData called")
     
     if logger then
-        logger:Debug("PollEquipmentData called", "lsdInstance=" .. tostring(BeltalowdaNetwork.lsdInstance ~= nil))
+        logger:Debug("PollEquipmentData called")
     end
     
-    if not BeltalowdaNetwork.lsdInstance then 
-        d("[Beltalowda] PollEquipmentData: no lsdInstance available")
+    if not LibSetDetection then 
+        d("[Beltalowda] PollEquipmentData: LibSetDetection not available")
         
         if logger then
-            logger:Warn("PollEquipmentData: no lsdInstance available")
+            logger:Warn("PollEquipmentData: LibSetDetection not available")
         end
         return 
     end
     
     -- Poll player's equipment data
     local success, err = pcall(function()
-        d("[Beltalowda] Calling GetSetsForGroupMember(player)...")
+        d("[Beltalowda] Calling LibSetDetection.GetSetsForGroupMember(player)...")
         
         if logger then
             logger:Debug("Calling GetSetsForGroupMember", "unitTag=player")
         end
         
-        local setData = BeltalowdaNetwork.lsdInstance:GetSetsForGroupMember("player")
+        local setData = LibSetDetection.GetSetsForGroupMember("player")
         
         d("[Beltalowda] GetSetsForGroupMember returned - type=" .. type(setData) .. ", nil=" .. tostring(setData == nil))
         
