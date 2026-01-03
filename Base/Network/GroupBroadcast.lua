@@ -691,21 +691,27 @@ function BeltalowdaNetwork.DebugPrintGroupData()
             end
             
             -- Display equipment data if available
-            if BeltalowdaNetwork.lsdInstance then
+            if LibSetDetection then
                 local success, sets = pcall(function()
-                    return BeltalowdaNetwork.lsdInstance:GetSetsForGroupMember(unitTag)
+                    return LibSetDetection.GetUnitSetData(unitTag)
                 end)
                 
                 if success and sets and type(sets) == "table" then
                     local hasData = false
-                    for setId, pieces in pairs(sets) do
+                    for setId, setInfo in pairs(sets) do
                         if not hasData then
                             d("  Equipment:")
                             hasData = true
                         end
                         
-                        local setName = GetSetNameSafe(setId)
-                        d(string.format("    %s: %d pieces", setName, pieces))
+                        local setName = setInfo.setName or GetSetNameSafe(setId)
+                        local bodyCount = (setInfo.numEquip and setInfo.numEquip.body) or 0
+                        local frontCount = (setInfo.numEquip and setInfo.numEquip.front) or 0
+                        local backCount = (setInfo.numEquip and setInfo.numEquip.back) or 0
+                        local totalCount = bodyCount + frontCount + backCount
+                        
+                        d(string.format("    %s: %d pcs (body:%d front:%d back:%d)", 
+                            setName, totalCount, bodyCount, frontCount, backCount))
                     end
                     
                     if not hasData then
@@ -770,9 +776,9 @@ function BeltalowdaNetwork.DebugGroupStatus()
             end
             
             -- Query equipment data from LibSetDetection
-            if BeltalowdaNetwork.lsdInstance then
+            if LibSetDetection then
                 local success, sets = pcall(function()
-                    return BeltalowdaNetwork.lsdInstance:GetSetsForGroupMember(unitTag)
+                    return LibSetDetection.GetUnitSetData(unitTag)
                 end)
                 
                 if success and sets and type(sets) == "table" then
@@ -880,8 +886,8 @@ function BeltalowdaNetwork.DebugEquipmentData()
         return
     end
     
-    if not BeltalowdaNetwork.lsdInstance then
-        d("LibSetDetection not registered - cannot retrieve equipment data")
+    if not LibSetDetection then
+        d("LibSetDetection not available - cannot retrieve equipment data")
         return
     end
     
@@ -892,7 +898,7 @@ function BeltalowdaNetwork.DebugEquipmentData()
         
         -- Query equipment data from LibSetDetection with error protection
         local success, sets = pcall(function()
-            return BeltalowdaNetwork.lsdInstance:GetSetsForGroupMember(unitTag)
+            return LibSetDetection.GetUnitSetData(unitTag)
         end)
         
         if not success then
@@ -908,10 +914,28 @@ function BeltalowdaNetwork.DebugEquipmentData()
                 foundData = true
                 d(string.format("[%d] %s", i, name))
                 
-                -- Display set data: setId -> piece count
-                for setId, pieces in pairs(sets) do
-                    local setName = GetSetNameSafe(setId)
-                    d(string.format("    %s: %d pieces", setName, pieces))
+                -- Display set data with full details
+                for setId, setInfo in pairs(sets) do
+                    local setName = setInfo.setName or GetSetNameSafe(setId)
+                    local bodyCount = (setInfo.numEquip and setInfo.numEquip.body) or 0
+                    local frontCount = (setInfo.numEquip and setInfo.numEquip.front) or 0
+                    local backCount = (setInfo.numEquip and setInfo.numEquip.back) or 0
+                    local totalCount = bodyCount + frontCount + backCount
+                    local maxEquip = setInfo.maxEquip or 5
+                    local activeType = setInfo.activeType or 0
+                    
+                    -- Format active status
+                    local activeStr = ""
+                    if activeType == 1 then
+                        activeStr = " [ACTIVE]"
+                    elseif activeType == 2 then
+                        activeStr = " [PARTIAL]"
+                    end
+                    
+                    d(string.format("    %s: %d/%d pcs%s", 
+                        setName, totalCount, maxEquip, activeStr))
+                    d(string.format("      Body: %d  Front: %d  Back: %d", 
+                        bodyCount, frontCount, backCount))
                 end
             end
         end
@@ -922,6 +946,7 @@ function BeltalowdaNetwork.DebugEquipmentData()
         d("Note: Requires LibSetDetection installed on all group members")
         d("Try changing equipment to trigger data sync")
     end
+end
 end
 
 -- Debug slash commands
