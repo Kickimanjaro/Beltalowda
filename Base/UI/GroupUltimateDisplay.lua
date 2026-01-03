@@ -13,24 +13,22 @@ local wm = WINDOW_MANAGER
 GUD.ULTIMATE_ICON_SIZE = 48
 GUD.PLAYER_BLOCK_WIDTH = 200
 GUD.PLAYER_BLOCK_HEIGHT = 24
-GUD.MAX_ULTIMATES = 12
+GUD.MAX_ULTIMATES = 6  -- Changed to 6 for Alliance War ultimates
 GUD.MAX_PLAYERS_PER_ULTIMATE = 12
 GUD.OFFSET = 2
 
--- Default ultimate abilities to track (can be configured later)
+-- Default ultimate abilities to track (Alliance War ultimates for easy testing)
+-- These are the 3 Alliance War skill lines with their 2 morphs each (6 total)
 GUD.DEFAULT_ULTIMATES = {
-    40223, -- Dawnbreaker
-    32958, -- Northern Storm
-    40161, -- Standard
-    40224, -- Crescent Sweep
-    40594, -- Nova
-    40382, -- Meteor
-    32455, -- Barrier
-    32484, -- Veil of Blades
-    40215, -- Shooting Star
-    32433, -- Aggressive Horn
-    40279, -- Practiced Incantation
-    40181, -- Colossus
+    -- Assault Line
+    40223, -- Dawnbreaker (base, available at rank 10)
+    40224, -- Dawnbreaker of Smiting (morph 1)
+    40225, -- Flawless Dawnbreaker (morph 2)
+    
+    -- Support Line  
+    40161, -- War Horn (base)
+    40162, -- Sturdy Horn (morph 1)
+    40163, -- Aggressive Horn (morph 2)
 }
 
 -- Controls

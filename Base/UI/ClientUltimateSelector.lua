@@ -233,16 +233,22 @@ end
     Cycle to next ultimate
 ]]--
 function CUS.CycleUltimate()
+    d(string.format("[Beltalowda] CycleUltimate called, available count=%d, current index=%d", 
+        #CUS.availableUltimates, CUS.settings.selectedIndex))
+    
     if #CUS.availableUltimates == 0 then
         d("[Beltalowda] No ultimates detected. Make sure you have an ultimate slotted.")
         return
     end
     
     -- Cycle to next index
+    local oldIndex = CUS.settings.selectedIndex
     CUS.settings.selectedIndex = CUS.settings.selectedIndex + 1
     if CUS.settings.selectedIndex > #CUS.availableUltimates then
         CUS.settings.selectedIndex = 1
     end
+    
+    d(string.format("[Beltalowda] Cycled from index %d to %d", oldIndex, CUS.settings.selectedIndex))
     
     -- Update selected ultimate ID
     CUS.settings.selectedUltimateId = CUS.availableUltimates[CUS.settings.selectedIndex].id
