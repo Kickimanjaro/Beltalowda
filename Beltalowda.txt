@@ -27,4 +27,5 @@ Base/UI/ClientUltimateSelector.lua
 Localization/en.lua
 
 # Keybinds
-BeltalowdaKeybinds.xml
+# BeltalowdaKeybinds.xml - Temporarily disabled due to ESO XML parser issues
+# Will implement keybinds programmatically in future update
