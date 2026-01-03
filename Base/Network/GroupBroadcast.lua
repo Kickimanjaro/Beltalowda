@@ -947,7 +947,6 @@ function BeltalowdaNetwork.DebugEquipmentData()
         d("Try changing equipment to trigger data sync")
     end
 end
-end
 
 -- Debug slash commands
 SLASH_COMMANDS["/btlwdata"] = function(args)
