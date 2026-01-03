@@ -202,19 +202,17 @@ function CUS.DetectPlayerUltimates()
     CUS.availableUltimates = {}
     
     -- Check both action bars (front bar = 0, back bar = 1)
+    -- Slot 8 is always the ultimate slot in ESO
     for hotbarCategory = 0, 1 do
         local slotId = 8 -- Ultimate slot is always slot 8
         local abilityId = GetSlotBoundId(slotId, hotbarCategory)
         
         if abilityId and abilityId > 0 then
-            -- Check if this is an ultimate ability
-            local abilityType = GetAbilityType(abilityId)
-            if abilityType == ABILITY_TYPE_ULTIMATE then
-                table.insert(CUS.availableUltimates, {
-                    id = abilityId,
-                    hotbar = hotbarCategory,
-                })
-            end
+            -- Slot 8 is always ultimate, so if there's an ability here, it's an ultimate
+            table.insert(CUS.availableUltimates, {
+                id = abilityId,
+                hotbar = hotbarCategory,
+            })
         end
     end
     
