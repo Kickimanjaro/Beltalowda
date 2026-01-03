@@ -31,14 +31,10 @@ function Beltalowda.AreLibrariesLoaded()
         loaded = false
         table.insert(missingLibs, "LibAddonMenu2")
     end
-    if not LibSetDetection then
-        loaded = false
-        table.insert(missingLibs, "LibSetDetection")
-    end
-    if not LibGroupCombatStats then
-        loaded = false
-        table.insert(missingLibs, "LibGroupCombatStats")
-    end
+    -- Network layer libraries (LibSetDetection, LibGroupCombatStats) are checked
+    -- by BeltalowdaNetwork.Initialize() to avoid load-order timing issues
+    -- Don't check them here or the addon won't initialize if they load after Beltalowda
+    
     -- Check optional libraries - log info messages
     if not LibCombat then
         d("[Beltalowda] Info: LibCombat not found. This is optional and reserved for future features.")
