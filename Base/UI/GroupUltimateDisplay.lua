@@ -18,17 +18,15 @@ GUD.MAX_PLAYERS_PER_ULTIMATE = 12
 GUD.OFFSET = 2
 
 -- Default ultimate abilities to track (Alliance War ultimates for easy testing)
--- Using primary IDs from verified ability database
+-- Using base ability IDs - these will match all morphs of the ultimate
+-- Following RdK's approach: track the ultimate type, not individual morphs
 GUD.DEFAULT_ULTIMATES = {
-    -- Support Line - War Horn abilities
-    38563,  -- War Horn (base)
-    40223,  -- Aggressive Horn (morph)
-    40220,  -- Sturdy Horn (morph)
-    
-    -- Support Line - Barrier abilities
-    38573,  -- Barrier (base)
-    40237,  -- Reviving Barrier (morph)
-    40239,  -- Replenishing Barrier (morph)
+    38563,  -- Alliance War (Assault) - War Horn (includes all morphs: Aggressive/Sturdy Horn)
+    38573,  -- Alliance War (Support) - Barrier (includes all morphs: Reviving/Replenishing Barrier)
+    35713,  -- Fighters Guild - Dawnbreaker (includes all morphs)
+    16536,  -- Mages Guild - Meteor (includes all morphs)
+    83552,  -- Restoration Staff - Panacea (includes all morphs)
+    83619,  -- Destruction Staff - Eye of the Storm (includes all morphs)
 }
 
 -- Controls
