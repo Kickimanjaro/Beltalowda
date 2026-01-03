@@ -65,8 +65,8 @@ end
     Load settings from SavedVariables
 ]]--
 function CUS.LoadSettings()
-    if not BeltalowdaVars then return end
-    
+    -- Initialize BeltalowdaVars if it doesn't exist yet
+    BeltalowdaVars = BeltalowdaVars or {}
     BeltalowdaVars.ui = BeltalowdaVars.ui or {}
     BeltalowdaVars.ui.clientUltimateSelector = BeltalowdaVars.ui.clientUltimateSelector or {}
     
@@ -84,9 +84,10 @@ end
     Save settings to SavedVariables
 ]]--
 function CUS.SaveSettings()
-    if not BeltalowdaVars then return end
-    
+    -- Ensure BeltalowdaVars exists
+    BeltalowdaVars = BeltalowdaVars or {}
     BeltalowdaVars.ui = BeltalowdaVars.ui or {}
+    
     BeltalowdaVars.ui.clientUltimateSelector = {
         enabled = CUS.settings.enabled,
         locked = CUS.settings.locked,

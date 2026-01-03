@@ -84,9 +84,8 @@ end
     Load settings from SavedVariables
 ]]--
 function GUD.LoadSettings()
-    if not BeltalowdaVars then return end
-    
-    -- Initialize UI settings if not present
+    -- Initialize BeltalowdaVars if it doesn't exist yet
+    BeltalowdaVars = BeltalowdaVars or {}
     BeltalowdaVars.ui = BeltalowdaVars.ui or {}
     BeltalowdaVars.ui.groupUltimateDisplay = BeltalowdaVars.ui.groupUltimateDisplay or {}
     
@@ -116,9 +115,10 @@ end
     Save settings to SavedVariables
 ]]--
 function GUD.SaveSettings()
-    if not BeltalowdaVars then return end
-    
+    -- Ensure BeltalowdaVars exists
+    BeltalowdaVars = BeltalowdaVars or {}
     BeltalowdaVars.ui = BeltalowdaVars.ui or {}
+    
     BeltalowdaVars.ui.groupUltimateDisplay = {
         enabled = GUD.settings.enabled,
         locked = GUD.settings.locked,
