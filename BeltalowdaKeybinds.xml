@@ -1,44 +1,46 @@
-<Bindings>
-    <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
-        <Category name="Beltalowda">
-            <!-- Toggle Group Ultimate Display -->
-            <Action name="BELTALOWDA_TOGGLE_UI">
-                <Down>
-                    if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
-                        Beltalowda.UI.GroupUltimateDisplay.Toggle()
-                    end
-                </Down>
-            </Action>
-            
-            <!-- Toggle Client Ultimate Selector -->
-            <Action name="BELTALOWDA_TOGGLE_SELECTOR">
-                <Down>
-                    if Beltalowda.UI and Beltalowda.UI.ClientUltimateSelector then
-                        Beltalowda.UI.ClientUltimateSelector.Toggle()
-                    end
-                </Down>
-            </Action>
-            
-            <!-- Toggle UI Lock -->
-            <Action name="BELTALOWDA_TOGGLE_LOCK">
-                <Down>
-                    if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
-                        Beltalowda.UI.GroupUltimateDisplay.ToggleLock()
-                    end
-                    if Beltalowda.UI and Beltalowda.UI.ClientUltimateSelector then
-                        Beltalowda.UI.ClientUltimateSelector.ToggleLock()
-                    end
-                </Down>
-            </Action>
-            
-            <!-- Cycle Client Ultimate -->
-            <Action name="BELTALOWDA_CYCLE_ULTIMATE">
-                <Down>
-                    if Beltalowda.UI and Beltalowda.UI.ClientUltimateSelector then
-                        Beltalowda.UI.ClientUltimateSelector.CycleUltimate()
-                    end
-                </Down>
-            </Action>
-        </Category>
-    </Layer>
-</Bindings>
+<GuiXml>
+    <Bindings>
+        <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
+            <Category name="Beltalowda">
+                <!-- Toggle Group Ultimate Display -->
+                <Action name="BELTALOWDA_TOGGLE_UI">
+                    <Down>
+                        if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
+                            Beltalowda.UI.GroupUltimateDisplay.Toggle()
+                        end
+                    </Down>
+                </Action>
+                
+                <!-- Toggle Client Ultimate Selector -->
+                <Action name="BELTALOWDA_TOGGLE_SELECTOR">
+                    <Down>
+                        if Beltalowda.UI and Beltalowda.UI.ClientUltimateSelector then
+                            Beltalowda.UI.ClientUltimateSelector.Toggle()
+                        end
+                    </Down>
+                </Action>
+                
+                <!-- Toggle UI Lock -->
+                <Action name="BELTALOWDA_TOGGLE_LOCK">
+                    <Down>
+                        if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
+                            Beltalowda.UI.GroupUltimateDisplay.ToggleLock()
+                        end
+                        if Beltalowda.UI and Beltalowda.UI.ClientUltimateSelector then
+                            Beltalowda.UI.ClientUltimateSelector.ToggleLock()
+                        end
+                    </Down>
+                </Action>
+                
+                <!-- Cycle Client Ultimate -->
+                <Action name="BELTALOWDA_CYCLE_ULTIMATE">
+                    <Down>
+                        if Beltalowda.UI and Beltalowda.UI.ClientUltimateSelector then
+                            Beltalowda.UI.ClientUltimateSelector.CycleUltimate()
+                        end
+                    </Down>
+                </Action>
+            </Category>
+        </Layer>
+    </Bindings>
+</GuiXml>
