@@ -6,9 +6,11 @@ Beltalowda = Beltalowda or {}
 Beltalowda.network = Beltalowda.network or {}
 
 local BeltalowdaNetwork = Beltalowda.network
-local LGB = LibGroupBroadcast
-local LGCS = LibGroupCombatStats
--- Don't capture LSD as local - check LibSetDetection directly to avoid nil capture issues
+-- Don't capture libraries as locals - check globals directly to avoid nil capture issues
+-- Libraries may load in unpredictable order, so capturing them as locals at file load time
+-- can result in nil values even though they're listed as dependencies
+-- local LGB = LibGroupBroadcast
+-- local LGCS = LibGroupCombatStats
 -- local LSD = LibSetDetection
 
 -- Create logger instance for Network module
@@ -49,6 +51,8 @@ BeltalowdaNetwork.lsdInstance = nil
     Returns: success (boolean)
 ]]--
 function BeltalowdaNetwork.Initialize()
+    d("[Beltalowda] INIT: BeltalowdaNetwork.Initialize() called")
+    
     -- Initialize logger if not already done
     if not logger and Beltalowda.Logger and Beltalowda.Logger.CreateModuleLogger then
         logger = Beltalowda.Logger.CreateModuleLogger("Network")
@@ -56,7 +60,7 @@ function BeltalowdaNetwork.Initialize()
     
     -- Check if required libraries are available
     -- Note: These are now required dependencies in manifest, so this check is defensive
-    if not LGB then
+    if not LibGroupBroadcast then
         d("[Beltalowda] ERROR: LibGroupBroadcast not available. Network features disabled.")
         return false
     end
@@ -937,14 +941,14 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("  Total entries: " .. count)
     elseif args == "libapi" then
         d("=== Library API Status ===")
-        d("LibGroupBroadcast: " .. tostring(LGB ~= nil))
-        if LGB then
+        d("LibGroupBroadcast: " .. tostring(LibGroupBroadcast ~= nil))
+        if LibGroupBroadcast then
             d("  Loaded and available")
             -- Try to check for common API methods
-            if type(LGB) == "table" then
+            if type(LibGroupBroadcast) == "table" then
                 d("  Type: table (object)")
-                d("  Has Send method: " .. tostring(type(LGB.Send) == "function"))
-                d("  Has RegisterForMessage method: " .. tostring(type(LGB.RegisterForMessage) == "function"))
+                d("  Has Send method: " .. tostring(type(LibGroupBroadcast.Send) == "function"))
+                d("  Has RegisterForMessage method: " .. tostring(type(LibGroupBroadcast.RegisterForMessage) == "function"))
             end
         end
         d("")
