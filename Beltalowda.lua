@@ -31,14 +31,10 @@ function Beltalowda.AreLibrariesLoaded()
         loaded = false
         table.insert(missingLibs, "LibAddonMenu2")
     end
-    if not LibSetDetection then
-        loaded = false
-        table.insert(missingLibs, "LibSetDetection")
-    end
-    if not LibGroupCombatStats then
-        loaded = false
-        table.insert(missingLibs, "LibGroupCombatStats")
-    end
+    -- Network layer libraries (LibSetDetection, LibGroupCombatStats) are checked
+    -- by BeltalowdaNetwork.Initialize() to avoid load-order timing issues
+    -- Don't check them here or the addon won't initialize if they load after Beltalowda
+    
     -- Check optional libraries - log info messages
     if not LibCombat then
         d("[Beltalowda] Info: LibCombat not found. This is optional and reserved for future features.")
@@ -50,21 +46,9 @@ end
     Initialize all addon modules
 ]]--
 function Beltalowda.Initialize()
-    -- Check library dependencies
-    local libsLoaded, missingLibs = Beltalowda.AreLibrariesLoaded()
-    
-    if not libsLoaded then
-        d("[Beltalowda] ERROR! Missing required libraries:")
-        for _, libName in ipairs(missingLibs) do
-            d("  - " .. libName)
-        end
-        d("[Beltalowda] Addon will not function properly.")
-        return false
-    end
-    
     d("[Beltalowda] " .. Beltalowda.version .. " loaded successfully")
     
-    -- Initialize network layer
+    -- Initialize network layer (handles its own library dependencies)
     if Beltalowda.network and Beltalowda.network.Initialize then
         Beltalowda.network.Initialize()
     end
@@ -91,6 +75,9 @@ function Beltalowda.OnAddOnLoaded(eventCode, addonName)
     -- Initialize SavedVariables
     BeltalowdaVars = BeltalowdaVars or {}
     BeltalowdaVars.version = BeltalowdaVars.version or Beltalowda.version
+    BeltalowdaVars.debug = BeltalowdaVars.debug or {}
+    BeltalowdaVars.debug.lgcsDataSamples = BeltalowdaVars.debug.lgcsDataSamples or {}
+    BeltalowdaVars.debug.lsdDataSamples = BeltalowdaVars.debug.lsdDataSamples or {}
     
     -- Initialize Logger early (before modules)
     if Beltalowda.Logger and Beltalowda.Logger.Initialize then
