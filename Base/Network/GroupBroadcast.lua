@@ -2,6 +2,8 @@
 -- LibGroupBroadcast integration layer for subscribing to existing libraries
 -- Phase 2: Integration with LibGroupCombatStats and LibSetDetection
 
+d("[Beltalowda] Loading GroupBroadcast.lua...")
+
 Beltalowda = Beltalowda or {}
 Beltalowda.network = Beltalowda.network or {}
 
@@ -1197,3 +1199,5 @@ SLASH_COMMANDS["/btlwdata"] = function(args)
         d("Please report this error with steps to reproduce")
     end
 end
+
+d("[Beltalowda] GroupBroadcast.lua loaded successfully")
