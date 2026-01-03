@@ -117,17 +117,15 @@ function Beltalowda.OnPlayerActivated(eventCode, initial)
     -- Used for initializing features that require the player to be fully loaded
     d("[Beltalowda] Player activated (initial: " .. tostring(initial) .. ")")
     
-    -- Only initialize UI on first activation
-    if initial then
-        -- Initialize UI modules
-        if Beltalowda.UI then
-            if Beltalowda.UI.GroupUltimateDisplay and Beltalowda.UI.GroupUltimateDisplay.Initialize then
-                Beltalowda.UI.GroupUltimateDisplay.Initialize()
-            end
-            
-            if Beltalowda.UI.ClientUltimateSelector and Beltalowda.UI.ClientUltimateSelector.Initialize then
-                Beltalowda.UI.ClientUltimateSelector.Initialize()
-            end
+    -- Initialize UI modules
+    -- Note: We initialize on every activation, not just first, to handle /reloadui
+    if Beltalowda.UI then
+        if Beltalowda.UI.GroupUltimateDisplay and Beltalowda.UI.GroupUltimateDisplay.Initialize then
+            Beltalowda.UI.GroupUltimateDisplay.Initialize()
+        end
+        
+        if Beltalowda.UI.ClientUltimateSelector and Beltalowda.UI.ClientUltimateSelector.Initialize then
+            Beltalowda.UI.ClientUltimateSelector.Initialize()
         end
     end
 end
