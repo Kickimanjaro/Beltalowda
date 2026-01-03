@@ -46,12 +46,9 @@ end
     Apply default settings if they don't exist
 ]]--
 function Settings.ApplyDefaults()
-    if not BeltalowdaVars then return end
-    
-    -- Initialize logging settings if not present
-    if not BeltalowdaVars.logging then
-        BeltalowdaVars.logging = {}
-    end
+    -- Ensure BeltalowdaVars exists (should be initialized in OnAddOnLoaded)
+    BeltalowdaVars = BeltalowdaVars or {}
+    BeltalowdaVars.logging = BeltalowdaVars.logging or {}
     
     -- Apply defaults for missing values
     if BeltalowdaVars.logging.enabled == nil then

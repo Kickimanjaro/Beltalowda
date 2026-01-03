@@ -1,6 +1,23 @@
 -- Beltalowda - Group PvP Coordination Addon
 -- Main initialization file
 
+--[[
+    SavedVariables Best Practice:
+    
+    BeltalowdaVars is automatically loaded by ESO before EVENT_ADD_ON_LOADED fires.
+    It will be nil on first load, or contain saved data on subsequent loads.
+    
+    We initialize it in OnAddOnLoaded() to ensure it exists throughout the addon lifecycle.
+    After initialization, BeltalowdaVars is GUARANTEED to exist, so we should:
+    
+    1. Use `BeltalowdaVars = BeltalowdaVars or {}` in functions that might be called
+       early or need to be defensive
+    2. Avoid `if not BeltalowdaVars then return end` guards after initialization
+       as they cause silent failures
+    3. Always initialize nested tables (e.g., BeltalowdaVars.ui = BeltalowdaVars.ui or {})
+       before accessing them
+]]--
+
 -- Initialize main namespace
 Beltalowda = Beltalowda or {}
 
