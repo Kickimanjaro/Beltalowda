@@ -191,10 +191,12 @@ function BeltalowdaNetwork.SubscribeToUltimateData()
 end
 
 --[[
-    Subscribe to LibSetDetection equipment change callbacks
+    Subscribe to LibSetDetection equipment change events
     
-    LibSetDetection provides RegisterCallback API for set change events
-    and GetSets() method to query current equipment.
+    LibSetDetection provides LSD_EVENT_SET_CHANGE event via EVENT_MANAGER.
+    Event callback signature: function(setId, changeType, unitTag, localPlayer, activeType)
+    
+    Also provides GetSets(unitTag) to query current equipment.
 ]]--
 function BeltalowdaNetwork.SubscribeToEquipmentData()
     d("[Beltalowda] SubscribeToEquipmentData called")
@@ -207,43 +209,44 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
         return 
     end
     
-    d("[Beltalowda] LibSetDetection found - checking for RegisterCallback...")
-    d("[Beltalowda] LibSetDetection.RegisterCallback type: " .. type(LibSetDetection.RegisterCallback))
+    d("[Beltalowda] LibSetDetection found - checking for LSD_EVENT_SET_CHANGE...")
+    d("[Beltalowda] LSD_EVENT_SET_CHANGE type: " .. type(LSD_EVENT_SET_CHANGE))
     d("[Beltalowda] LibSetDetection.GetSets type: " .. type(LibSetDetection.GetSets))
     
     if logger then
-        logger:Info("LibSetDetection found - registering for equipment change callbacks")
+        logger:Info("LibSetDetection found - registering for LSD_EVENT_SET_CHANGE")
     end
     
     local success, err = pcall(function()
-        -- Register for equipment change events
-        if LibSetDetection.RegisterCallback then
-            d("[Beltalowda] Attempting to register OnSetChanged callback...")
-            LibSetDetection:RegisterCallback("OnSetChanged", function(eventData)
-                d("[Beltalowda] !!!!! OnSetChanged callback fired! eventData type=" .. type(eventData))
-                
-                if logger then
-                    logger:Debug("LibSetDetection OnSetChanged event received", "eventData type=" .. type(eventData))
-                end
-                
-                -- eventData should contain player info and set information
-                -- Parse and store in groupData structure
-                if eventData and type(eventData) == "table" then
-                    d("[Beltalowda] Calling OnEquipmentDataReceived with eventData")
-                    BeltalowdaNetwork.OnEquipmentDataReceived(eventData.unitTag or "player", eventData)
-                else
-                    d("[Beltalowda] OnSetChanged received non-table data: " .. type(eventData))
-                end
-            end)
+        -- Register for equipment change events using EVENT_MANAGER
+        if LSD_EVENT_SET_CHANGE then
+            d("[Beltalowda] Registering for LSD_EVENT_SET_CHANGE event...")
             
-            d("[Beltalowda] OnSetChanged callback registered successfully")
+            EVENT_MANAGER:RegisterForEvent(
+                "BeltalowdaNetwork_SetChange",
+                LSD_EVENT_SET_CHANGE,
+                function(eventCode, setId, changeType, unitTag, localPlayer, activeType)
+                    d(string.format("[Beltalowda] LSD_EVENT_SET_CHANGE fired! setId=%d, changeType=%d, unitTag=%s, localPlayer=%s, activeType=%d",
+                        setId, changeType, unitTag, tostring(localPlayer), activeType))
+                    
+                    if logger then
+                        logger:Debug("LSD_EVENT_SET_CHANGE received",
+                            string.format("setId=%d, changeType=%d, unitTag=%s", setId, changeType, unitTag))
+                    end
+                    
+                    -- Call handler with set change data
+                    BeltalowdaNetwork.OnEquipmentSetChanged(setId, changeType, unitTag, localPlayer, activeType)
+                end
+            )
+            
+            d("[Beltalowda] LSD_EVENT_SET_CHANGE registered successfully")
             if logger then
-                logger:Info("Successfully registered for LibSetDetection OnSetChanged callbacks")
+                logger:Info("Successfully registered for LSD_EVENT_SET_CHANGE")
             end
         else
-            d("[Beltalowda] LibSetDetection.RegisterCallback is not a function")
+            d("[Beltalowda] LSD_EVENT_SET_CHANGE not defined - LibSetDetection may not be loaded")
             if logger then
-                logger:Warn("LibSetDetection.RegisterCallback not available")
+                logger:Warn("LSD_EVENT_SET_CHANGE not available")
             end
         end
         
@@ -397,9 +400,68 @@ function BeltalowdaNetwork.OnUltimateDataReceived(unitTag, data)
 end
 
 --[[
+    Handle individual set change event from LibSetDetection
+    @param setId: The set ID that changed
+    @param changeType: LSD_CHANGE_TYPE (activated, deactivated, changed)
+    @param unitTag: Unit tag of the player
+    @param localPlayer: true if this is the local player
+    @param activeType: LSD_ACTIVE_TYPE (frontbar, backbar, dualbar, none)
+]]--
+function BeltalowdaNetwork.OnEquipmentSetChanged(setId, changeType, unitTag, localPlayer, activeType)
+    if logger then
+        logger:Debug("Equipment set changed",
+            string.format("setId=%d, changeType=%d, unitTag=%s, localPlayer=%s, activeType=%d",
+                setId, changeType, unitTag, tostring(localPlayer), activeType))
+    end
+    
+    -- Normalize unitTag (convert "player" to appropriate group tag when in a group)
+    local normalizedTag = unitTag
+    if unitTag == "player" then
+        -- Find player's group tag if in a group
+        local groupSize = GetGroupSize()
+        if groupSize > 0 then
+            for i = 1, groupSize do
+                local groupTag = GetGroupUnitTagByIndex(i)
+                if GetUnitName(groupTag) == GetUnitName("player") then
+                    normalizedTag = groupTag
+                    break
+                end
+            end
+        end
+    end
+    
+    -- Capture event to SavedVariables for analysis
+    if BeltalowdaVars and BeltalowdaVars.debug then
+        BeltalowdaVars.debug.lsdEventSamples = BeltalowdaVars.debug.lsdEventSamples or {}
+        table.insert(BeltalowdaVars.debug.lsdEventSamples, {
+            timestamp = GetTimeStamp(),
+            setId = setId,
+            changeType = changeType,
+            unitTag = unitTag,
+            normalizedTag = normalizedTag,
+            localPlayer = localPlayer,
+            activeType = activeType
+        })
+        
+        -- Keep only last 20 samples
+        while #BeltalowdaVars.debug.lsdEventSamples > 20 do
+            table.remove(BeltalowdaVars.debug.lsdEventSamples, 1)
+        end
+    end
+    
+    -- Query current equipment using GetSets to get full picture
+    if LibSetDetection and LibSetDetection.GetSets then
+        local currentSets = LibSetDetection:GetSets(unitTag)
+        if currentSets then
+            BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, currentSets)
+        end
+    end
+end
+
+--[[
     Handle equipment data from LibSetDetection
     @param unitTag: Unit tag of the player (e.g., "group1", "player")
-    @param data: Equipment data table from LSD
+    @param data: Equipment data table from LSD (result of GetSets call)
 ]]--
 function BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, data)
     d("[Beltalowda] OnEquipmentDataReceived called! unitTag=" .. tostring(unitTag) .. ", dataType=" .. type(data))
