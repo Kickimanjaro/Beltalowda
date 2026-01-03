@@ -18,17 +18,17 @@ GUD.MAX_PLAYERS_PER_ULTIMATE = 12
 GUD.OFFSET = 2
 
 -- Default ultimate abilities to track (Alliance War ultimates for easy testing)
--- These are the 3 Alliance War skill lines with their 2 morphs each (6 total)
+-- Using primary IDs from verified ability database
 GUD.DEFAULT_ULTIMATES = {
-    -- Assault Line
-    40223, -- Dawnbreaker (base, available at rank 10)
-    40224, -- Dawnbreaker of Smiting (morph 1)
-    40225, -- Flawless Dawnbreaker (morph 2)
+    -- Support Line - War Horn abilities
+    38563,  -- War Horn (base)
+    40223,  -- Aggressive Horn (morph)
+    40220,  -- Sturdy Horn (morph)
     
-    -- Support Line  
-    40161, -- War Horn (base)
-    40162, -- Sturdy Horn (morph 1)
-    40163, -- Aggressive Horn (morph 2)
+    -- Support Line - Barrier abilities
+    38573,  -- Barrier (base)
+    40237,  -- Reviving Barrier (morph)
+    40239,  -- Replenishing Barrier (morph)
 }
 
 -- Controls
