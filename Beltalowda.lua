@@ -46,21 +46,9 @@ end
     Initialize all addon modules
 ]]--
 function Beltalowda.Initialize()
-    -- Check library dependencies
-    local libsLoaded, missingLibs = Beltalowda.AreLibrariesLoaded()
-    
-    if not libsLoaded then
-        d("[Beltalowda] ERROR! Missing required libraries:")
-        for _, libName in ipairs(missingLibs) do
-            d("  - " .. libName)
-        end
-        d("[Beltalowda] Addon will not function properly.")
-        return false
-    end
-    
     d("[Beltalowda] " .. Beltalowda.version .. " loaded successfully")
     
-    -- Initialize network layer
+    -- Initialize network layer (handles its own library dependencies)
     if Beltalowda.network and Beltalowda.network.Initialize then
         Beltalowda.network.Initialize()
     end
