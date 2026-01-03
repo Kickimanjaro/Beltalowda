@@ -24,7 +24,7 @@ Base/UI/GroupUltimateDisplay.lua
 Base/UI/ClientUltimateSelector.lua
 
 # Localization
-# Localization/en.lua
+Localization/en.lua
 
 # Keybinds
-# BeltalowdaKeybinds.xml
+BeltalowdaKeybinds.xml
