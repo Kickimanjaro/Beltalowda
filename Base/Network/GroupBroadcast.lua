@@ -195,10 +195,11 @@ end
 --[[
     Subscribe to LibSetDetection equipment change events
     
-    LibSetDetection provides LSD_EVENT_SET_CHANGE event via EVENT_MANAGER.
-    Event callback signature: function(setId, changeType, unitTag, localPlayer, activeType)
+    LibSetDetection provides its own event system via LSD.RegisterEvent().
+    Event: LSD_EVENT_DATA_UPDATE - fires when set data changes for monitored units
+    Callback signature: function(unitTag)
     
-    Also provides GetSets(unitTag) to query current equipment.
+    Use LSD.GetUnitSetData(unitTag) to query equipment after events.
 ]]--
 function BeltalowdaNetwork.SubscribeToEquipmentData()
     d("[Beltalowda] SubscribeToEquipmentData called")
@@ -211,64 +212,71 @@ function BeltalowdaNetwork.SubscribeToEquipmentData()
         return 
     end
     
-    d("[Beltalowda] LibSetDetection found - checking for LSD_EVENT_SET_CHANGE...")
-    d("[Beltalowda] LSD_EVENT_SET_CHANGE type: " .. type(LSD_EVENT_SET_CHANGE))
-    d("[Beltalowda] LibSetDetection.GetSets type: " .. type(LibSetDetection.GetSets))
+    d("[Beltalowda] LibSetDetection found - checking API methods...")
+    d("[Beltalowda] LSD_EVENT_DATA_UPDATE type: " .. type(LSD_EVENT_DATA_UPDATE))
+    d("[Beltalowda] LibSetDetection.RegisterEvent type: " .. type(LibSetDetection.RegisterEvent))
+    d("[Beltalowda] LibSetDetection.GetUnitSetData type: " .. type(LibSetDetection.GetUnitSetData))
     
     if logger then
-        logger:Info("LibSetDetection found - registering for LSD_EVENT_SET_CHANGE")
+        logger:Info("LibSetDetection found - registering for LSD_EVENT_DATA_UPDATE")
     end
     
     local success, err = pcall(function()
-        -- Register for equipment change events using EVENT_MANAGER
-        if LSD_EVENT_SET_CHANGE then
-            d("[Beltalowda] Registering for LSD_EVENT_SET_CHANGE event...")
+        -- Register for equipment data update events using LibSetDetection's event system
+        if LSD_EVENT_DATA_UPDATE and LibSetDetection.RegisterEvent then
+            d("[Beltalowda] Registering for LSD_EVENT_DATA_UPDATE event...")
             
-            EVENT_MANAGER:RegisterForEvent(
-                "BeltalowdaNetwork_SetChange",
-                LSD_EVENT_SET_CHANGE,
-                function(eventCode, setId, changeType, unitTag, localPlayer, activeType)
-                    d(string.format("[Beltalowda] LSD_EVENT_SET_CHANGE fired! setId=%d, changeType=%d, unitTag=%s, localPlayer=%s, activeType=%d",
-                        setId, changeType, unitTag, tostring(localPlayer), activeType))
+            -- Register for group member equipment changes
+            -- LSD_UNIT_TYPE_GROUP monitors all group members including player
+            LibSetDetection.RegisterEvent(
+                LSD_EVENT_DATA_UPDATE,
+                "BeltalowdaNetwork_EquipmentUpdate",
+                function(unitTag)
+                    d(string.format("[Beltalowda] LSD_EVENT_DATA_UPDATE fired! unitTag=%s", unitTag))
                     
                     if logger then
-                        logger:Debug("LSD_EVENT_SET_CHANGE received",
-                            string.format("setId=%d, changeType=%d, unitTag=%s", setId, changeType, unitTag))
+                        logger:Debug("LSD_EVENT_DATA_UPDATE received", string.format("unitTag=%s", unitTag))
                     end
                     
-                    -- Call handler with set change data
-                    BeltalowdaNetwork.OnEquipmentSetChanged(setId, changeType, unitTag, localPlayer, activeType)
-                end
+                    -- Query current equipment data for this unit
+                    if LibSetDetection.GetUnitSetData then
+                        local setData = LibSetDetection.GetUnitSetData(unitTag)
+                        if setData then
+                            BeltalowdaNetwork.OnEquipmentDataReceived(unitTag, setData)
+                        end
+                    end
+                end,
+                LSD_UNIT_TYPE_GROUP
             )
             
-            d("[Beltalowda] LSD_EVENT_SET_CHANGE registered successfully")
+            d("[Beltalowda] LSD_EVENT_DATA_UPDATE registered successfully for group members")
             if logger then
-                logger:Info("Successfully registered for LSD_EVENT_SET_CHANGE")
+                logger:Info("Successfully registered for LSD_EVENT_DATA_UPDATE (group)")
             end
         else
-            d("[Beltalowda] LSD_EVENT_SET_CHANGE not defined - LibSetDetection may not be loaded")
+            d("[Beltalowda] LSD_EVENT_DATA_UPDATE or RegisterEvent not available")
             if logger then
-                logger:Warn("LSD_EVENT_SET_CHANGE not available")
+                logger:Warn("LSD_EVENT_DATA_UPDATE or RegisterEvent not available")
             end
         end
         
-        -- Try to get initial equipment data using GetSets
-        if LibSetDetection.GetSets then
-            d("[Beltalowda] Calling GetSets('player')...")
-            local initialSets = LibSetDetection:GetSets("player")
-            d("[Beltalowda] GetSets returned type=" .. type(initialSets) .. ", nil=" .. tostring(initialSets == nil))
+        -- Try to get initial equipment data for player
+        if LibSetDetection.GetUnitSetData then
+            d("[Beltalowda] Calling GetUnitSetData('player')...")
+            local initialSets = LibSetDetection.GetUnitSetData("player")
+            d("[Beltalowda] GetUnitSetData returned type=" .. type(initialSets) .. ", nil=" .. tostring(initialSets == nil))
             
             if initialSets then
                 if logger then
-                    logger:Debug("Got initial equipment data from GetSets", "type=" .. type(initialSets))
+                    logger:Debug("Got initial equipment data from GetUnitSetData", "type=" .. type(initialSets))
                 end
                 d("[Beltalowda] Calling OnEquipmentDataReceived with initial sets")
                 BeltalowdaNetwork.OnEquipmentDataReceived("player", initialSets)
             else
-                d("[Beltalowda] GetSets returned nil")
+                d("[Beltalowda] GetUnitSetData returned nil")
             end
         else
-            d("[Beltalowda] LibSetDetection.GetSets is not a function")
+            d("[Beltalowda] LibSetDetection.GetUnitSetData is not a function")
         end
     end)
     
