@@ -1,7 +1,5 @@
-<GuiXml>
-    <Controls>
-    </Controls>
-    <Bindings>
+<Bindings>
+    <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
         <Category name="Beltalowda">
             <!-- Toggle Group Ultimate Display -->
             <Action name="BELTALOWDA_TOGGLE_UI">
@@ -42,5 +40,5 @@
                 </Down>
             </Action>
         </Category>
-    </Bindings>
-</GuiXml>
+    </Layer>
+</Bindings>
