@@ -141,6 +141,7 @@ function CUS.CreateWindow()
     
     -- Click to cycle through ultimates
     icon:SetHandler("OnMouseUp", function(control, button, upInside)
+        d(string.format("[Beltalowda] Icon clicked: upInside=%s, button=%s", tostring(upInside), tostring(button)))
         if upInside and button == MOUSE_BUTTON_INDEX_LEFT then
             CUS.CycleUltimate()
         end

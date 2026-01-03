@@ -364,23 +364,31 @@ end
 ]]--
 function GUD.RegisterForUpdates()
     -- Hook into network data change callback
-    if Beltalowda.network and Beltalowda.network.OnDataChanged then
+    if Beltalowda.network then
+        -- Store the original callback if it exists (it might just be a placeholder)
         local originalCallback = Beltalowda.network.OnDataChanged
+        
         Beltalowda.network.OnDataChanged = function(dataType, unitTag)
-            -- Call original callback
-            originalCallback(dataType, unitTag)
+            -- Call original callback if it was a real function
+            if originalCallback and type(originalCallback) == "function" then
+                originalCallback(dataType, unitTag)
+            end
             
             -- Update UI when ultimate data changes
             if dataType == "ultimate" then
                 GUD.OnUltimateDataChanged(unitTag)
             end
         end
+        
+        d("[Beltalowda] Group Ultimate Display hooked into data change notifications")
     end
     
     -- Also update periodically to catch any changes
     EVENT_MANAGER:RegisterForUpdate("BeltalowdaGroupUltimateDisplay", 1000, function()
         GUD.RefreshDisplay()
     end)
+    
+    d("[Beltalowda] Group Ultimate Display periodic refresh enabled")
 end
 
 --[[
@@ -399,11 +407,23 @@ function GUD.UpdatePlayerDisplay(unitTag)
     
     -- Get ultimate data for this player
     local ultData = Beltalowda.network and Beltalowda.network.GetUltimateData(unitTag)
-    if not ultData or not ultData.abilityId then return end
+    
+    if not ultData then
+        -- No data yet for this player
+        return
+    end
+    
+    if not ultData.abilityId or ultData.abilityId == 0 then
+        -- No ultimate ability set
+        return
+    end
     
     -- Find which ultimate column this player belongs to
     local columnIndex = GUD.FindUltimateColumn(ultData.abilityId)
-    if not columnIndex then return end
+    if not columnIndex then
+        -- This ultimate isn't in our tracked list
+        return
+    end
     
     local column = GUD.controls.ultimateColumns[columnIndex]
     if not column then return end
@@ -423,11 +443,17 @@ function GUD.UpdatePlayerDisplay(unitTag)
     block.container:SetHidden(false)
     block.groupLabel:SetText(tostring(groupIndex))
     block.nameLabel:SetText(playerName)
-    block.progressBar:SetValue(percent)
+    block.progressBar:SetValue(percent / 100) -- Progress bar expects 0-1, not 0-100
     block.ultimatePercent = percent
     
     -- Color code based on readiness
     GUD.UpdateBlockColor(block, percent)
+    
+    -- Debug: Log successful update (only occasionally to avoid spam)
+    if math.random() < 0.1 then -- 10% chance
+        d(string.format("[Beltalowda] Updated player block: %s, ult=%s, %d%%", 
+            playerName, GetAbilityName(ultData.abilityId), percent))
+    end
 end
 
 --[[
