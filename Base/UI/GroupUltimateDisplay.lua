@@ -30,7 +30,7 @@ GUD.DEFAULT_ULTIMATES = {
     40215, -- Shooting Star
     32433, -- Aggressive Horn
     40279, -- Practiced Incantation
-    40223, -- Default slot
+    40181, -- Colossus
 }
 
 -- Controls
