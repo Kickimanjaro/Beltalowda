@@ -217,9 +217,10 @@ function GUD.CreateUltimateColumn(parent, index)
     icon:SetDrawLevel(1)
     
     -- Make icon clickable for changing tracked ultimate
+    -- SetMouseEnabled must be true to allow clicks even when window is locked
     icon:SetMouseEnabled(true)
     icon:SetHandler("OnMouseUp", function(control, button, upInside)
-        if upInside and button == MOUSE_BUTTON_INDEX_LEFT then
+        if upInside and button == MOUSE_BUTTON_INDEX_LEFT and not GUD.settings.locked then
             GUD.ShowUltimateSelectionDialog(index, control)
         end
     end)

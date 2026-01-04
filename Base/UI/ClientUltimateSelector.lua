@@ -137,8 +137,9 @@ function CUS.CreateWindow()
     icon:SetMouseEnabled(true)
     
     -- Click to show ultimate selection dialog
+    -- Allow clicks only when window is not locked
     icon:SetHandler("OnMouseUp", function(control, button, upInside)
-        if upInside and button == MOUSE_BUTTON_INDEX_LEFT then
+        if upInside and button == MOUSE_BUTTON_INDEX_LEFT and not CUS.settings.locked then
             CUS.ShowUltimateSelectionDialog(control)
         end
     end)
