@@ -219,7 +219,16 @@ function GUD.CreateUltimateColumn(parent, index)
     column.playerBlocks = playerBlocks
     column.ultimateId = GUD.settings.ultimateIds[index] or 0
     
-    -- Update icon texture based on ultimate ID
+    -- Cache the icon path (RdK approach: call GetAbilityIcon once during initialization)
+    if column.ultimateId and column.ultimateId > 0 then
+        column.iconPath = GetAbilityIcon(column.ultimateId)
+        column.abilityName = GetAbilityName(column.ultimateId)
+    else
+        column.iconPath = nil
+        column.abilityName = nil
+    end
+    
+    -- Update icon texture based on cached icon path
     GUD.UpdateUltimateIcon(column)
     
     return column
@@ -294,21 +303,15 @@ function GUD.CreatePlayerBlock(parent, index)
 end
 
 --[[
-    Update ultimate icon texture
+    Update ultimate icon texture using cached icon path
+    (RdK approach: use pre-fetched icon path instead of calling GetAbilityIcon every time)
 ]]--
 function GUD.UpdateUltimateIcon(column)
     if not column or not column.icon then return end
     
-    local abilityId = column.ultimateId
-    if abilityId and abilityId > 0 then
-        local icon = GetAbilityIcon(abilityId)
-        local abilityName = GetAbilityName(abilityId)
-        
-        if icon and icon ~= "" then
-            column.icon:SetTexture(icon)
-        else
-            column.icon:SetTexture("/esoui/art/icons/ability_default.dds")
-        end
+    -- Use cached icon path from initialization
+    if column.iconPath and column.iconPath ~= "" then
+        column.icon:SetTexture(column.iconPath)
     else
         column.icon:SetTexture("/esoui/art/icons/ability_default.dds")
     end
