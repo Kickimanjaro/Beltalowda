@@ -248,7 +248,7 @@ function CUS.ShowUltimateSelectionDialog(control)
     -- Show context menu
     ClearMenu()
     for _, ult in ipairs(ultimateList) do
-        AddMenuItem(ult.name, function()
+        AddCustomMenuItem(ult.name, function()
             CUS.SelectUltimate(ult.id)
         end)
     end
