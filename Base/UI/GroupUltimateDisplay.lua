@@ -218,9 +218,9 @@ function GUD.CreateUltimateColumn(parent, index)
     
     -- Make icon clickable for changing tracked ultimate
     icon:SetMouseEnabled(true)
-    icon:SetHandler("OnMouseUp", function(control, button)
-        if button == MOUSE_BUTTON_INDEX_LEFT then
-            GUD.ShowUltimateSelectionDialog(index)
+    icon:SetHandler("OnMouseUp", function(control, button, upInside)
+        if upInside and button == MOUSE_BUTTON_INDEX_LEFT then
+            GUD.ShowUltimateSelectionDialog(index, control)
         end
     end)
     icon:SetHandler("OnMouseEnter", function(control)
@@ -266,7 +266,7 @@ end
 --[[
     Show dialog to select which ultimate to track in a column
 ]]--
-function GUD.ShowUltimateSelectionDialog(columnIndex)
+function GUD.ShowUltimateSelectionDialog(columnIndex, control)
     -- List of common ultimates players might want to track
     local ultimateList = {
         {id = 38563, name = "War Horn"},
@@ -283,23 +283,14 @@ function GUD.ShowUltimateSelectionDialog(columnIndex)
         {id = 40239, name = "Replenishing Barrier"},
     }
     
-    -- Build menu items
-    local menuItems = {}
-    for _, ult in ipairs(ultimateList) do
-        table.insert(menuItems, {
-            label = ult.name,
-            callback = function()
-                GUD.SetColumnUltimate(columnIndex, ult.id)
-            end
-        })
-    end
-    
     -- Show context menu
     ClearMenu()
-    for _, item in ipairs(menuItems) do
-        AddMenuItem(item.label, item.callback)
+    for _, ult in ipairs(ultimateList) do
+        AddMenuItem(ult.name, function()
+            GUD.SetColumnUltimate(columnIndex, ult.id)
+        end)
     end
-    ShowMenu(GuiRoot)
+    ShowMenu(control)
 end
 
 --[[

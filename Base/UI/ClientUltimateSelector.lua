@@ -139,7 +139,7 @@ function CUS.CreateWindow()
     -- Click to show ultimate selection dialog
     icon:SetHandler("OnMouseUp", function(control, button, upInside)
         if upInside and button == MOUSE_BUTTON_INDEX_LEFT then
-            CUS.ShowUltimateSelectionDialog()
+            CUS.ShowUltimateSelectionDialog(control)
         end
     end)
     
@@ -228,7 +228,7 @@ end
 --[[
     Show dialog to select which ultimate to report to group
 ]]--
-function CUS.ShowUltimateSelectionDialog()
+function CUS.ShowUltimateSelectionDialog(control)
     -- List of common ultimates players might want to track
     local ultimateList = {
         {id = 38563, name = "War Horn"},
@@ -245,23 +245,14 @@ function CUS.ShowUltimateSelectionDialog()
         {id = 40239, name = "Replenishing Barrier"},
     }
     
-    -- Build menu items
-    local menuItems = {}
-    for _, ult in ipairs(ultimateList) do
-        table.insert(menuItems, {
-            label = ult.name,
-            callback = function()
-                CUS.SelectUltimate(ult.id)
-            end
-        })
-    end
-    
     -- Show context menu
     ClearMenu()
-    for _, item in ipairs(menuItems) do
-        AddMenuItem(item.label, item.callback)
+    for _, ult in ipairs(ultimateList) do
+        AddMenuItem(ult.name, function()
+            CUS.SelectUltimate(ult.id)
+        end)
     end
-    ShowMenu(GuiRoot)
+    ShowMenu(control)
 end
 
 --[[
