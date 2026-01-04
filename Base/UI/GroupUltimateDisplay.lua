@@ -304,10 +304,6 @@ function GUD.UpdateUltimateIcon(column)
         local icon = GetAbilityIcon(abilityId)
         local abilityName = GetAbilityName(abilityId)
         
-        -- Debug logging to help diagnose icon issues
-        d(string.format("[Beltalowda] UpdateUltimateIcon: abilityId=%d, name='%s', icon='%s'", 
-            abilityId, abilityName or "UNKNOWN", icon or "NONE"))
-        
         if icon and icon ~= "" then
             column.icon:SetTexture(icon)
         else
