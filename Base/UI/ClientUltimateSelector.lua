@@ -40,8 +40,6 @@ CUS.availableUltimates = {
     Initialize the Client Ultimate Selector
 ]]--
 function CUS.Initialize()
-    d("[Beltalowda] Initializing Client Ultimate Selector")
-    
     -- Load settings
     CUS.LoadSettings()
     
@@ -57,7 +55,6 @@ function CUS.Initialize()
     -- Register for events
     CUS.RegisterForEvents()
     
-    d("[Beltalowda] Client Ultimate Selector initialized")
     return true
 end
 
@@ -141,7 +138,6 @@ function CUS.CreateWindow()
     
     -- Click to cycle through ultimates
     icon:SetHandler("OnMouseUp", function(control, button, upInside)
-        d(string.format("[Beltalowda] Icon clicked: upInside=%s, button=%s", tostring(upInside), tostring(button)))
         if upInside and button == MOUSE_BUTTON_INDEX_LEFT then
             CUS.CycleUltimate()
         end
@@ -233,11 +229,8 @@ end
     Cycle to next ultimate
 ]]--
 function CUS.CycleUltimate()
-    d(string.format("[Beltalowda] CycleUltimate called, available count=%d, current index=%d", 
-        #CUS.availableUltimates, CUS.settings.selectedIndex))
-    
     if #CUS.availableUltimates == 0 then
-        d("[Beltalowda] No ultimates detected. Make sure you have an ultimate slotted.")
+        -- No ultimates detected
         return
     end
     
@@ -247,8 +240,6 @@ function CUS.CycleUltimate()
     if CUS.settings.selectedIndex > #CUS.availableUltimates then
         CUS.settings.selectedIndex = 1
     end
-    
-    d(string.format("[Beltalowda] Cycled from index %d to %d", oldIndex, CUS.settings.selectedIndex))
     
     -- Update selected ultimate ID
     CUS.settings.selectedUltimateId = CUS.availableUltimates[CUS.settings.selectedIndex].id
@@ -261,10 +252,6 @@ function CUS.CycleUltimate()
     
     -- Broadcast to group (placeholder - will be implemented with LibGroupBroadcast)
     CUS.BroadcastSelection()
-    
-    -- Show feedback
-    local abilityName = GetAbilityName(CUS.settings.selectedUltimateId)
-    d(string.format("[Beltalowda] Selected ultimate: %s", abilityName))
 end
 
 --[[
