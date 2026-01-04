@@ -1,12 +1,29 @@
 -- Beltalowda - Group PvP Coordination Addon
 -- Main initialization file
 
+--[[
+    SavedVariables Best Practice:
+    
+    BeltalowdaVars is automatically loaded by ESO before EVENT_ADD_ON_LOADED fires.
+    It will be nil on first load, or contain saved data on subsequent loads.
+    
+    We initialize it in OnAddOnLoaded() to ensure it exists throughout the addon lifecycle.
+    After initialization, BeltalowdaVars is GUARANTEED to exist, so we should:
+    
+    1. Use `BeltalowdaVars = BeltalowdaVars or {}` in functions that might be called
+       early or need to be defensive
+    2. Avoid `if not BeltalowdaVars then return end` guards after initialization
+       as they cause silent failures
+    3. Always initialize nested tables (e.g., BeltalowdaVars.ui = BeltalowdaVars.ui or {})
+       before accessing them
+]]--
+
 -- Initialize main namespace
 Beltalowda = Beltalowda or {}
 
 -- Version information
 Beltalowda.name = "Beltalowda"
-Beltalowda.version = "0.3.0"
+Beltalowda.version = "0.4.0"
 Beltalowda.author = "Kickimanjaro"
 
 -- Local reference
@@ -58,6 +75,10 @@ function Beltalowda.Initialize()
         Beltalowda.Settings.Initialize()
     end
     
+    -- Initialize UI modules (deferred to player activation)
+    -- UI modules will be initialized in OnPlayerActivated to ensure
+    -- the game world is fully loaded
+    
     return true
 end
 
@@ -95,6 +116,18 @@ function Beltalowda.OnPlayerActivated(eventCode, initial)
     -- This fires when the player enters the world
     -- Used for initializing features that require the player to be fully loaded
     d("[Beltalowda] Player activated (initial: " .. tostring(initial) .. ")")
+    
+    -- Initialize UI modules
+    -- Note: We initialize on every activation, not just first, to handle /reloadui
+    if Beltalowda.UI then
+        if Beltalowda.UI.GroupUltimateDisplay and Beltalowda.UI.GroupUltimateDisplay.Initialize then
+            Beltalowda.UI.GroupUltimateDisplay.Initialize()
+        end
+        
+        if Beltalowda.UI.ClientUltimateSelector and Beltalowda.UI.ClientUltimateSelector.Initialize then
+            Beltalowda.UI.ClientUltimateSelector.Initialize()
+        end
+    end
 end
 
 -- Register for addon loaded event

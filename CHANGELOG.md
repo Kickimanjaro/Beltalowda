@@ -5,6 +5,76 @@ All notable changes to Beltalowda will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Pride Versioning](https://pridever.org/).
 
+## [0.4.0] - 2026-01-03
+
+### Added
+- **Phase 4: Foundational UI Framework (Week 9)**
+  - Created `Base/UI/GroupUltimateDisplay.lua` (560 lines) - Main group ultimate tracking window
+    - 12 ultimate columns for different ultimate types
+    - Player blocks stacked beneath each ultimate icon (up to 12 players per ultimate)
+    - Color-coded ultimate readiness indicators (green=ready, yellow=75%+, orange=50%+, gray=<50%)
+    - Real-time updates from LibGroupCombatStats data
+    - Draggable window with position saving
+    - Lock/unlock functionality
+    - Scale control (0.5x to 2.0x)
+    - Opacity control (0.1 to 1.0)
+  
+  - Created `Base/UI/ClientUltimateSelector.lua` (350 lines) - Client ultimate selector
+    - Separate draggable window showing single ultimate icon
+    - Click to cycle through slotted ultimates (front bar and back bar)
+    - Automatic detection of player's equipped ultimates
+    - Tooltip with ability details
+    - Position and selection saving
+    - Lock/unlock functionality
+  
+  - Created `BeltalowdaKeybinds.xml` - Keyboard shortcuts for UI controls
+    - Toggle Group Ultimate Display
+    - Toggle Client Ultimate Selector
+    - Toggle UI Lock
+    - Cycle Selected Ultimate
+  
+  - Created `Localization/en.lua` - Keybind localization strings
+  
+  - Created `docs/UI_GUIDE.md` - Comprehensive user guide for UI framework
+    - Getting started instructions
+    - Slash command reference
+    - Settings configuration guide
+    - Troubleshooting section
+    - Best practices for group leaders and members
+
+- **Settings Menu Enhancements**
+  - Added "User Interface" section in settings menu
+  - Enable/disable toggles for Group Ultimate Display and Client Ultimate Selector
+  - UI Lock toggle (locks all windows in place)
+  - UI Scale slider (0.5x to 2.0x, default 1.0x)
+  - UI Opacity slider (0.1 to 1.0, default 1.0)
+  - All UI settings saved to SavedVariables
+
+- **Slash Commands**
+  - `/btlwui toggle` - Toggle Group Ultimate Display visibility
+  - `/btlwui lock` - Toggle UI lock/unlock for repositioning
+  - `/btlwui refresh` - Force refresh the display
+  - `/btlwui test` - Toggle test mode
+
+### Changed
+- Updated `Beltalowda.lua` to initialize UI modules on player activation
+- Updated `Beltalowda.txt` manifest to include UI files, keybinds, and localization
+- Updated version to 0.4.0
+
+### Technical Details
+- UI modules hook into existing network layer for data updates
+- Group Ultimate Display updates every 1 second and on data change events
+- Client Ultimate Selector automatically detects ultimates from action bars
+- All UI state persisted to `BeltalowdaVars.ui` SavedVariables table
+- RdK-inspired design patterns for familiar UX
+
+### Known Limitations (Phase 4)
+- Manual ultimate selection only (no automatic detection of active ultimate)
+- Selected ultimate not yet broadcast to group (local display only)
+- No validation of selected vs. equipped ultimate
+- Fixed list of 12 ultimates for columns (customization coming in later phases)
+- Broadcasting implementation deferred to Week 10
+
 ## [0.3.0] - 2026-01-02
 
 ### Added

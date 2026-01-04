@@ -26,10 +26,41 @@ This branch contains a clean slate for the Beltalowda project with a reorganized
 
 This project is an ESO addon for group PvP coordination. Current status:
 - **Phase 0 Complete**: Library integration and foundation (v0.1.0)
-- **Phase 2 Complete**: LibGroupBroadcast integration
+- **Phase 2 Complete**: LibGroupBroadcast integration (v0.2.0-0.3.0)
+- **Phase 4 Week 9 Complete**: Foundational UI Framework (v0.4.0)
+  - Group Ultimate Display with 12 ultimate columns
+  - Client Ultimate Selector for manual ultimate selection
+  - Draggable, configurable windows with color-coded readiness
+  - Real-time updates from LibGroupCombatStats
 - Planning documentation preserved in docs/
 - Historical documentation archived in old-docs/
 - Clean structure for incremental development
+
+## Features (v0.4.0)
+
+### Group Ultimate Display
+- Visual tracking of group members' ultimate readiness
+- 12 configurable ultimate columns
+- Player blocks stacked beneath each ultimate type
+- Color-coded status indicators (green=ready, yellow=75%+, orange=50%+, gray=<50%)
+- Real-time updates from group data
+- Draggable and lockable window
+- Configurable scale and opacity
+
+### Client Ultimate Selector
+- Separate selector box for choosing your reported ultimate
+- Automatic detection of slotted ultimates (front and back bar)
+- Click to cycle between available ultimates
+- Tooltip with ability details
+- Saves your selection across sessions
+
+### Configuration
+- Settings menu integration (`/btlwsettings`)
+- Keybind support for quick access
+- Position and preference persistence
+- Debug logging system with multiple levels
+
+See [QUICK_REFERENCE.md](QUICK_REFERENCE.md) for a quick start guide!
 
 ## Required Libraries
 
@@ -61,7 +92,15 @@ Beltalowda requires the following libraries to function. All must be installed f
 
 ## Available Commands
 
-Beltalowda provides comprehensive slash commands for debugging and testing network functionality:
+Beltalowda provides comprehensive slash commands for UI control, debugging, and network testing:
+
+### UI Commands (NEW in v0.4.0)
+- `/btlwui toggle` - Toggle Group Ultimate Display visibility
+- `/btlwui lock` - Toggle UI lock/unlock for repositioning
+- `/btlwui refresh` - Force refresh the display
+- `/btlwui test` - Toggle test mode
+
+### Data and Network Testing
 
 ### Basic Test Commands
 - `/btlwdata help` - Show all available commands and testing tips
@@ -88,9 +127,13 @@ Beltalowda provides comprehensive slash commands for debugging and testing netwo
 ### Diagnostic Commands
 - `/btlwdata libapi` - Check library API availability and methods (troubleshooting)
 
+**UI Guide**: See `docs/UI_GUIDE.md` for comprehensive UI usage instructions and configuration.
+
+**Testing**: See `docs/UI_TESTING_GUIDE.md` for UI testing procedures and validation.
+
 **Debugging Guide**: See `docs/DEBUGGING_GUIDE.md` for comprehensive debugging instructions, troubleshooting scenarios, and best practices.
 
-**Testing**: See `.copilot-responses/NETWORK_FOUNDATION_TESTING_GUIDE.md` for comprehensive testing procedures and expected outputs.
+**Quick Reference**: See `QUICK_REFERENCE.md` for a quick start guide and common commands.
 
 **Note**: These are addon-provided commands, not library commands. The addon must be loaded for these commands to work.
 

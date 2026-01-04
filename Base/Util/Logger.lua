@@ -70,9 +70,8 @@ end
     Load configuration from SavedVariables
 ]]--
 function Logger.LoadConfiguration()
-    if not BeltalowdaVars then return end
-    
-    -- Initialize logging config if not exists
+    -- Ensure BeltalowdaVars exists (defensive, should already be initialized)
+    BeltalowdaVars = BeltalowdaVars or {}
     BeltalowdaVars.logging = BeltalowdaVars.logging or {}
     
     -- Load module-specific levels
@@ -117,8 +116,8 @@ end
     Save configuration to SavedVariables
 ]]--
 function Logger.SaveConfiguration()
-    if not BeltalowdaVars then return end
-    
+    -- Ensure BeltalowdaVars exists (defensive, should already be initialized)
+    BeltalowdaVars = BeltalowdaVars or {}
     BeltalowdaVars.logging = BeltalowdaVars.logging or {}
     
     -- Save module-specific levels

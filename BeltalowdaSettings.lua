@@ -46,12 +46,9 @@ end
     Apply default settings if they don't exist
 ]]--
 function Settings.ApplyDefaults()
-    if not BeltalowdaVars then return end
-    
-    -- Initialize logging settings if not present
-    if not BeltalowdaVars.logging then
-        BeltalowdaVars.logging = {}
-    end
+    -- Ensure BeltalowdaVars exists (should be initialized in OnAddOnLoaded)
+    BeltalowdaVars = BeltalowdaVars or {}
+    BeltalowdaVars.logging = BeltalowdaVars.logging or {}
     
     -- Apply defaults for missing values
     if BeltalowdaVars.logging.enabled == nil then
@@ -100,6 +97,139 @@ function Settings.CreatePanel()
     
     -- Create the options
     local optionsData = {
+        -- Header: User Interface
+        {
+            type = "header",
+            name = "User Interface",
+            width = "full",
+        },
+        {
+            type = "description",
+            text = "Configure the group ultimate display and client ultimate selector.",
+            width = "full",
+        },
+        
+        -- Group Ultimate Display
+        {
+            type = "checkbox",
+            name = "Enable Group Ultimate Display",
+            tooltip = "Show the main group ultimate tracking window",
+            getFunc = function()
+                if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
+                    return Beltalowda.UI.GroupUltimateDisplay.settings.enabled
+                end
+                return true
+            end,
+            setFunc = function(value)
+                if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
+                    Beltalowda.UI.GroupUltimateDisplay.settings.enabled = value
+                    Beltalowda.UI.GroupUltimateDisplay.ApplySettings()
+                    Beltalowda.UI.GroupUltimateDisplay.SaveSettings()
+                end
+            end,
+            width = "full",
+            default = true,
+        },
+        
+        -- Client Ultimate Selector
+        {
+            type = "checkbox",
+            name = "Enable Client Ultimate Selector",
+            tooltip = "Show the client ultimate selector (click to choose which ultimate to report)",
+            getFunc = function()
+                if Beltalowda.UI and Beltalowda.UI.ClientUltimateSelector then
+                    return Beltalowda.UI.ClientUltimateSelector.settings.enabled
+                end
+                return true
+            end,
+            setFunc = function(value)
+                if Beltalowda.UI and Beltalowda.UI.ClientUltimateSelector then
+                    Beltalowda.UI.ClientUltimateSelector.settings.enabled = value
+                    Beltalowda.UI.ClientUltimateSelector.ApplySettings()
+                    Beltalowda.UI.ClientUltimateSelector.SaveSettings()
+                end
+            end,
+            width = "full",
+            default = true,
+        },
+        
+        -- UI Lock toggle
+        {
+            type = "checkbox",
+            name = "Lock UI Windows",
+            tooltip = "Lock all UI windows in place (prevents accidental movement)",
+            getFunc = function()
+                if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
+                    return Beltalowda.UI.GroupUltimateDisplay.settings.locked
+                end
+                return false
+            end,
+            setFunc = function(value)
+                if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
+                    Beltalowda.UI.GroupUltimateDisplay.settings.locked = value
+                    Beltalowda.UI.GroupUltimateDisplay.ApplySettings()
+                    Beltalowda.UI.GroupUltimateDisplay.SaveSettings()
+                end
+                if Beltalowda.UI and Beltalowda.UI.ClientUltimateSelector then
+                    Beltalowda.UI.ClientUltimateSelector.settings.locked = value
+                    Beltalowda.UI.ClientUltimateSelector.ApplySettings()
+                    Beltalowda.UI.ClientUltimateSelector.SaveSettings()
+                end
+            end,
+            width = "full",
+            default = false,
+        },
+        
+        -- Scale slider
+        {
+            type = "slider",
+            name = "UI Scale",
+            tooltip = "Scale of the group ultimate display",
+            min = 0.5,
+            max = 2.0,
+            step = 0.1,
+            getFunc = function()
+                if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
+                    return Beltalowda.UI.GroupUltimateDisplay.settings.scale
+                end
+                return 1.0
+            end,
+            setFunc = function(value)
+                if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
+                    Beltalowda.UI.GroupUltimateDisplay.settings.scale = value
+                    Beltalowda.UI.GroupUltimateDisplay.ApplySettings()
+                    Beltalowda.UI.GroupUltimateDisplay.SaveSettings()
+                end
+            end,
+            width = "full",
+            default = 1.0,
+        },
+        
+        -- Opacity slider
+        {
+            type = "slider",
+            name = "UI Opacity",
+            tooltip = "Transparency of the group ultimate display (0 = invisible, 1 = opaque)",
+            min = 0.1,
+            max = 1.0,
+            step = 0.1,
+            getFunc = function()
+                if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
+                    return Beltalowda.UI.GroupUltimateDisplay.settings.opacity
+                end
+                return 1.0
+            end,
+            setFunc = function(value)
+                if Beltalowda.UI and Beltalowda.UI.GroupUltimateDisplay then
+                    Beltalowda.UI.GroupUltimateDisplay.settings.opacity = value
+                    Beltalowda.UI.GroupUltimateDisplay.ApplySettings()
+                    Beltalowda.UI.GroupUltimateDisplay.SaveSettings()
+                end
+            end,
+            width = "full",
+            default = 1.0,
+        },
+        
         -- Header: Debugging & Diagnostics
         {
             type = "header",
