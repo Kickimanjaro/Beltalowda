@@ -36,6 +36,9 @@ GUD.controls = {
     playerBlocks = {},
 }
 
+-- Settings version - increment when DEFAULT_ULTIMATES changes
+GUD.SETTINGS_VERSION = 2  -- Version 2: Added icon caching and RdK ultimate IDs
+
 -- Settings (will be saved to SavedVariables)
 GUD.settings = {
     enabled = true,
@@ -87,6 +90,10 @@ function GUD.LoadSettings()
     
     local saved = BeltalowdaVars.ui.groupUltimateDisplay
     
+    -- Check if saved version matches current version
+    local savedVersion = saved.version or 0
+    local needsReset = (savedVersion < GUD.SETTINGS_VERSION)
+    
     -- Load or set defaults
     GUD.settings.enabled = (saved.enabled ~= nil) and saved.enabled or true
     GUD.settings.locked = (saved.locked ~= nil) and saved.locked or false
@@ -97,13 +104,15 @@ function GUD.LoadSettings()
     GUD.settings.testMode = (saved.testMode ~= nil) and saved.testMode or false
     
     -- Load ultimate IDs or use defaults
-    if saved.ultimateIds and #saved.ultimateIds > 0 then
-        GUD.settings.ultimateIds = saved.ultimateIds
-    else
+    -- Reset to defaults if version changed (indicates DEFAULT_ULTIMATES was updated)
+    if needsReset or not saved.ultimateIds or #saved.ultimateIds ~= GUD.MAX_ULTIMATES then
+        d("[Beltalowda] Resetting ultimate IDs to defaults (version upgrade or invalid data)")
         GUD.settings.ultimateIds = {}
         for i = 1, GUD.MAX_ULTIMATES do
             GUD.settings.ultimateIds[i] = GUD.DEFAULT_ULTIMATES[i] or 0
         end
+    else
+        GUD.settings.ultimateIds = saved.ultimateIds
     end
 end
 
@@ -116,6 +125,7 @@ function GUD.SaveSettings()
     BeltalowdaVars.ui = BeltalowdaVars.ui or {}
     
     BeltalowdaVars.ui.groupUltimateDisplay = {
+        version = GUD.SETTINGS_VERSION,  -- Save version for future upgrades
         enabled = GUD.settings.enabled,
         locked = GUD.settings.locked,
         scale = GUD.settings.scale,
