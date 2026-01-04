@@ -136,10 +136,10 @@ function CUS.CreateWindow()
     icon:SetTexture("/esoui/art/icons/ability_default.dds")
     icon:SetMouseEnabled(true)
     
-    -- Click to cycle through ultimates
+    -- Click to show ultimate selection dialog
     icon:SetHandler("OnMouseUp", function(control, button, upInside)
         if upInside and button == MOUSE_BUTTON_INDEX_LEFT then
-            CUS.CycleUltimate()
+            CUS.ShowUltimateSelectionDialog()
         end
     end)
     
@@ -226,6 +226,55 @@ function CUS.DetectPlayerUltimates()
 end
 
 --[[
+    Show dialog to select which ultimate to report to group
+]]--
+function CUS.ShowUltimateSelectionDialog()
+    -- List of common ultimates players might want to track
+    local ultimateList = {
+        {id = 38563, name = "War Horn"},
+        {id = 38573, name = "Barrier"},
+        {id = 35713, name = "Dawnbreaker"},
+        {id = 16536, name = "Meteor"},
+        {id = 83552, name = "Panacea"},
+        {id = 83619, name = "Eye of the Storm"},
+        {id = 16491, name = "Soul Tether (Necro)"},
+        {id = 40159, name = "Solar Prison (Templar)"},
+        {id = 40223, name = "Aggressive Horn"},
+        {id = 40220, name = "Sturdy Horn"},
+        {id = 40237, name = "Reviving Barrier"},
+        {id = 40239, name = "Replenishing Barrier"},
+    }
+    
+    -- Build menu items
+    local menuItems = {}
+    for _, ult in ipairs(ultimateList) do
+        table.insert(menuItems, {
+            label = ult.name,
+            callback = function()
+                CUS.SelectUltimate(ult.id)
+            end
+        })
+    end
+    
+    -- Show context menu
+    ClearMenu()
+    for _, item in ipairs(menuItems) do
+        AddMenuItem(item.label, item.callback)
+    end
+    ShowMenu(GuiRoot)
+end
+
+--[[
+    Select a specific ultimate
+]]--
+function CUS.SelectUltimate(abilityId)
+    CUS.settings.selectedUltimateId = abilityId
+    CUS.UpdateIcon()
+    CUS.SaveSettings()
+    CUS.BroadcastSelection()
+end
+
+--[[
     Cycle to next ultimate
 ]]--
 function CUS.CycleUltimate()
@@ -285,7 +334,7 @@ function CUS.ShowTooltip(control)
         InformationTooltip:AddLine(abilityName, "", 1, 1, 1)
         InformationTooltip:AddLine(string.format("Cost: %d", cost), "", 0.8, 0.8, 0.8)
         InformationTooltip:AddLine("", "", 1, 1, 1)
-        InformationTooltip:AddLine("Click to cycle ultimates", "", 0.6, 0.6, 0.6)
+        InformationTooltip:AddLine("Click to select ultimate", "", 0.6, 0.6, 0.6)
     end
 end
 

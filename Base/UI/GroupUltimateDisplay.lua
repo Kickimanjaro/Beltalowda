@@ -11,7 +11,7 @@ local wm = WINDOW_MANAGER
 
 -- Constants
 GUD.ULTIMATE_ICON_SIZE = 48
-GUD.PLAYER_BLOCK_WIDTH = 200
+GUD.PLAYER_BLOCK_WIDTH = 48  -- Match ultimate icon width to prevent overlap (matching RdK approach)
 GUD.PLAYER_BLOCK_HEIGHT = 24
 GUD.MAX_ULTIMATES = 6  -- Changed to 6 for Alliance War ultimates
 GUD.MAX_PLAYERS_PER_ULTIMATE = 12
@@ -216,6 +216,25 @@ function GUD.CreateUltimateColumn(parent, index)
     iconBackdrop:SetDrawLevel(0)
     icon:SetDrawLevel(1)
     
+    -- Make icon clickable for changing tracked ultimate
+    icon:SetMouseEnabled(true)
+    icon:SetHandler("OnMouseUp", function(control, button)
+        if button == MOUSE_BUTTON_INDEX_LEFT then
+            GUD.ShowUltimateSelectionDialog(index)
+        end
+    end)
+    icon:SetHandler("OnMouseEnter", function(control)
+        InitializeTooltip(InformationTooltip, control, BOTTOM, 0, -5)
+        if column.abilityName then
+            SetTooltipText(InformationTooltip, string.format("Click to change\n%s", column.abilityName))
+        else
+            SetTooltipText(InformationTooltip, "Click to select ultimate")
+        end
+    end)
+    icon:SetHandler("OnMouseExit", function(control)
+        ClearTooltip(InformationTooltip)
+    end)
+    
     -- Player blocks (stacked beneath the icon)
     local playerBlocks = {}
     for j = 1, GUD.MAX_PLAYERS_PER_ULTIMATE do
@@ -242,6 +261,68 @@ function GUD.CreateUltimateColumn(parent, index)
     GUD.UpdateUltimateIcon(column)
     
     return column
+end
+
+--[[
+    Show dialog to select which ultimate to track in a column
+]]--
+function GUD.ShowUltimateSelectionDialog(columnIndex)
+    -- List of common ultimates players might want to track
+    local ultimateList = {
+        {id = 38563, name = "War Horn"},
+        {id = 38573, name = "Barrier"},
+        {id = 35713, name = "Dawnbreaker"},
+        {id = 16536, name = "Meteor"},
+        {id = 83552, name = "Panacea"},
+        {id = 83619, name = "Eye of the Storm"},
+        {id = 16491, name = "Soul Tether (Necro)"},
+        {id = 40159, name = "Solar Prison (Templar)"},
+        {id = 40223, name = "Aggressive Horn"},
+        {id = 40220, name = "Sturdy Horn"},
+        {id = 40237, name = "Reviving Barrier"},
+        {id = 40239, name = "Replenishing Barrier"},
+    }
+    
+    -- Build menu items
+    local menuItems = {}
+    for _, ult in ipairs(ultimateList) do
+        table.insert(menuItems, {
+            label = ult.name,
+            callback = function()
+                GUD.SetColumnUltimate(columnIndex, ult.id)
+            end
+        })
+    end
+    
+    -- Show context menu
+    ClearMenu()
+    for _, item in ipairs(menuItems) do
+        AddMenuItem(item.label, item.callback)
+    end
+    ShowMenu(GuiRoot)
+end
+
+--[[
+    Set which ultimate a column should track
+]]--
+function GUD.SetColumnUltimate(columnIndex, abilityId)
+    if columnIndex < 1 or columnIndex > GUD.MAX_ULTIMATES then return end
+    
+    -- Update settings
+    GUD.settings.ultimateIds[columnIndex] = abilityId
+    GUD.SaveSettings()
+    
+    -- Update column
+    local column = GUD.controls.ultimateColumns[columnIndex]
+    if column then
+        column.ultimateId = abilityId
+        column.iconPath = GetAbilityIcon(abilityId)
+        column.abilityName = GetAbilityName(abilityId)
+        GUD.UpdateUltimateIcon(column)
+    end
+    
+    -- Refresh display
+    GUD.RefreshDisplay()
 end
 
 --[[
@@ -290,15 +371,30 @@ function GUD.CreatePlayerBlock(parent, index)
     groupLabel:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
     groupLabel:SetColor(1, 1, 1, 1)
     
-    -- Player name label
+    -- Player name label (hidden for narrow blocks matching RdK design)
     local nameLabel = wm:CreateControl(nil, container, CT_LABEL)
     nameLabel:SetAnchor(LEFT, groupLabel, RIGHT, 2, 0)
     nameLabel:SetFont("ZoFontGameSmall")
     nameLabel:SetText("")
-    nameLabel:SetDimensions(GUD.PLAYER_BLOCK_WIDTH - 24, GUD.PLAYER_BLOCK_HEIGHT)
+    nameLabel:SetDimensions(GUD.PLAYER_BLOCK_WIDTH - 18, GUD.PLAYER_BLOCK_HEIGHT)
     nameLabel:SetVerticalAlignment(TEXT_ALIGN_CENTER)
     nameLabel:SetWrapMode(TEXT_WRAP_MODE_ELLIPSIS)
     nameLabel:SetColor(1, 1, 1, 1)
+    nameLabel:SetHidden(true)  -- Hide name in narrow view - tooltip will show on hover
+    
+    -- Add tooltip to show player name on hover
+    container:SetMouseEnabled(true)
+    container:SetHandler("OnMouseEnter", function(control)
+        if block.unitTag then
+            local playerName = GetUnitName(block.unitTag)
+            local percent = block.ultimatePercent or 0
+            InitializeTooltip(InformationTooltip, control, BOTTOM, 0, -5)
+            SetTooltipText(InformationTooltip, string.format("%s: %d%%", playerName, percent))
+        end
+    end)
+    container:SetHandler("OnMouseExit", function(control)
+        ClearTooltip(InformationTooltip)
+    end)
     
     block.container = container
     block.backdrop = backdrop
